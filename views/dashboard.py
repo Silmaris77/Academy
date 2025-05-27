@@ -182,8 +182,7 @@ def get_daily_missions(username):
     return DAILY_MISSIONS[:3]
 
 def show_stats_section(user_data, device_type):
-    """Sekcja z kartami statystyk"""
-    st.markdown('<div class="stats-section">', unsafe_allow_html=True)
+    """Sekcja z kartami statystyk - alternatywne podejście z kolumnami"""
     
     # Oblicz dane statystyk
     xp = user_data.get('xp', 0)
@@ -198,6 +197,9 @@ def show_stats_section(user_data, device_type):
     streak_change = f"+{min(1, streak)}"
     level_change = f"+{max(0, level - 1)}"
     
+    # Utwórz 5 kolumn
+    cols = st.columns(5)
+    
     # 5 kart statystyk
     stats = [
         {"icon": "🏆", "value": f"{xp}", "label": "Punkty XP", "change": xp_change},
@@ -207,17 +209,17 @@ def show_stats_section(user_data, device_type):
         {"icon": "🎯", "value": f"{missions_progress['completed']}", "label": "Dzisiejsze misje", "change": f"+{missions_progress['completed']}"}
     ]
     
-    for stat in stats:
-        st.markdown(f"""
-        <div class="stat-card">
-            <div class="stat-icon">{stat['icon']}</div>
-            <div class="stat-value">{stat['value']}</div>
-            <div class="stat-label">{stat['label']}</div>
-            <div class="stat-change positive">{stat['change']}</div>
-        </div>
-        """, unsafe_allow_html=True)
-    
-    st.markdown('</div>', unsafe_allow_html=True)
+    # Wygeneruj kartę w każdej kolumnie
+    for i, stat in enumerate(stats):
+        with cols[i]:
+            st.markdown(f"""
+            <div class="stat-card">
+                <div class="stat-icon">{stat['icon']}</div>
+                <div class="stat-value">{stat['value']}</div>
+                <div class="stat-label">{stat['label']}</div>
+                <div class="stat-change positive">{stat['change']}</div>
+            </div>
+            """, unsafe_allow_html=True)
 
 def show_main_content(user_data, device_type):
     """Główna zawartość dashboardu"""

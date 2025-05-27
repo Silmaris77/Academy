@@ -581,25 +581,29 @@ div.stButton > button {
     margin: 0 auto;
 }
 
-/* Sekcja statystyk - pełna szerokość */
+/* Sekcja statystyk - pełna szerokość z wymuszonym jednym wierszem */
 .stats-section {
     grid-column: 1 / -1;
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    grid-template-columns: repeat(5, 1fr); /* 5 równych kolumn */
     gap: 16px;
     margin-bottom: 20px;
+    min-width: 0; /* Pozwala na kompresję kolumn */
 }
 
-/* Karty statystyk */
+/* Karty statystyk - dostosowane do jednego wiersza */
 .stat-card {
     background: white;
     border-radius: 12px;
-    padding: 24px;
+    padding: 20px 16px; /* Zmniejszone padding dla lepszego dopasowania */
     box-shadow: 0 2px 8px rgba(0,0,0,0.08);
     border: 1px solid #f0f0f0;
     transition: all 0.3s ease;
     position: relative;
     overflow: hidden;
+    text-align: center;
+    min-width: 150px; /* Minimalna szerokość karty */
+    max-width: 250px; /* Maksymalna szerokość karty */
 }
 
 .stat-card::before {
@@ -618,31 +622,33 @@ div.stButton > button {
 }
 
 .stat-icon {
-    font-size: 32px;
-    margin-bottom: 12px;
+    font-size: 28px; /* Nieco mniejsza ikona */
+    margin-bottom: 8px; /* Zmniejszone z 12px */
     opacity: 0.8;
 }
 
 .stat-value {
-    font-size: 28px;
+    font-size: 24px; /* Nieco mniejsza wartość */
     font-weight: 700;
     color: var(--text-primary);
     margin-bottom: 4px;
     line-height: 1;
+    word-break: break-word; /* Pozwala na łamanie długich liczb */
 }
 
 .stat-label {
-    font-size: 14px;
+    font-size: 12px; /* Mniejszy tekst etykiety */
     color: var(--text-secondary);
     font-weight: 500;
     text-transform: uppercase;
     letter-spacing: 0.5px;
+    line-height: 1.2;
 }
 
 .stat-change {
-    font-size: 12px;
-    margin-top: 8px;
-    padding: 4px 8px;
+    font-size: 11px; /* Zmniejszone z 12px */
+    margin-top: 6px; /* Zmniejszone z 8px */
+    padding: 3px 6px; /* Zmniejszone z 4px 8px */
     border-radius: 20px;
     font-weight: 600;
 }
@@ -655,6 +661,66 @@ div.stButton > button {
 .stat-change.negative {
     background: rgba(231, 76, 60, 0.1);
     color: #e74c3c;
+}
+
+/* Responsywność dla statystyk w jednym wierszu */
+@media (max-width: 1200px) {
+    .stats-section {
+        grid-template-columns: repeat(3, 1fr); /* 3 kolumny dla mniejszych ekranów */
+        gap: 12px;
+    }
+    
+    .stat-card {
+        padding: 16px 12px;
+    }
+    
+    .stat-value {
+        font-size: 20px;
+    }
+    
+    .stat-icon {
+        font-size: 24px;
+    }
+}
+
+@media (max-width: 1024px) {
+    .dashboard-container {
+        grid-template-columns: 1fr;
+        gap: 20px;
+        padding: 16px;
+    }
+    
+    .main-content,
+    .dashboard-sidebar {
+        grid-column: 1;
+    }
+    
+    .stats-section {
+        grid-template-columns: repeat(2, 1fr); /* 2 kolumny dla tabletów */
+        gap: 10px;
+    }
+}
+
+@media (max-width: 768px) {
+    .stats-section {
+        grid-template-columns: repeat(2, 1fr); /* 2 kolumny dla telefonów */
+        gap: 8px;
+    }
+    
+    .stat-card {
+        padding: 16px;
+        max-width: none;
+    }
+    
+    .dashboard-section {
+        padding: 16px;
+    }
+}
+
+@media (max-width: 480px) {
+    .stats-section {
+        grid-template-columns: 1fr; /* 1 kolumna dla bardzo małych ekranów */
+    }
 }
 
 /* Główna zawartość w dwóch kolumnach */
@@ -850,21 +916,30 @@ div.stButton > button {
     }
     
     .stats-section {
-        grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+        grid-template-columns: repeat(2, 1fr); /* 2 kolumny dla tabletów */
+        gap: 10px;
     }
 }
 
 @media (max-width: 768px) {
     .stats-section {
-        grid-template-columns: repeat(2, 1fr);
+        grid-template-columns: repeat(2, 1fr); /* 2 kolumny dla telefonów */
+        gap: 8px;
     }
     
     .stat-card {
         padding: 16px;
+        max-width: none;
     }
     
     .dashboard-section {
         padding: 16px;
+    }
+}
+
+@media (max-width: 480px) {
+    .stats-section {
+        grid-template-columns: 1fr; /* 1 kolumna dla bardzo małych ekranów */
     }
 }
 
