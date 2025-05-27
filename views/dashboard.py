@@ -181,6 +181,304 @@ def get_daily_missions(username):
     # We're only showing the first 3 missions to the user
     return DAILY_MISSIONS[:3]
 
+def show_stats_section(user_data, device_type):
+    """Sekcja z kartami statystyk"""
+    st.markdown('<div class="stats-section">', unsafe_allow_html=True)
+    
+    # Oblicz dane statystyk
+    xp = user_data.get('xp', 0)
+    completed_lessons = len(user_data.get('completed_lessons', []))
+    missions_progress = get_daily_missions_progress(st.session_state.username)
+    streak = missions_progress['streak']
+    level = user_data.get('level', 1)
+    
+    # Oblicz trend XP (przykładowy +15%)
+    xp_change = "+15%"
+    lessons_change = f"+{min(3, completed_lessons)}"
+    streak_change = f"+{min(1, streak)}"
+    level_change = f"+{max(0, level - 1)}"
+    
+    # 5 kart statystyk
+    stats = [
+        {"icon": "🏆", "value": f"{xp}", "label": "Punkty XP", "change": xp_change},
+        {"icon": "📚", "value": f"{completed_lessons}", "label": "Ukończone lekcje", "change": lessons_change},
+        {"icon": "🔥", "value": f"{streak}", "label": "Aktualna passa", "change": streak_change},
+        {"icon": "⭐", "value": f"{level}", "label": "Poziom", "change": level_change},
+        {"icon": "🎯", "value": f"{missions_progress['completed']}", "label": "Dzisiejsze misje", "change": f"+{missions_progress['completed']}"}
+    ]
+    
+    for stat in stats:
+        st.markdown(f"""
+        <div class="stat-card">
+            <div class="stat-icon">{stat['icon']}</div>
+            <div class="stat-value">{stat['value']}</div>
+            <div class="stat-label">{stat['label']}</div>
+            <div class="stat-change positive">{stat['change']}</div>
+        </div>
+        """, unsafe_allow_html=True)
+    
+    st.markdown('</div>', unsafe_allow_html=True)
+
+def show_main_content(user_data, device_type):
+    """Główna zawartość dashboardu"""
+    
+    # Sekcja ostatnich aktywności
+    show_recent_activities(user_data)
+    
+    # Sekcja dostępnych lekcji
+    show_available_lessons(device_type)
+    
+    # Sekcja misji dziennych
+    show_daily_missions_section()
+
+def show_dashboard_sidebar(user_data, device_type):
+    """Sidebar z dodatkowymi informacjami"""
+    
+    # Widget postępu
+    show_progress_widget(user_data)
+    
+    # Profil inwestycyjny
+    show_investor_profile_compact(user_data)
+    
+    # Ranking XP
+    show_leaderboard_compact()
+
+def show_recent_activities(user_data):
+    """Lista ostatnich aktywności"""
+    st.markdown("""
+    <div class="dashboard-section">
+        <div class="section-header">
+            <h3 class="section-title">Ostatnie aktywności</h3>
+            <a href="#" class="section-action">Zobacz wszystkie</a>
+        </div>
+        <div class="activity-list">
+    """, unsafe_allow_html=True)
+    
+    # Przykładowe aktywności na podstawie danych użytkownika
+    completed_lessons = user_data.get('completed_lessons', [])
+    degen_type = user_data.get('degen_type', None)
+    
+    activities = []
+    
+    if completed_lessons:
+        activities.append({
+            'icon': '✓',
+            'color': '#27ae60',
+            'title': f'Ukończono lekcję: {completed_lessons[-1] if completed_lessons else "Brak"}',
+            'time': '2 godziny temu'
+        })
+    
+    if degen_type:
+        activities.append({
+            'icon': '🧬',
+            'color': '#3498db',
+            'title': f'Odkryto typ inwestora: {degen_type}',
+            'time': '1 dzień temu'
+        })
+    
+    activities.append({
+        'icon': '🔥',
+        'color': '#e67e22',
+        'title': 'Rozpoczęto nową passę dzienną',
+        'time': '3 godziny temu'
+    })
+    
+    for activity in activities:
+        st.markdown(f"""
+            <div class="activity-item">
+                <div class="activity-icon" style="background: rgba({activity['color'][1:3]}, {activity['color'][3:5]}, {activity['color'][5:7]}, 0.1); color: {activity['color']};">
+                    {activity['icon']}
+                </div>
+                <div class="activity-content">
+                    <div class="activity-title">{activity['title']}</div>
+                    <div class="activity-time">{activity['time']}</div>
+                </div>
+            </div>
+        """, unsafe_allow_html=True)
+    
+    st.markdown("""
+        </div>
+    </div>
+    """, unsafe_allow_html=True)
+
+def show_available_lessons(device_type):
+    """Sekcja dostępnych lekcji w głównej zawartości"""
+    st.markdown("""
+    <div class="dashboard-section">
+        <div class="section-header">
+            <h3 class="section-title">Dostępne lekcje</h3>
+        </div>
+    """, unsafe_allow_html=True)
+    
+    # Pobierz lekcje
+    lessons = load_lessons()
+    
+    # Wyświetl pierwsze 3 lekcje w kompaktowym formacie
+    lesson_count = 0
+    for lesson_id, lesson in lessons.items():
+        if lesson_count >= 3:  # Ogranicz do 3 lekcji w widoku głównym
+            break
+            
+        difficulty = lesson.get('difficulty', 'intermediate')
+        if difficulty == "beginner":
+            difficulty_color = "#27ae60"
+            difficulty_icon = "🟢"
+        elif difficulty == "intermediate":
+            difficulty_color = "#f39c12"
+            difficulty_icon = "🟠"
+        else:
+            difficulty_color = "#e74c3c"
+            difficulty_icon = "🔴"
+        
+        st.markdown(f"""
+        <div class="compact-item">
+            <div class="compact-icon" style="color: {difficulty_color};">{difficulty_icon}</div>
+            <div class="compact-content">
+                <div class="compact-title">{lesson.get('title', 'Lekcja')}</div>
+                <div class="compact-progress">XP: {lesson.get('xp_reward', 30)} • {difficulty.title()}</div>
+            </div>
+        </div>
+        """, unsafe_allow_html=True)
+        
+        lesson_count += 1
+    
+    # Przycisk do wszystkich lekcji
+    if zen_button("Zobacz wszystkie lekcje", key="all_lessons_compact"):
+        # Tu można dodać nawigację do pełnej listy lekcji
+        pass
+    
+    st.markdown("</div>", unsafe_allow_html=True)
+
+def show_daily_missions_section():
+    """Sekcja misji dziennych w głównej zawartości"""
+    st.markdown("""
+    <div class="dashboard-section">
+        <div class="section-header">
+            <h3 class="section-title">Misje dnia</h3>
+        </div>
+    """, unsafe_allow_html=True)
+    
+    # Get daily missions and progress
+    daily_missions = get_daily_missions(st.session_state.username)
+    missions_progress = get_daily_missions_progress(st.session_state.username)
+    
+    # Wyświetl pierwsze 3 misje w kompaktowym formacie
+    mission_count = 0
+    for mission in daily_missions:
+        if mission_count >= 3:
+            break
+            
+        is_completed = mission['title'] in missions_progress['completed_ids']
+        
+        st.markdown(f"""
+        <div class="compact-item">
+            <div class="compact-icon">{mission['badge']}</div>
+            <div class="compact-content">
+                <div class="compact-title">{mission['title']}</div>
+                <div class="compact-progress">{'✅ Ukończone' if is_completed else f"XP: {mission['xp']}"}</div>
+            </div>
+        </div>
+        """, unsafe_allow_html=True)
+        
+        mission_count += 1
+    
+    st.markdown("</div>", unsafe_allow_html=True)
+
+def show_progress_widget(user_data):
+    """Widget postępu w sidebarze"""
+    xp = user_data.get('xp', 0)
+    level = user_data.get('level', 1)
+    next_level_xp = XP_LEVELS.get(level + 1, xp + 100)
+    current_level_xp = XP_LEVELS.get(level, 0)
+    
+    # Zabezpieczenie przed None values
+    if next_level_xp is None:
+        next_level_xp = xp + 100
+    if current_level_xp is None:
+        current_level_xp = 0
+    
+    # Oblicz procent postępu
+    if next_level_xp > current_level_xp:
+        progress_percent = int(((xp - current_level_xp) / (next_level_xp - current_level_xp)) * 100)
+    else:
+        progress_percent = 100
+    
+    # Upewnij się, że progress_percent jest w zakresie 0-100
+    progress_percent = max(0, min(100, progress_percent))
+    
+    st.markdown(f"""
+    <div class="progress-widget">
+        <div class="progress-text">{progress_percent}%</div>
+        <div class="progress-label">Postęp do poziomu {level + 1}</div>
+        <div style="margin-top: 16px; font-size: 14px;">
+            Poziom {level} • {xp} XP
+        </div>
+    </div>
+    """, unsafe_allow_html=True)
+
+def show_investor_profile_compact(user_data):
+    """Kompaktowy profil inwestycyjny"""
+    st.markdown("""
+    <div class="dashboard-section">
+        <div class="section-header">
+            <h3 class="section-title">Profil inwestycyjny</h3>
+        </div>
+    """, unsafe_allow_html=True)
+    
+    if 'test_scores' in user_data:
+        # Pokaż dominujący typ
+        dominant_type = max(user_data['test_scores'].items(), key=lambda x: x[1])[0]
+        degen_color = DEGEN_TYPES.get(dominant_type, {}).get('color', '#3498db')
+        
+        st.markdown(f"""
+        <div style="text-align: center; padding: 16px;">
+            <div style="font-size: 24px; margin-bottom: 8px;">🧬</div>
+            <div style="font-weight: 600; color: {degen_color};">{dominant_type}</div>
+            <div style="font-size: 12px; color: var(--text-secondary); margin-top: 4px;">
+                Twój dominujący typ
+            </div>
+        </div>
+        """, unsafe_allow_html=True)
+        
+        if zen_button("Zobacz szczegóły", key="profile_details"):
+            st.session_state.page = 'degen_explorer'
+            st.rerun()
+    else:
+        st.info("Wykonaj test, aby odkryć swój profil")
+        if zen_button("Wykonaj test", key="take_test_sidebar"):
+            st.session_state.page = 'degen_explorer'
+            st.rerun()
+    
+    st.markdown("</div>", unsafe_allow_html=True)
+
+def show_leaderboard_compact():
+    """Kompaktowy ranking XP"""
+    st.markdown("""
+    <div class="dashboard-section">
+        <div class="section-header">
+            <h3 class="section-title">Ranking XP</h3>
+        </div>
+    """, unsafe_allow_html=True)
+    
+    # Pobierz top 3 użytkowników
+    top_users = get_top_users(3)
+    
+    for i, user in enumerate(top_users):
+        rank_icon = "🥇" if i == 0 else "🥈" if i == 1 else "🥉"
+        is_current = user['username'] == st.session_state.username
+        
+        st.markdown(f"""
+        <div class="compact-item" style="{'background: rgba(41, 128, 185, 0.1);' if is_current else ''}">
+            <div class="compact-icon">{rank_icon}</div>
+            <div class="compact-content">
+                <div class="compact-title">{'Ty' if is_current else user['username']}</div>
+                <div class="compact-progress">{user['xp']} XP</div>
+            </div>
+        </div>
+        """, unsafe_allow_html=True)
+    
+    st.markdown("</div>", unsafe_allow_html=True)
+
 def show_dashboard():
     # Zastosuj style Material 3
     apply_material3_theme()
@@ -199,228 +497,35 @@ def show_dashboard():
     add_animations_css()
 
     users_data = load_user_data()
-    user_data = users_data[st.session_state.username]    # WIERSZ 1: Profil użytkownika i profil inwestycyjny w dwóch kolumnach
-    st.markdown("<div class='st-bx fadeIn delay-1'>", unsafe_allow_html=True)
+    user_data = users_data[st.session_state.username]
     
-    # Responsywny układ kolumn, dostosowany do urządzenia
+    # Główny kontener dashboard
+    st.markdown('<div class="dashboard-container">', unsafe_allow_html=True)
+    
+    # Sekcja statystyk - pełna szerokość
+    show_stats_section(user_data, device_type)
+    
+    # Główna zawartość i sidebar
     if device_type == 'mobile':
-        profile_cols = st.columns(1)  # Na telefonie jedna kolumna
-        profile_col = profile_cols[0]
-        investor_profile_col = profile_cols[0]
+        # Na telefonach wyświetl sekcje jedna pod drugą
+        show_main_content(user_data, device_type)
+        show_dashboard_sidebar(user_data, device_type)
     else:
-        profile_col, investor_profile_col = st.columns(2)  # Na większych ekranach dwie kolumny
-    
-    # 1a. PROFIL UŻYTKOWNIKA (kolumna 1)
-    with profile_col:
-        st.subheader("Profil użytkownika")
+        col1, col2 = st.columns([2, 1])
         
-        # Avatar i typ degena
-        user_avatar = USER_AVATARS.get(user_data.get('avatar', 'default'), '👤')
-        degen_type = user_data.get('degen_type', 'Nie określono')
+        with col1:
+            st.markdown('<div class="main-content">', unsafe_allow_html=True)
+            show_main_content(user_data, device_type)
+            st.markdown('</div>', unsafe_allow_html=True)
         
-        # Pasek postępu XP do następnego poziomu
-        xp = user_data.get('xp', 0)
-        xp_progress, xp_needed = calculate_xp_progress(user_data)
-        next_level = user_data.get('level', 1) + 1
-        next_level_xp = XP_LEVELS.get(next_level, xp + xp_needed)
-        
-        # Używamy komponentu user_stats_panel
-        user_stats_panel(
-            username=st.session_state.username,
-            avatar=user_avatar,
-            degen_type=degen_type,
-            level=user_data.get('level', 1),
-            xp=xp,
-            completed_lessons=len(user_data.get('completed_lessons', [])),
-            next_level_xp=next_level_xp
-        )
+        with col2:
+            st.markdown('<div class="dashboard-sidebar">', unsafe_allow_html=True)
+            show_dashboard_sidebar(user_data, device_type)
+            st.markdown('</div>', unsafe_allow_html=True)
     
-    # 1b. PROFIL INWESTYCYJNY (kolumna 2)
-    with investor_profile_col:
-        st.subheader("Twój profil inwestycyjny")
-        
-        if 'test_scores' in user_data:
-            radar_fig = plot_radar_chart(user_data['test_scores'])
-            st.pyplot(radar_fig)
-        elif not user_data.get('test_taken', False):
-            st.info("Wykonaj test Degena, aby odkryć swój profil inwestycyjny")
-            if zen_button("Wykonaj test Degena"):
-                st.session_state.page = 'degen_explorer'
-                st.rerun()
-        else:
-            st.info("Twój profil inwestycyjny jest jeszcze niekompletny")
-    
-    st.markdown("</div>", unsafe_allow_html=True)
-      # WIERSZ 2: Dostępne lekcje w pełnej szerokości
-    st.markdown("<div class='st-bx fadeIn delay-2'>", unsafe_allow_html=True)
-    st.subheader("Dostępne lekcje")
-      # Zamiast zakładek, wyświetl wszystkie lekcje bez podziału na kategorie
-    lessons = load_lessons()
-    
-    # Zawsze używamy jednej kolumny na całą szerokość
-    display_lesson_cards(lessons, "all_lessons")
-
-    st.markdown("</div>", unsafe_allow_html=True)
-      # WIERSZ 3: Misje dnia (bez rankingu XP)
-    st.markdown("<div class='st-bx fadeIn delay-3'>", unsafe_allow_html=True)
-    
-    # 3. MISJE DNIA (pełna szerokość)
-    st.subheader("Misje dnia")
-    
-    # Get daily missions and progress
-    daily_missions = get_daily_missions(st.session_state.username)
-    missions_progress = get_daily_missions_progress(st.session_state.username)
-    
-    # Overall progress indicator
-    progress_percentage = missions_progress['progress']
-    
-    # Add streak indicator
-    streak = missions_progress['streak']
-    streak_html = ""
-    if streak > 0:
-        streak_html = f"""
-        <div class="streak-container">
-            <div class="streak-badge">🔥 {streak} dni</div>
-            <div class="streak-label">Twoja seria</div>
-        </div>
-        """
-    
-    # Show overall progress
-    st.markdown(f"Ukończono: {missions_progress['completed']}/{missions_progress['total']} ({int(progress_percentage)}%)")
-    progress_bar(missions_progress['completed'] / missions_progress['total'])
-    
-    if daily_missions:
-        # Użyj responsywnej siatki dla misji
-        mission_cols = responsive_grid(columns_desktop=3, columns_tablet=2, columns_mobile=1)
-        
-        for idx, mission in enumerate(daily_missions):
-            # Check if mission is completed
-            is_completed = mission['title'] in missions_progress['completed_ids']
-              # Umieść misję w odpowiedniej kolumnie responsywnej siatki
-            col_index = idx % len(mission_cols)
-            with mission_cols[col_index]:
-                # Używamy komponentu mission_card
-                mission_card(
-                    title=mission['title'], 
-                    description=mission['description'], 
-                    badge_emoji=mission['badge'], 
-                    xp=mission['xp'],
-                    progress=100 if is_completed else 0,
-                    completed=is_completed
-                )
-                
-                # Complete button (only if not completed) - moved inside column context
-                if not is_completed:
-                    if zen_button("Ukończ misję", key=f"complete_{mission['title'].replace(' ', '_')}"):
-                        from utils.daily_missions import complete_daily_mission
-                        complete_success = complete_daily_mission(st.session_state.username, mission['title'])
-                        
-                        if complete_success:
-                            # Create a success message
-                            notification(f"Misja '{mission['title']}' została ukończona! +{mission['xp']} XP", type="success")
-                            st.rerun()
-            
-        if zen_button("Odśwież misje", key="refresh_missions"):
-            st.rerun()
-    else:
-        st.info("Nie masz dostępnych misji na dziś.")
-    
-    st.markdown("</div>", unsafe_allow_html=True)
-    
-    # WIERSZ 4: Wykres postępu i Ranking XP w dwóch kolumnach
-    st.markdown("<div class='st-bx fadeIn delay-4'>", unsafe_allow_html=True)
-    progress_col, leaderboard_col = st.columns(2)
-    
-    # 4a. WYKRES POSTĘPU
-    with progress_col:
-        st.subheader("Twój postęp")
-        
-        # Wykres trendu XP przy użyciu komponentu data_chart
-        history = get_user_xp_history(st.session_state.username)
-        if history:
-            chart_data = pd.DataFrame(history)
-            data_chart(
-                data=chart_data,
-                chart_type="area",
-                title="Rozwój XP w czasie",
-                x_label="Data",
-                y_label="Punkty XP",
-                height=300
-            )
-        else:
-            st.info("Brak danych o historii XP. Zacznij swój pierwszy kurs!")
-    
-    # 4b. RANKING XP (przeniesiony z wiersza 3)
-    with leaderboard_col:
-        st.subheader("Ranking XP")
-        
-        # Pobierz najlepszych graczy
-        top_users = get_top_users(5)  # Top 5 użytkowników
-        
-        for i, user in enumerate(top_users):
-            leaderboard_item(
-                rank=i+1,
-                username=user['username'],
-                points=user['xp'],
-                is_current_user=user['username'] == st.session_state.username
-            )
-        
-        # Pozycja bieżącego użytkownika
-        current_user_rank = get_user_rank(st.session_state.username)
-        
-        # Wyświetl pozycję użytkownika tylko jeśli nie jest w top 5
-        if current_user_rank['rank'] > 5:
-            st.markdown("---")
-            leaderboard_item(
-                rank=current_user_rank['rank'],
-                username=st.session_state.username,
-                points=current_user_rank['xp'],
-                is_current_user=True
-            )
-    
-    st.markdown("</div>", unsafe_allow_html=True)
-    
-    # Dodaj sekcję wyzwań tygodniowych w dashboardzie
-    st.markdown("<div class='st-bx fadeIn delay-5'>", unsafe_allow_html=True)
-    st.subheader("Wyzwania tygodniowe 🏆")
-
-    weekly_challenges = [
-        {
-            'title': 'Maratończyk wiedzy',
-            'description': 'Ukończ 5 lekcji w tym tygodniu',
-            'current': len(user_data.get('this_week_lessons', [])),
-            'target': 5,
-            'reward': '250 XP',
-            'expires': '3 dni'
-        },
-        {
-            'title': 'Geniusz inwestycyjny',
-            'description': 'Odpowiedz poprawnie na 15 pytań quizowych',
-            'current': user_data.get('weekly_correct_answers', 0),
-            'target': 15,
-            'reward': 'Odblokowanie specjalnej lekcji',
-            'expires': '3 dni'
-        }
-    ]
-
-    for challenge in weekly_challenges:
-        progress = min(100, int((challenge['current'] / challenge['target']) * 100))
-        completed = progress == 100
-        
-        mission_card(
-            title=challenge['title'], 
-            description=f"{challenge['description']} (Wygasa za: {challenge['expires']})", 
-            badge_emoji='🏆', 
-            xp=challenge['reward'],
-            progress=progress,
-            completed=completed
-        )
-
-    st.markdown("</div>", unsafe_allow_html=True)
-    
-    # Sekcja promująca rozwój umiejętności
+    st.markdown('</div>', unsafe_allow_html=True)    # Sekcja promująca rozwój umiejętności
     st.markdown("""
-    <div class="feature-card">
+    <div class="dashboard-section">
         <h3>🌳 Rozwijaj swoje umiejętności</h3>
         <p>Ulepszaj swoje umiejętności inwestycyjne i odblokuj nowe możliwości.</p>
     </div>
