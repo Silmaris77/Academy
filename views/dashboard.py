@@ -11,7 +11,7 @@ from config.settings import DAILY_MISSIONS, XP_LEVELS, USER_AVATARS
 from data.lessons import load_lessons
 from utils.goals import get_user_goals, calculate_goal_metrics
 from utils.daily_missions import get_daily_missions_progress
-from views.degen_test import plot_radar_chart
+from views.degen_explorer import plot_radar_chart
 from utils.material3_components import apply_material3_theme
 from utils.layout import get_device_type, responsive_grid, responsive_container, toggle_device_view
 from utils.components import (
@@ -245,7 +245,7 @@ def show_dashboard():
         elif not user_data.get('test_taken', False):
             st.info("Wykonaj test Degena, aby odkryć swój profil inwestycyjny")
             if zen_button("Wykonaj test Degena"):
-                st.session_state.page = 'degen_test'
+                st.session_state.page = 'degen_explorer'
                 st.rerun()
         else:
             st.info("Twój profil inwestycyjny jest jeszcze niekompletny")

@@ -42,7 +42,7 @@ from utils.inventory import (
 )
 from config.settings import USER_AVATARS, THEMES, DEGEN_TYPES, BADGES
 from data.degen_details import degen_details
-from views.degen_test import plot_radar_chart
+from views.degen_explorer import plot_radar_chart
 from views.dashboard import calculate_xp_progress
 from utils.components import zen_header, zen_button, notification, content_section, stat_card, xp_level_display, goal_card, badge_card, progress_bar, tip_block, quote_block,  add_animations_css
 from utils.user_components import user_stats_panel
@@ -488,7 +488,7 @@ def show_profile():
             )
             
             if zen_button("Wykonaj test Degena", key="take_test"):
-                st.session_state.page = 'degen_test'
+                st.session_state.page = 'degen_explorer'
                 st.rerun()
         
         st.markdown("</div>", unsafe_allow_html=True)

@@ -18,7 +18,6 @@ try:
     from utils.components import zen_header, navigation_menu
     from views.login import show_login_page
     from views.dashboard import show_dashboard
-    from views.degen_test import show_degen_test
     from views.lesson import show_lesson
     from views.profile import show_profile
     from views.degen_explorer import show_degen_explorer
@@ -58,15 +57,16 @@ def main():
             if st.button("Wyloguj się", key="logout_button"):
                 clear_session()
                 st.rerun()
-                
-    # Page routing
+                  # Page routing
     if not st.session_state.logged_in:
         show_login_page()    
     else:
         if st.session_state.page == 'dashboard':
             show_dashboard()
         elif st.session_state.page == 'degen_test':
-            show_degen_test()
+            # Redirect to degen_explorer since the test is now part of the explorer
+            st.session_state.page = 'degen_explorer'
+            st.rerun()
         elif st.session_state.page == 'lesson':
             show_lesson()
         elif st.session_state.page == 'profile':
