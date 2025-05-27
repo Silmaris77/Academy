@@ -264,12 +264,12 @@ def show_skill_tree():
     show_progress_dashboard(user_skills, user_xp, user_completed_lessons, categories)
     
     # Opcje filtrowania
-    st.markdown("<h3 class='section-header'>Filtrowanie umiejętności</h3>", unsafe_allow_html=True)
+    st.markdown("<h3 class='section-header'>Filtrowanie modułów</h3>", unsafe_allow_html=True)
     col1, col2 = st.columns(2)
     
     with col1:
         filter_option = st.selectbox(
-            "Pokaż umiejętności:",
+            "Pokaż moduły:",
             ["Wszystkie", "W trakcie nauki", "Ukończone", "Nierozpoczęte"],
             index=0
         )
@@ -305,14 +305,15 @@ def show_progress_dashboard(user_skills, user_xp, user_completed_lessons, catego
     # Liczba ukończonych lekcji
     completed_lessons_count = len(user_completed_lessons)
     
-    # Usuwamy obliczanie szacowanego czasu do ukończenia
-    # oraz powiązane zmienne
+    # Oblicz estymowany czas do ukończenia (w dniach)
+    total_lessons = sum(len(cat['lessons']) for cat in categories.values())
+    remaining_lessons = total_lessons - completed_lessons_count
+    estimated_completion_days = max(1, int(remaining_lessons / 2))  # Zakładając 2 lekcje dziennie
     
     # Dashboard z statystykami
     st.markdown("<div class='progress-dashboard'>", unsafe_allow_html=True)
     
-    # Zmieniamy z 5 kolumn na 4
-    cols = st.columns(4)
+    cols = st.columns(5)  # Zwiększamy ilość kolumn, aby dodać nową statystykę
     
     with cols[0]:
         st.markdown(f"""
@@ -332,7 +333,7 @@ def show_progress_dashboard(user_skills, user_xp, user_completed_lessons, catego
         </div>
         """, unsafe_allow_html=True)
         
-    with cols[2]:
+    with cols[2]:  # Naprawiam ten fragment - usuwam dwukropek
         st.markdown(f"""
         <div class='stat-card'>
             <div class='stat-icon'>⭐</div>
@@ -350,7 +351,14 @@ def show_progress_dashboard(user_skills, user_xp, user_completed_lessons, catego
         </div>
         """, unsafe_allow_html=True)
     
-    # Usuwamy ostatnią kolumnę z czasem do ukończenia
+    with cols[4]:
+        st.markdown(f"""
+        <div class='stat-card'>
+            <div class='stat-icon'>⏱️</div>
+            <div class='stat-value'>{estimated_completion_days}</div>
+            <div class='stat-label'>Dni do ukończenia</div>
+        </div>
+        """, unsafe_allow_html=True)
     
     st.markdown("</div>", unsafe_allow_html=True)
     
@@ -428,16 +436,70 @@ def show_progress_dashboard(user_skills, user_xp, user_completed_lessons, catego
     # Krótka informacja o mechanice zdobywania poziomów
     st.markdown("""
         <div class="info-box">
-            <h4>📋 Jak zdobywać poziomy umiejętności?</h4>
-            <p>Każda ukończona lekcja zwiększa poziom danej umiejętności. Ukończ wszystkie 10 lekcji, aby osiągnąć maksymalny poziom!</p>
-            <p>Wszystkie kategorie umiejętności są od razu dostępne - możesz rozpocząć naukę od dowolnego tematu.</p>
+            <h4>📋 Jak rozwijać swoje umiejętności?</h4>
+            <p>Przeglądaj zawartość interesujących Cię bloków i zawartych w nich modułów. Każdy moduł będzie mieć docelowo 10 lekcji.
+            które będą sukcesywnie dodawane do kursu. </p>
         </div>
     """, unsafe_allow_html=True)
 
 
+# def display_block_with_skills(block_id, block, categories, user_skills, user_xp, users_data, 
+#                              user_data, user_completed_lessons, filter_option, device_type):
+#     """Wyświetla blok tematyczny z kartami umiejętności w nowym układzie"""
+    
+#     # Nagłówek bloku z nowym stylem
+#     st.markdown(f"""
+#         <div class="skill-block-header" style="background: {block['color']}">
+#             <h2>{block['name']}</h2>
+#             <p>{block['description']}</p>
+#         </div>
+#     """, unsafe_allow_html=True)
+    
+#     # Znajdź kategorie należące do bloku
+#     block_categories = [cat_id for cat_id, cat in categories.items() if cat['block'] == block_id]
+    
+#     # Filtrowanie kategorii
+#     filtered_categories = []
+#     for cat_id in block_categories:
+#         category = categories[cat_id]
+#         category_lessons_ids = [lesson["id"] for lesson in category['lessons']]
+#         completed_category_lessons = [lesson_id for lesson_id in user_completed_lessons if lesson_id in category_lessons_ids]
+#         lessons_completed_count = len(completed_category_lessons)
+        
+#         # Filtruj według wybranych opcji
+#         if filter_option == "W trakcie nauki" and (lessons_completed_count == 0 or lessons_completed_count == 10):
+#             continue
+#         elif filter_option == "Ukończone" and lessons_completed_count < 10:
+#             continue
+#         elif filter_option == "Nierozpoczęte" and lessons_completed_count > 0:
+#             continue
+        
+#         filtered_categories.append(cat_id)
+    
+#     if not filtered_categories:
+#         st.info(f"Brak umiejętności spełniających kryteria filtrowania w bloku '{block['name']}'")
+#         return
+    
+#     # Określ liczbę kolumn w zależności od urządzenia
+#     if device_type == 'mobile':
+#         num_cols = 1
+#     elif device_type == 'tablet':
+#         num_cols = 2
+#     else:
+#         num_cols = 2
+    
+#     # Utwórz siatkę dla kart umiejętności
+#     cols = st.columns(num_cols)
+    
+#     # Wyświetl karty umiejętności
+#     for i, cat_id in enumerate(filtered_categories):
+#         category = categories[cat_id]
+#         with cols[i % num_cols]:
+#             display_skill_card(category, user_completed_lessons, user_skills, users_data, user_data, card_index=i)
+
 def display_block_with_skills(block_id, block, categories, user_skills, user_xp, users_data, 
                              user_data, user_completed_lessons, filter_option, device_type):
-    """Wyświetla blok tematyczny z kartami umiejętności w nowym układzie"""
+    """Wyświetla blok tematyczny z menu rozwijanym umiejętności"""
     
     # Nagłówek bloku z nowym stylem
     st.markdown(f"""
@@ -472,24 +534,97 @@ def display_block_with_skills(block_id, block, categories, user_skills, user_xp,
         st.info(f"Brak umiejętności spełniających kryteria filtrowania w bloku '{block['name']}'")
         return
     
-    # Określ liczbę kolumn w zależności od urządzenia
-    if device_type == 'mobile':
-        num_cols = 1
-    elif device_type == 'tablet':
-        num_cols = 2
-    else:
-        num_cols = 1
+    # MENU ROZWIJANE ZAMIAST KART
+    with st.expander(f"Moduły bloku: {block['name']}", expanded=False):
+        
+        # Przygotuj opcje dla selectbox
+        skill_options = {}
+        display_names = []
+        
+        for cat_id in filtered_categories:
+            category = categories[cat_id]
+            category_lessons_ids = [lesson["id"] for lesson in category['lessons']]
+            completed_category_lessons = [lesson_id for lesson_id in user_completed_lessons if lesson_id in category_lessons_ids]
+            lessons_completed_count = len(completed_category_lessons)
+            progress_percent = int((lessons_completed_count / 10) * 100)
+            
+            # Status emoji
+            if lessons_completed_count == 10:
+                status_emoji = "✅"
+            elif lessons_completed_count > 0:
+                status_emoji = "🔄"
+            else:
+                status_emoji = "⭕"
+            
+            display_name = f"{status_emoji} {category['icon']} {category['name']} ({progress_percent}%)"
+            display_names.append(display_name)
+            skill_options[display_name] = cat_id
+        
+        # Selectbox do wyboru umiejętności
+        if display_names:
+            selected_skill = st.selectbox(
+                "Wybierz moduł:",
+                options=["-- Wybierz moduł --"] + display_names,
+                key=f"skill_select_{block_id}"
+            )
+            
+            # Jeśli wybrano umiejętność, wyświetl szczegóły
+            if selected_skill != "-- Wybierz moduł --":
+                selected_cat_id = skill_options[selected_skill]
+                category = categories[selected_cat_id]
+                
+                # Wyświetl szczegóły wybranej umiejętności
+                display_skill_details(category, user_completed_lessons, user_skills, users_data, user_data)
+                
+def display_skill_details(category, user_completed_lessons, user_skills, users_data, user_data):
+    """Wyświetla szczegóły wybranej umiejętności"""
     
-    # Utwórz siatkę dla kart umiejętności
-    cols = st.columns(num_cols)
+    # Oblicz postęp
+    category_lessons_ids = [lesson["id"] for lesson in category['lessons']]
+    completed_category_lessons = [lesson_id for lesson_id in user_completed_lessons if lesson_id in category_lessons_ids]
+    lessons_completed_count = len(completed_category_lessons)
+    calculated_level = min(lessons_completed_count, 10)
+    progress = int((calculated_level / category['max_level']) * 100)
     
-    # Wyświetl karty umiejętności
-    for i, cat_id in enumerate(filtered_categories):
-        category = categories[cat_id]
-        with cols[i % num_cols]:
-            display_skill_card(category, user_completed_lessons, user_skills, users_data, user_data, card_index=i)
-
-
+    # Wyświetl postęp
+    col1, col2, col3 = st.columns(3)
+    
+    with col1:
+        st.metric("Poziom", f"{calculated_level}/{category['max_level']}")
+    
+    with col2:
+        st.metric("Postęp", f"{progress}%")
+    
+    with col3:
+        st.metric("Ukończone lekcje", f"{lessons_completed_count}/10")
+    
+    # Opis
+    st.markdown(f"**Opis:** {category['description']}")
+    
+    # Przyciski akcji
+    col1, col2 = st.columns(2)
+    
+    with col1:
+        if st.button("📚 Pokaż lekcje", key=f"btn_lessons_{category['id']}"):
+            st.session_state[f"show_lessons_{category['id']}"] = True
+    
+    with col2:
+        if st.button("📊 Analityka", key=f"btn_analytics_{category['id']}"):
+            st.session_state[f"show_analytics_{category['id']}"] = True
+    
+    # Wyświetl lekcje lub analitykę jeśli wybrano
+    if st.session_state.get(f"show_lessons_{category['id']}", False):
+        display_category_lessons(category, calculated_level, user_completed_lessons)
+        if st.button("Ukryj lekcje", key=f"hide_lessons_{category['id']}"):
+            st.session_state[f"show_lessons_{category['id']}"] = False
+            st.rerun()
+    
+    if st.session_state.get(f"show_analytics_{category['id']}", False):
+        show_skill_analytics(category, user_completed_lessons)
+        if st.button("Ukryj analitykę", key=f"hide_analytics_{category['id']}"):
+            st.session_state[f"show_analytics_{category['id']}"] = False
+            st.rerun()
+            
 def display_skill_card(category, user_completed_lessons, user_skills, users_data, user_data, card_index=0):
     """Wyświetla kartę umiejętności w nowym stylu"""
     
