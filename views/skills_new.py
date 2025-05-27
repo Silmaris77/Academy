@@ -305,15 +305,14 @@ def show_progress_dashboard(user_skills, user_xp, user_completed_lessons, catego
     # Liczba ukończonych lekcji
     completed_lessons_count = len(user_completed_lessons)
     
-    # Oblicz estymowany czas do ukończenia (w dniach)
-    total_lessons = sum(len(cat['lessons']) for cat in categories.values())
-    remaining_lessons = total_lessons - completed_lessons_count
-    estimated_completion_days = max(1, int(remaining_lessons / 2))  # Zakładając 2 lekcje dziennie
+    # Usuwamy obliczanie szacowanego czasu do ukończenia
+    # oraz powiązane zmienne
     
     # Dashboard z statystykami
     st.markdown("<div class='progress-dashboard'>", unsafe_allow_html=True)
     
-    cols = st.columns(5)  # Zwiększamy ilość kolumn, aby dodać nową statystykę
+    # Zmieniamy z 5 kolumn na 4
+    cols = st.columns(4)
     
     with cols[0]:
         st.markdown(f"""
@@ -333,7 +332,7 @@ def show_progress_dashboard(user_skills, user_xp, user_completed_lessons, catego
         </div>
         """, unsafe_allow_html=True)
         
-    with cols[2]:  # Naprawiam ten fragment - usuwam dwukropek
+    with cols[2]:
         st.markdown(f"""
         <div class='stat-card'>
             <div class='stat-icon'>⭐</div>
@@ -351,14 +350,7 @@ def show_progress_dashboard(user_skills, user_xp, user_completed_lessons, catego
         </div>
         """, unsafe_allow_html=True)
     
-    with cols[4]:
-        st.markdown(f"""
-        <div class='stat-card'>
-            <div class='stat-icon'>⏱️</div>
-            <div class='stat-value'>{estimated_completion_days}</div>
-            <div class='stat-label'>Dni do ukończenia</div>
-        </div>
-        """, unsafe_allow_html=True)
+    # Usuwamy ostatnią kolumnę z czasem do ukończenia
     
     st.markdown("</div>", unsafe_allow_html=True)
     
