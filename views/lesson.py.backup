@@ -426,8 +426,8 @@ def show_lesson():
                     st.markdown(lesson["intro"]["case_study"], unsafe_allow_html=True)
                 else:
                     st.warning("Brak studium przypadku w tej lekcji.")
-              # Przycisk "Dalej" po wprowadzeniu            st.markdown("<div class='next-button'>", unsafe_allow_html=True)
-            if zen_button(f"Dalej: {step_names.get(next_step, next_step.capitalize())} (+{step_xp_values['intro']} XP)", use_container_width=False):
+              # Przycisk "Dalej" po wprowadzeniu
+            st.markdown("<div class='next-button'>", unsafe_allow_html=True)            if zen_button(f"Dalej: {step_names.get(next_step, next_step.capitalize())} (+{step_xp_values['intro']} XP)", use_container_width=False):
                 # Award fragment XP using the new system
                 success, xp_awarded = award_fragment_xp(lesson_id, 'intro', step_xp_values['intro'])
                 
@@ -436,8 +436,9 @@ def show_lesson():
                     st.session_state.lesson_progress['intro'] = True
                     st.session_state.lesson_progress['steps_completed'] += 1
                     st.session_state.lesson_progress['total_xp_earned'] += xp_awarded
-                      # Show real-time XP notification
-                    show_xp_notification(xp_awarded, f"Zdobyłeś {xp_awarded} XP za ukończenie wprowadzenia!")
+                    
+                    # Show real-time XP notification
+                    show_xp_notification(f"Zdobyłeś {xp_awarded} XP za ukończenie wprowadzenia!", "intro")
                     
                     # Refresh user data for real-time updates
                     from utils.real_time_updates import refresh_user_data
@@ -451,10 +452,10 @@ def show_lesson():
             # Wyświetl quiz startowy
             quiz_data = lesson['sections']['opening_quiz']
             quiz_complete, _, earned_points = display_quiz(quiz_data)
-              # Przycisk "Dalej" po quizie startowym - ZAWSZE aktywny            st.markdown("<div class='next-button'>", unsafe_allow_html=True)
+              # Przycisk "Dalej" po quizie startowym - ZAWSZE aktywny
+            st.markdown("<div class='next-button'>", unsafe_allow_html=True)
             
-            # Przycisk jest zawsze aktywny, niezależnie od ukończenia quizu
-            if zen_button(f"Dalej: {step_names.get(next_step, next_step.capitalize())} (+{step_xp_values['opening_quiz']} XP)", use_container_width=False):
+            # Przycisk jest zawsze aktywny, niezależnie od ukończenia quizu            if zen_button(f"Dalej: {step_names.get(next_step, next_step.capitalize())} (+{step_xp_values['opening_quiz']} XP)", use_container_width=False):
                 # Award fragment XP using the new system for quiz participation
                 success, xp_awarded = award_fragment_xp(lesson_id, 'quiz', step_xp_values['opening_quiz'])
                 
@@ -463,8 +464,9 @@ def show_lesson():
                     st.session_state.lesson_progress['opening_quiz'] = True
                     st.session_state.lesson_progress['steps_completed'] += 1
                     st.session_state.lesson_progress['total_xp_earned'] += xp_awarded
-                      # Show real-time XP notification
-                    show_xp_notification(xp_awarded, f"Zdobyłeś {xp_awarded} XP za udział w quizie!")
+                    
+                    # Show real-time XP notification
+                    show_xp_notification(f"Zdobyłeś {xp_awarded} XP za udział w quizie!", "quiz")
                     
                     # Refresh user data for real-time updates
                     from utils.real_time_updates import refresh_user_data
@@ -487,9 +489,10 @@ def show_lesson():
             else:                # Sprawdź, czy sekcja learning istnieje i czy zawiera sections
                 for i, section in enumerate(lesson["sections"]["learning"]["sections"]):
                     with st.expander(section.get("title", f"Sekcja {i+1}"), expanded=False):
-                        st.markdown(section.get("content", "Brak treści"), unsafe_allow_html=True)            # Przycisk "Dalej" po treści lekcji
-            st.markdown("<div class='next-button'>", unsafe_allow_html=True)
-            if zen_button(f"Dalej: {step_names.get(next_step, next_step.capitalize())} (+{step_xp_values['content']} XP)", use_container_width=False):
+                        st.markdown(section.get("content", "Brak treści"), unsafe_allow_html=True)
+    
+            # Przycisk "Dalej" po treści lekcji
+            st.markdown("<div class='next-button'>", unsafe_allow_html=True)            if zen_button(f"Dalej: {step_names.get(next_step, next_step.capitalize())} (+{step_xp_values['content']} XP)", use_container_width=False):
                 # Award fragment XP using the new system
                 success, xp_awarded = award_fragment_xp(lesson_id, 'content', step_xp_values['content'])
                 
@@ -498,8 +501,9 @@ def show_lesson():
                     st.session_state.lesson_progress['content'] = True
                     st.session_state.lesson_progress['steps_completed'] += 1
                     st.session_state.lesson_progress['total_xp_earned'] += xp_awarded
-                      # Show real-time XP notification
-                    show_xp_notification(xp_awarded, f"Zdobyłeś {xp_awarded} XP za zapoznanie się z materiałem!")
+                    
+                    # Show real-time XP notification
+                    show_xp_notification(f"Zdobyłeś {xp_awarded} XP za zapoznanie się z materiałem!", "content")
                     
                     # Refresh user data for real-time updates
                     from utils.real_time_updates import refresh_user_data
@@ -635,9 +639,9 @@ def show_lesson():
                 # Użyj funkcji display_quiz do wyświetlenia quizu
                 quiz_completed, quiz_passed, earned_points = display_quiz(lesson['sections']['closing_quiz'])
                   # Jeśli quiz został ukończony i zaliczony, umożliw przejście dalej
-                if quiz_completed:                    # Przycisk "Dalej" po quizie końcowym
-                    st.markdown("<div class='next-button'>", unsafe_allow_html=True)
-                    if zen_button(f"Dalej: {step_names.get(next_step, next_step.capitalize())} (+{step_xp_values['closing_quiz']} XP)", use_container_width=False):
+                if quiz_completed:
+                    # Przycisk "Dalej" po quizie końcowym
+                    st.markdown("<div class='next-button'>", unsafe_allow_html=True)                    if zen_button(f"Dalej: {step_names.get(next_step, next_step.capitalize())} (+{step_xp_values['closing_quiz']} XP)", use_container_width=False):
                         # Award fragment XP using the new system
                         success, xp_awarded = award_fragment_xp(lesson_id, 'quiz', step_xp_values['closing_quiz'])
                         
@@ -646,8 +650,9 @@ def show_lesson():
                             st.session_state.lesson_progress['closing_quiz'] = True
                             st.session_state.lesson_progress['steps_completed'] += 1
                             st.session_state.lesson_progress['total_xp_earned'] += xp_awarded
-                              # Show real-time XP notification
-                            show_xp_notification(xp_awarded, f"Zdobyłeś {xp_awarded} XP za ukończenie quizu końcowego!")
+                            
+                            # Show real-time XP notification
+                            show_xp_notification(f"Zdobyłeś {xp_awarded} XP za ukończenie quizu końcowego!", "quiz")
                             
                             # Refresh user data for real-time updates
                             from utils.real_time_updates import refresh_user_data
@@ -688,12 +693,14 @@ def show_lesson():
                         
                         # Refresh user data for real-time updates
                         from utils.real_time_updates import refresh_user_data
-                        refresh_user_data()                        # Show completion notification
-                        show_xp_notification(0, "🎉 Gratulacje! Ukończyłeś całą lekcję!")
+                        refresh_user_data()
+                        
+                        # Show completion notification
+                        show_xp_notification(f"🎉 Gratulacje! Ukończyłeś całą lekcję!", "lesson_complete")
                     
-                        # Powrót do przeglądu lekcji
-                        st.session_state.current_lesson = None
-                        st.rerun()
+                    # Powrót do przeglądu lekcji
+                    st.session_state.current_lesson = None
+                    st.rerun()
             elif 'summary' in lesson:
                 # Obsługa starszego formatu, gdzie podsumowanie było bezpośrednio w lesson['summary']
                 st.markdown(lesson['summary'], unsafe_allow_html=True)

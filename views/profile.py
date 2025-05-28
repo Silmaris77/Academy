@@ -46,6 +46,7 @@ from views.degen_explorer import plot_radar_chart
 from views.dashboard import calculate_xp_progress
 from utils.components import zen_header, zen_button, notification, content_section, stat_card, xp_level_display, goal_card, badge_card, progress_bar, tip_block, quote_block,  add_animations_css
 from utils.user_components import user_stats_panel
+from utils.real_time_updates import get_live_user_stats, live_xp_indicator
 
 def show_profile():
     # Zastosuj style Material 3
@@ -57,15 +58,15 @@ def show_profile():
     # Opcja wyboru urządzenia w trybie deweloperskim
     if st.session_state.get('dev_mode', False):
         toggle_device_view()
-    
-    # Pobierz aktualny typ urządzenia
+      # Pobierz aktualny typ urządzenia
     device_type = get_device_type()
-    
     zen_header("Profil użytkownika")
     
-    # Wczytaj dane użytkownika
-    users_data = load_user_data()
-    user_data = users_data.get(st.session_state.username, {})
+    # Add live XP indicator
+    live_xp_indicator()
+    
+    # Use real-time user stats instead of cached data
+    user_data = get_live_user_stats(st.session_state.username)
     style = get_user_style(st.session_state.username)
     
     # Wyświetl personalizowane style

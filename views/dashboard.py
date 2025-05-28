@@ -19,6 +19,7 @@ from utils.components import (
     xp_level_display, zen_button, notification, leaderboard_item, 
     add_animations_css, data_chart, user_stats_panel, lesson_card
 )
+from utils.real_time_updates import get_live_user_stats, live_xp_indicator
 
 def calculate_xp_progress(user_data):
     """Calculate XP progress and dynamically determine the user's level"""
@@ -604,15 +605,18 @@ def show_dashboard():
     
     # Pobierz aktualny typ urządzenia
     device_type = get_device_type()
-    
-    # Używamy naszego komponentu nagłówka - bez dodatkowego CSS
+      # Używamy naszego komponentu nagłówka - bez dodatkowego CSS
     zen_header("Dashboard Degena")
+    
+    # Add live XP indicator
+    live_xp_indicator()
     
     # Dodajemy animacje CSS
     add_animations_css()
 
-    users_data = load_user_data()
-    user_data = users_data[st.session_state.username]
+    # Use real-time user stats instead of cached data
+    live_stats = get_live_user_stats(st.session_state.username)
+    user_data = live_stats
     
     # Główny kontener dashboard
     st.markdown('<div class="dashboard-container">', unsafe_allow_html=True)
