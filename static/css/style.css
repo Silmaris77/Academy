@@ -244,6 +244,27 @@ button[kind="header"] {
     box-shadow: 0 4px 8px rgba(109, 213, 250, 0.2);
 }
 
+/* Przyciski w sidebarze - ciemniejsze */
+.stSidebar [data-testid="stButton"] button {
+    background: #f8f9fa !important;  /* lekko szary */
+    border: 1px solid #c0c0c0 !important;
+    color: #34495e !important;  /* ciemniejszy tekst */
+    font-weight: 500;
+}
+
+.stSidebar [data-testid="stButton"] button:hover:not(:disabled) {
+    background: linear-gradient(to right, #e9ecef, #f1f3f4) !important;
+    border-color: #34495e !important;
+    color: #2c3e50 !important;
+    box-shadow: 0 3px 6px rgba(52, 73, 94, 0.2);
+}
+
+.stSidebar [data-testid="stButton"] button:disabled {
+    background: linear-gradient(to right, #2c3e50, #34495e) !important;
+    color: white !important;
+    border: 1px solid #2c3e50 !important;
+}
+
 [data-testid="stButton"] button:active {
     transform: translateY(2px);
     box-shadow: var(--shadow-sm);
