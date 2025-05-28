@@ -65,28 +65,63 @@ def show_lesson():
             lessons_by_category[category].append((lesson_id, lesson))
           # Wyświetl lekcje w podziale na kategorie
         for category, category_lessons in lessons_by_category.items():
-            st.markdown(f"## {category}")            # Wyświetlaj każdą kartę lekcji na całą szerokość wiersza
+            st.markdown(f"## {category}")         
+            #    # Wyświetlaj każdą kartę lekcji na całą szerokość wiersza
+            # for i, (lesson_id, lesson) in enumerate(category_lessons):
+            #     # Sprawdź, czy lekcja jest ukończona
+            #     is_completed = lesson_id in completed_lessons
+                
+            #     # Użyj komponentu lesson_card zamiast ręcznego HTML
+            #     lesson_card(
+            #         title=lesson.get('title', 'Lekcja'),
+            #         description=lesson.get('description', 'Ta lekcja wprowadza podstawowe zasady...'),
+            #         xp=lesson.get('xp_reward', 30),
+            #         difficulty=lesson.get('difficulty', 'beginner'),
+            #         category=lesson.get('tag', category),
+            #         completed=is_completed,                    button_text="Powtórz lekcję" if is_completed else "Rozpocznij",
+            #         button_key=f"start_{lesson_id}",
+            #         lesson_id=lesson_id,
+            #         on_click=lambda lesson_id=lesson_id: (
+            #             setattr(st.session_state, 'current_lesson', lesson_id),
+            #             setattr(st.session_state, 'lesson_step', 'intro'),
+            #             setattr(st.session_state, 'quiz_score', 0) if 'quiz_score' in st.session_state else None,
+            #             st.rerun()
+            #         )
+            #     )
+                        # Utwórz kolumny dla responsywnego układu
+            # Na urządzeniach mobilnych - 1 kolumna, na desktopie - 2 kolumny
+            if device_type == 'mobile':
+                columns = st.columns(1)
+            else:
+                columns = st.columns(2)
+            
+            # Wyświetlaj lekcje w kolumnach
             for i, (lesson_id, lesson) in enumerate(category_lessons):
                 # Sprawdź, czy lekcja jest ukończona
                 is_completed = lesson_id in completed_lessons
                 
-                # Użyj komponentu lesson_card zamiast ręcznego HTML
-                lesson_card(
-                    title=lesson.get('title', 'Lekcja'),
-                    description=lesson.get('description', 'Ta lekcja wprowadza podstawowe zasady...'),
-                    xp=lesson.get('xp_reward', 30),
-                    difficulty=lesson.get('difficulty', 'beginner'),
-                    category=lesson.get('tag', category),
-                    completed=is_completed,                    button_text="Powtórz lekcję" if is_completed else "Rozpocznij",
-                    button_key=f"start_{lesson_id}",
-                    lesson_id=lesson_id,
-                    on_click=lambda lesson_id=lesson_id: (
-                        setattr(st.session_state, 'current_lesson', lesson_id),
-                        setattr(st.session_state, 'lesson_step', 'intro'),
-                        setattr(st.session_state, 'quiz_score', 0) if 'quiz_score' in st.session_state else None,
-                        st.rerun()
+                # Wybierz kolumnę (naprzemiennie dla 2 kolumn, zawsze pierwsza dla 1 kolumny)
+                column_index = i % len(columns)
+                
+                with columns[column_index]:
+                    lesson_card(
+                        title=lesson.get('title', 'Lekcja'),
+                        description=lesson.get('description', 'Ta lekcja wprowadza podstawowe zasady...'),
+                        xp=lesson.get('xp_reward', 30),
+                        difficulty=lesson.get('difficulty', 'beginner'),
+                        category=lesson.get('tag', category),
+                        completed=is_completed,
+                        button_text="Powtórz lekcję" if is_completed else "Rozpocznij",
+                        button_key=f"start_{lesson_id}",
+                        lesson_id=lesson_id,
+                        on_click=lambda lesson_id=lesson_id: (
+                            setattr(st.session_state, 'current_lesson', lesson_id),
+                            setattr(st.session_state, 'lesson_step', 'intro'),
+                            setattr(st.session_state, 'quiz_score', 0) if 'quiz_score' in st.session_state else None,
+                            st.rerun()
+                        )
                     )
-                )
+   
     else:
         # Kod wyświetlania pojedynczej lekcji
         lesson_id = st.session_state.current_lesson
@@ -609,6 +644,8 @@ def show_lesson():
         
         # Zamknij div .st-bx
         st.markdown("</div>", unsafe_allow_html=True)
+
+
 def display_lesson(lesson_data):
     """Wyświetla lekcję z nowymi sekcjami quizów"""
     

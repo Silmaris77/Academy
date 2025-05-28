@@ -41,11 +41,18 @@
     text-align: center;
     font-family: var(--font-primary);
     padding: 10px;
-    margin-bottom: 20px;
+    margin-bottom: 0;
     background: linear-gradient(90deg, var(--primary-light) 0%, var(--primary-color) 100%);
     border-radius: var(--radius-md);
     color: white;
 }
+/* Ukryj specyficzny element Streamlit (zastąp [data-testid="..."] odpowiednim selektorem) */
+[data-testid="stMarkdownContainer"] > div:first-child:empty {
+    display: none !important;
+}
+/* <div data-testid="stMarkdownContainer" class="st-emotion-cache-16tyu1 erovr380"><div class="dashboard-container"></div></div> */
+
+
 .block-container {
     padding-top: 0;
 }
@@ -152,6 +159,51 @@ button[kind="header"] {
     color: #7f8c8d;
     background-color: rgba(127, 140, 141, 0.1);
 }
+
+/* Responsive grid dla kart lekcji */
+.lesson-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+    gap: 20px;
+    margin-bottom: 30px;
+}
+
+/* Na urządzeniach mobilnych - jedna kolumna */
+@media (max-width: 768px) {
+    .lesson-grid {
+        grid-template-columns: 1fr;
+        gap: 15px;
+    }
+    
+    /* Dostosuj karty lekcji na mobilnych */
+    .m3-lesson-card {
+        padding: 16px;
+        margin-bottom: 15px;
+    }
+    
+    .m3-lesson-card h3 {
+        font-size: 1.3rem;
+    }
+}
+
+/* Na tabletach - dwie kolumny */
+@media (min-width: 769px) and (max-width: 1024px) {
+    .lesson-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 18px;
+    }
+}
+
+/* Na dużych ekranach - maksymalnie 2 kolumny dla lepszej czytelności */
+@media (min-width: 1025px) {
+    .lesson-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 20px;
+        max-width: 1200px;
+        margin: 0 auto 30px auto;
+    }
+}
+
 
 /* Typy kart degena */
 .degen-card-beginner { border-left-color: #2ecc71; }
@@ -740,7 +792,7 @@ div.stButton > button {
 }
 
 /* Sekcje dashboard */
-.dashboard-section {
+/* .dashboard-section {
     background: white;
     border-radius: 12px;
     padding: 24px;
@@ -774,8 +826,48 @@ div.stButton > button {
 
 .section-action:hover {
     color: var(--primary-light);
+} */
+
+/* Style dla sekcji dashboard */
+.dashboard-section {
+    margin-bottom: 20px;  /* zmniejszone z 30px */
+    background-color: white;
+    border-radius: var(--radius-md);
+    padding: 16px;  /* zmniejszone z 24px */
+    padding-top: 2px;  /* zmniejszone z 24px */
+    
+    box-shadow: var(--shadow-sm);
 }
 
+.section-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1px;  /* zmniejszone z 20px */
+    padding-bottom: 1px;  /* zmniejszone z 12px */
+    border-bottom: 1px solid #f0f6f0;  /* zmniejszone z 2px */
+}
+
+.section-title {
+    color: var(--text-primary);
+    font-size: 1.2rem;  /* zmniejszone z 1.4rem */
+    font-weight: 600;
+    margin: 0;
+    line-height: 1.2;  /* dodane dla kompaktowości */
+}
+
+.section-action {
+    color: var(--primary-color);
+    text-decoration: none;
+    font-weight: 500;
+    font-size: 0.85rem;  /* zmniejszone z 0.9rem */
+    line-height: 1.2;  /* dodane dla kompaktowości */
+}
+
+.section-action:hover {
+    color: var(--primary-light);
+    text-decoration: underline;
+}
 /* Postęp ogólny - widget */
 .progress-widget {
     text-align: center;

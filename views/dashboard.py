@@ -97,6 +97,56 @@ def get_user_xp_history(username, days=30):
     
     return history
 
+# def display_lesson_cards(lessons_list, tab_name="", custom_columns=None):
+#     """Display lesson cards in a responsive layout
+    
+#     Args:
+#         lessons_list: Dictionary of lessons to display
+#         tab_name: Name of the tab to use for creating unique button keys
+#         custom_columns: Optional pre-defined columns for responsive layout
+#     """
+#     if not lessons_list:
+#         st.info("Brak dostępnych lekcji w tej kategorii.")
+#         return
+    
+#     users_data = load_user_data()
+#     user_data = users_data.get(st.session_state.username, {})
+#       # Jeśli nie dostarczono niestandardowych kolumn, użyj jednej kolumny na całą szerokość
+#     if custom_columns is None:
+#         # Zawsze używaj jednej kolumny na całą szerokość
+#         custom_columns = [st.container()]
+    
+#     # Display lessons in the responsive grid
+#     for i, (lesson_id, lesson) in enumerate(lessons_list.items()):
+#         # Get lesson properties
+#         difficulty = lesson.get('difficulty', 'intermediate')
+#         is_completed = lesson_id in user_data.get('completed_lessons', [])# Przygotuj symbol trudności
+#         if difficulty == "beginner":
+#             difficulty_symbol = "🟢"
+#         elif difficulty == "intermediate":
+#             difficulty_symbol = "🟠"
+#         else:
+#             difficulty_symbol = "🔴"
+#           # Użyj zawsze pierwszej kolumny, bo teraz mamy tylko jedną kolumnę
+#         with custom_columns[0]:
+#             # Użyj komponentu lesson_card dla spójności z widokiem lekcji
+#             lesson_card(
+#                 title=lesson.get('title', 'Lekcja'),
+#                 description=lesson.get('description', 'Ta lekcja wprowadza podstawowe zasady...'),
+#                 xp=lesson.get('xp_reward', 30),
+#                 difficulty=difficulty,
+#                 category=lesson.get('tag', ''),
+#                 completed=is_completed,
+#                 button_text="Powtórz lekcję" if is_completed else "Rozpocznij",
+#                 button_key=f"{tab_name}_start_{lesson_id}_{i}",
+#                 lesson_id=lesson_id,
+#                 on_click=lambda lesson_id=lesson_id: (
+#                     setattr(st.session_state, 'current_lesson', lesson_id),
+#                     setattr(st.session_state, 'page', 'lesson'),
+#                     st.rerun()
+#                 )
+#         )
+
 def display_lesson_cards(lessons_list, tab_name="", custom_columns=None):
     """Display lesson cards in a responsive layout
     
@@ -111,30 +161,23 @@ def display_lesson_cards(lessons_list, tab_name="", custom_columns=None):
     
     users_data = load_user_data()
     user_data = users_data.get(st.session_state.username, {})
-      # Jeśli nie dostarczono niestandardowych kolumn, użyj jednej kolumny na całą szerokość
+    completed_lessons = user_data.get('completed_lessons', [])
+    
+    # Jeśli nie dostarczono niestandardowych kolumn, użyj jednej kolumny na całą szerokość
     if custom_columns is None:
-        # Zawsze używaj jednej kolumny na całą szerokość
         custom_columns = [st.container()]
     
-    # Display lessons in the responsive grid
+    # Display lessons using lesson_card component
     for i, (lesson_id, lesson) in enumerate(lessons_list.items()):
-        # Get lesson properties
-        difficulty = lesson.get('difficulty', 'intermediate')
-        is_completed = lesson_id in user_data.get('completed_lessons', [])# Przygotuj symbol trudności
-        if difficulty == "beginner":
-            difficulty_symbol = "🟢"
-        elif difficulty == "intermediate":
-            difficulty_symbol = "🟠"
-        else:
-            difficulty_symbol = "🔴"
-          # Użyj zawsze pierwszej kolumny, bo teraz mamy tylko jedną kolumnę
+        is_completed = lesson_id in completed_lessons
+        
+        # Użyj zawsze pierwszej kolumny
         with custom_columns[0]:
-            # Użyj komponentu lesson_card dla spójności z widokiem lekcji
             lesson_card(
                 title=lesson.get('title', 'Lekcja'),
                 description=lesson.get('description', 'Ta lekcja wprowadza podstawowe zasady...'),
                 xp=lesson.get('xp_reward', 30),
-                difficulty=difficulty,
+                difficulty=lesson.get('difficulty', 'beginner'),
                 category=lesson.get('tag', ''),
                 completed=is_completed,
                 button_text="Powtórz lekcję" if is_completed else "Rozpocznij",
@@ -145,8 +188,7 @@ def display_lesson_cards(lessons_list, tab_name="", custom_columns=None):
                     setattr(st.session_state, 'page', 'lesson'),
                     st.rerun()
                 )
-        )
-
+            )
 def get_recommended_lessons(username):
     """Get recommended lessons based on user type"""
     lessons = load_lessons()
@@ -221,29 +263,47 @@ def show_stats_section(user_data, device_type):
             </div>
             """, unsafe_allow_html=True)
 
+# def show_main_content(user_data, device_type):
+#     """Główna zawartość dashboardu"""
+    
+#     # Sekcja ostatnich aktywności
+#     show_recent_activities(user_data)
+    
+#     # Sekcja dostępnych lekcji
+#     show_available_lessons(device_type)
+    
+#     # Sekcja misji dziennych
+#     show_daily_missions_section()
+
 def show_main_content(user_data, device_type):
     """Główna zawartość dashboardu"""
     
-    # Sekcja ostatnich aktywności
-    show_recent_activities(user_data)
-    
-    # Sekcja dostępnych lekcji
+        
+    # Sekcja dostępnych lekcji - teraz używa lesson_card
     show_available_lessons(device_type)
-    
+
     # Sekcja misji dziennych
     show_daily_missions_section()
+
+    # Sekcja ostatnich aktywności
+    show_recent_activities(user_data)
+
+    
+
 
 def show_dashboard_sidebar(user_data, device_type):
     """Sidebar z dodatkowymi informacjami"""
     
-    # Widget postępu
-    show_progress_widget(user_data)
-    
-    # Profil inwestycyjny
+       # Profil inwestycyjny
     show_investor_profile_compact(user_data)
     
     # Ranking XP
     show_leaderboard_compact()
+
+    # Widget postępu
+    show_progress_widget(user_data)
+    
+
 
 def show_recent_activities(user_data):
     """Lista ostatnich aktywności"""
@@ -303,6 +363,54 @@ def show_recent_activities(user_data):
     </div>
     """, unsafe_allow_html=True)
 
+# def show_available_lessons(device_type):
+#     """Sekcja dostępnych lekcji w głównej zawartości"""
+#     st.markdown("""
+#     <div class="dashboard-section">
+#         <div class="section-header">
+#             <h3 class="section-title">Dostępne lekcje</h3>
+#         </div>
+#     """, unsafe_allow_html=True)
+    
+#     # Pobierz lekcje
+#     lessons = load_lessons()
+    
+#     # Wyświetl pierwsze 3 lekcje w kompaktowym formacie
+#     lesson_count = 0
+#     for lesson_id, lesson in lessons.items():
+#         if lesson_count >= 3:  # Ogranicz do 3 lekcji w widoku głównym
+#             break
+            
+#         difficulty = lesson.get('difficulty', 'intermediate')
+#         if difficulty == "beginner":
+#             difficulty_color = "#27ae60"
+#             difficulty_icon = "🟢"
+#         elif difficulty == "intermediate":
+#             difficulty_color = "#f39c12"
+#             difficulty_icon = "🟠"
+#         else:
+#             difficulty_color = "#e74c3c"
+#             difficulty_icon = "🔴"
+        
+#         st.markdown(f"""
+#         <div class="compact-item">
+#             <div class="compact-icon" style="color: {difficulty_color};">{difficulty_icon}</div>
+#             <div class="compact-content">
+#                 <div class="compact-title">{lesson.get('title', 'Lekcja')}</div>
+#                 <div class="compact-progress">XP: {lesson.get('xp_reward', 30)} • {difficulty.title()}</div>
+#             </div>
+#         </div>
+#         """, unsafe_allow_html=True)
+        
+#         lesson_count += 1
+    
+#     # Przycisk do wszystkich lekcji
+#     if zen_button("Zobacz wszystkie lekcje", key="all_lessons_compact"):
+#         # Tu można dodać nawigację do pełnej listy lekcji
+#         pass
+    
+#     st.markdown("</div>", unsafe_allow_html=True)
+
 def show_available_lessons(device_type):
     """Sekcja dostępnych lekcji w głównej zawartości"""
     st.markdown("""
@@ -312,42 +420,47 @@ def show_available_lessons(device_type):
         </div>
     """, unsafe_allow_html=True)
     
+    # Pobierz dane użytkownika
+    users_data = load_user_data()
+    user_data = users_data.get(st.session_state.username, {})
+    completed_lessons = user_data.get('completed_lessons', [])
+    
     # Pobierz lekcje
     lessons = load_lessons()
     
-    # Wyświetl pierwsze 3 lekcje w kompaktowym formacie
+    # Wyświetl pierwsze 3 lekcje używając lesson_card
     lesson_count = 0
     for lesson_id, lesson in lessons.items():
         if lesson_count >= 3:  # Ogranicz do 3 lekcji w widoku głównym
             break
             
-        difficulty = lesson.get('difficulty', 'intermediate')
-        if difficulty == "beginner":
-            difficulty_color = "#27ae60"
-            difficulty_icon = "🟢"
-        elif difficulty == "intermediate":
-            difficulty_color = "#f39c12"
-            difficulty_icon = "🟠"
-        else:
-            difficulty_color = "#e74c3c"
-            difficulty_icon = "🔴"
+        # Sprawdź czy lekcja jest ukończona
+        is_completed = lesson_id in completed_lessons
         
-        st.markdown(f"""
-        <div class="compact-item">
-            <div class="compact-icon" style="color: {difficulty_color};">{difficulty_icon}</div>
-            <div class="compact-content">
-                <div class="compact-title">{lesson.get('title', 'Lekcja')}</div>
-                <div class="compact-progress">XP: {lesson.get('xp_reward', 30)} • {difficulty.title()}</div>
-            </div>
-        </div>
-        """, unsafe_allow_html=True)
+        # Użyj lesson_card z utils.components
+        lesson_card(
+            title=lesson.get('title', 'Lekcja bez tytułu'),
+            description=lesson.get('description', 'Opis lekcji...'),
+            xp=lesson.get('xp_reward', 30),
+            difficulty=lesson.get('difficulty', 'beginner'),
+            category=lesson.get('tag', 'Ogólne'),
+            completed=is_completed,
+            button_text="Powtórz lekcję" if is_completed else "Rozpocznij lekcję",
+            button_key=f"dashboard_lesson_{lesson_id}_{lesson_count}",
+            lesson_id=lesson_id,
+            on_click=lambda lid=lesson_id: (
+                setattr(st.session_state, 'current_lesson', lid),
+                setattr(st.session_state, 'page', 'lesson'),
+                st.rerun()
+            )
+        )
         
         lesson_count += 1
     
     # Przycisk do wszystkich lekcji
-    if zen_button("Zobacz wszystkie lekcje", key="all_lessons_compact"):
-        # Tu można dodać nawigację do pełnej listy lekcji
-        pass
+    if zen_button("Zobacz wszystkie lekcje", key="all_lessons_from_dashboard"):
+        st.session_state.page = 'lesson'
+        st.rerun()
     
     st.markdown("</div>", unsafe_allow_html=True)
 
@@ -492,7 +605,7 @@ def show_dashboard():
     # Pobierz aktualny typ urządzenia
     device_type = get_device_type()
     
-    # Używamy naszego komponentu nagłówka
+    # Używamy naszego komponentu nagłówka - bez dodatkowego CSS
     zen_header("Dashboard Degena")
     
     # Dodajemy animacje CSS
