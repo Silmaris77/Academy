@@ -203,15 +203,10 @@ def show_lesson():
             'closing_quiz': int(max_xp * 0.20),   # 20% całkowitego XP
             'summary': int(max_xp * 0.05)         # 5% całkowitego XP
         }
-        
-        # Znajdź indeks obecnego kroku i następnego kroku
+          # Znajdź indeks obecnego kroku i następnego kroku
         current_step_idx = step_order.index(st.session_state.lesson_step) if st.session_state.lesson_step in step_order else 0
         next_step_idx = min(current_step_idx + 1, len(step_order) - 1)
         next_step = step_order[next_step_idx]
-        
-        # Wyświetl pasek postępu na górze strony
-        current_progress = st.session_state.lesson_progress.get('steps_completed', 0) / total_steps
-        current_xp = st.session_state.lesson_progress.get('total_xp_earned', 0)
         
         # Style dla paska postępu i interfejsu
         st.markdown("""
@@ -290,17 +285,9 @@ def show_lesson():
                 content: '▲';
                 float: right;
                 margin-left: 10px;
-            }
-        }
+            }        }
         </style>
         """, unsafe_allow_html=True)
-        
-        col1, col2 = st.columns([3, 1])
-        with col1:
-            st.markdown(f"<div class='progress-text'>Postęp lekcji:</div>", unsafe_allow_html=True)
-            progress_bar(current_progress)
-        with col2:
-            st.markdown(f"<div class='xp-counter'>{current_xp} / {max_xp} XP</div>", unsafe_allow_html=True)
 
         # Lesson navigation in sidebar
         with st.sidebar:
@@ -741,15 +728,38 @@ def show_lesson():
         
         # Add live XP indicator
         live_xp_indicator()
+          # Show lesson progress with current XP system
+        # Oblicz aktualny postęp na podstawie ukończonych kroków
+        completed_steps = sum(1 for step in step_order if st.session_state.lesson_progress.get(step, False))
+        completion_percent = (completed_steps / total_steps) * 100
         
-        # Show lesson progress with new fragment system
-        fragment_progress = get_lesson_fragment_progress(lesson_id)
-        completion_percent = calculate_lesson_completion(lesson_id)
+        # Oblicz zdobyte XP na podstawie aktualnego systemu
+        current_xp = 0
+        for step in step_order:
+            if st.session_state.lesson_progress.get(step, False):
+                current_xp += step_xp_values.get(step, 0)
         
-        # New progress bar with XP information
-        lesson_total_xp = lesson.get('xp_reward', 100)
-        xp_breakdown = get_fragment_xp_breakdown(lesson_total_xp)
-        current_xp = fragment_progress.get('total_xp_earned', 0)
+        # Przygotuj dane o kluczowych krokach do wyświetlenia
+        key_steps_info = []
+        if 'intro' in step_order:
+            completed = st.session_state.lesson_progress.get('intro', False)
+            key_steps_info.append(f"📖 Intro: {step_xp_values['intro']} XP {'✅' if completed else ''}")
+        
+        if 'content' in step_order:
+            completed = st.session_state.lesson_progress.get('content', False)
+            key_steps_info.append(f"📚 Treść: {step_xp_values['content']} XP {'✅' if completed else ''}")
+        
+        if 'reflection' in step_order:
+            completed = st.session_state.lesson_progress.get('reflection', False)
+            key_steps_info.append(f"🤔 Refleksja: {step_xp_values['reflection']} XP {'✅' if completed else ''}")
+        
+        if 'application' in step_order:
+            completed = st.session_state.lesson_progress.get('application', False)
+            key_steps_info.append(f"💪 Zadania: {step_xp_values['application']} XP {'✅' if completed else ''}")
+        
+        if 'closing_quiz' in step_order:
+            completed = st.session_state.lesson_progress.get('closing_quiz', False)
+            key_steps_info.append(f"🧠 Quiz: {step_xp_values['closing_quiz']} XP {'✅' if completed else ''}")
         
         st.markdown(f"""
         <div style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); 
@@ -758,17 +768,16 @@ def show_lesson():
             <div style="background: rgba(255,255,255,0.2); border-radius: 10px; padding: 10px;">
                 <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
                     <span style="font-weight: bold;">Postęp lekcji: {completion_percent:.0f}%</span>
-                    <span>💎 {current_xp}/{lesson_total_xp} XP</span>
+                    <span>💎 {current_xp}/{max_xp} XP</span>
                 </div>
                 <div style="background: rgba(255,255,255,0.3); border-radius: 5px; height: 12px; overflow: hidden;">
                     <div style="background: linear-gradient(90deg, #4caf50, #2196f3); 
                                 width: {completion_percent}%; height: 100%; transition: width 0.3s ease;"></div>
                 </div>
-                <div style="display: flex; justify-content: space-between; margin-top: 8px; font-size: 12px;">
-                    <span>📖 Intro: {xp_breakdown['intro']} XP {'✅' if fragment_progress.get('intro_completed') else ''}</span>
-                    <span>📚 Treść: {xp_breakdown['content']} XP {'✅' if fragment_progress.get('content_completed') else ''}</span>
-                    <span>🧠 Quiz: {xp_breakdown['quiz']} XP {'✅' if fragment_progress.get('quiz_completed') else ''}</span>
+                <div style="display: flex; justify-content: space-between; margin-top: 8px; font-size: 12px; flex-wrap: wrap; gap: 5px;">
+                    {' '.join([f'<span>{info}</span>' for info in key_steps_info[:3]])}
                 </div>
+                {f'<div style="display: flex; justify-content: space-between; margin-top: 5px; font-size: 12px; flex-wrap: wrap; gap: 5px;">{" ".join([f"<span>{info}</span>" for info in key_steps_info[3:]])}</div>' if len(key_steps_info) > 3 else ''}
             </div>
         </div>
         """, unsafe_allow_html=True)
