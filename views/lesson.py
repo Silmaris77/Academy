@@ -414,7 +414,7 @@ def show_lesson():
                 else:
                     st.warning("Brak studium przypadku w tej lekcji.")
               # Przycisk "Dalej" po wprowadzeniu            st.markdown("<div class='next-button'>", unsafe_allow_html=True)
-            if zen_button(f"Dalej: {step_names.get(next_step, next_step.capitalize())} (+{step_xp_values['intro']} XP)", use_container_width=False):
+            if zen_button(f"Dalej: {step_names.get(next_step, next_step.capitalize())}", use_container_width=False):
                 # Award fragment XP using the new system
                 success, xp_awarded = award_fragment_xp(lesson_id, 'intro', step_xp_values['intro'])
                 
@@ -429,13 +429,15 @@ def show_lesson():
                     # Refresh user data for real-time updates
                     from utils.real_time_updates import refresh_user_data
                     refresh_user_data()
-                
-                # Przejdź do następnego kroku
+                  # Przejdź do następnego kroku
                 st.session_state.lesson_step = next_step
                 st.rerun()
-            st.markdown("</div>", unsafe_allow_html=True)        
+            st.markdown("</div>", unsafe_allow_html=True)
+        
+        elif st.session_state.lesson_step == 'opening_quiz' and 'opening_quiz' in lesson.get('sections', {}):
+            # Wyświetl quiz startowy (diagnostyczny)
+            st.info("📋 **Quiz diagnostyczny** - Ten quiz sprawdza Twój aktualny poziom wiedzy. Wynik nie wpływa na postęp w lekcji.")
             
-        elif st.session_state.lesson_step == 'opening_quiz' and 'opening_quiz' in lesson.get('sections', {}):            # Wyświetl quiz startowy
             quiz_data = lesson['sections']['opening_quiz']
             quiz_complete, _, earned_points = display_quiz(quiz_data)
             
@@ -443,30 +445,52 @@ def show_lesson():
             if quiz_complete:
                 st.session_state.lesson_progress['opening_quiz'] = True
             
-            # Przycisk "Dalej" po quizie startowym - ZAWSZE aktywny
-            st.markdown("<div class='next-button'>", unsafe_allow_html=True)
+            # Dodaj opcję pominięcia quizu
+            st.markdown("---")
+            st.markdown("**Możesz:**")
             
-            # Przycisk jest zawsze aktywny, niezależnie od ukończenia quizu
-            if zen_button(f"Dalej: {step_names.get(next_step, next_step.capitalize())} (+{step_xp_values['opening_quiz']} XP)", use_container_width=False):                # Award fragment XP using the new system for quiz participation
-                success, xp_awarded = award_fragment_xp(lesson_id, 'opening_quiz', step_xp_values['opening_quiz'])
-                
-                if success and xp_awarded > 0:
-                    # Update session state for UI compatibility
+            col1, col2 = st.columns(2)
+            
+            with col1:
+                # Przycisk "Pomiń quiz" - zawsze dostępny
+                st.markdown("<div class='next-button'>", unsafe_allow_html=True)
+                if zen_button("⏭️ Pomiń quiz", use_container_width=True):
+                    # Oznacz quiz jako pominięty (ale ukończony dla nawigacji)
                     st.session_state.lesson_progress['opening_quiz'] = True
-                    st.session_state.lesson_progress['steps_completed'] += 1
-                    st.session_state.lesson_progress['total_xp_earned'] += xp_awarded
-                      # Show real-time XP notification
-                    show_xp_notification(xp_awarded, f"Zdobyłeś {xp_awarded} XP za udział w quizie!")
                     
-                    # Refresh user data for real-time updates
-                    from utils.real_time_updates import refresh_user_data
-                    refresh_user_data()
-                
-                # Przejdź do następnego kroku
-                st.session_state.lesson_step = next_step
-                st.rerun()
+                    # Nie przyznawaj XP za pominięcie quizu
+                    st.info("Quiz diagnostyczny został pominięty. Możesz przejść do materiału lekcji.")
+                    
+                    # Przejdź do następnego kroku
+                    st.session_state.lesson_step = next_step
+                    st.rerun()
+                st.markdown("</div>", unsafe_allow_html=True)
             
-            st.markdown("</div>", unsafe_allow_html=True)
+            with col2:
+                # Przycisk "Dalej" po quizie startowym - dostępny zawsze (niezależnie od wyniku)
+                st.markdown("<div class='next-button'>", unsafe_allow_html=True)
+                button_text = "Dalej" if quiz_complete else f"Dalej: {step_names.get(next_step, next_step.capitalize())}"
+                if zen_button(button_text, use_container_width=True):
+                    # Award fragment XP using the new system for quiz participation (nie za wynik)
+                    success, xp_awarded = award_fragment_xp(lesson_id, 'opening_quiz', step_xp_values['opening_quiz'])
+                    
+                    if success and xp_awarded > 0:
+                        # Update session state for UI compatibility
+                        st.session_state.lesson_progress['opening_quiz'] = True
+                        st.session_state.lesson_progress['steps_completed'] += 1
+                        st.session_state.lesson_progress['total_xp_earned'] += xp_awarded
+                        
+                        # Show real-time XP notification
+                        show_xp_notification(xp_awarded, f"Zdobyłeś {xp_awarded} XP za udział w quizie diagnostycznym!")
+                        
+                        # Refresh user data for real-time updates
+                        from utils.real_time_updates import refresh_user_data
+                        refresh_user_data()
+                    
+                    # Przejdź do następnego kroku
+                    st.session_state.lesson_step = next_step
+                    st.rerun()
+                st.markdown("</div>", unsafe_allow_html=True)
         
         elif st.session_state.lesson_step == 'content':
             # Diagnozowanie problemu z wyświetlaniem treści
@@ -481,7 +505,7 @@ def show_lesson():
                     with st.expander(section.get("title", f"Sekcja {i+1}"), expanded=False):
                         st.markdown(section.get("content", "Brak treści"), unsafe_allow_html=True)            # Przycisk "Dalej" po treści lekcji
             st.markdown("<div class='next-button'>", unsafe_allow_html=True)
-            if zen_button(f"Dalej: {step_names.get(next_step, next_step.capitalize())} (+{step_xp_values['content']} XP)", use_container_width=False):
+            if zen_button(f"Dalej: {step_names.get(next_step, next_step.capitalize())}", use_container_width=False):
                 # Award fragment XP using the new system
                 success, xp_awarded = award_fragment_xp(lesson_id, 'content', step_xp_values['content'])
                 
@@ -544,7 +568,7 @@ def show_lesson():
                             st.success("Twoja odpowiedź została zapisana!")
               # Przycisk "Dalej" po refleksji
             st.markdown("<div class='next-button'>", unsafe_allow_html=True)
-            if zen_button(f"Dalej: {step_names.get(next_step, next_step.capitalize())} (+{step_xp_values['reflection']} XP)", use_container_width=False):                
+            if zen_button(f"Dalej: {step_names.get(next_step, next_step.capitalize())}", use_container_width=False):                
                 # Award fragment XP using the new system
                 success, xp_awarded = award_fragment_xp(lesson_id, 'reflection', step_xp_values['reflection'])
                 
@@ -607,7 +631,7 @@ def show_lesson():
                             st.rerun()
               # Przycisk "Dalej" po zadaniach praktycznych
             st.markdown("<div class='next-button'>", unsafe_allow_html=True)
-            if zen_button(f"Dalej: {step_names.get(next_step, next_step.capitalize())} (+{step_xp_values['application']} XP)", use_container_width=False):
+            if zen_button(f"Dalej: {step_names.get(next_step, next_step.capitalize())}", use_container_width=False):
                 # Award fragment XP using the new system
                 success, xp_awarded = award_fragment_xp(lesson_id, 'application', step_xp_values['application'])
                 
@@ -623,8 +647,7 @@ def show_lesson():
                     # Refresh user data for real-time updates
                     from utils.real_time_updates import refresh_user_data
                     refresh_user_data()
-                
-                # Przejdź do następnego kroku
+                  # Przejdź do następnego kroku
                 st.session_state.lesson_step = next_step
                 st.rerun()
             st.markdown("</div>", unsafe_allow_html=True)
@@ -635,34 +658,51 @@ def show_lesson():
                 st.error("Lekcja nie zawiera klucza 'sections'!")
             elif 'closing_quiz' not in lesson.get('sections', {}):
                 st.error("Lekcja nie zawiera sekcji 'closing_quiz'!")
-            else:                # Użyj funkcji display_quiz do wyświetlenia quizu
-                quiz_completed, quiz_passed, earned_points = display_quiz(lesson['sections']['closing_quiz'])
+            else:
+                # Użyj funkcji display_quiz do wyświetlenia quizu z wymaganiem 75%
+                quiz_completed, quiz_passed, earned_points = display_quiz(lesson['sections']['closing_quiz'], passing_threshold=75)
                 
                 # Natychmiast oznacz quiz jako ukończony w nawigacji po ukończeniu
                 if quiz_completed:
                     st.session_state.lesson_progress['closing_quiz'] = True
                     
-                    # Przycisk "Dalej" po quizie końcowym
-                    st.markdown("<div class='next-button'>", unsafe_allow_html=True)
-                    if zen_button(f"Dalej: {step_names.get(next_step, next_step.capitalize())} (+{step_xp_values['closing_quiz']} XP)", use_container_width=False):                        # Award fragment XP using the new system
-                        success, xp_awarded = award_fragment_xp(lesson_id, 'closing_quiz', step_xp_values['closing_quiz'])
-                        
-                        if success and xp_awarded > 0:
-                            # Update session state for UI compatibility
-                            st.session_state.lesson_progress['steps_completed'] += 1
-                            st.session_state.lesson_progress['total_xp_earned'] += xp_awarded
+                    # Sprawdź czy quiz został zdany z wymaganym wynikiem 75%
+                    if quiz_passed:
+                        # Przycisk "Dalej" po quizie końcowym - tylko jeśli zdany z 75%
+                        st.markdown("<div class='next-button'>", unsafe_allow_html=True)
+                        if zen_button(f"Dalej: {step_names.get(next_step, next_step.capitalize())}", use_container_width=False):
+                            # Award fragment XP using the new system
+                            success, xp_awarded = award_fragment_xp(lesson_id, 'closing_quiz', step_xp_values['closing_quiz'])
                             
-                            # Show real-time XP notification
-                            show_xp_notification(xp_awarded, f"Zdobyłeś {xp_awarded} XP za ukończenie quizu końcowego!")
+                            if success and xp_awarded > 0:
+                                # Update session state for UI compatibility
+                                st.session_state.lesson_progress['steps_completed'] += 1
+                                st.session_state.lesson_progress['total_xp_earned'] += xp_awarded
+                                
+                                # Show real-time XP notification
+                                show_xp_notification(xp_awarded, f"Zdobyłeś {xp_awarded} XP za ukończenie quizu końcowego!")
+                                
+                                # Refresh user data for real-time updates
+                                from utils.real_time_updates import refresh_user_data
+                                refresh_user_data()
                             
-                            # Refresh user data for real-time updates
-                            from utils.real_time_updates import refresh_user_data
-                            refresh_user_data()
+                            # Przejdź do następnego kroku
+                            st.session_state.lesson_step = next_step
+                            st.rerun()
+                        st.markdown("</div>", unsafe_allow_html=True)
+                    else:
+                        # Quiz ukończony ale nie zdany - wyświetl komunikat o konieczności uzyskania 75%
+                        st.error("Aby przejść dalej, musisz uzyskać przynajmniej 75% poprawnych odpowiedzi w quizie końcowym. Spróbuj ponownie!")
                         
-                        # Przejdź do następnego kroku
-                        st.session_state.lesson_step = next_step
-                        st.rerun()
-                    st.markdown("</div>", unsafe_allow_html=True)
+                        # Przycisk do powtórzenia quizu
+                        st.markdown("<div class='next-button'>", unsafe_allow_html=True)
+                        if zen_button("🔄 Spróbuj ponownie", use_container_width=False):
+                            # Resetuj stan quizu końcowego
+                            quiz_session_key = f"quiz_{lesson['sections']['closing_quiz'].get('title', '').replace(' ', '_').lower()}"
+                            if quiz_session_key in st.session_state:
+                                del st.session_state[quiz_session_key]
+                            st.rerun()
+                        st.markdown("</div>", unsafe_allow_html=True)
         
         elif st.session_state.lesson_step == 'summary':
             # Wyświetl podsumowanie lekcji w podziale na zakładki, podobnie jak wprowadzenie
@@ -911,7 +951,7 @@ def display_reflection_sections(reflection_data):
             st.session_state[reflection_key] = user_reflection
             st.success("Twoja odpowiedź została zapisana!")
 
-def display_quiz(quiz_data):
+def display_quiz(quiz_data, passing_threshold=60):
     """Wyświetla quiz z pytaniami i opcjami odpowiedzi. Zwraca True, gdy quiz jest ukończony."""
     
     if not quiz_data or "questions" not in quiz_data:
@@ -999,21 +1039,20 @@ def display_quiz(quiz_data):
                     st.rerun()
             
             st.markdown("---")
-    
-    # Sprawdź czy quiz jest ukończony i oblicz punkty
+      # Sprawdź czy quiz jest ukończony i oblicz punkty
     is_completed = st.session_state[quiz_id].get("completed", False)
     
     if is_completed:
         correct = st.session_state[quiz_id]["correct_answers"]
         total = st.session_state[quiz_id]["total_questions"]
         percentage = (correct / total) * 100
-          # Oblicz punkty - wartość zależy od procentu odpowiedzi poprawnych
+        
+        # Oblicz punkty - wartość zależy od procentu odpowiedzi poprawnych
         # Domyślna wartość, jeśli nie mamy dostępu do step_xp_values
         quiz_xp_value = 15
         earned_points = int(quiz_xp_value * (percentage / 100))
-        
-        # Czy quiz został zdany (ponad 60%)
-        is_passed = percentage >= 60
+          # Czy quiz został zdany (na podstawie passing_threshold)
+        is_passed = percentage >= passing_threshold
         
         st.markdown(f"""
         <div class="quiz-summary">
@@ -1023,10 +1062,18 @@ def display_quiz(quiz_data):
         
         if percentage >= 80:
             st.success("Świetnie! Doskonale rozumiesz ten temat.")
-        elif percentage >= 60:
-            st.info("Dobrze! Masz solidną wiedzę, ale warto jeszcze powtórzyć niektóre zagadnienia.")
+        elif percentage >= passing_threshold:
+            if passing_threshold > 60:
+                st.success(f"Bardzo dobrze! Osiągnąłeś wymagany próg {passing_threshold}% i możesz kontynuować.")
+            else:
+                # Quiz diagnostyczny (opening quiz) - pozytywne podejście
+                st.info("📋 Dziękujemy za wypełnienie quizu diagnostycznego! Wynik pomaga nam dostosować materiał do Twojego poziomu.")
         else:
-            st.warning("Warto powtórzyć materiał z tej lekcji, aby lepiej zrozumieć kluczowe zagadnienia.")
+            if passing_threshold > 60:
+                st.error(f"Aby przejść dalej, musisz uzyskać przynajmniej {passing_threshold}% poprawnych odpowiedzi. Spróbuj ponownie!")
+            else:
+                # Quiz diagnostyczny - pozytywny komunikat nawet przy niskim wyniku
+                st.info("📋 Dziękujemy za wypełnienie quizu diagnostycznego! Nie martw się wynikiem - to pomaga nam lepiej dopasować materiał.")
         
         return is_completed, is_passed, earned_points
     
