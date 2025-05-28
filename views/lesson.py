@@ -193,16 +193,15 @@ def show_lesson():
             'closing_quiz': 'Quiz końcowy',
             'summary': 'Podsumowanie'
         }
-        
-        # Mapowanie kroków do wartości XP
+          # Mapowanie kroków do wartości XP (nowy system procentowy)
         step_xp_values = {
-            'intro': int(max_xp * 0.10),          # 10% całkowitego XP
-            'opening_quiz': int(max_xp * 0.15),   # 15% całkowitego XP
-            'content': int(max_xp * 0.20),        # 20% całkowitego XP
-            'reflection': int(max_xp * 0.15),     # 15% całkowitego XP
-            'application': int(max_xp * 0.15),    # 15% całkowitego XP
-            'closing_quiz': int(max_xp * 0.15),   # 15% całkowitego XP
-            'summary': int(max_xp * 0.10)         # 10% całkowitego XP
+            'intro': int(max_xp * 0.05),          # 5% całkowitego XP
+            'opening_quiz': int(max_xp * 0.00),   # 0% całkowitego XP
+            'content': int(max_xp * 0.30),        # 30% całkowitego XP (Merytoryka)
+            'reflection': int(max_xp * 0.20),     # 20% całkowitego XP
+            'application': int(max_xp * 0.20),    # 20% całkowitego XP
+            'closing_quiz': int(max_xp * 0.20),   # 20% całkowitego XP
+            'summary': int(max_xp * 0.05)         # 5% całkowitego XP
         }
         
         # Znajdź indeks obecnego kroku i następnego kroku
