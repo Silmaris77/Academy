@@ -446,12 +446,18 @@ def show_lesson():
                 # Przejdź do następnego kroku
                 st.session_state.lesson_step = next_step
                 st.rerun()
-            st.markdown("</div>", unsafe_allow_html=True)
-        elif st.session_state.lesson_step == 'opening_quiz' and 'opening_quiz' in lesson.get('sections', {}):
-            # Wyświetl quiz startowy
+            st.markdown("</div>", unsafe_allow_html=True)        
+            
+        elif st.session_state.lesson_step == 'opening_quiz' and 'opening_quiz' in lesson.get('sections', {}):            # Wyświetl quiz startowy
             quiz_data = lesson['sections']['opening_quiz']
             quiz_complete, _, earned_points = display_quiz(quiz_data)
-              # Przycisk "Dalej" po quizie startowym - ZAWSZE aktywny            st.markdown("<div class='next-button'>", unsafe_allow_html=True)
+            
+            # Natychmiast oznacz quiz jako ukończony w nawigacji po ukończeniu
+            if quiz_complete:
+                st.session_state.lesson_progress['opening_quiz'] = True
+            
+            # Przycisk "Dalej" po quizie startowym - ZAWSZE aktywny
+            st.markdown("<div class='next-button'>", unsafe_allow_html=True)
             
             # Przycisk jest zawsze aktywny, niezależnie od ukończenia quizu
             if zen_button(f"Dalej: {step_names.get(next_step, next_step.capitalize())} (+{step_xp_values['opening_quiz']} XP)", use_container_width=False):
@@ -619,8 +625,7 @@ def show_lesson():
                     
                     # Powiadomienie o zdobytych XP
                     st.session_state.show_xp_notification = f"Zdobyłeś {step_xp_values['application']} XP za wykonanie zadań praktycznych!"
-                
-                # Przejdź do następnego kroku
+                  # Przejdź do następnego kroku
                 st.session_state.lesson_step = next_step
                 st.rerun()
             st.markdown("</div>", unsafe_allow_html=True)
@@ -631,11 +636,14 @@ def show_lesson():
                 st.error("Lekcja nie zawiera klucza 'sections'!")
             elif 'closing_quiz' not in lesson.get('sections', {}):
                 st.error("Lekcja nie zawiera sekcji 'closing_quiz'!")
-            else:
-                # Użyj funkcji display_quiz do wyświetlenia quizu
+            else:                # Użyj funkcji display_quiz do wyświetlenia quizu
                 quiz_completed, quiz_passed, earned_points = display_quiz(lesson['sections']['closing_quiz'])
-                  # Jeśli quiz został ukończony i zaliczony, umożliw przejście dalej
-                if quiz_completed:                    # Przycisk "Dalej" po quizie końcowym
+                
+                # Natychmiast oznacz quiz jako ukończony w nawigacji po ukończeniu
+                if quiz_completed:
+                    st.session_state.lesson_progress['closing_quiz'] = True
+                    
+                    # Przycisk "Dalej" po quizie końcowym
                     st.markdown("<div class='next-button'>", unsafe_allow_html=True)
                     if zen_button(f"Dalej: {step_names.get(next_step, next_step.capitalize())} (+{step_xp_values['closing_quiz']} XP)", use_container_width=False):
                         # Award fragment XP using the new system
@@ -643,10 +651,10 @@ def show_lesson():
                         
                         if success and xp_awarded > 0:
                             # Update session state for UI compatibility
-                            st.session_state.lesson_progress['closing_quiz'] = True
                             st.session_state.lesson_progress['steps_completed'] += 1
                             st.session_state.lesson_progress['total_xp_earned'] += xp_awarded
-                              # Show real-time XP notification
+                            
+                            # Show real-time XP notification
                             show_xp_notification(xp_awarded, f"Zdobyłeś {xp_awarded} XP za ukończenie quizu końcowego!")
                             
                             # Refresh user data for real-time updates
@@ -676,24 +684,53 @@ def show_lesson():
                     if 'case_study' in lesson['outro']:
                         st.markdown(lesson['outro']['case_study'], unsafe_allow_html=True)
                     else:
-                        st.warning("Brak studium przypadku w podsumowaniu.")
-                
-                # Wyświetl całkowitą zdobytą ilość XP
+                        st.warning("Brak studium przypadku w podsumowaniu.")                # Wyświetl całkowitą zdobytą ilość XP
                 total_xp = st.session_state.lesson_progress['total_xp_earned']
                 st.success(f"Gratulacje! Ukończyłeś lekcję i zdobyłeś łącznie {total_xp} XP!")
-                  # Przycisk powrotu do wszystkich lekcji
-                if zen_button("Wróć do wszystkich lekcji", use_container_width=False):
-                    # Check if lesson is fully completed and mark as completed                    if is_lesson_fully_completed(lesson_id):
-                        mark_lesson_as_completed(lesson_id)
-                        
-                        # Refresh user data for real-time updates
-                        from utils.real_time_updates import refresh_user_data
-                        refresh_user_data()                        # Show completion notification
+                
+                # Sprawdź czy lekcja została już zakończona
+                lesson_finished = st.session_state.get('lesson_finished', False)
+                
+                if not lesson_finished:
+                    # Pierwszy etap - przycisk "Zakończ lekcję"
+                    st.markdown("<div class='next-button'>", unsafe_allow_html=True)
+                    if zen_button("🎉 Zakończ lekcję", use_container_width=False):
+                        # Oznacz lekcję jako zakończoną i zapisz postęp
+                        if is_lesson_fully_completed(lesson_id):
+                            mark_lesson_as_completed(lesson_id)
+                            
+                            # Refresh user data for real-time updates
+                            from utils.real_time_updates import refresh_user_data
+                            refresh_user_data()
+                            
+                        # Show completion notification
                         show_xp_notification(0, "🎉 Gratulacje! Ukończyłeś całą lekcję!")
+                        
+                        # Oznacz lekcję jako zakończoną w sesji
+                        st.session_state.lesson_finished = True
+                        st.rerun()
+                    st.markdown("</div>", unsafe_allow_html=True)
+                else:
+                    # Drugi etap - pokaż podsumowanie i przycisk powrotu
+                    st.balloons()  # Animacja gratulacji
+                    st.markdown("""
+                    <div style="background: linear-gradient(135deg, #4CAF50 0%, #45a049 100%); 
+                                color: white; padding: 20px; border-radius: 15px; margin: 20px 0;
+                                text-align: center; box-shadow: 0 4px 15px rgba(76,175,80,0.3);">
+                        <h2 style="margin: 0 0 10px 0;">🎓 Lekcja ukończona!</h2>
+                        <p style="margin: 0; font-size: 18px;">Świetna robota! Możesz teraz przejść do kolejnych lekcji.</p>
+                    </div>
+                    """, unsafe_allow_html=True)
                     
+                    # Przycisk powrotu do wszystkich lekcji
+                    st.markdown("<div class='next-button'>", unsafe_allow_html=True)
+                    if zen_button("📚 Wróć do wszystkich lekcji", use_container_width=False):
+                        # Wyczyść stan zakończenia lekcji
+                        st.session_state.lesson_finished = False
                         # Powrót do przeglądu lekcji
                         st.session_state.current_lesson = None
                         st.rerun()
+                    st.markdown("</div>", unsafe_allow_html=True)
             elif 'summary' in lesson:
                 # Obsługa starszego formatu, gdzie podsumowanie było bezpośrednio w lesson['summary']
                 st.markdown(lesson['summary'], unsafe_allow_html=True)
@@ -900,10 +937,16 @@ def display_quiz(quiz_data):
                         # Aktualizuj wynik quizu (dla podsumowania lekcji)
                         if "quiz_score" in st.session_state:
                             st.session_state.quiz_score += 5  # 5 XP za poprawną odpowiedź
-                    
-                    # Sprawdź, czy quiz został ukończony
+                      # Sprawdź, czy quiz został ukończony
                     if len(st.session_state[quiz_id]["answered_questions"]) == st.session_state[quiz_id]["total_questions"]:
                         st.session_state[quiz_id]["completed"] = True
+                        
+                        # Natychmiastowa aktualizacja nawigacji lekcji dla quiz końcowy
+                        if 'closing_quiz' in quiz_id.lower() or 'końcowy' in quiz_id.lower():
+                            st.session_state.lesson_progress['closing_quiz'] = True
+                        # Natychmiastowa aktualizacja nawigacji lekcji dla quiz startowy
+                        elif 'opening_quiz' in quiz_id.lower() or 'startowy' in quiz_id.lower():
+                            st.session_state.lesson_progress['opening_quiz'] = True
                     
                     # Odświeżenie strony
                     st.rerun()
