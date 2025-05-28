@@ -142,17 +142,16 @@ def show_lesson():
             st.session_state.quiz_score = 0
           # Get current user's lesson progress using the new fragment system
         fragment_progress = get_lesson_fragment_progress(lesson_id)
-        
-        # Initialize legacy session progress for UI compatibility
+          # Initialize legacy session progress for UI compatibility
         if 'lesson_progress' not in st.session_state:
             st.session_state.lesson_progress = {
                 'intro': fragment_progress.get('intro_completed', False),
-                'opening_quiz': fragment_progress.get('quiz_completed', False),
+                'opening_quiz': fragment_progress.get('opening_quiz_completed', False),
                 'content': fragment_progress.get('content_completed', False),
-                'reflection': fragment_progress.get('quiz_completed', False),  # Map to quiz for now
-                'application': False,
-                'closing_quiz': fragment_progress.get('quiz_completed', False),
-                'summary': False,
+                'reflection': fragment_progress.get('reflection_completed', False),
+                'application': fragment_progress.get('application_completed', False),
+                'closing_quiz': fragment_progress.get('closing_quiz_completed', False),
+                'summary': fragment_progress.get('summary_completed', False),
                 'total_xp_earned': fragment_progress.get('total_xp_earned', 0),
                 'steps_completed': 0,
                 'quiz_scores': {},
@@ -168,8 +167,7 @@ def show_lesson():
                 available_steps.append('application')
             if 'closing_quiz' in lesson.get('sections', {}):
                 available_steps.append('closing_quiz')
-        
-        # Ustal kolejność kroków
+          # Ustal kolejność kroków
         step_order = ['intro']
         if 'opening_quiz' in available_steps:
             step_order.append('opening_quiz')
@@ -181,7 +179,7 @@ def show_lesson():
         step_order.append('summary')
         
         total_steps = len(step_order)
-        max_xp = lesson.get('xp_reward', 100)
+        base_xp = lesson.get('xp_reward', 100)
         
         # Mapowanie kroków do nazw wyświetlanych
         step_names = {
@@ -195,14 +193,17 @@ def show_lesson():
         }
           # Mapowanie kroków do wartości XP (nowy system procentowy)
         step_xp_values = {
-            'intro': int(max_xp * 0.05),          # 5% całkowitego XP
-            'opening_quiz': int(max_xp * 0.00),   # 0% całkowitego XP
-            'content': int(max_xp * 0.30),        # 30% całkowitego XP (Merytoryka)
-            'reflection': int(max_xp * 0.20),     # 20% całkowitego XP
-            'application': int(max_xp * 0.20),    # 20% całkowitego XP
-            'closing_quiz': int(max_xp * 0.20),   # 20% całkowitego XP
-            'summary': int(max_xp * 0.05)         # 5% całkowitego XP
+            'intro': int(base_xp * 0.05),          # 5% całkowitego XP
+            'opening_quiz': int(base_xp * 0.00),   # 0% całkowitego XP
+            'content': int(base_xp * 0.30),        # 30% całkowitego XP (Merytoryka)
+            'reflection': int(base_xp * 0.20),     # 20% całkowitego XP
+            'application': int(base_xp * 0.20),    # 20% całkowitego XP
+            'closing_quiz': int(base_xp * 0.20),   # 20% całkowitego XP
+            'summary': int(base_xp * 0.05)         # 5% całkowitego XP
         }
+        
+        # Oblicz rzeczywiste maksimum XP jako sumę wszystkich dostępnych kroków
+        max_xp = sum(step_xp_values[step] for step in step_order)
           # Znajdź indeks obecnego kroku i następnego kroku
         current_step_idx = step_order.index(st.session_state.lesson_step) if st.session_state.lesson_step in step_order else 0
         next_step_idx = min(current_step_idx + 1, len(step_order) - 1)
@@ -446,9 +447,8 @@ def show_lesson():
             st.markdown("<div class='next-button'>", unsafe_allow_html=True)
             
             # Przycisk jest zawsze aktywny, niezależnie od ukończenia quizu
-            if zen_button(f"Dalej: {step_names.get(next_step, next_step.capitalize())} (+{step_xp_values['opening_quiz']} XP)", use_container_width=False):
-                # Award fragment XP using the new system for quiz participation
-                success, xp_awarded = award_fragment_xp(lesson_id, 'quiz', step_xp_values['opening_quiz'])
+            if zen_button(f"Dalej: {step_names.get(next_step, next_step.capitalize())} (+{step_xp_values['opening_quiz']} XP)", use_container_width=False):                # Award fragment XP using the new system for quiz participation
+                success, xp_awarded = award_fragment_xp(lesson_id, 'opening_quiz', step_xp_values['opening_quiz'])
                 
                 if success and xp_awarded > 0:
                     # Update session state for UI compatibility
@@ -542,18 +542,24 @@ def show_lesson():
                             # Zapisz odpowiedź w stanie sesji
                             st.session_state[reflection_key] = user_reflection
                             st.success("Twoja odpowiedź została zapisana!")
-            
-            # Przycisk "Dalej" po refleksji
+              # Przycisk "Dalej" po refleksji
             st.markdown("<div class='next-button'>", unsafe_allow_html=True)
             if zen_button(f"Dalej: {step_names.get(next_step, next_step.capitalize())} (+{step_xp_values['reflection']} XP)", use_container_width=False):                
-                # Oznacz refleksję jako ukończoną, jeśli jeszcze nie była
-                if not st.session_state.lesson_progress['reflection']:
+                # Award fragment XP using the new system
+                success, xp_awarded = award_fragment_xp(lesson_id, 'reflection', step_xp_values['reflection'])
+                
+                if success and xp_awarded > 0:
+                    # Update session state for UI compatibility
                     st.session_state.lesson_progress['reflection'] = True
                     st.session_state.lesson_progress['steps_completed'] += 1
-                    st.session_state.lesson_progress['total_xp_earned'] += step_xp_values['reflection']
+                    st.session_state.lesson_progress['total_xp_earned'] += xp_awarded
                     
-                    # Powiadomienie o zdobytych XP
-                    st.session_state.show_xp_notification = f"Zdobyłeś {step_xp_values['reflection']} XP za wykonanie zadań refleksyjnych!"
+                    # Show real-time XP notification
+                    show_xp_notification(xp_awarded, f"Zdobyłeś {xp_awarded} XP za wykonanie zadań refleksyjnych!")
+                    
+                    # Refresh user data for real-time updates
+                    from utils.real_time_updates import refresh_user_data
+                    refresh_user_data()
                 
                 # Przejdź do następnego kroku
                 st.session_state.lesson_step = next_step
@@ -599,19 +605,26 @@ def show_lesson():
                             st.success("Twoje rozwiązanie zostało zapisana!")
                             # Dodaj odświeżenie strony po zapisaniu
                             st.rerun()
-            
-            # Przycisk "Dalej" po zadaniach praktycznych
+              # Przycisk "Dalej" po zadaniach praktycznych
             st.markdown("<div class='next-button'>", unsafe_allow_html=True)
             if zen_button(f"Dalej: {step_names.get(next_step, next_step.capitalize())} (+{step_xp_values['application']} XP)", use_container_width=False):
-                # Oznacz zadania praktyczne jako ukończone, jeśli jeszcze nie były
-                if not st.session_state.lesson_progress['application']:
+                # Award fragment XP using the new system
+                success, xp_awarded = award_fragment_xp(lesson_id, 'application', step_xp_values['application'])
+                
+                if success and xp_awarded > 0:
+                    # Update session state for UI compatibility
                     st.session_state.lesson_progress['application'] = True
                     st.session_state.lesson_progress['steps_completed'] += 1
-                    st.session_state.lesson_progress['total_xp_earned'] += step_xp_values['application']
+                    st.session_state.lesson_progress['total_xp_earned'] += xp_awarded
                     
-                    # Powiadomienie o zdobytych XP
-                    st.session_state.show_xp_notification = f"Zdobyłeś {step_xp_values['application']} XP za wykonanie zadań praktycznych!"
-                  # Przejdź do następnego kroku
+                    # Show real-time XP notification
+                    show_xp_notification(xp_awarded, f"Zdobyłeś {xp_awarded} XP za wykonanie zadań praktycznych!")
+                    
+                    # Refresh user data for real-time updates
+                    from utils.real_time_updates import refresh_user_data
+                    refresh_user_data()
+                
+                # Przejdź do następnego kroku
                 st.session_state.lesson_step = next_step
                 st.rerun()
             st.markdown("</div>", unsafe_allow_html=True)
@@ -631,9 +644,8 @@ def show_lesson():
                     
                     # Przycisk "Dalej" po quizie końcowym
                     st.markdown("<div class='next-button'>", unsafe_allow_html=True)
-                    if zen_button(f"Dalej: {step_names.get(next_step, next_step.capitalize())} (+{step_xp_values['closing_quiz']} XP)", use_container_width=False):
-                        # Award fragment XP using the new system
-                        success, xp_awarded = award_fragment_xp(lesson_id, 'quiz', step_xp_values['closing_quiz'])
+                    if zen_button(f"Dalej: {step_names.get(next_step, next_step.capitalize())} (+{step_xp_values['closing_quiz']} XP)", use_container_width=False):                        # Award fragment XP using the new system
+                        success, xp_awarded = award_fragment_xp(lesson_id, 'closing_quiz', step_xp_values['closing_quiz'])
                         
                         if success and xp_awarded > 0:
                             # Update session state for UI compatibility
@@ -672,15 +684,31 @@ def show_lesson():
                     else:
                         st.warning("Brak studium przypadku w podsumowaniu.")                # Wyświetl całkowitą zdobytą ilość XP
                 total_xp = st.session_state.lesson_progress['total_xp_earned']
-                st.success(f"Gratulacje! Ukończyłeś lekcję i zdobyłeś łącznie {total_xp} XP!")
-                
-                # Sprawdź czy lekcja została już zakończona
+                # st.success(f"Gratulacje! Ukończyłeś lekcję i zdobyłeś łącznie {total_xp} XP!")
+                  # Sprawdź czy lekcja została już zakończona
                 lesson_finished = st.session_state.get('lesson_finished', False)
                 
                 if not lesson_finished:
                     # Pierwszy etap - przycisk "Zakończ lekcję"
                     st.markdown("<div class='next-button'>", unsafe_allow_html=True)
                     if zen_button("🎉 Zakończ lekcję", use_container_width=False):
+                        # Przyznaj XP za podsumowanie, jeśli jeszcze nie zostało przyznane
+                        if not st.session_state.lesson_progress.get('summary', False):
+                            success, xp_awarded = award_fragment_xp(lesson_id, 'summary', step_xp_values['summary'])
+                            
+                            if success and xp_awarded > 0:
+                                # Update session state for UI compatibility
+                                st.session_state.lesson_progress['summary'] = True
+                                st.session_state.lesson_progress['steps_completed'] += 1
+                                st.session_state.lesson_progress['total_xp_earned'] += xp_awarded
+                                
+                                # Show real-time XP notification
+                                show_xp_notification(xp_awarded, f"Zdobyłeś {xp_awarded} XP za ukończenie podsumowania!")
+                                
+                                # Refresh user data for real-time updates
+                                from utils.real_time_updates import refresh_user_data
+                                refresh_user_data()
+                        
                         # Oznacz lekcję jako zakończoną i zapisz postęp
                         if is_lesson_fully_completed(lesson_id):
                             mark_lesson_as_completed(lesson_id)
@@ -689,8 +717,9 @@ def show_lesson():
                             from utils.real_time_updates import refresh_user_data
                             refresh_user_data()
                             
-                        # Show completion notification
-                        show_xp_notification(0, "🎉 Gratulacje! Ukończyłeś całą lekcję!")
+                        # Show completion notification - wyświetl faktyczne całkowite XP
+                        final_total_xp = st.session_state.lesson_progress.get('total_xp_earned', 0)
+                        show_xp_notification(0, f"🎉 Gratulacje! Ukończyłeś całą lekcję i zdobyłeś {final_total_xp} XP!")
                         
                         # Oznacz lekcję jako zakończoną w sesji
                         st.session_state.lesson_finished = True
@@ -727,17 +756,24 @@ def show_lesson():
         st.markdown("</div>", unsafe_allow_html=True)
         
         # Add live XP indicator
-        live_xp_indicator()
-          # Show lesson progress with current XP system
-        # Oblicz aktualny postęp na podstawie ukończonych kroków
-        completed_steps = sum(1 for step in step_order if st.session_state.lesson_progress.get(step, False))
-        completion_percent = (completed_steps / total_steps) * 100
+        live_xp_indicator()        # Show lesson progress with current XP system
+        # Pobierz aktualne dane fragmentów
+        fragment_progress = get_lesson_fragment_progress(lesson_id)
+          # Synchronizuj stan sesji z rzeczywistymi danymi fragmentów
+        for step in step_order:
+            completed_key = f"{step}_completed"
+            if completed_key in fragment_progress:
+                st.session_state.lesson_progress[step] = fragment_progress[completed_key]
         
-        # Oblicz zdobyte XP na podstawie aktualnego systemu
+        # Oblicz zdobyte XP na podstawie rzeczywistych danych z systemu fragmentów
         current_xp = 0
         for step in step_order:
-            if st.session_state.lesson_progress.get(step, False):
-                current_xp += step_xp_values.get(step, 0)
+            step_xp_key = f"{step}_xp"
+            if step_xp_key in fragment_progress:
+                current_xp += fragment_progress[step_xp_key]
+        
+        # Oblicz aktualny postęp na podstawie XP (nie liczby kroków)
+        completion_percent = (current_xp / max_xp) * 100 if max_xp > 0 else 0
         
         # Przygotuj dane o kluczowych krokach do wyświetlenia
         key_steps_info = []
@@ -756,10 +792,13 @@ def show_lesson():
         if 'application' in step_order:
             completed = st.session_state.lesson_progress.get('application', False)
             key_steps_info.append(f"💪 Zadania: {step_xp_values['application']} XP {'✅' if completed else ''}")
-        
         if 'closing_quiz' in step_order:
             completed = st.session_state.lesson_progress.get('closing_quiz', False)
             key_steps_info.append(f"🧠 Quiz: {step_xp_values['closing_quiz']} XP {'✅' if completed else ''}")
+        
+        if 'summary' in step_order:
+            completed = st.session_state.lesson_progress.get('summary', False)
+            key_steps_info.append(f"📋 Podsumowanie: {step_xp_values['summary']} XP {'✅' if completed else ''}")
         
         st.markdown(f"""
         <div style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); 

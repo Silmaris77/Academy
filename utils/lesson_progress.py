@@ -86,7 +86,7 @@ def award_fragment_xp(lesson_id, fragment_type, xp_amount):
     
     Args:
         lesson_id: ID lekcji
-        fragment_type: 'intro', 'content', 'quiz'
+        fragment_type: 'intro', 'opening_quiz', 'content', 'reflection', 'application', 'closing_quiz', 'summary'
         xp_amount: Ilość XP do przyznania
     """
     users_data = load_user_data()
@@ -142,10 +142,11 @@ def calculate_lesson_completion(lesson_id):
     """Oblicz procent ukończenia lekcji"""
     progress = get_lesson_fragment_progress(lesson_id)
     
-    fragments = ['intro', 'content', 'quiz']
-    completed = sum(1 for fragment in fragments if progress.get(f"{fragment}_completed", False))
+    # Nowy 7-krokowy system
+    steps = ['intro', 'opening_quiz', 'content', 'reflection', 'application', 'closing_quiz', 'summary']
+    completed = sum(1 for step in steps if progress.get(f"{step}_completed", False))
     
-    return (completed / len(fragments)) * 100
+    return (completed / len(steps)) * 100
 
 def is_lesson_fully_completed(lesson_id):
     """Sprawdź czy lekcja jest w pełni ukończona"""
