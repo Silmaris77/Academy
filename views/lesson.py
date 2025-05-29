@@ -696,8 +696,7 @@ def show_lesson():
                         
                         # Przycisk do powtórzenia quizu
                         st.markdown("<div class='next-button'>", unsafe_allow_html=True)
-                        if zen_button("🔄 Spróbuj ponownie", use_container_width=False):
-                            # Resetuj stan quizu końcowego
+                        if zen_button("🔄 Spróbuj ponownie", use_container_width=False):                            # Resetuj stan quizu końcowego
                             quiz_session_key = f"quiz_{lesson['sections']['closing_quiz'].get('title', '').replace(' ', '_').lower()}"
                             if quiz_session_key in st.session_state:
                                 del st.session_state[quiz_session_key]
@@ -707,8 +706,8 @@ def show_lesson():
         elif st.session_state.lesson_step == 'summary':
             # Wyświetl podsumowanie lekcji w podziale na zakładki, podobnie jak wprowadzenie
             if 'outro' in lesson:
-                # Podziel podsumowanie na dwie zakładki
-                summary_tabs = st.tabs(["Podsumowanie", "Case Study"])
+                # Podziel podsumowanie na trzy zakładki - dodana mapa myśli
+                summary_tabs = st.tabs(["Podsumowanie", "Case Study", "🗺️ Mapa myśli"])
                 
                 with summary_tabs[0]:
                     # Wyświetl główne podsumowanie
@@ -722,7 +721,22 @@ def show_lesson():
                     if 'case_study' in lesson['outro']:
                         st.markdown(lesson['outro']['case_study'], unsafe_allow_html=True)
                     else:
-                        st.warning("Brak studium przypadku w podsumowaniu.")                # Wyświetl całkowitą zdobytą ilość XP
+                        st.warning("Brak studium przypadku w podsumowaniu.")
+                
+                with summary_tabs[2]:
+                    # Wyświetl interaktywną mapę myśli
+                    st.markdown("### 🗺️ Interaktywna mapa myśli")
+                    st.markdown("Poniżej znajdziesz interaktywną mapę myśli podsumowującą kluczowe koncepty z tej lekcji. Możesz klikać na węzły aby je przesuwać i lepiej eksplorować powiązania między różnymi tematami.")
+                    
+                    try:
+                        from utils.mind_map import create_lesson_mind_map
+                        mind_map_result = create_lesson_mind_map(lesson)
+                        
+                        if mind_map_result is None:
+                            st.info("💡 **Mapa myśli w przygotowaniu**\n\nDla tej lekcji przygotowujemy interaktywną mapę myśli, która pomoże Ci lepiej zrozumieć powiązania między różnymi konceptami. Wkrótce będzie dostępna!")
+                    except Exception as e:
+                        st.warning("⚠️ Mapa myśli nie jest obecnie dostępna. Sprawdź, czy wszystkie wymagane biblioteki są zainstalowane.")
+                        st.expander("Szczegóły błędu (dla deweloperów)").write(str(e))# Wyświetl całkowitą zdobytą ilość XP
                 total_xp = st.session_state.lesson_progress['total_xp_earned']
                 # st.success(f"Gratulacje! Ukończyłeś lekcję i zdobyłeś łącznie {total_xp} XP!")
                   # Sprawdź czy lekcja została już zakończona
