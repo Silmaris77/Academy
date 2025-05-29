@@ -3,3 +3,8 @@ numpy==1.26.4
 pandas
 altair==5.2.0
 matplotlib==3.8.2
+streamlit-agraph==0.0.45
+Pillow
+plotly
+networkx
+rdflib

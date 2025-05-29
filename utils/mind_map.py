@@ -6,30 +6,32 @@ import streamlit as st
 def create_lesson_mind_map(lesson_data):
     """
     Tworzy interaktywną mapę myśli dla danej lekcji
+    Implementuje system skalowalny z trzema trybami:
+    1. Data-driven - używa danych z lesson_data['mind_map']
+    2. Backward compatibility - dla B1C1L1 (stary hardcoded system)
+    3. Auto-generated - automatyczne generowanie dla lekcji bez dedykowanych danych
     
     Args:
         lesson_data (dict): Dane lekcji w formacie JSON
     """
     try:
-        from streamlit_agraph import agraph, Node, Edge, Config
-        import streamlit as st
-        
-        # Sprawdź czy lekcja ma dedykowane dane do mapy myśli
+        # Inteligentna logika decyzyjna
         if 'mind_map' in lesson_data:
+            # Tryb 1: Data-driven - używaj danych z JSON
             return create_data_driven_mind_map(lesson_data['mind_map'])
-        
-        # Fallback dla lekcji B1C1L1 (backward compatibility)
-        lesson_id = lesson_data.get('id', '')
-        if lesson_id == 'B1C1L1':
+        elif lesson_data.get('id') == 'B1C1L1':
+            # Tryb 2: Backward compatibility dla B1C1L1c
             return create_b1c1l1_mind_map()
-        
-        # Dla innych lekcji bez danych - stwórz automatyczną mapę
-        return create_auto_generated_mind_map(lesson_data)
+        else:
+            # Tryb 3: Auto-generated dla pozostałych lekcji
+            return create_auto_generated_mind_map(lesson_data)
             
     except ImportError:
         # Fallback jeśli streamlit-agraph nie jest dostępne
-        import streamlit as st
         st.warning("📋 Mapa myśli nie jest obecnie dostępna. Zainstaluj bibliotekę streamlit-agraph aby włączyć tę funkcję.")
+        return None
+    except Exception as e:
+        st.error(f"Błąd podczas tworzenia mapy myśli: {str(e)}")
         return None
 
 def create_b1c1l1_mind_map():
@@ -167,26 +169,32 @@ def create_b1c1l1_mind_map():
         st.error(f"Błąd podczas tworzenia mapy myśli: {str(e)}")
         return None
 
+def create_generic_mind_map(lesson_data):
+    """
+    PRZESTARZAŁA: Używaj create_auto_generated_mind_map
+    Zachowana dla zgodności wstecznej
+    """
+    return create_auto_generated_mind_map(lesson_data)
+
 def create_data_driven_mind_map(mind_map_data):
     """
-    Tworzy mapę myśli na podstawie danych z lesson_data['mind_map']
+    Tworzy mapę myśli z danych strukturalnych JSON
     
     Args:
-        mind_map_data (dict): Dane struktury mapy myśli
+        mind_map_data (dict): Struktura mind_map z pliku JSON lekcji
     """
     try:
         from streamlit_agraph import agraph, Node, Edge, Config
-        import streamlit as st
         
         nodes = []
         edges = []
         
         # Centralny węzeł
-        central = mind_map_data['central_node']
+        central = mind_map_data.get('central_node', {})
         nodes.append(Node(
-            id=central['id'],
-            label=central['label'],
-            size=central.get('size', 25),
+            id=central.get('id', 'main_topic'),
+            label=central.get('label', '🎯 GŁÓWNY TEMAT'),
+            size=central.get('size', 30),
             color=central.get('color', '#FF6B6B'),
             font={"size": central.get('font_size', 16), "color": "white"}
         ))
@@ -194,87 +202,67 @@ def create_data_driven_mind_map(mind_map_data):
         # Kategorie główne
         for category in mind_map_data.get('categories', []):
             nodes.append(Node(
-                id=category['id'],
-                label=category['label'],
+                id=category.get('id', 'category'),
+                label=category.get('label', 'Kategoria'),
                 size=category.get('size', 20),
                 color=category.get('color', '#4ECDC4'),
                 font={"size": category.get('font_size', 12), "color": "white"}
             ))
+            edges.append(Edge(source=central.get('id', 'main_topic'), target=category.get('id', 'category')))
             
-            # Połącz z centralnym węzłem
-            edges.append(Edge(
-                source=central['id'],
-                target=category['id']
-            ))
-            
-            # Dodaj szczegóły kategorii
+            # Szczegóły kategorii
             for detail in category.get('details', []):
                 nodes.append(Node(
-                    id=detail['id'],
-                    label=detail['label'],
+                    id=detail.get('id', 'detail'),
+                    label=detail.get('label', 'Szczegół'),
                     size=detail.get('size', 12),
                     color=detail.get('color', '#DDA0DD'),
                     font={"size": detail.get('font_size', 10), "color": "black"}
                 ))
-                edges.append(Edge(
-                    source=category['id'],
-                    target=detail['id']
-                ))
+                edges.append(Edge(source=category.get('id', 'category'), target=detail.get('id', 'detail')))
         
         # Rozwiązania praktyczne
         for solution in mind_map_data.get('solutions', []):
             nodes.append(Node(
-                id=solution['id'],
-                label=solution['label'],
+                id=solution.get('id', 'solution'),
+                label=solution.get('label', 'Rozwiązanie'),
                 size=solution.get('size', 15),
                 color=solution.get('color', '#90EE90'),
                 font={"size": solution.get('font_size', 11), "color": "black"}
             ))
-            edges.append(Edge(
-                source=central['id'],
-                target=solution['id']
-            ))
+            edges.append(Edge(source=central.get('id', 'main_topic'), target=solution.get('id', 'solution')))
         
         # Case study
-        if 'case_study' in mind_map_data:
-            case = mind_map_data['case_study']
+        case_study = mind_map_data.get('case_study', {})
+        if case_study:
             nodes.append(Node(
-                id=case['id'],
-                label=case['label'],
-                size=case.get('size', 18),
-                color=case.get('color', '#FF8C42'),
-                font={"size": case.get('font_size', 12), "color": "white"}
+                id=case_study.get('id', 'case_study'),
+                label=case_study.get('label', '📱 Case Study'),
+                size=case_study.get('size', 18),
+                color=case_study.get('color', '#FF8C42'),
+                font={"size": case_study.get('font_size', 12), "color": "white"}
             ))
-            edges.append(Edge(
-                source=central['id'],
-                target=case['id']
-            ))
+            edges.append(Edge(source=central.get('id', 'main_topic'), target=case_study.get('id', 'case_study')))
             
             # Szczegóły case study
-            for detail in case.get('details', []):
+            for detail in case_study.get('details', []):
                 nodes.append(Node(
-                    id=detail['id'],
-                    label=detail['label'],
+                    id=detail.get('id', 'case_detail'),
+                    label=detail.get('label', 'Szczegół'),
                     size=detail.get('size', 10),
                     color=detail.get('color', '#FFB347'),
                     font={"size": detail.get('font_size', 9), "color": "black"}
                 ))
-                edges.append(Edge(
-                    source=case['id'],
-                    target=detail['id']
-                ))
+                edges.append(Edge(source=case_study.get('id', 'case_study'), target=detail.get('id', 'case_detail')))
         
         # Dodatkowe połączenia
         for connection in mind_map_data.get('connections', []):
-            edges.append(Edge(
-                source=connection['from'],
-                target=connection['to']
-            ))
+            edges.append(Edge(source=connection.get('from'), target=connection.get('to')))
         
         # Konfiguracja
         config_data = mind_map_data.get('config', {})
         config = Config(
-            width=config_data.get('width', 800), 
+            width=config_data.get('width', 800),
             height=config_data.get('height', 600),
             directed=config_data.get('directed', False),
             physics=config_data.get('physics', True),
@@ -287,25 +275,29 @@ def create_data_driven_mind_map(mind_map_data):
         return agraph(nodes=nodes, edges=edges, config=config)
         
     except ImportError:
-        import streamlit as st
         st.error("Nie można załadować biblioteki streamlit-agraph. Zainstaluj ją używając: pip install streamlit-agraph")
         return None
     except Exception as e:
-        import streamlit as st
-        st.error(f"Błąd podczas tworzenia mapy myśli: {str(e)}")
+        st.error(f"Błąd podczas tworzenia data-driven mapy myśli: {str(e)}")
         return None
 
 def create_auto_generated_mind_map(lesson_data):
     """
     Automatycznie generuje mapę myśli na podstawie struktury lekcji
-    gdy brak dedykowanych danych mind_map
+    Używana dla lekcji, które nie mają dedykowanej struktury mind_map
+    
+    Args:
+        lesson_data (dict): Dane lekcji w formacie JSON
     """
     try:
         from streamlit_agraph import agraph, Node, Edge, Config
-        import streamlit as st
         
         nodes = []
         edges = []
+        
+        # Informacja o automatycznym generowaniu
+        st.info("🤖 Ta mapa myśli została wygenerowana automatycznie na podstawie struktury lekcji. "
+               "Aby dodać dedykowaną mapę myśli, dodaj sekcję 'mind_map' do pliku JSON lekcji.")
         
         # Centralny węzeł z tytułem lekcji
         title = lesson_data.get('title', 'Lekcja')
@@ -319,53 +311,50 @@ def create_auto_generated_mind_map(lesson_data):
         if 'sections' in lesson_data:
             sections = lesson_data['sections']
             
-            # Materiał lekcji
             if 'learning' in sections and 'sections' in sections['learning']:
-                for i, section in enumerate(sections['learning']['sections'][:4]):  # Max 4 sekcje
+                for i, section in enumerate(sections['learning']['sections']):
                     section_id = f"section_{i}"
                     section_title = section.get('title', f'Sekcja {i+1}')
                     # Skróć tytuł jeśli jest za długi
-                    if len(section_title) > 40:
-                        section_title = section_title[:37] + "..."
+                    if len(section_title) > 50:
+                        section_title = section_title[:47] + "..."
                     
                     nodes.append(Node(id=section_id,
-                                    label=f"📖 {section_title}",
+                                    label=section_title,
                                     size=15,
                                     color="#74B9FF",
                                     font={"size": 10, "color": "white"}))
                     edges.append(Edge(source="central", target=section_id))
         
-        # Dodaj elementy strukturalne
-        structural_elements = []
+        # Dodaj elementy standardowe lekcji
+        standard_elements = []
         
+        # Quiz jeśli istnieje
         if lesson_data.get('sections', {}).get('opening_quiz'):
-            structural_elements.append({"id": "quiz_start", "label": "🧠 Quiz startowy", "color": "#FD79A8"})
+            standard_elements.append({"id": "quiz", "label": "🧠 Quiz", "color": "#FD79A8"})
         
+        # Refleksja jeśli istnieje
         if lesson_data.get('sections', {}).get('reflection'):
-            structural_elements.append({"id": "reflection", "label": "🤔 Refleksja", "color": "#FDCB6E"})
-            
-        if lesson_data.get('sections', {}).get('application'):
-            structural_elements.append({"id": "application", "label": "💪 Zastosowanie", "color": "#A29BFE"})
-            
-        if lesson_data.get('sections', {}).get('closing_quiz'):
-            structural_elements.append({"id": "quiz_end", "label": "🎯 Quiz końcowy", "color": "#E17055"})
+            standard_elements.append({"id": "reflection", "label": "🤔 Refleksja", "color": "#FDCB6E"})
         
-        for element in structural_elements:
+        # XP Reward
+        if lesson_data.get('xp_reward'):
+            xp = lesson_data.get('xp_reward', 0)
+            standard_elements.append({"id": "xp", "label": f"⭐ {xp} XP", "color": "#FFD93D"})
+        
+        # Dodaj inne elementy
+        standard_elements.extend([
+            {"id": "summary", "label": "📝 Podsumowanie", "color": "#A29BFE"},
+            {"id": "practice", "label": "💪 Ćwiczenia", "color": "#6C5CE7"}
+        ])
+        
+        for element in standard_elements:
             nodes.append(Node(id=element["id"],
                             label=element["label"],
                             size=12,
                             color=element["color"],
                             font={"size": 10, "color": "white"}))
             edges.append(Edge(source="central", target=element["id"]))
-        
-        # Dodaj info o XP
-        xp_reward = lesson_data.get('xp_reward', 100)
-        nodes.append(Node(id="xp_reward",
-                        label=f"💎 {xp_reward} XP",
-                        size=14,
-                        color="#00B894",
-                        font={"size": 11, "color": "white"}))
-        edges.append(Edge(source="central", target="xp_reward"))
         
         config = Config(width=700, 
                        height=500,
@@ -375,16 +364,11 @@ def create_auto_generated_mind_map(lesson_data):
                        nodeHighlightBehavior=True,
                        highlightColor="#F7A7A6")
         
-        # Dodaj informację o automatycznym generowaniu
-        st.info("🤖 **Automatycznie wygenerowana mapa myśli**\n\nTa mapa została utworzona na podstawie struktury lekcji. Dla lepszego doświadczenia, dedykowana mapa myśli jest w przygotowaniu!")
-        
         return agraph(nodes=nodes, edges=edges, config=config)
         
     except ImportError:
-        import streamlit as st
-        st.error("Nie można załadować biblioteki streamlit-agraph")
+        st.error("Nie można załadować biblioteki streamlit-agraph. Zainstaluj ją używając: pip install streamlit-agraph")
         return None
     except Exception as e:
-        import streamlit as st
-        st.error(f"Błąd podczas tworzenia automatycznej mapy myśli: {str(e)}")
+        st.error(f"Błąd podczas tworzenia auto-generated mapy myśli: {str(e)}")
         return None
