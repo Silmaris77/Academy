@@ -7,6 +7,7 @@ from data.course_data import (
     get_blocks, get_categories, get_lessons_for_category, 
     get_category_info, get_block_info, get_course_statistics
 )
+from utils.course_map import create_course_structure_map, create_simplified_course_map, show_course_statistics
 import random
 
 def show_skill_tree():
@@ -81,12 +82,49 @@ def show_skill_tree():
             'difficulty': category_info.get('difficulty', 'Beginner'),
             'estimated_time': category_info.get('estimated_time', '2-3 tygodnie')
         }
-    
-    # Header i nowy tytuł
+      # Header i nowy tytuł
     st.markdown("<h1 class='skills-header'>Mapa Rozwoju Inwestora 🌿</h1>", unsafe_allow_html=True)
     
-    # Dashboard postępu
-    show_progress_dashboard(user_skills, user_xp, user_completed_lessons, categories)
+    # System zakładek
+    tab1, tab2, tab3 = st.tabs(["🗺️ Mapa Kursu", "📊 Statystyki", "🎯 Umiejętności"])
+    
+    with tab1:
+        st.markdown("### Interaktywna Mapa Struktury Kursu")
+        st.markdown("Eksploruj pełną strukturę kursu BrainVenture Academy - od modułów po poszczególne lekcje.")
+        
+        # Opcje wyświetlania mapy
+        col1, col2 = st.columns(2)
+        with col1:
+            map_type = st.selectbox(
+                "Typ mapy:",
+                ["Pełna struktura", "Uproszczona mapa"],
+                help="Wybierz typ wizualizacji struktury kursu"
+            )
+        
+        with col2:
+            st.write("")  # Puste miejsce dla zachowania układu
+        
+        # Wyświetl odpowiednią mapę
+        if map_type == "Pełna struktura":
+            create_course_structure_map()
+        else:
+            create_simplified_course_map()
+    
+    with tab2:
+        st.markdown("### Statystyki Kursu")
+        show_course_statistics()
+        
+        # Dashboard postępu użytkownika
+        st.markdown("### Twój Postęp")
+        show_progress_dashboard(user_skills, user_xp, user_completed_lessons, categories)
+    
+    with tab3:
+        st.markdown("### Twoje Umiejętności")
+        show_skills_content(user_skills, user_xp, user_completed_lessons, categories, blocks, categories_data, users_data, user_data, device_type)
+
+
+def show_skills_content(user_skills, user_xp, user_completed_lessons, categories, blocks, categories_data, users_data, user_data, device_type):
+    """Wyświetla zawartość zakładki Umiejętności"""
     
     # Opcje filtrowania
     st.markdown("<h3 class='section-header'>Filtrowanie modułów</h3>", unsafe_allow_html=True)
