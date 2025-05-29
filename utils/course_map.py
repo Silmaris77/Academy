@@ -1,5 +1,13 @@
 """
-Moduł do tworzenia interaktywnej mapy struktury kursu z wykorzystaniem streamlit-agraph
+Moduł do tworzenia i        # Centralny węzeł - Cały kurs
+        nodes.append(Node(
+            id="course_center",
+            label="🎓 BrainVenture Academy",
+            size=35,
+            color="#6C5CE7",
+            font={"size": 16, "color": "#6C5CE7"},
+            shape="dot"
+        ))nej mapy struktury kursu z wykorzystaniem streamlit-agraph
 """
 import streamlit as st
 from data.course_data import get_blocks, get_categories, get_lessons_for_category
@@ -23,8 +31,7 @@ def create_course_structure_map():
         # Pobierz dane kursu
         blocks = get_blocks()
         categories = get_categories()
-        
-        # Centralny węzeł - Cały kurs
+          # Centralny węzeł - Cały kurs
         nodes.append(Node(
             id="course_center",
             label="🎓 BrainVenture Academy",
@@ -45,9 +52,7 @@ def create_course_structure_map():
         
         # Dodaj bloki (moduły)
         for block_id, block_info in blocks.items():
-            block_node_id = f"block_{block_id}"
-            
-            # Skróć nazwę bloku jeśli jest za długa
+            block_node_id = f"block_{block_id}"            # Skróć nazwę bloku jeśli jest za długa
             block_name = block_info['name']
             if len(block_name) > 60:
                 block_name = block_name[:57] + "..."
@@ -57,7 +62,7 @@ def create_course_structure_map():
                 label=block_name,
                 size=25,
                 color=block_colors[(block_id - 1) % len(block_colors)],
-                font={"size": 14, "color": "white"},
+                font={"size": 14, "color": block_colors[(block_id - 1) % len(block_colors)]},
                 shape="dot"
             ))
             
@@ -67,8 +72,7 @@ def create_course_structure_map():
         # Dodaj kategorie
         category_colors = [
             "#A29BFE", "#FD79A8", "#FDCB6E", "#6C5CE7", "#74B9FF",
-            "#00B894", "#E17055", "#636E72", "#DDA0DD", "#98D8C8",
-            "#F7DC6F", "#BB8FCE", "#85C1E9", "#82E0AA", "#F8C471"
+            "#00B894", "#E17055", "#636E72", "#DDA0DD", "#98D8C8",        "#F7DC6F", "#BB8FCE", "#85C1E9", "#82E0AA", "#F8C471"
         ]
         
         for category_id, category_info in categories.items():
@@ -85,7 +89,7 @@ def create_course_structure_map():
                 label=category_name,
                 size=18,
                 color=category_colors[(category_id - 1) % len(category_colors)],
-                font={"size": 11, "color": "white"},
+                font={"size": 11, "color": category_colors[(category_id - 1) % len(category_colors)]},
                 shape="dot"
             ))
             
@@ -97,7 +101,7 @@ def create_course_structure_map():
             for i, lesson_data in enumerate(lessons):
                 if i >= 3:  # Limit do 3 lekcji na kategorię dla czytelności
                     break
-                    
+                
                 lesson_id = lesson_data.get('id', f'lesson_{category_id}_{i}')
                 lesson_node_id = f"lesson_{lesson_id}"
                 lesson_title = lesson_data.get('title', f'Lekcja {lesson_id}')
@@ -110,37 +114,38 @@ def create_course_structure_map():
                     id=lesson_node_id,
                     label=f"📚 {lesson_title}",
                     size=12,
-                    color="#BDC3C7",
-                    font={"size": 9, "color": "black"},
+                    color="#34495E",
+                    font={"size": 9, "color": "#34495E"},
                     shape="dot"
                 ))
                 
                 # Połącz z kategorią
                 edges.append(Edge(source=category_node_id, target=lesson_node_id))
-            
-            # Jeśli jest więcej niż 3 lekcje, dodaj węzeł "..."
+              # Jeśli jest więcej niż 3 lekcje, dodaj węzeł "..."
             if len(lessons) > 3:
                 more_node_id = f"more_{category_id}"
                 nodes.append(Node(
                     id=more_node_id,
                     label=f"... i {len(lessons) - 3} więcej",
                     size=10,
-                    color="#95A5A6",
-                    font={"size": 8, "color": "white"},
+                    color="#7F8C8D",
+                    font={"size": 8, "color": "#7F8C8D"},
                     shape="dot"
                 ))
                 edges.append(Edge(source=category_node_id, target=more_node_id))
-          # Konfiguracja wizualizacji
+        
+        # Konfiguracja wizualizacji
         config = Config(
-            width=1000,
-            height=700,
+            width="100%",
+            height=900,
             directed=True,
             physics=True,
             hierarchical=False,
             nodeHighlightBehavior=True,
             highlightColor="#F7A7A6"
         )
-          # Wyświetl mapę
+        
+        # Wyświetl mapę
         return agraph(nodes=nodes, edges=edges, config=config)
         
     except Exception as e:
@@ -166,14 +171,13 @@ def create_simplified_course_map():
         # Pobierz dane kursu
         blocks = get_blocks()
         categories = get_categories()
-        
-        # Centralny węzeł
+          # Centralny węzeł
         nodes.append(Node(
             id="course_center",
             label="🎓 BrainVenture Academy\n5 Modułów | 15 Kategorii | 150+ Lekcji",
             size=40,
             color="#2D3436",
-            font={"size": 16, "color": "white"},
+            font={"size": 16, "color": "#2D3436"},
             shape="dot"
         ))
         
@@ -185,8 +189,7 @@ def create_simplified_course_map():
         # Dodaj bloki
         for block_id, block_info in blocks.items():
             block_node_id = f"block_{block_id}"
-            
-            # Zlicz kategorie w bloku
+              # Zlicz kategorie w bloku
             categories_in_block = [cat for cat in categories.values() if cat['block'] == block_id]
             category_count = len(categories_in_block)
             
@@ -197,15 +200,14 @@ def create_simplified_course_map():
                 label=block_name,
                 size=30,
                 color=block_colors[block_id - 1],
-                font={"size": 12, "color": "white"},
+                font={"size": 12, "color": block_colors[block_id - 1]},
                 shape="dot"
             ))
             
             edges.append(Edge(source="course_center", target=block_node_id))
         
         # Dodaj kategorie
-        category_colors = [
-            "#FF7675", "#74B9FF", "#00B894", "#FDCB6E", "#A29BFE",
+        category_colors = [        "#FF7675", "#74B9FF", "#00B894", "#FDCB6E", "#A29BFE",
             "#FD79A8", "#E17055", "#00CEC9", "#55A3FF", "#6C5CE7",
             "#FF9FF3", "#54A0FF", "#5F27CD", "#00D2D3", "#FF9F43"
         ]
@@ -225,7 +227,7 @@ def create_simplified_course_map():
                 label=category_name,
                 size=20,
                 color=category_colors[category_id - 1],
-                font={"size": 10, "color": "white"},
+                font={"size": 10, "color": category_colors[category_id - 1]},
                 shape="dot"
             ))
             
@@ -233,8 +235,8 @@ def create_simplified_course_map():
             edges.append(Edge(source=block_node_id, target=category_node_id))
           # Konfiguracja dla uproszczonej mapy
         config = Config(
-            width=1000,
-            height=600,
+            width="100%",
+            height=850,
             directed=True,
             physics=True,
             hierarchical=True,
