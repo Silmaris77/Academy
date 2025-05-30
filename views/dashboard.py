@@ -159,9 +159,9 @@ def display_lesson_cards(lessons_list, tab_name="", custom_columns=None):
     if not lessons_list:
         st.info("Brak dostępnych lekcji w tej kategorii.")
         return
-    
-    users_data = load_user_data()
-    user_data = users_data.get(st.session_state.username, {})
+
+    from data.users import get_current_user_data
+    user_data = get_current_user_data(st.session_state.username)
     completed_lessons = user_data.get('completed_lessons', [])
     
     # Jeśli nie dostarczono niestandardowych kolumn, użyj jednej kolumny na całą szerokość
@@ -193,8 +193,8 @@ def display_lesson_cards(lessons_list, tab_name="", custom_columns=None):
 def get_recommended_lessons(username):
     """Get recommended lessons based on user type"""
     lessons = load_lessons()
-    users_data = load_user_data()
-    user_data = users_data.get(username, {})
+    from data.users import get_current_user_data
+    user_data = get_current_user_data(username)
     degen_type = user_data.get('degen_type', None)
     
     # If user has a degen type, filter lessons to match
@@ -420,10 +420,9 @@ def show_available_lessons(device_type):
             <h3 class="section-title">Dostępne lekcje</h3>
         </div>
     """, unsafe_allow_html=True)
-    
-    # Pobierz dane użytkownika
-    users_data = load_user_data()
-    user_data = users_data.get(st.session_state.username, {})
+      # Pobierz dane użytkownika
+    from data.users import get_current_user_data
+    user_data = get_current_user_data(st.session_state.username)
     completed_lessons = user_data.get('completed_lessons', [])
     
     # Pobierz lekcje

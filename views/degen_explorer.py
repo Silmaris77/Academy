@@ -10,6 +10,7 @@ from data.users import load_user_data, save_user_data
 from utils.components import zen_header, content_section, quote_block, tip_block, notification, zen_button, progress_bar
 from utils.material3_components import apply_material3_theme
 from utils.layout import get_device_type, responsive_grid, responsive_container, toggle_device_view, apply_responsive_styles, get_responsive_figure_size
+from utils.achievements import check_achievements
 import re
 
 # Poprawka dla funkcji clean_html, aby była bardziej skuteczna
@@ -415,14 +416,16 @@ def show_test_results():
     
     # Calculate dominant type
     dominant_type = calculate_test_results(st.session_state.test_scores)
-    
-    # Update user data
+      # Update user data
     users_data = load_user_data()
     users_data[st.session_state.username]["degen_type"] = dominant_type
     users_data[st.session_state.username]["test_taken"] = True
     users_data[st.session_state.username]["test_scores"] = st.session_state.test_scores  # Save test scores
     users_data[st.session_state.username]["xp"] += 50  # Bonus XP for completing the test
     save_user_data(users_data)
+    
+    # Check for achievements after test completion
+    check_achievements(st.session_state.username)
     
     st.markdown("<div class='st-bx'>", unsafe_allow_html=True)
     st.subheader("Wyniki testu")

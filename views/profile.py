@@ -40,7 +40,8 @@ from utils.inventory import (
     is_booster_active,
     format_time_remaining
 )
-from config.settings import USER_AVATARS, THEMES, DEGEN_TYPES, BADGES
+from utils.badge_display import BadgeDisplaySystem
+from config.settings import USER_AVATARS, THEMES, DEGEN_TYPES, BADGES, BADGE_CATEGORIES
 from data.degen_details import degen_details
 from views.degen_explorer import plot_radar_chart
 from views.dashboard import calculate_xp_progress
@@ -354,48 +355,11 @@ def show_profile():
                     st.rerun()
         
         st.markdown("</div>", unsafe_allow_html=True)
-    
-    # Tab 3: Badges
+      # Tab 3: Badges
     with tab3:
         st.markdown("<div class='profile-tab-content'>", unsafe_allow_html=True)
-        st.markdown("<div class='st-bx'>", unsafe_allow_html=True)
-        
-        badges = user_data.get('badges', [])
-        
-        if badges:
-            st.subheader("Twoje odznaki")
-            
-            # Create grid for badges
-            badge_cols = st.columns(4)
-            
-            for i, badge_id in enumerate(badges):
-                if badge_id in BADGES:
-                    badge = BADGES[badge_id]
-                    with badge_cols[i % 4]:
-                        badge_card(
-                            icon=badge['icon'],
-                            title=badge['name'],
-                            description=badge['description'],
-                            earned=True
-                        )
-        else:
-            # Display available badges in muted colors
-            st.subheader("Dostępne odznaki")
-            st.info("Nie masz jeszcze żadnych odznak. Ukończ lekcje i wykonuj misje aby je zdobyć!")
-            
-            # Create grid for available badges
-            badge_cols = st.columns(4)
-            
-            for i, (badge_id, badge) in enumerate(BADGES.items()):
-                with badge_cols[i % 4]:
-                    badge_card(
-                        icon=badge['icon'],
-                        title=badge['name'],
-                        description=badge['description'],
-                        earned=False
-                    )
-        
-        st.markdown("</div>", unsafe_allow_html=True)
+        # Use Step 5 badge display system
+        show_badges_section()
         st.markdown("</div>", unsafe_allow_html=True)
     
     # Tab 4: Degen Type
@@ -496,63 +460,199 @@ def show_profile():
         st.markdown("</div>", unsafe_allow_html=True)
 
 def show_badges_section():
-    """Wyświetla odznaki użytkownika"""
-    st.header("Twoje odznaki")
+    """Wyświetl sekcję odznak w profilu - Step 5 Implementation"""
+    st.header("🏆 Twoje Odznaki - FIXED VERSION")
     
     # Pobierz dane użytkownika
     users_data = load_user_data()
     user_data = users_data.get(st.session_state.username, {})
-    user_badges = user_data.get("badges", [])
+    user_badges = set(user_data.get('badges', []))
     
-    if not user_badges:
-        st.info("Jeszcze nie masz żadnych odznak. Rozpocznij naukę i wykonuj zadania, aby je zdobyć!")
-        return
-    
-    # Pogrupuj odznaki według kategorii
-    badge_categories = {
-        "Podstawowe": ["starter", "tester", "learner", "consistent"],
-        "Aktywność": ["streak_master", "daily_hero", "weekend_warrior"],
-        "Nauka": ["knowledge_addict", "quick_learner", "night_owl", "early_bird", "zen_master", 
-                  "market_pro", "strategy_guru"],
-        "Społeczność": ["social", "mentor", "networker", "influencer"],
-        "Specjalne": ["first_achievement", "collector", "perfectionist", "degen_master", 
-                      "self_aware", "identity_shift"],
-        "Ekonomia": ["saver", "big_spender", "collector_premium"],
-        "Wyzwania": ["challenge_accepted", "challenge_master", "seasonal_champion"]
+    # CSS dla odznak
+    st.markdown("""
+    <style>
+    .badge-unlocked {
+        background: linear-gradient(135deg, #e8f5e8, #f0f8f0);
+        border: 2px solid #27ae60;
+        border-radius: 15px;
+        padding: 15px;
+        text-align: center;
+        margin: 10px 0;
+        box-shadow: 0 4px 12px rgba(39, 174, 96, 0.2);
+        transition: transform 0.2s ease;
     }
+    .badge-unlocked:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 6px 16px rgba(39, 174, 96, 0.3);
+    }
+    .badge-locked {
+        background: #f5f5f5;
+        border: 2px solid #bdc3c7;
+        border-radius: 15px;
+        padding: 15px;
+        text-align: center;
+        margin: 10px 0;
+        opacity: 0.6;
+        box-shadow: 0 2px 8px rgba(189, 195, 199, 0.2);
+    }
+    .badge-icon {
+        font-size: 2.5em;
+        margin-bottom: 8px;
+        display: block;
+    }
+    .badge-name {
+        font-weight: bold;
+        margin: 8px 0 4px 0;
+        color: #2c3e50;
+    }
+    .badge-description {
+        font-size: 0.85em;
+        color: #7f8c8d;
+        line-height: 1.3;
+    }
+    .badge-status {
+        font-size: 1.2em;
+        margin-right: 5px;
+    }
+    .category-stats {
+        background: #f8f9fa;
+        border-radius: 10px;
+        padding: 15px;
+        margin-bottom: 20px;
+        border-left: 4px solid #3498db;
+    }
+    .category-title {
+        font-size: 1.2em;
+        font-weight: bold;
+        color: #2c3e50;
+        margin-bottom: 8px;
+    }
+    .category-description {
+        color: #7f8c8d;
+        font-size: 0.9em;
+        margin-bottom: 10px;
+    }
+    .category-progress {
+        font-size: 0.85em;
+        color: #3498db;
+        font-weight: 500;
+    }
+    </style>
+    """, unsafe_allow_html=True)
+      # Pokaż pomocne wskazówki dla użytkowników bez odznak
+    if not user_badges:
+        st.info("🌟 Jeszcze nie masz żadnych odznak. Przeglądaj poniższe kategorie, aby zobaczyć jakie odznaki możesz zdobyć!")
+        with st.expander("🎯 Jak zdobyć pierwsze odznaki:", expanded=False):
+            st.markdown("""
+            - **👋 Witaj w Akademii** - Automatycznie po rejestracji
+            - **🎯 Pierwszy Uczeń** - Ukończ pierwszą lekcję
+            - **🔍 Odkrywca Osobowości** - Wykonaj test typu degena
+            - **📝 Profil Kompletny** - Uzupełnij informacje w profilu
+            """)
+        st.markdown("---")
+      # Wyświetl ogólne statystyki
+    total_badges = len(BADGES)
+    earned_badges = len(user_badges)
+    completion_percent = (earned_badges / total_badges) * 100 if total_badges > 0 else 0
     
-    # Pokaż odznaki w kategoriach
-    tabs = st.tabs(list(badge_categories.keys()))
+    col1, col2, col3 = st.columns(3)
+    with col1:
+        st.metric("Zdobyte odznaki", f"{earned_badges}/{total_badges}", f"{completion_percent:.1f}%")
+    with col2:
+        if user_badges:
+            latest_badge = max(user_badges, key=lambda x: user_data.get('badge_earned_dates', {}).get(x, ''), default=None)
+            if latest_badge and latest_badge in BADGES:
+                st.metric("Ostatnia odznaka", BADGES[latest_badge]['name'][:20])
+            else:
+                st.metric("Ostatnia odznaka", "Brak")
+        else:
+            st.metric("Ostatnia odznaka", "Brak")
+    with col3:
+        xp_from_badges = sum(BADGES[badge_id].get('xp_reward', 0) for badge_id in user_badges if badge_id in BADGES)
+        st.metric("XP z odznak", xp_from_badges)
     
-    for i, (category, badge_ids) in enumerate(badge_categories.items()):
+    st.markdown("---")
+    
+    # Zakładki dla kategorii
+    category_names = [info['name'] for info in sorted(BADGE_CATEGORIES.values(), key=lambda x: x['order'])]
+    tabs = st.tabs(category_names)
+    
+    for i, (category_id, category_info) in enumerate(sorted(BADGE_CATEGORIES.items(), key=lambda x: x[1]['order'])):
         with tabs[i]:
-            cols = st.columns(3)
-            badges_displayed = 0
+            # Nagłówek kategorii
+            st.markdown(f"""
+            <div class="category-stats">
+                <div class="category-title">{category_info['icon']} {category_info['name']}</div>
+                <div class="category-description">{category_info['description']}</div>
+            </div>
+            """, unsafe_allow_html=True)
             
-            # Najpierw pokaż odblokowane odznaki
-            for badge_id in badge_ids:
-                if badge_id in user_badges:
-                    badge_info = BADGES[badge_id]
-                    with cols[badges_displayed % 3]:
-                        st.markdown(f"""
-                        <div class="badge-container unlocked">
-                            <div class="badge-icon">{badge_info['icon']}</div>
-                            <div class="badge-name">{badge_info['name']}</div>
-                            <div class="badge-description">{badge_info['description']}</div>
-                        </div>
-                        """, unsafe_allow_html=True)
-                    badges_displayed += 1
+            # Odznaki w kategorii
+            category_badges = [b_id for b_id, b_info in BADGES.items() 
+                             if b_info.get('category') == category_id]
             
-            # Potem pokaż zablokowane odznaki
-            for badge_id in badge_ids:
-                if badge_id not in user_badges:
-                    badge_info = BADGES[badge_id]
-                    with cols[badges_displayed % 3]:
-                        st.markdown(f"""
-                        <div class="badge-container locked">
-                            <div class="badge-icon">🔒</div>
-                            <div class="badge-name">{badge_info['name']}</div>
-                            <div class="badge-description">{badge_info['description']}</div>
+            if not category_badges:
+                st.info(f"Brak odznak w kategorii {category_info['name']}")
+                continue
+            
+            # Statystyki kategorii
+            earned_in_category = len([b for b in category_badges if b in user_badges])
+            total_in_category = len(category_badges)
+            category_completion = (earned_in_category / total_in_category) * 100
+            
+            st.markdown(f"""
+            <div class="category-progress">
+                📊 Postęp w kategorii: {earned_in_category}/{total_in_category} ({category_completion:.1f}%)
+            </div>
+            """, unsafe_allow_html=True)
+            
+            st.markdown("<br>", unsafe_allow_html=True)
+            
+            # Wyświetl odznaki w dwóch kolumnach
+            cols = st.columns(2)
+            
+            # Sortuj odznaki: zdobyte najpierw, potem pozostałe
+            earned_badges_in_category = [b for b in category_badges if b in user_badges]
+            locked_badges_in_category = [b for b in category_badges if b not in user_badges]
+            sorted_badges = earned_badges_in_category + locked_badges_in_category
+            
+            for j, badge_id in enumerate(sorted_badges):
+                if badge_id not in BADGES:
+                    continue
+                    
+                badge_info = BADGES[badge_id]
+                is_unlocked = badge_id in user_badges
+                
+                with cols[j % 2]:
+                    css_class = "badge-unlocked" if is_unlocked else "badge-locked"
+                    status = "✅" if is_unlocked else "🔒"
+                    
+                    # Dodaj informacje o tierze i XP
+                    tier_name = badge_info.get('tier', 'bronze')
+                    xp_reward = badge_info.get('xp_reward', 0)
+                    
+                    tier_colors = {
+                        'bronze': '#CD7F32',
+                        'silver': '#C0C0C0', 
+                        'gold': '#FFD700',
+                        'platinum': '#E5E4E2',
+                        'diamond': '#B9F2FF'
+                    }
+                    tier_color = tier_colors.get(tier_name, '#CD7F32')
+                    
+                    st.markdown(f"""
+                    <div class="{css_class}">
+                        <div class="badge-icon">{badge_info.get('icon', '🏆')}</div>
+                        <div class="badge-name">
+                            <span class="badge-status">{status}</span>
+                            {badge_info['name']}
                         </div>
-                        """, unsafe_allow_html=True)
-                    badges_displayed += 1
+                        <div class="badge-description">{badge_info['description']}</div>
+                        <div style="margin-top: 8px; font-size: 0.75em;">
+                            <span style="color: {tier_color}; font-weight: bold;">
+                                {tier_name.upper()}
+                            </span>
+                            {' • ' + str(xp_reward) + ' XP' if xp_reward > 0 else ''}
+                        </div>
+                    </div>
+                    """, unsafe_allow_html=True)

@@ -15,6 +15,7 @@ from data.test_questions import DEGEN_TYPES, TEST_QUESTIONS
 from utils.components import zen_header, zen_button, notification
 from utils.material3_components import apply_material3_theme
 from data.users import load_user_data, save_user_data
+from utils.achievements import check_achievements
 
 def show_degen_types():
     """Wyświetla nową zakładkę Typy Degenów, zawierającą test i eksplorator typów degenów"""
@@ -135,10 +136,12 @@ def calculate_results():
         "scores": st.session_state.scores,
         "timestamp": pd.Timestamp.now().isoformat()
     }
-    
-    user_data["degen_test"] = test_results
+      user_data["degen_test"] = test_results
     users_data[st.session_state.username] = user_data
     save_user_data(users_data)
+    
+    # Check for achievements after test completion
+    check_achievements(st.session_state.username)
     
     # Pokaż wyniki
     st.balloons()

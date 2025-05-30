@@ -180,6 +180,13 @@ def mark_lesson_as_completed(lesson_id):
             # Odśwież session_state
             st.session_state.user_data = user_data
             
+            # Check for achievements after completing lesson
+            try:
+                from utils.achievements import check_achievements
+                check_achievements(username, 'lesson_completion', lesson_id=lesson_id)
+            except ImportError:
+                pass  # Achievement system not available
+            
             return True
     
     return False

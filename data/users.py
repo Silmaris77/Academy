@@ -2,18 +2,19 @@ import json
 import os
 import uuid
 from datetime import datetime
+import streamlit as st
 
 def save_user_data(users_data):
     """Save user data to JSON file"""
     file_path = os.path.join(os.path.dirname(os.path.dirname(__file__)), 'users_data.json')
-    with open(file_path, 'w') as f:
-        json.dump(users_data, f)
+    with open(file_path, 'w', encoding='utf-8') as f:
+        json.dump(users_data, f, indent=2, ensure_ascii=False)
 
 def load_user_data():
     """Load user data from JSON file"""
     file_path = os.path.join(os.path.dirname(os.path.dirname(__file__)), 'users_data.json')
     if os.path.exists(file_path):
-        with open(file_path, 'r') as f:
+        with open(file_path, 'r', encoding='utf-8') as f:
             return json.load(f)
     return {}
 
@@ -66,3 +67,13 @@ def update_single_user_field(username, field_name, field_value):
         save_user_data(users_data)
         return True
     return False
+
+def get_current_user_data(username):
+    """Get the most current user data, prioritizing session state over file data"""
+    # Check if we have updated data in session state
+    if hasattr(st.session_state, 'user_data') and st.session_state.user_data:
+        return st.session_state.user_data
+    
+    # Otherwise load from file
+    users_data = load_user_data()
+    return users_data.get(username, {})

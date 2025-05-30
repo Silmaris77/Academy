@@ -55,10 +55,9 @@ def show_lesson():
     if 'current_lesson' not in st.session_state or not st.session_state.current_lesson:
         # WIDOK PRZEGLĄDU LEKCJI
         st.subheader("Dostępne lekcje")
-        
-        # Pobierz dane użytkownika dla oznaczenia ukończonych lekcji
-        users_data = load_user_data()
-        user_data = users_data.get(st.session_state.username, {})
+          # Pobierz dane użytkownika dla oznaczenia ukończonych lekcji
+        from data.users import get_current_user_data
+        user_data = get_current_user_data(st.session_state.username)
         completed_lessons = user_data.get('completed_lessons', [])
         
         # Grupuj lekcje według kategorii
@@ -762,10 +761,15 @@ def show_lesson():
                                 # Refresh user data for real-time updates
                                 from utils.real_time_updates import refresh_user_data
                                 refresh_user_data()
-                        
-                        # Oznacz lekcję jako zakończoną i zapisz postęp
+                          # Oznacz lekcję jako zakończoną i zapisz postęp
                         if is_lesson_fully_completed(lesson_id):
                             mark_lesson_as_completed(lesson_id)
+                            
+                            # Check for achievements after completing lesson
+                            from utils.achievements import check_achievements
+                            username = st.session_state.get('username')
+                            if username:
+                                check_achievements(username, 'lesson_completion', lesson_id=lesson_id)
                             
                             # Refresh user data for real-time updates
                             from utils.real_time_updates import refresh_user_data
