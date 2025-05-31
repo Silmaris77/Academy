@@ -3,7 +3,7 @@ import streamlit as st
 # Page configuration
 PAGE_CONFIG = {
     "page_title": "DegApp",  # zakładam, że to są aktualne ustawienia
-    "page_icon": "🧠",
+    "page_icon": "🧘‍♂️",
     "layout": "wide",
     "initial_sidebar_state": "expanded",
     "menu_items": {

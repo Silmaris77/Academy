@@ -5,7 +5,7 @@ import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
 from datetime import datetime, timedelta
-from data.users import load_user_data, save_user_data
+from data.users import load_user_data, get_current_user_data, save_user_data
 from data.test_questions import DEGEN_TYPES
 from config.settings import DAILY_MISSIONS, XP_LEVELS, USER_AVATARS
 from data.lessons import load_lessons
@@ -19,7 +19,8 @@ from utils.components import (
     xp_level_display, zen_button, notification, leaderboard_item, 
     add_animations_css, data_chart, user_stats_panel, lesson_card
 )
-from utils.real_time_updates import get_live_user_stats, live_xp_indicator
+from utils.real_time_updates import live_xp_indicator
+from utils.time_utils import calculate_relative_time
 
 def calculate_xp_progress(user_data):
     """Calculate XP progress and dynamically determine the user's level"""
@@ -308,6 +309,8 @@ def show_dashboard_sidebar(user_data, device_type):
 
 def show_recent_activities(user_data):
     """Lista ostatnich aktywności"""
+    from utils.time_utils import calculate_relative_time
+    
     st.markdown("""
     <div class="dashboard-section">
         <div class="section-header">
@@ -320,25 +323,59 @@ def show_recent_activities(user_data):
     # Przykładowe aktywności na podstawie danych użytkownika
     completed_lessons = user_data.get('completed_lessons', [])
     degen_type = user_data.get('degen_type', None)
+    test_completion_date = user_data.get('test_completion_date', None)
+    lesson_progress = user_data.get('lesson_progress', {})
     
     activities = []
     
+    # Activity for completed lessons
     if completed_lessons:
+        # Find the most recent lesson completion timestamp
+        most_recent_lesson_time = None
+        most_recent_lesson_id = completed_lessons[-1] if completed_lessons else None
+        
+        # Look for the most recent timestamp in lesson progress
+        for lesson_id, progress in lesson_progress.items():
+            if lesson_id in completed_lessons:
+                # Check various completion timestamps and find the most recent
+                timestamps = []
+                for field in ['summary_timestamp', 'closing_quiz_timestamp', 'content_timestamp', 
+                            'application_timestamp', 'reflection_timestamp']:
+                    if field in progress:
+                        timestamps.append(progress[field])
+                
+                if timestamps:
+                    # Get the most recent timestamp for this lesson
+                    latest_timestamp = max(timestamps)
+                    if most_recent_lesson_time is None or latest_timestamp > most_recent_lesson_time:
+                        most_recent_lesson_time = latest_timestamp
+                        most_recent_lesson_id = lesson_id
+        
+        lesson_time_text = "niedawno"
+        if most_recent_lesson_time:
+            lesson_time_text = calculate_relative_time(most_recent_lesson_time)
+        
         activities.append({
             'icon': '✓',
             'color': '#27ae60',
-            'title': f'Ukończono lekcję: {completed_lessons[-1] if completed_lessons else "Brak"}',
-            'time': '2 godziny temu'
+            'title': f'Ukończono lekcję: {most_recent_lesson_id if most_recent_lesson_id else "Brak"}',
+            'time': lesson_time_text
         })
     
+    # Activity for degen test completion
     if degen_type:
+        test_time_text = "niedawno"
+        if test_completion_date:
+            test_time_text = calculate_relative_time(test_completion_date)
+        
         activities.append({
             'icon': '🧬',
             'color': '#3498db',
             'title': f'Odkryto typ inwestora: {degen_type}',
-            'time': '1 dzień temu'
+            'time': test_time_text
         })
     
+    # Generic daily streak activity (keep as static for now)
     activities.append({
         'icon': '🔥',
         'color': '#e67e22',
@@ -611,11 +648,8 @@ def show_dashboard():
     live_xp_indicator()
     
     # Dodajemy animacje CSS
-    add_animations_css()
-
-    # Use real-time user stats instead of cached data
-    live_stats = get_live_user_stats(st.session_state.username)
-    user_data = live_stats
+    add_animations_css()    # Use current user data that prioritizes session state
+    user_data = get_current_user_data(st.session_state.username)
     
     # Główny kontener dashboard
     st.markdown('<div class="dashboard-container">', unsafe_allow_html=True)

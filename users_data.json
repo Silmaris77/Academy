@@ -3,7 +3,7 @@
     "user_id": "741699e6-2ffe-4b0f-a36b-81e397686191",
     "password": "a",
     "degen_type": "Zen Degen",
-    "xp": 3881,
+    "xp": 3931,
     "level": 4,
     "joined_date": "2025-04-27",
     "completed_lessons": [
@@ -90,7 +90,10 @@
       "psychology_expert",
       "xp_collector",
       "degen_explorer",
-      "pioneer"
+      "pioneer",
+      "first_badge",
+      "badge_collector",
+      "achievement_hunter"
     ],
     "test_taken": true,
     "theme": "yolo",
@@ -118,14 +121,14 @@
       }
     ],
     "test_scores": {
-      "Zen Degen": 15,
-      "YOLO Degen": 3,
-      "Emo Degen": 3,
+      "Zen Degen": 9,
+      "YOLO Degen": 6,
+      "Emo Degen": 6,
       "Strategist Degen": 3,
-      "Mad Scientist Degen": 9,
+      "Mad Scientist Degen": 6,
       "Spreadsheet Degen": 3,
       "Meta Degen": 3,
-      "Hype Degen": 4
+      "Hype Degen": 7
     },
     "daily_missions": [
       "Medytacja mindfulness",
@@ -220,7 +223,163 @@
       "badges": {
         "welcome": {
           "earned": true,
-          "earned_date": "2025-05-30T23:57:29.614546",
+          "earned_date": "2025-04-27",
+          "xp_earned": 25,
+          "tier": "bronze",
+          "conditions_met": [
+            "migrated"
+          ],
+          "progress_when_earned": 100,
+          "context": {
+            "migrated": true
+          }
+        },
+        "profile_complete": {
+          "earned": true,
+          "earned_date": "2025-04-27",
+          "xp_earned": 50,
+          "tier": "bronze",
+          "conditions_met": [
+            "migrated"
+          ],
+          "progress_when_earned": 100,
+          "context": {
+            "migrated": true
+          }
+        },
+        "first_degen_test": {
+          "earned": true,
+          "earned_date": "2025-04-27",
+          "xp_earned": 100,
+          "tier": "silver",
+          "conditions_met": [
+            "migrated"
+          ],
+          "progress_when_earned": 100,
+          "context": {
+            "migrated": true
+          }
+        },
+        "first_lesson": {
+          "earned": true,
+          "earned_date": "2025-04-27",
+          "xp_earned": 75,
+          "tier": "silver",
+          "conditions_met": [
+            "migrated"
+          ],
+          "progress_when_earned": 100,
+          "context": {
+            "migrated": true
+          }
+        },
+        "lesson_rookie": {
+          "earned": true,
+          "earned_date": "2025-04-27",
+          "xp_earned": 100,
+          "tier": "bronze",
+          "conditions_met": [
+            "migrated"
+          ],
+          "progress_when_earned": 100,
+          "context": {
+            "migrated": true
+          }
+        },
+        "lesson_apprentice": {
+          "earned": true,
+          "earned_date": "2025-04-27",
+          "xp_earned": 200,
+          "tier": "silver",
+          "conditions_met": [
+            "migrated"
+          ],
+          "progress_when_earned": 100,
+          "context": {
+            "migrated": true
+          }
+        },
+        "lesson_scholar": {
+          "earned": true,
+          "earned_date": "2025-04-27",
+          "xp_earned": 400,
+          "tier": "gold",
+          "conditions_met": [
+            "migrated"
+          ],
+          "progress_when_earned": 100,
+          "context": {
+            "migrated": true
+          }
+        },
+        "lesson_master": {
+          "earned": true,
+          "earned_date": "2025-04-27",
+          "xp_earned": 750,
+          "tier": "platinum",
+          "conditions_met": [
+            "migrated"
+          ],
+          "progress_when_earned": 100,
+          "context": {
+            "migrated": true
+          }
+        },
+        "psychology_expert": {
+          "earned": true,
+          "earned_date": "2025-04-27",
+          "xp_earned": 300,
+          "tier": "gold",
+          "conditions_met": [
+            "migrated"
+          ],
+          "progress_when_earned": 100,
+          "context": {
+            "migrated": true
+          }
+        },
+        "xp_collector": {
+          "earned": true,
+          "earned_date": "2025-04-27",
+          "xp_earned": 200,
+          "tier": "silver",
+          "conditions_met": [
+            "migrated"
+          ],
+          "progress_when_earned": 100,
+          "context": {
+            "migrated": true
+          }
+        },
+        "degen_explorer": {
+          "earned": true,
+          "earned_date": "2025-04-27",
+          "xp_earned": 150,
+          "tier": "silver",
+          "conditions_met": [
+            "migrated"
+          ],
+          "progress_when_earned": 100,
+          "context": {
+            "migrated": true
+          }
+        },
+        "pioneer": {
+          "earned": true,
+          "earned_date": "2025-04-27",
+          "xp_earned": 500,
+          "tier": "diamond",
+          "conditions_met": [
+            "migrated"
+          ],
+          "progress_when_earned": 100,
+          "context": {
+            "migrated": true
+          }
+        },
+        "first_badge": {
+          "earned": true,
+          "earned_date": "2025-05-31T09:39:06.125274",
           "xp_earned": 25,
           "tier": "bronze",
           "conditions_met": [
@@ -229,53 +388,9 @@
           "progress_when_earned": 100,
           "context": {}
         },
-        "profile_complete": {
+        "badge_collector": {
           "earned": true,
-          "earned_date": "2025-05-30T23:57:29.614558",
-          "xp_earned": 50,
-          "tier": "bronze",
-          "conditions_met": [
-            "main_condition"
-          ],
-          "progress_when_earned": 100,
-          "context": {}
-        },
-        "first_degen_test": {
-          "earned": true,
-          "earned_date": "2025-05-30T23:57:29.614566",
-          "xp_earned": 150,
-          "tier": "silver",
-          "conditions_met": [
-            "main_condition"
-          ],
-          "progress_when_earned": 100,
-          "context": {}
-        },
-        "first_lesson": {
-          "earned": true,
-          "earned_date": "2025-05-30T23:57:29.614573",
-          "xp_earned": 112,
-          "tier": "silver",
-          "conditions_met": [
-            "main_condition"
-          ],
-          "progress_when_earned": 100,
-          "context": {}
-        },
-        "lesson_rookie": {
-          "earned": true,
-          "earned_date": "2025-05-30T23:57:29.614578",
-          "xp_earned": 100,
-          "tier": "bronze",
-          "conditions_met": [
-            "main_condition"
-          ],
-          "progress_when_earned": 100,
-          "context": {}
-        },
-        "lesson_apprentice": {
-          "earned": true,
-          "earned_date": "2025-05-30T23:57:29.614584",
+          "earned_date": "2025-05-31T09:39:06.125325",
           "xp_earned": 300,
           "tier": "silver",
           "conditions_met": [
@@ -284,66 +399,11 @@
           "progress_when_earned": 100,
           "context": {}
         },
-        "lesson_scholar": {
+        "achievement_hunter": {
           "earned": true,
-          "earned_date": "2025-05-30T23:57:29.614590",
-          "xp_earned": 800,
-          "tier": "gold",
-          "conditions_met": [
-            "main_condition"
-          ],
-          "progress_when_earned": 100,
-          "context": {}
-        },
-        "lesson_master": {
-          "earned": true,
-          "earned_date": "2025-05-30T23:57:29.614595",
+          "earned_date": "2025-05-31T09:39:06.125453",
           "xp_earned": 2250,
           "tier": "platinum",
-          "conditions_met": [
-            "main_condition"
-          ],
-          "progress_when_earned": 100,
-          "context": {}
-        },
-        "psychology_expert": {
-          "earned": true,
-          "earned_date": "2025-05-30T23:57:29.614700",
-          "xp_earned": 600,
-          "tier": "gold",
-          "conditions_met": [
-            "xp_progress"
-          ],
-          "progress_when_earned": 100,
-          "context": {}
-        },
-        "xp_collector": {
-          "earned": true,
-          "earned_date": "2025-05-30T23:57:29.614707",
-          "xp_earned": 300,
-          "tier": "silver",
-          "conditions_met": [
-            "main_condition"
-          ],
-          "progress_when_earned": 100,
-          "context": {}
-        },
-        "degen_explorer": {
-          "earned": true,
-          "earned_date": "2025-05-30T23:57:29.614723",
-          "xp_earned": 225,
-          "tier": "silver",
-          "conditions_met": [
-            "xp_progress"
-          ],
-          "progress_when_earned": 100,
-          "context": {}
-        },
-        "pioneer": {
-          "earned": true,
-          "earned_date": "2025-05-30T23:57:29.615643",
-          "xp_earned": 2500,
-          "tier": "diamond",
           "conditions_met": [
             "main_condition"
           ],
@@ -353,27 +413,27 @@
       },
       "badge_progress": {
         "xp_master": {
-          "progress": 77.62,
+          "progress": 78.62,
           "conditions_status": {
-            "xp_progress": "3881/5000"
+            "xp_progress": "3931/5000"
           },
-          "last_updated": "2025-05-30T23:57:29.614713",
+          "last_updated": "2025-05-31T09:39:06.125045",
           "next_steps": [
-            "ZdobĂ„â€¦dÄąĹź jeszcze 1119 XP"
+            "Zdobądź jeszcze 1069 XP"
           ],
           "estimated_completion": null
         },
         "quiz_perfectionist": {
           "progress": 0,
           "conditions_status": {},
-          "last_updated": "2025-05-30T23:57:29.614601",
+          "last_updated": "2025-05-31T09:39:06.124771",
           "next_steps": [],
           "estimated_completion": null
         },
         "speed_learner": {
           "progress": 0,
           "conditions_status": {},
-          "last_updated": "2025-05-30T23:57:29.614632",
+          "last_updated": "2025-05-31T09:39:06.124872",
           "next_steps": [],
           "estimated_completion": null
         },
@@ -382,7 +442,7 @@
           "conditions_status": {
             "streak_progress": "0/3"
           },
-          "last_updated": "2025-05-30T23:57:29.614641",
+          "last_updated": "2025-05-31T09:39:06.124915",
           "next_steps": [
             "Kontynuuj streak przez 3 dni"
           ],
@@ -393,7 +453,7 @@
           "conditions_status": {
             "streak_progress": "0/3"
           },
-          "last_updated": "2025-05-30T23:57:29.614646",
+          "last_updated": "2025-05-31T09:39:06.124926",
           "next_steps": [
             "Kontynuuj streak przez 3 dni"
           ],
@@ -404,7 +464,7 @@
           "conditions_status": {
             "streak_progress": "0/3"
           },
-          "last_updated": "2025-05-30T23:57:29.614651",
+          "last_updated": "2025-05-31T09:39:06.124933",
           "next_steps": [
             "Kontynuuj streak przez 3 dni"
           ],
@@ -413,70 +473,70 @@
         "daily_mission_hero": {
           "progress": 0,
           "conditions_status": {},
-          "last_updated": "2025-05-30T23:57:29.614656",
+          "last_updated": "2025-05-31T09:39:06.124941",
           "next_steps": [],
           "estimated_completion": null
         },
         "weekend_scholar": {
           "progress": 0,
           "conditions_status": {},
-          "last_updated": "2025-05-30T23:57:29.614664",
+          "last_updated": "2025-05-31T09:39:06.124957",
           "next_steps": [],
           "estimated_completion": null
         },
         "night_owl": {
           "progress": 0,
           "conditions_status": {},
-          "last_updated": "2025-05-30T23:57:29.614672",
+          "last_updated": "2025-05-31T09:39:06.124970",
           "next_steps": [],
           "estimated_completion": null
         },
         "early_bird": {
           "progress": 0,
           "conditions_status": {},
-          "last_updated": "2025-05-30T23:57:29.614679",
+          "last_updated": "2025-05-31T09:39:06.124982",
           "next_steps": [],
           "estimated_completion": null
         },
         "zen_master": {
           "progress": 0,
           "conditions_status": {},
-          "last_updated": "2025-05-30T23:57:29.614683",
+          "last_updated": "2025-05-31T09:39:06.124989",
           "next_steps": [],
           "estimated_completion": null
         },
         "market_analyst": {
           "progress": 0,
           "conditions_status": {},
-          "last_updated": "2025-05-30T23:57:29.614688",
+          "last_updated": "2025-05-31T09:39:06.124997",
           "next_steps": [],
           "estimated_completion": null
         },
         "strategy_guru": {
           "progress": 0,
           "conditions_status": {},
-          "last_updated": "2025-05-30T23:57:29.614691",
+          "last_updated": "2025-05-31T09:39:06.125003",
           "next_steps": [],
           "estimated_completion": null
         },
         "multi_degen": {
           "progress": 0,
           "conditions_status": {},
-          "last_updated": "2025-05-30T23:57:29.614730",
+          "last_updated": "2025-05-31T09:39:06.125083",
           "next_steps": [],
           "estimated_completion": null
         },
         "self_aware": {
           "progress": 0,
           "conditions_status": {},
-          "last_updated": "2025-05-30T23:57:29.614734",
+          "last_updated": "2025-05-31T09:39:06.125104",
           "next_steps": [],
           "estimated_completion": null
         },
         "degen_king": {
           "progress": 0,
           "conditions_status": {},
-          "last_updated": "2025-05-30T23:57:29.614739",
+          "last_updated": "2025-05-31T09:39:06.125132",
           "next_steps": [],
           "estimated_completion": null
         },
@@ -485,103 +545,78 @@
           "conditions_status": {
             "community_joined": false
           },
-          "last_updated": "2025-05-30T23:57:29.614743",
+          "last_updated": "2025-05-31T09:39:06.125159",
           "next_steps": [],
           "estimated_completion": null
         },
         "helpful_friend": {
           "progress": 0,
           "conditions_status": {},
-          "last_updated": "2025-05-30T23:57:29.614747",
+          "last_updated": "2025-05-31T09:39:06.125182",
           "next_steps": [],
           "estimated_completion": null
         },
         "mentor": {
           "progress": 0,
           "conditions_status": {},
-          "last_updated": "2025-05-30T23:57:29.614750",
+          "last_updated": "2025-05-31T09:39:06.125202",
           "next_steps": [],
           "estimated_completion": null
         },
         "influencer": {
           "progress": 0,
           "conditions_status": {},
-          "last_updated": "2025-05-30T23:57:29.614754",
+          "last_updated": "2025-05-31T09:39:06.125227",
           "next_steps": [],
-          "estimated_completion": null
-        },
-        "first_badge": {
-          "progress": 0,
-          "conditions_status": {},
-          "last_updated": "2025-05-30T23:57:29.614758",
-          "next_steps": [],
-          "estimated_completion": null
-        },
-        "badge_collector": {
-          "progress": 0.0,
-          "conditions_status": {
-            "badges_collected": "0/10"
-          },
-          "last_updated": "2025-05-30T23:57:29.614765",
-          "next_steps": [
-            "ZdobĂ„â€¦dÄąĹź jeszcze 10 odznak"
-          ],
           "estimated_completion": null
         },
         "badge_master": {
           "progress": 0,
           "conditions_status": {},
-          "last_updated": "2025-05-30T23:57:29.614770",
-          "next_steps": [],
-          "estimated_completion": null
-        },
-        "achievement_hunter": {
-          "progress": 0,
-          "conditions_status": {},
-          "last_updated": "2025-05-30T23:57:29.614811",
+          "last_updated": "2025-05-31T09:39:06.125361",
           "next_steps": [],
           "estimated_completion": null
         },
         "legend": {
           "progress": 0,
           "conditions_status": {},
-          "last_updated": "2025-05-30T23:57:29.615661",
+          "last_updated": "2025-05-31T09:39:06.125507",
           "next_steps": [],
           "estimated_completion": null
         },
         "dedicated_student": {
           "progress": 0,
           "conditions_status": {},
-          "last_updated": "2025-05-30T23:57:29.615666",
+          "last_updated": "2025-05-31T09:39:06.125537",
           "next_steps": [],
           "estimated_completion": null
         },
         "secret_discoverer": {
           "progress": 0,
           "conditions_status": {},
-          "last_updated": "2025-05-30T23:57:29.615670",
+          "last_updated": "2025-05-31T09:39:06.125563",
           "next_steps": [],
           "estimated_completion": null
         },
         "midnight_learner": {
           "progress": 0,
           "conditions_status": {},
-          "last_updated": "2025-05-30T23:57:29.615683",
+          "last_updated": "2025-05-31T09:39:06.125622",
           "next_steps": [],
           "estimated_completion": null
         }
       },
       "badge_stats": {
-        "total_earned": 12,
+        "total_earned": 15,
         "categories_completed": [
           "getting_started"
         ],
         "current_streak": 0,
         "highest_tier_earned": "diamond",
-        "total_badge_xp": 7412,
+        "total_badge_xp": 5425,
         "last_badge_earned": {
-          "badge_id": "pioneer",
-          "earned_date": "2025-05-30T23:57:29.615643"
+          "badge_id": "achievement_hunter",
+          "earned_date": "2025-05-31T09:39:06.125453"
         },
         "earning_rate": 0.0
       }
@@ -2391,5 +2426,472 @@
         "closing_quiz_timestamp": "2025-05-31 00:50:59"
       }
     }
+  },
+  "kasia": {
+    "user_id": "dd573cf7-a816-4a36-b33a-3059f73775c2",
+    "password": "kasia",
+    "degen_type": "YOLO Degen",
+    "xp": 250,
+    "level": 1,
+    "joined_date": "2025-05-31",
+    "completed_lessons": [
+      "B1C1L1"
+    ],
+    "badges": [
+      "welcome",
+      "first_degen_test",
+      "degen_explorer",
+      "pioneer",
+      "first_badge",
+      "first_lesson",
+      "weekend_scholar"
+    ],
+    "test_taken": true,
+    "test_scores": {
+      "Zen Degen": 3,
+      "YOLO Degen": 12,
+      "Emo Degen": 7,
+      "Strategist Degen": 3,
+      "Mad Scientist Degen": 3,
+      "Spreadsheet Degen": 0,
+      "Meta Degen": 6,
+      "Hype Degen": 10
+    },
+    "badge_data": {
+      "badges": {
+        "welcome": {
+          "earned": true,
+          "earned_date": "2025-05-31",
+          "xp_earned": 25,
+          "tier": "bronze",
+          "conditions_met": [
+            "migrated"
+          ],
+          "progress_when_earned": 100,
+          "context": {
+            "migrated": true
+          }
+        },
+        "first_degen_test": {
+          "earned": true,
+          "earned_date": "2025-05-31",
+          "xp_earned": 100,
+          "tier": "silver",
+          "conditions_met": [
+            "migrated"
+          ],
+          "progress_when_earned": 100,
+          "context": {
+            "migrated": true
+          }
+        },
+        "degen_explorer": {
+          "earned": true,
+          "earned_date": "2025-05-31",
+          "xp_earned": 150,
+          "tier": "silver",
+          "conditions_met": [
+            "migrated"
+          ],
+          "progress_when_earned": 100,
+          "context": {
+            "migrated": true
+          }
+        },
+        "pioneer": {
+          "earned": true,
+          "earned_date": "2025-05-31",
+          "xp_earned": 500,
+          "tier": "diamond",
+          "conditions_met": [
+            "migrated"
+          ],
+          "progress_when_earned": 100,
+          "context": {
+            "migrated": true
+          }
+        },
+        "first_badge": {
+          "earned": true,
+          "earned_date": "2025-05-31",
+          "xp_earned": 25,
+          "tier": "bronze",
+          "conditions_met": [
+            "migrated"
+          ],
+          "progress_when_earned": 100,
+          "context": {
+            "migrated": true
+          }
+        },
+        "first_lesson": {
+          "earned": true,
+          "earned_date": "2025-05-31",
+          "xp_earned": 75,
+          "tier": "silver",
+          "conditions_met": [
+            "migrated"
+          ],
+          "progress_when_earned": 100,
+          "context": {
+            "migrated": true
+          }
+        },
+        "weekend_scholar": {
+          "earned": true,
+          "earned_date": "2025-05-31",
+          "xp_earned": 50,
+          "tier": "bronze",
+          "conditions_met": [
+            "migrated"
+          ],
+          "progress_when_earned": 100,
+          "context": {
+            "migrated": true
+          }
+        }
+      },
+      "badge_progress": {
+        "profile_complete": {
+          "progress": 33.33333333333333,
+          "conditions_status": {
+            "degen_type": true,
+            "avatar": false,
+            "theme": false
+          },
+          "last_updated": "2025-05-31T12:33:03.127583",
+          "next_steps": [
+            "Uzupełnij: avatar, theme"
+          ],
+          "estimated_completion": null
+        },
+        "lesson_rookie": {
+          "progress": 20.0,
+          "conditions_status": {
+            "lessons_completed": "1/5"
+          },
+          "last_updated": "2025-05-31T12:33:03.127604",
+          "next_steps": [
+            "Ukończ jeszcze 4 lekcji"
+          ],
+          "estimated_completion": null
+        },
+        "lesson_apprentice": {
+          "progress": 6.666666666666667,
+          "conditions_status": {
+            "lessons_completed": "1/15"
+          },
+          "last_updated": "2025-05-31T12:33:03.127612",
+          "next_steps": [
+            "Ukończ jeszcze 14 lekcji"
+          ],
+          "estimated_completion": null
+        },
+        "lesson_scholar": {
+          "progress": 3.3333333333333335,
+          "conditions_status": {
+            "lessons_completed": "1/30"
+          },
+          "last_updated": "2025-05-31T12:33:03.127620",
+          "next_steps": [
+            "Ukończ jeszcze 29 lekcji"
+          ],
+          "estimated_completion": null
+        },
+        "lesson_master": {
+          "progress": 2.0,
+          "conditions_status": {
+            "lessons_completed": "1/50"
+          },
+          "last_updated": "2025-05-31T12:33:03.127628",
+          "next_steps": [
+            "Ukończ jeszcze 49 lekcji"
+          ],
+          "estimated_completion": null
+        },
+        "psychology_expert": {
+          "progress": 25.0,
+          "conditions_status": {
+            "xp_progress": "250/1000"
+          },
+          "last_updated": "2025-05-31T12:33:03.127833",
+          "next_steps": [
+            "Zdobądź jeszcze 750 XP"
+          ],
+          "estimated_completion": null
+        },
+        "xp_collector": {
+          "progress": 25.0,
+          "conditions_status": {
+            "xp_progress": "250/1000"
+          },
+          "last_updated": "2025-05-31T12:33:03.127843",
+          "next_steps": [
+            "Zdobądź jeszcze 750 XP"
+          ],
+          "estimated_completion": null
+        },
+        "xp_master": {
+          "progress": 5.0,
+          "conditions_status": {
+            "xp_progress": "250/5000"
+          },
+          "last_updated": "2025-05-31T12:33:03.127852",
+          "next_steps": [
+            "Zdobądź jeszcze 4750 XP"
+          ],
+          "estimated_completion": null
+        },
+        "badge_collector": {
+          "progress": 70.0,
+          "conditions_status": {
+            "badges_collected": "7/10"
+          },
+          "last_updated": "2025-05-31T12:33:03.127951",
+          "next_steps": [
+            "Zdobądź jeszcze 3 odznak"
+          ],
+          "estimated_completion": null
+        },
+        "quiz_perfectionist": {
+          "progress": 0,
+          "conditions_status": {},
+          "last_updated": "2025-05-31T12:33:03.127640",
+          "next_steps": [],
+          "estimated_completion": null
+        },
+        "speed_learner": {
+          "progress": 0,
+          "conditions_status": {},
+          "last_updated": "2025-05-31T12:33:03.127723",
+          "next_steps": [],
+          "estimated_completion": null
+        },
+        "login_streak_3": {
+          "progress": 0.0,
+          "conditions_status": {
+            "streak_progress": "0/3"
+          },
+          "last_updated": "2025-05-31T12:33:03.127740",
+          "next_steps": [
+            "Kontynuuj streak przez 3 dni"
+          ],
+          "estimated_completion": null
+        },
+        "login_streak_7": {
+          "progress": 0.0,
+          "conditions_status": {
+            "streak_progress": "0/3"
+          },
+          "last_updated": "2025-05-31T12:33:03.127751",
+          "next_steps": [
+            "Kontynuuj streak przez 3 dni"
+          ],
+          "estimated_completion": null
+        },
+        "login_streak_30": {
+          "progress": 0.0,
+          "conditions_status": {
+            "streak_progress": "0/3"
+          },
+          "last_updated": "2025-05-31T12:33:03.127761",
+          "next_steps": [
+            "Kontynuuj streak przez 3 dni"
+          ],
+          "estimated_completion": null
+        },
+        "daily_mission_hero": {
+          "progress": 0,
+          "conditions_status": {},
+          "last_updated": "2025-05-31T12:33:03.127769",
+          "next_steps": [],
+          "estimated_completion": null
+        },
+        "night_owl": {
+          "progress": 0,
+          "conditions_status": {},
+          "last_updated": "2025-05-31T12:33:03.127786",
+          "next_steps": [],
+          "estimated_completion": null
+        },
+        "early_bird": {
+          "progress": 0,
+          "conditions_status": {},
+          "last_updated": "2025-05-31T12:33:03.127797",
+          "next_steps": [],
+          "estimated_completion": null
+        },
+        "zen_master": {
+          "progress": 0,
+          "conditions_status": {},
+          "last_updated": "2025-05-31T12:33:03.127806",
+          "next_steps": [],
+          "estimated_completion": null
+        },
+        "market_analyst": {
+          "progress": 0,
+          "conditions_status": {},
+          "last_updated": "2025-05-31T12:33:03.127814",
+          "next_steps": [],
+          "estimated_completion": null
+        },
+        "strategy_guru": {
+          "progress": 0,
+          "conditions_status": {},
+          "last_updated": "2025-05-31T12:33:03.127822",
+          "next_steps": [],
+          "estimated_completion": null
+        },
+        "multi_degen": {
+          "progress": 0,
+          "conditions_status": {},
+          "last_updated": "2025-05-31T12:33:03.127874",
+          "next_steps": [],
+          "estimated_completion": null
+        },
+        "self_aware": {
+          "progress": 0,
+          "conditions_status": {},
+          "last_updated": "2025-05-31T12:33:03.127883",
+          "next_steps": [],
+          "estimated_completion": null
+        },
+        "degen_king": {
+          "progress": 0,
+          "conditions_status": {},
+          "last_updated": "2025-05-31T12:33:03.127900",
+          "next_steps": [],
+          "estimated_completion": null
+        },
+        "community_member": {
+          "progress": 0,
+          "conditions_status": {
+            "community_joined": false
+          },
+          "last_updated": "2025-05-31T12:33:03.127910",
+          "next_steps": [],
+          "estimated_completion": null
+        },
+        "helpful_friend": {
+          "progress": 0,
+          "conditions_status": {},
+          "last_updated": "2025-05-31T12:33:03.127919",
+          "next_steps": [],
+          "estimated_completion": null
+        },
+        "mentor": {
+          "progress": 0,
+          "conditions_status": {},
+          "last_updated": "2025-05-31T12:33:03.127928",
+          "next_steps": [],
+          "estimated_completion": null
+        },
+        "influencer": {
+          "progress": 0,
+          "conditions_status": {},
+          "last_updated": "2025-05-31T12:33:03.127937",
+          "next_steps": [],
+          "estimated_completion": null
+        },
+        "badge_master": {
+          "progress": 0,
+          "conditions_status": {},
+          "last_updated": "2025-05-31T12:33:03.127962",
+          "next_steps": [],
+          "estimated_completion": null
+        },
+        "achievement_hunter": {
+          "progress": 0,
+          "conditions_status": {},
+          "last_updated": "2025-05-31T12:33:03.128033",
+          "next_steps": [],
+          "estimated_completion": null
+        },
+        "legend": {
+          "progress": 0,
+          "conditions_status": {},
+          "last_updated": "2025-05-31T12:33:03.128075",
+          "next_steps": [],
+          "estimated_completion": null
+        },
+        "dedicated_student": {
+          "progress": 0,
+          "conditions_status": {},
+          "last_updated": "2025-05-31T12:33:03.128086",
+          "next_steps": [],
+          "estimated_completion": null
+        },
+        "secret_discoverer": {
+          "progress": 0,
+          "conditions_status": {},
+          "last_updated": "2025-05-31T12:33:03.128097",
+          "next_steps": [],
+          "estimated_completion": null
+        },
+        "midnight_learner": {
+          "progress": 0,
+          "conditions_status": {},
+          "last_updated": "2025-05-31T12:33:03.128121",
+          "next_steps": [],
+          "estimated_completion": null
+        }
+      },
+      "badge_stats": {
+        "total_earned": 7,
+        "categories_completed": [],
+        "current_streak": 0,
+        "highest_tier_earned": "diamond",
+        "total_badge_xp": 925,
+        "last_badge_earned": {
+          "badge_id": "welcome",
+          "earned_date": "2025-05-31"
+        },
+        "earning_rate": 0.0
+      }
+    },
+    "lesson_progress": {
+      "B1C1L1": {
+        "intro_xp_awarded": true,
+        "intro_completed": true,
+        "intro_xp": 5,
+        "intro_timestamp": "2025-05-31 12:30:03",
+        "opening_quiz_xp_awarded": true,
+        "opening_quiz_completed": true,
+        "opening_quiz_xp": 0,
+        "opening_quiz_timestamp": "2025-05-31 12:30:07",
+        "content_xp_awarded": true,
+        "content_completed": true,
+        "content_xp": 30,
+        "content_timestamp": "2025-05-31 12:30:17",
+        "reflection_xp_awarded": true,
+        "reflection_completed": true,
+        "reflection_xp": 20,
+        "reflection_timestamp": "2025-05-31 12:30:21",
+        "application_xp_awarded": true,
+        "application_completed": true,
+        "application_xp": 20,
+        "application_timestamp": "2025-05-31 12:30:22",
+        "closing_quiz_xp_awarded": true,
+        "closing_quiz_completed": true,
+        "closing_quiz_xp": 20,
+        "closing_quiz_timestamp": "2025-05-31 12:30:42",
+        "summary_xp_awarded": true,
+        "summary_completed": true,
+        "summary_xp": 5,
+        "summary_timestamp": "2025-05-31 12:31:28"
+      }
+    },
+    "test_completion_date": "2025-05-31 12:33:03"
+  },
+  "jurek": {
+    "user_id": "e0561d80-3bd9-4a04-8315-963c0d29399f",
+    "password": "jurek",
+    "degen_type": null,
+    "xp": 0,
+    "level": 1,
+    "joined_date": "2025-05-31",
+    "completed_lessons": [],
+    "badges": [],
+    "test_taken": false
   }
 }

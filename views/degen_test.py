@@ -260,9 +260,12 @@ def show_degen_test():
         # Show test results
         dominant_type = calculate_test_results(st.session_state.test_scores)        # Update user data
         users_data = load_user_data()
+        from utils.time_utils import get_current_timestamp
+        
         users_data[st.session_state.username]["degen_type"] = dominant_type
         users_data[st.session_state.username]["test_taken"] = True
         users_data[st.session_state.username]["test_scores"] = st.session_state.test_scores  # Save test scores
+        users_data[st.session_state.username]["test_completion_date"] = get_current_timestamp()  # Save completion timestamp
         users_data[st.session_state.username]["xp"] += 50  # Bonus XP for completing the test
         save_user_data(users_data)
         

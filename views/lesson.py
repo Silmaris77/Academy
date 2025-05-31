@@ -8,7 +8,7 @@ from utils.lesson_progress import (
     award_fragment_xp, get_lesson_fragment_progress, calculate_lesson_completion,
     is_lesson_fully_completed, get_fragment_xp_breakdown, mark_lesson_as_completed
 )
-from utils.real_time_updates import get_live_user_stats, live_xp_indicator, show_xp_notification
+from utils.real_time_updates import live_xp_indicator, show_xp_notification
 
 def get_difficulty_stars(difficulty):
     """Konwertuje poziom trudności (liczba lub tekst) na odpowiednią liczbę gwiazdek."""
