@@ -21,6 +21,7 @@ from utils.components import (
 )
 from utils.real_time_updates import live_xp_indicator
 from utils.time_utils import calculate_relative_time
+from utils.mission_components import render_mission_summary_widget
 
 def calculate_xp_progress(user_data):
     """Calculate XP progress and dynamically determine the user's level"""
@@ -282,7 +283,9 @@ def show_main_content(user_data, device_type):
     
         
     # Sekcja dostępnych lekcji - teraz używa lesson_card
-    show_available_lessons(device_type)
+    show_available_lessons(device_type)    # Sekcja misji praktycznych dla lekcji B1C1L1
+    username = st.session_state.get('username', 'user')
+    render_mission_summary_widget(username, 'B1C1L1')
 
     # Sekcja misji dziennych
     show_daily_missions_section()

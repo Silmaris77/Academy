@@ -379,36 +379,42 @@
         },
         "first_badge": {
           "earned": true,
-          "earned_date": "2025-05-31T09:39:06.125274",
+          "earned_date": "2025-04-27",
           "xp_earned": 25,
           "tier": "bronze",
           "conditions_met": [
-            "main_condition"
+            "migrated"
           ],
           "progress_when_earned": 100,
-          "context": {}
+          "context": {
+            "migrated": true
+          }
         },
         "badge_collector": {
           "earned": true,
-          "earned_date": "2025-05-31T09:39:06.125325",
-          "xp_earned": 300,
+          "earned_date": "2025-04-27",
+          "xp_earned": 200,
           "tier": "silver",
           "conditions_met": [
-            "main_condition"
+            "migrated"
           ],
           "progress_when_earned": 100,
-          "context": {}
+          "context": {
+            "migrated": true
+          }
         },
         "achievement_hunter": {
           "earned": true,
-          "earned_date": "2025-05-31T09:39:06.125453",
-          "xp_earned": 2250,
+          "earned_date": "2025-04-27",
+          "xp_earned": 750,
           "tier": "platinum",
           "conditions_met": [
-            "main_condition"
+            "migrated"
           ],
           "progress_when_earned": 100,
-          "context": {}
+          "context": {
+            "migrated": true
+          }
         }
       },
       "badge_progress": {
@@ -417,7 +423,7 @@
           "conditions_status": {
             "xp_progress": "3931/5000"
           },
-          "last_updated": "2025-05-31T09:39:06.125045",
+          "last_updated": "2025-05-31T19:42:09.220477",
           "next_steps": [
             "Zdobądź jeszcze 1069 XP"
           ],
@@ -426,14 +432,14 @@
         "quiz_perfectionist": {
           "progress": 0,
           "conditions_status": {},
-          "last_updated": "2025-05-31T09:39:06.124771",
+          "last_updated": "2025-05-31T19:42:09.220029",
           "next_steps": [],
           "estimated_completion": null
         },
         "speed_learner": {
           "progress": 0,
           "conditions_status": {},
-          "last_updated": "2025-05-31T09:39:06.124872",
+          "last_updated": "2025-05-31T19:42:09.220155",
           "next_steps": [],
           "estimated_completion": null
         },
@@ -442,7 +448,7 @@
           "conditions_status": {
             "streak_progress": "0/3"
           },
-          "last_updated": "2025-05-31T09:39:06.124915",
+          "last_updated": "2025-05-31T19:42:09.220192",
           "next_steps": [
             "Kontynuuj streak przez 3 dni"
           ],
@@ -453,7 +459,7 @@
           "conditions_status": {
             "streak_progress": "0/3"
           },
-          "last_updated": "2025-05-31T09:39:06.124926",
+          "last_updated": "2025-05-31T19:42:09.220219",
           "next_steps": [
             "Kontynuuj streak przez 3 dni"
           ],
@@ -464,7 +470,7 @@
           "conditions_status": {
             "streak_progress": "0/3"
           },
-          "last_updated": "2025-05-31T09:39:06.124933",
+          "last_updated": "2025-05-31T19:42:09.220238",
           "next_steps": [
             "Kontynuuj streak przez 3 dni"
           ],
@@ -473,70 +479,70 @@
         "daily_mission_hero": {
           "progress": 0,
           "conditions_status": {},
-          "last_updated": "2025-05-31T09:39:06.124941",
+          "last_updated": "2025-05-31T19:42:09.220261",
           "next_steps": [],
           "estimated_completion": null
         },
         "weekend_scholar": {
           "progress": 0,
           "conditions_status": {},
-          "last_updated": "2025-05-31T09:39:06.124957",
+          "last_updated": "2025-05-31T19:42:09.220302",
           "next_steps": [],
           "estimated_completion": null
         },
         "night_owl": {
           "progress": 0,
           "conditions_status": {},
-          "last_updated": "2025-05-31T09:39:06.124970",
+          "last_updated": "2025-05-31T19:42:09.220336",
           "next_steps": [],
           "estimated_completion": null
         },
         "early_bird": {
           "progress": 0,
           "conditions_status": {},
-          "last_updated": "2025-05-31T09:39:06.124982",
+          "last_updated": "2025-05-31T19:42:09.220393",
           "next_steps": [],
           "estimated_completion": null
         },
         "zen_master": {
           "progress": 0,
           "conditions_status": {},
-          "last_updated": "2025-05-31T09:39:06.124989",
+          "last_updated": "2025-05-31T19:42:09.220412",
           "next_steps": [],
           "estimated_completion": null
         },
         "market_analyst": {
           "progress": 0,
           "conditions_status": {},
-          "last_updated": "2025-05-31T09:39:06.124997",
+          "last_updated": "2025-05-31T19:42:09.220431",
           "next_steps": [],
           "estimated_completion": null
         },
         "strategy_guru": {
           "progress": 0,
           "conditions_status": {},
-          "last_updated": "2025-05-31T09:39:06.125003",
+          "last_updated": "2025-05-31T19:42:09.220448",
           "next_steps": [],
           "estimated_completion": null
         },
         "multi_degen": {
           "progress": 0,
           "conditions_status": {},
-          "last_updated": "2025-05-31T09:39:06.125083",
+          "last_updated": "2025-05-31T19:42:09.220536",
           "next_steps": [],
           "estimated_completion": null
         },
         "self_aware": {
           "progress": 0,
           "conditions_status": {},
-          "last_updated": "2025-05-31T09:39:06.125104",
+          "last_updated": "2025-05-31T19:42:09.220556",
           "next_steps": [],
           "estimated_completion": null
         },
         "degen_king": {
           "progress": 0,
           "conditions_status": {},
-          "last_updated": "2025-05-31T09:39:06.125132",
+          "last_updated": "2025-05-31T19:42:09.220579",
           "next_steps": [],
           "estimated_completion": null
         },
@@ -545,63 +551,63 @@
           "conditions_status": {
             "community_joined": false
           },
-          "last_updated": "2025-05-31T09:39:06.125159",
+          "last_updated": "2025-05-31T19:42:09.220597",
           "next_steps": [],
           "estimated_completion": null
         },
         "helpful_friend": {
           "progress": 0,
           "conditions_status": {},
-          "last_updated": "2025-05-31T09:39:06.125182",
+          "last_updated": "2025-05-31T19:42:09.220614",
           "next_steps": [],
           "estimated_completion": null
         },
         "mentor": {
           "progress": 0,
           "conditions_status": {},
-          "last_updated": "2025-05-31T09:39:06.125202",
+          "last_updated": "2025-05-31T19:42:09.220627",
           "next_steps": [],
           "estimated_completion": null
         },
         "influencer": {
           "progress": 0,
           "conditions_status": {},
-          "last_updated": "2025-05-31T09:39:06.125227",
+          "last_updated": "2025-05-31T19:42:09.220640",
           "next_steps": [],
           "estimated_completion": null
         },
         "badge_master": {
           "progress": 0,
           "conditions_status": {},
-          "last_updated": "2025-05-31T09:39:06.125361",
+          "last_updated": "2025-05-31T19:42:09.220656",
           "next_steps": [],
           "estimated_completion": null
         },
         "legend": {
           "progress": 0,
           "conditions_status": {},
-          "last_updated": "2025-05-31T09:39:06.125507",
+          "last_updated": "2025-05-31T19:42:09.220692",
           "next_steps": [],
           "estimated_completion": null
         },
         "dedicated_student": {
           "progress": 0,
           "conditions_status": {},
-          "last_updated": "2025-05-31T09:39:06.125537",
+          "last_updated": "2025-05-31T19:42:09.220712",
           "next_steps": [],
           "estimated_completion": null
         },
         "secret_discoverer": {
           "progress": 0,
           "conditions_status": {},
-          "last_updated": "2025-05-31T09:39:06.125563",
+          "last_updated": "2025-05-31T19:42:09.220727",
           "next_steps": [],
           "estimated_completion": null
         },
         "midnight_learner": {
           "progress": 0,
           "conditions_status": {},
-          "last_updated": "2025-05-31T09:39:06.125622",
+          "last_updated": "2025-05-31T19:42:09.220764",
           "next_steps": [],
           "estimated_completion": null
         }
@@ -613,12 +619,62 @@
         ],
         "current_streak": 0,
         "highest_tier_earned": "diamond",
-        "total_badge_xp": 5425,
+        "total_badge_xp": 3825,
         "last_badge_earned": {
-          "badge_id": "achievement_hunter",
-          "earned_date": "2025-05-31T09:39:06.125453"
+          "badge_id": "welcome",
+          "earned_date": "2025-04-27"
         },
         "earning_rate": 0.0
+      }
+    },
+    "missions_progress": {
+      "B1C1L1": {
+        "mission_3_app_detox": {
+          "status": "active",
+          "start_date": "2025-05-31T19:39:23.564777",
+          "current_day": 1,
+          "total_days": 7,
+          "daily_progress": {},
+          "completed_tasks": [],
+          "xp_earned": 0,
+          "last_activity": "2025-05-31T19:39:23.564800"
+        },
+        "mission_1_emotion_tracking": {
+          "status": "active",
+          "start_date": "2025-05-31T19:39:42.797633",
+          "current_day": 1,
+          "total_days": 3,
+          "daily_progress": {
+            "day_1": {
+              "completed_checklist": [
+                "Zapisałem minimum 3 obserwacje emocjonalne",
+                "Oceniłem siłę emocji w skali 1-10"
+              ],
+              "completion_time": "2025-05-31T19:42:45.990413",
+              "completed": true,
+              "notes": "test \ntest test"
+            }
+          },
+          "completed_tasks": [],
+          "xp_earned": 0,
+          "last_activity": "2025-05-31T19:42:45.990477"
+        },
+        "mission_2_loss_reframing": {
+          "status": "active",
+          "start_date": "2025-05-31T19:41:08.740643",
+          "current_day": 1,
+          "total_days": 5,
+          "daily_progress": {
+            "day_1": {
+              "satisfaction_rating": 6,
+              "completion_time": "2025-05-31T19:42:04.974855",
+              "completed": true
+            }
+          },
+          "completed_tasks": [],
+          "xp_earned": 0,
+          "last_activity": "2025-05-31T19:42:04.975006"
+        }
       }
     }
   },
@@ -2559,7 +2615,7 @@
             "avatar": false,
             "theme": false
           },
-          "last_updated": "2025-05-31T12:33:03.127583",
+          "last_updated": "2025-05-31T16:16:18.826233",
           "next_steps": [
             "Uzupełnij: avatar, theme"
           ],
@@ -2570,7 +2626,7 @@
           "conditions_status": {
             "lessons_completed": "1/5"
           },
-          "last_updated": "2025-05-31T12:33:03.127604",
+          "last_updated": "2025-05-31T16:16:18.826251",
           "next_steps": [
             "Ukończ jeszcze 4 lekcji"
           ],
@@ -2581,7 +2637,7 @@
           "conditions_status": {
             "lessons_completed": "1/15"
           },
-          "last_updated": "2025-05-31T12:33:03.127612",
+          "last_updated": "2025-05-31T16:16:18.826262",
           "next_steps": [
             "Ukończ jeszcze 14 lekcji"
           ],
@@ -2592,7 +2648,7 @@
           "conditions_status": {
             "lessons_completed": "1/30"
           },
-          "last_updated": "2025-05-31T12:33:03.127620",
+          "last_updated": "2025-05-31T16:16:18.826272",
           "next_steps": [
             "Ukończ jeszcze 29 lekcji"
           ],
@@ -2603,7 +2659,7 @@
           "conditions_status": {
             "lessons_completed": "1/50"
           },
-          "last_updated": "2025-05-31T12:33:03.127628",
+          "last_updated": "2025-05-31T16:16:18.826281",
           "next_steps": [
             "Ukończ jeszcze 49 lekcji"
           ],
@@ -2614,7 +2670,7 @@
           "conditions_status": {
             "xp_progress": "250/1000"
           },
-          "last_updated": "2025-05-31T12:33:03.127833",
+          "last_updated": "2025-05-31T16:16:18.826450",
           "next_steps": [
             "Zdobądź jeszcze 750 XP"
           ],
@@ -2625,7 +2681,7 @@
           "conditions_status": {
             "xp_progress": "250/1000"
           },
-          "last_updated": "2025-05-31T12:33:03.127843",
+          "last_updated": "2025-05-31T16:16:18.826462",
           "next_steps": [
             "Zdobądź jeszcze 750 XP"
           ],
@@ -2636,7 +2692,7 @@
           "conditions_status": {
             "xp_progress": "250/5000"
           },
-          "last_updated": "2025-05-31T12:33:03.127852",
+          "last_updated": "2025-05-31T16:16:18.826473",
           "next_steps": [
             "Zdobądź jeszcze 4750 XP"
           ],
@@ -2647,7 +2703,7 @@
           "conditions_status": {
             "badges_collected": "7/10"
           },
-          "last_updated": "2025-05-31T12:33:03.127951",
+          "last_updated": "2025-05-31T16:16:18.826561",
           "next_steps": [
             "Zdobądź jeszcze 3 odznak"
           ],
@@ -2656,14 +2712,14 @@
         "quiz_perfectionist": {
           "progress": 0,
           "conditions_status": {},
-          "last_updated": "2025-05-31T12:33:03.127640",
+          "last_updated": "2025-05-31T16:16:18.826294",
           "next_steps": [],
           "estimated_completion": null
         },
         "speed_learner": {
           "progress": 0,
           "conditions_status": {},
-          "last_updated": "2025-05-31T12:33:03.127723",
+          "last_updated": "2025-05-31T16:16:18.826334",
           "next_steps": [],
           "estimated_completion": null
         },
@@ -2672,7 +2728,7 @@
           "conditions_status": {
             "streak_progress": "0/3"
           },
-          "last_updated": "2025-05-31T12:33:03.127740",
+          "last_updated": "2025-05-31T16:16:18.826348",
           "next_steps": [
             "Kontynuuj streak przez 3 dni"
           ],
@@ -2683,7 +2739,7 @@
           "conditions_status": {
             "streak_progress": "0/3"
           },
-          "last_updated": "2025-05-31T12:33:03.127751",
+          "last_updated": "2025-05-31T16:16:18.826359",
           "next_steps": [
             "Kontynuuj streak przez 3 dni"
           ],
@@ -2694,7 +2750,7 @@
           "conditions_status": {
             "streak_progress": "0/3"
           },
-          "last_updated": "2025-05-31T12:33:03.127761",
+          "last_updated": "2025-05-31T16:16:18.826369",
           "next_steps": [
             "Kontynuuj streak przez 3 dni"
           ],
@@ -2703,63 +2759,63 @@
         "daily_mission_hero": {
           "progress": 0,
           "conditions_status": {},
-          "last_updated": "2025-05-31T12:33:03.127769",
+          "last_updated": "2025-05-31T16:16:18.826378",
           "next_steps": [],
           "estimated_completion": null
         },
         "night_owl": {
           "progress": 0,
           "conditions_status": {},
-          "last_updated": "2025-05-31T12:33:03.127786",
+          "last_updated": "2025-05-31T16:16:18.826396",
           "next_steps": [],
           "estimated_completion": null
         },
         "early_bird": {
           "progress": 0,
           "conditions_status": {},
-          "last_updated": "2025-05-31T12:33:03.127797",
+          "last_updated": "2025-05-31T16:16:18.826410",
           "next_steps": [],
           "estimated_completion": null
         },
         "zen_master": {
           "progress": 0,
           "conditions_status": {},
-          "last_updated": "2025-05-31T12:33:03.127806",
+          "last_updated": "2025-05-31T16:16:18.826419",
           "next_steps": [],
           "estimated_completion": null
         },
         "market_analyst": {
           "progress": 0,
           "conditions_status": {},
-          "last_updated": "2025-05-31T12:33:03.127814",
+          "last_updated": "2025-05-31T16:16:18.826428",
           "next_steps": [],
           "estimated_completion": null
         },
         "strategy_guru": {
           "progress": 0,
           "conditions_status": {},
-          "last_updated": "2025-05-31T12:33:03.127822",
+          "last_updated": "2025-05-31T16:16:18.826437",
           "next_steps": [],
           "estimated_completion": null
         },
         "multi_degen": {
           "progress": 0,
           "conditions_status": {},
-          "last_updated": "2025-05-31T12:33:03.127874",
+          "last_updated": "2025-05-31T16:16:18.826487",
           "next_steps": [],
           "estimated_completion": null
         },
         "self_aware": {
           "progress": 0,
           "conditions_status": {},
-          "last_updated": "2025-05-31T12:33:03.127883",
+          "last_updated": "2025-05-31T16:16:18.826497",
           "next_steps": [],
           "estimated_completion": null
         },
         "degen_king": {
           "progress": 0,
           "conditions_status": {},
-          "last_updated": "2025-05-31T12:33:03.127900",
+          "last_updated": "2025-05-31T16:16:18.826511",
           "next_steps": [],
           "estimated_completion": null
         },
@@ -2768,70 +2824,70 @@
           "conditions_status": {
             "community_joined": false
           },
-          "last_updated": "2025-05-31T12:33:03.127910",
+          "last_updated": "2025-05-31T16:16:18.826521",
           "next_steps": [],
           "estimated_completion": null
         },
         "helpful_friend": {
           "progress": 0,
           "conditions_status": {},
-          "last_updated": "2025-05-31T12:33:03.127919",
+          "last_updated": "2025-05-31T16:16:18.826531",
           "next_steps": [],
           "estimated_completion": null
         },
         "mentor": {
           "progress": 0,
           "conditions_status": {},
-          "last_updated": "2025-05-31T12:33:03.127928",
+          "last_updated": "2025-05-31T16:16:18.826540",
           "next_steps": [],
           "estimated_completion": null
         },
         "influencer": {
           "progress": 0,
           "conditions_status": {},
-          "last_updated": "2025-05-31T12:33:03.127937",
+          "last_updated": "2025-05-31T16:16:18.826548",
           "next_steps": [],
           "estimated_completion": null
         },
         "badge_master": {
           "progress": 0,
           "conditions_status": {},
-          "last_updated": "2025-05-31T12:33:03.127962",
+          "last_updated": "2025-05-31T16:16:18.826570",
           "next_steps": [],
           "estimated_completion": null
         },
         "achievement_hunter": {
           "progress": 0,
           "conditions_status": {},
-          "last_updated": "2025-05-31T12:33:03.128033",
+          "last_updated": "2025-05-31T16:16:18.826641",
           "next_steps": [],
           "estimated_completion": null
         },
         "legend": {
           "progress": 0,
           "conditions_status": {},
-          "last_updated": "2025-05-31T12:33:03.128075",
+          "last_updated": "2025-05-31T16:16:18.826663",
           "next_steps": [],
           "estimated_completion": null
         },
         "dedicated_student": {
           "progress": 0,
           "conditions_status": {},
-          "last_updated": "2025-05-31T12:33:03.128086",
+          "last_updated": "2025-05-31T16:16:18.826689",
           "next_steps": [],
           "estimated_completion": null
         },
         "secret_discoverer": {
           "progress": 0,
           "conditions_status": {},
-          "last_updated": "2025-05-31T12:33:03.128097",
+          "last_updated": "2025-05-31T16:16:18.826699",
           "next_steps": [],
           "estimated_completion": null
         },
         "midnight_learner": {
           "progress": 0,
           "conditions_status": {},
-          "last_updated": "2025-05-31T12:33:03.128121",
+          "last_updated": "2025-05-31T16:16:18.826718",
           "next_steps": [],
           "estimated_completion": null
         }
@@ -2881,7 +2937,52 @@
         "summary_timestamp": "2025-05-31 12:31:28"
       }
     },
-    "test_completion_date": "2025-05-31 12:33:03"
+    "test_completion_date": "2025-05-31 12:33:03",
+    "missions_progress": {
+      "B1C1L1": {
+        "mission_1_emotion_tracking": {
+          "status": "active",
+          "start_date": "2025-05-31T16:12:40.183399",
+          "current_day": 1,
+          "total_days": 3,
+          "daily_progress": {
+            "day_1": {
+              "completed_checklist": [
+                "Zapisałem minimum 3 obserwacje emocjonalne",
+                "Oceniłem siłę emocji w skali 1-10",
+                "Zastanowiłem się nad przyczynami moich emocji"
+              ],
+              "completion_time": "2025-05-31T16:13:44.681643",
+              "completed": true,
+              "notes": "dfgdf"
+            }
+          },
+          "completed_tasks": [],
+          "xp_earned": 0,
+          "last_activity": "2025-05-31T16:13:44.681675"
+        },
+        "mission_2_loss_reframing": {
+          "status": "active",
+          "start_date": "2025-05-31T16:14:31.440388",
+          "current_day": 1,
+          "total_days": 5,
+          "daily_progress": {},
+          "completed_tasks": [],
+          "xp_earned": 0,
+          "last_activity": "2025-05-31T16:14:31.440414"
+        },
+        "mission_3_app_detox": {
+          "status": "active",
+          "start_date": "2025-05-31T16:15:13.377440",
+          "current_day": 1,
+          "total_days": 7,
+          "daily_progress": {},
+          "completed_tasks": [],
+          "xp_earned": 0,
+          "last_activity": "2025-05-31T16:15:13.377466"
+        }
+      }
+    }
   },
   "jurek": {
     "user_id": "e0561d80-3bd9-4a04-8315-963c0d29399f",

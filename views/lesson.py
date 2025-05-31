@@ -705,8 +705,25 @@ def show_lesson():
         elif st.session_state.lesson_step == 'summary':
             # Wyświetl podsumowanie lekcji w podziale na zakładki, podobnie jak wprowadzenie
             if 'outro' in lesson:
-                # Podziel podsumowanie na trzy zakładki - dodana mapa myśli
-                summary_tabs = st.tabs(["Podsumowanie", "Case Study", "🗺️ Mapa myśli"])
+                # Determine tabs based on lesson ID
+                if lesson_id == 'B1C1L1':
+                    # Add missions tab for B1C1L1 - Fear of Loss lesson
+                    tab_labels = ["Podsumowanie", "Case Study", "🎯 Misje praktyczne", "🗺️ Mapa myśli"]
+                    
+                    # Check if user came from dashboard to show missions tab
+                    if st.session_state.get('show_missions_tab', False):
+                        # Auto-select missions tab
+                        summary_tabs = st.tabs(tab_labels)
+                        selected_tab_index = 2  # Missions tab
+                        st.session_state.show_missions_tab = False  # Clear the flag
+                    else:
+                        summary_tabs = st.tabs(tab_labels)
+                        selected_tab_index = 0  # Default to first tab
+                else:
+                    # Default tabs for other lessons
+                    tab_labels = ["Podsumowanie", "Case Study", "🗺️ Mapa myśli"]
+                    summary_tabs = st.tabs(tab_labels)
+                    selected_tab_index = 0
                 
                 with summary_tabs[0]:
                     # Wyświetl główne podsumowanie
@@ -722,7 +739,24 @@ def show_lesson():
                     else:
                         st.warning("Brak studium przypadku w podsumowaniu.")
                 
-                with summary_tabs[2]:
+                # Add missions tab only for B1C1L1
+                if lesson_id == 'B1C1L1':
+                    with summary_tabs[2]:
+                        # Display practical missions for Fear of Loss lesson
+                        st.markdown("### 🎯 Misje praktyczne")
+                        st.markdown("Praktyczne zadania pomagające opanować strach przed stratą w rzeczywistych sytuacjach:")
+                        
+                        try:
+                            from utils.mission_components import render_missions_page
+                            username = st.session_state.get('username', 'user')
+                            render_missions_page(username, lesson_id)
+                        except Exception as e:
+                            st.warning("⚠️ Misje praktyczne nie są obecnie dostępne.")
+                            st.expander("Szczegóły błędu (dla deweloperów)").write(str(e))
+                
+                # Mind map tab (adjust index based on lesson)
+                mind_map_tab_index = 3 if lesson_id == 'B1C1L1' else 2
+                with summary_tabs[mind_map_tab_index]:
                     # Wyświetl interaktywną mapę myśli
                     st.markdown("### 🗺️ Interaktywna mapa myśli")
                     st.markdown("Poniżej znajdziesz interaktywną mapę myśli podsumowującą kluczowe koncepty z tej lekcji. Możesz klikać na węzły aby je przesuwać i lepiej eksplorować powiązania między różnymi tematami.")
@@ -735,7 +769,9 @@ def show_lesson():
                             st.info("💡 **Mapa myśli w przygotowaniu**\n\nDla tej lekcji przygotowujemy interaktywną mapę myśli, która pomoże Ci lepiej zrozumieć powiązania między różnymi konceptami. Wkrótce będzie dostępna!")
                     except Exception as e:
                         st.warning("⚠️ Mapa myśli nie jest obecnie dostępna. Sprawdź, czy wszystkie wymagane biblioteki są zainstalowane.")
-                        st.expander("Szczegóły błędu (dla deweloperów)").write(str(e))# Wyświetl całkowitą zdobytą ilość XP
+                        st.expander("Szczegóły błędu (dla deweloperów)").write(str(e))
+                
+                # Wyświetl całkowitą zdobytą ilość XP
                 total_xp = st.session_state.lesson_progress['total_xp_earned']
                 # st.success(f"Gratulacje! Ukończyłeś lekcję i zdobyłeś łącznie {total_xp} XP!")
                   # Sprawdź czy lekcja została już zakończona

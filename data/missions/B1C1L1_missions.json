@@ -1,0 +1,334 @@
+{
+  "lesson_id": "B1C1L1",
+  "lesson_title": "Strach przed stratą",
+  "theme": "fear_of_loss",
+  "description": "Praktyczne zadania pomagające opanować strach przed stratą w inwestowaniu",
+  "color_scheme": {
+    "primary": "#FF6B6B",
+    "secondary": "#4ECDC4",
+    "accent": "#45B7D1"
+  },
+  "missions": [
+    {
+      "id": "mission_1_emotion_tracking",
+      "title": "🧠 Dziennik emocji inwestora",
+      "description": "Przez 3 dni zapisuj swoje emocje przed każdą decyzją inwestycyjną",
+      "type": "daily_tracking",
+      "duration_days": 3,
+      "difficulty": "easy",
+      "xp_reward": 25,
+      "category": "emotional_awareness",
+      "instructions": {
+        "day_1": {
+          "title": "Dzień 1: Obserwacja",
+          "description": "Przez cały dzień, zanim podejmiesz jakąkolwiek decyzję związaną z inwestowaniem (nawet sprawdzenie notowań), zatrzymaj się na 10 sekund i zapisz w notatniku:",
+          "tasks": [
+            "Jakie emocje teraz czujesz? (spokój, podekscytowanie, strach, FOMO, etc.)",
+            "Co chcesz zrobić? (kupić, sprzedać, sprawdzić ceny, etc.)",
+            "Dlaczego chcesz to zrobić?",
+            "W skali 1-10, jak silne są twoje emocje?"
+          ],
+          "target": "minimum 3 wpisy w ciągu dnia",
+          "tips": [
+            "Ustaw przypomnienie co 4 godziny",
+            "Nie oceniaj swoich emocji - po prostu je obserwuj",
+            "Bądź szczery sam ze sobą"
+          ]
+        },
+        "day_2": {
+          "title": "Dzień 2: Analiza wzorców",
+          "description": "Kontynuuj zapisywanie emocji, ale dodatkowo analizuj wczorajsze wpisy:",
+          "tasks": [
+            "Przeczytaj wczorajsze wpisy rano",
+            "Zidentyfikuj powtarzające się wzorce emocjonalne",
+            "Zapisz nowe obserwacje z dnia",
+            "Odpowiedz: które emocje pojawiały się najczęściej?"
+          ],
+          "target": "minimum 3 nowe wpisy + analiza wzorców",
+          "tips": [
+            "Szukaj połączeń między emocjami a sytuacjami rynkowymi",
+            "Zwróć uwagę na momenty najsilniejszych emocji",
+            "Zastanów się, czy twoje emocje były uzasadnione"
+          ]
+        },
+        "day_3": {
+          "title": "Dzień 3: Świadome decyzje",
+          "description": "Użyj zebranej wiedzy do podejmowania bardziej świadomych decyzji:",
+          "tasks": [
+            "Przed każdą decyzją przeczytaj wczorajszą analizę",
+            "Zadaj sobie pytanie: 'Czy działam pod wpływem emocji?'",
+            "Jeśli tak, odczekaj 10 minut przed działaniem",
+            "Zapisz, jak zmienił się twój sposób podejmowania decyzji"
+          ],
+          "target": "minimum 2 świadome decyzje z 10-minutową przerwą",
+          "tips": [
+            "10 minut to minimum - możesz czekać dłużej",
+            "Nie zawsze musisz zmienić decyzję - ważna jest świadomość",
+            "Porównaj dzisiejsze emocje z wczorajszymi wzorcami"
+          ]
+        }
+      },
+      "validation": {
+        "type": "self_report",
+        "daily_checklist": {
+          "day_1": [
+            "Zapisałem minimum 3 obserwacje emocjonalne",
+            "Oceniłem siłę emocji w skali 1-10",
+            "Zastanowiłem się nad przyczynami moich emocji"
+          ],
+          "day_2": [
+            "Przeczytałem wczorajsze wpisy",
+            "Zidentyfikowałem wzorce emocjonalne",
+            "Zapisałem nowe obserwacje",
+            "Przeanalizowałem najczęstsze emocje"
+          ],
+          "day_3": [
+            "Użyłem analizy przed podejmowaniem decyzji",
+            "Zatrzymałem się przed przynajmniej 2 decyzjami",
+            "Porównałem dzisiejsze emocje z wzorcami",
+            "Napisałem wnioski z całego doświadczenia"
+          ]
+        }
+      },
+      "learning_outcomes": [
+        "Zwiększona świadomość własnych emocji w kontekście inwestowania",
+        "Umiejętność zatrzymania się przed impulsywną decyzją",
+        "Rozpoznawanie wzorców emocjonalnych",
+        "Praktyczne zastosowanie 'pauzy przed decyzją'"
+      ]
+    },
+    {
+      "id": "mission_2_loss_reframing",
+      "title": "🖼️ Mistrz przeprogramowania strat",
+      "description": "Naucz się przeprogramowywać sposób myślenia o stratach przez 5 dni",
+      "type": "daily_practice",
+      "duration_days": 5,
+      "difficulty": "medium",
+      "xp_reward": 40,
+      "category": "reframing",
+      "instructions": {
+        "day_1": {
+          "title": "Dzień 1: Identyfikacja negatywnych framów",
+          "description": "Znajdź i zapisz negatywne sposoby myślenia o stratach, które używasz",
+          "tasks": [
+            "Przypamnij sobie ostatnią stratę w inwestowaniu",
+            "Zapisz dokładnie, jak o niej myślisz (użyj tych samych słów, co w głowie)",
+            "Zidentyfikuj emocjonalne słowa ('katastrofa', 'porażka', 'błąd')",
+            "Oceń, jak bardzo negatywne myślenie wpływa na twoje samopoczucie (1-10)"
+          ],
+          "target": "analiza minimum 3 sytuacji strat",
+          "tips": [
+            "Bądź brutalno szczery - nikt tego nie zobaczy",
+            "Napisz dokładnie te słowa, które mówisz sobie w głowie",
+            "Zwróć uwagę na słowa 'zawsze', 'nigdy', 'wszystko', 'nic'"
+          ]
+        },
+        "day_2": {
+          "title": "Dzień 2: Neutralne przeprogramowanie",
+          "description": "Zamień negatywne myśli na neutralne, faktyczne opisy",
+          "tasks": [
+            "Weź wczorajsze negatywne opisy",
+            "Przepisz każdy w sposób neutralny - same fakty, bez emocji",
+            "Usuń słowa wartościujące i zamień je na liczby/procenty",
+            "Porównaj, jak się czujesz czytając neutralną wersję"
+          ],
+          "target": "neutralne przeprogramowanie wszystkich wczorajszych sytuacji",
+          "example": {
+            "negatywne": "Znowu straciłem kasę przez głupie decyzje, jestem beznadziejny",
+            "neutralne": "Portfel zmniejszył się o 8% w ciągu 2 tygodni po zakupie akcji X"
+          }
+        },
+        "day_3": {
+          "title": "Dzień 3: Pozytywne przeprogramowanie",
+          "description": "Naucz się znajdować konstruktywne aspekty w stratach",
+          "tasks": [
+            "Weź neutralne opisy z wczoraj",
+            "Do każdego dodaj: 'Czego się nauczyłem?'",
+            "Znajdź minimum 1 pozytywny aspekt każdej sytuacji",
+            "Przeprogramuj na 'doświadczenie, które mnie wzbogaciło'"
+          ],
+          "target": "pozytywne przeprogramowanie + identyfikacja nauki",
+          "example": {
+            "neutralne": "Portfel zmniejszył się o 8% w ciągu 2 tygodni",
+            "pozytywne": "Otrzymałem cenną lekcję o zarządzaniu ryzykiem za 8% portfela - większość kursów kosztuje więcej"
+          }
+        },
+        "day_4": {
+          "title": "Dzień 4: Praktyka w czasie rzeczywistym",
+          "description": "Zastosuj przeprogramowanie do bieżących sytuacji",
+          "tasks": [
+            "Przez cały dzień łap się na negatywnych myślach o inwestowaniu",
+            "Natychmiast przeprogramuj na neutralne, potem pozytywne",
+            "Zapisz minimum 3 takie sytuacje",
+            "Oceń, jak szybko udaje ci się przeprogramować"
+          ],
+          "target": "3 przeprogramowania w czasie rzeczywistym",
+          "tips": [
+            "Ustaw przypomnienie co 2 godziny: 'O czym teraz myślę?'",
+            "Im szybciej złapiesz negatywną myśl, tym łatwiej ją zmienić",
+            "Nie walcz z myślą - po prostu ją przeprogramuj"
+          ]
+        },
+        "day_5": {
+          "title": "Dzień 5: Automatyzacja przeprogramowania",
+          "description": "Utrwal nowy sposób myślenia jako automatyczny nawyk",
+          "tasks": [
+            "Rano przeczytaj wszystkie swoje pozytywne przeprogramowania",
+            "Stwórz 'mantrę przeprogramowania' - krótkie, pozytywne zdanie",
+            "Użyj jej każdym razem, gdy pojawia się negatywna myśl",
+            "Wieczorem oceń swój progres w przeprogramowaniu"
+          ],
+          "target": "automatyczne używanie mantry przez cały dzień",
+          "examples": {
+            "mantry": [
+              "Każda strata to inwestycja w moją wiedzę",
+              "Uczę się za każdym razem, gdy rynek mnie czegoś uczy",
+              "To nie porażka, to dane do lepszych decyzji"
+            ]
+          }
+        }
+      },
+      "validation": {
+        "type": "progress_tracking",
+        "daily_metrics": {
+          "negative_thoughts_caught": "Ile negatywnych myśli złapałeś?",
+          "reframing_speed": "Jak szybko udało się przeprogramować? (sekundy)",
+          "emotional_impact": "Jak czujesz się po przeprogramowaniu? (1-10)",
+          "automatic_usage": "Ile razy użyłeś mantry automatycznie?"
+        }
+      },
+      "learning_outcomes": [
+        "Automatyczne przeprogramowywanie negatywnych myśli o stratach",
+        "Umiejętność znajdowania wartości edukacyjnej w porażkach",
+        "Zmniejszenie emocjonalnego wpływu strat",
+        "Zwiększenie odporności psychicznej na wahania rynku"
+      ]
+    },
+    {
+      "id": "mission_3_app_detox",
+      "title": "📵 Detoks od aplikacji inwestycyjnych",
+      "description": "Stopniowo zmniejszaj częstotliwość sprawdzania notowań przez 7 dni",
+      "type": "behavioral_change",
+      "duration_days": 7,
+      "difficulty": "hard",
+      "xp_reward": 60,
+      "category": "behavior_modification",
+      "instructions": {
+        "baseline": {
+          "title": "Dzień 0: Pomiar bazowy",
+          "description": "Zmierz, jak często normalnie sprawdzasz aplikacje inwestycyjne",
+          "tasks": [
+            "Zainstaluj aplikację do śledzenia czasu ekranu lub po prostu notuj",
+            "Przez cały dzień licz każde otwarcie aplikacji inwestycyjnej",
+            "Zapisuj godzinę i powód sprawdzenia",
+            "Oblicz średnią częstotliwość sprawdzania"
+          ]
+        },
+        "day_1_2": {
+          "title": "Dni 1-2: Świadome sprawdzanie",
+          "description": "Przed każdym sprawdzeniem zadaj sobie pytanie",
+          "tasks": [
+            "Przed otwarciem apki zatrzymaj się i zapytaj: 'Po co to sprawdzam?'",
+            "Jeśli odpowiedź to 'z nudów/przyzwyczajenia' - zamknij telefon",
+            "Sprawdzaj tylko jeśli masz konkretny cel (np. zlecenie, analiza)",
+            "Ogranicz sprawdzanie do maksymalnie 50% bazowej częstotliwości"
+          ],
+          "target": "zmniejszenie o 50% w stosunku do dnia bazowego"
+        },
+        "day_3_4": {
+          "title": "Dni 3-4: Zaplanowane sesje",
+          "description": "Sprawdzaj tylko w zaplanowanych momentach",
+          "tasks": [
+            "Wyznacz 3 konkretne godziny w ciągu dnia na sprawdzanie",
+            "Ustawiaj timer na 5 minut - tylko tyle na każdą sesję",
+            "Poza tymi godzinami - zero sprawdzania",
+            "Zapisuj, ile razy chciałeś sprawdzić poza planem"
+          ],
+          "target": "maksymalnie 3 sesje po 5 minut dziennie"
+        },
+        "day_5_6": {
+          "title": "Dni 5-6: Minimalne sprawdzanie",
+          "description": "Ogranicz do absolutnego minimum",
+          "tasks": [
+            "Sprawdzaj tylko raz dziennie - najlepiej wieczorem",
+            "Maksymalnie 10 minut dziennie w aplikacjach",
+            "Wyłącz wszystkie powiadomienia z aplikacji inwestycyjnych",
+            "Zastąp sprawdzanie inną aktywnością (spacer, książka, etc.)"
+          ],
+          "target": "1 sesja dziennie, maksymalnie 10 minut"
+        },
+        "day_7": {
+          "title": "Dzień 7: Pełny detoks",
+          "description": "Spróbuj przez cały dzień nie sprawdzać wcale",
+          "tasks": [
+            "Nie otwieraj żadnej aplikacji inwestycyjnej przez 24h",
+            "Obserwuj swoje odczucia i pokusę sprawdzania",
+            "Zapisuj, co robiłeś zamiast sprawdzania",
+            "Wieczorem oceń, jak się czułeś bez ciągłego sprawdzania"
+          ],
+          "target": "0 sprawdzeń przez 24 godziny"
+        }
+      },
+      "validation": {
+        "type": "behavioral_tracking",
+        "metrics": {
+          "daily_checks": "Ile razy sprawdziłeś aplikacje?",
+          "time_spent": "Ile minut spędziłeś w aplikacjach?",
+          "urge_intensity": "Jak silna była pokusa sprawdzenia? (1-10)",
+          "alternative_activities": "Co robiłeś zamiast sprawdzania?"
+        },
+        "success_criteria": {
+          "day_1_2": "Zmniejszenie o minimum 40% względem bazowego",
+          "day_3_4": "Maksymalnie 3 sesje dziennie",
+          "day_5_6": "Maksymalnie 1 sesja dziennie",
+          "day_7": "0 sprawdzeń"
+        }
+      },
+      "learning_outcomes": [
+        "Zwiększona kontrola nad impulsem sprawdzania notowań",
+        "Zmniejszenie uzależnienia od ciągłego monitorowania",
+        "Poprawa spokoju psychicznego i koncentracji",
+        "Rozwój alternatywnych nawyków zamiast compulsywnego sprawdzania"
+      ]
+    }
+  ],
+  "bonus_missions": [
+    {
+      "id": "bonus_loss_limit",
+      "title": "🚧 Master Stop-Loss",
+      "description": "Ustaw i trzymaj się limitów strat przez 2 tygodnie",
+      "type": "risk_management",
+      "duration_days": 14,
+      "difficulty": "expert",
+      "xp_reward": 100,
+      "unlock_requirement": "complete_all_main_missions",
+      "category": "advanced_practice"
+    }
+  ],
+  "completion_rewards": {
+    "all_missions": {
+      "xp_bonus": 50,
+      "title": "🏆 Mistrz kontroli strachu",
+      "description": "Ukończono wszystkie misje dotyczące opanowania strachu przed stratą",
+      "badge": "fear_master"
+    },
+    "perfect_completion": {
+      "xp_bonus": 100,
+      "title": "💎 Perfekcyjny kontroler emocji",
+      "description": "Ukończono wszystkie misje z maksymalną punktacją",
+      "badge": "emotion_perfectionist"
+    }
+  },
+  "tips": {
+    "general": [
+      "Pamiętaj - celem nie jest wyeliminowanie emocji, ale ich świadome kontrolowanie",
+      "Każdy dzień to nowa szansa na poprawę, nie martw się niewielkimi potknięciami",
+      "Te umiejętności przydadzą się nie tylko w inwestowaniu, ale w całym życiu"
+    ],
+    "difficult_days": [
+      "Jeśli dzień jest szczególnie trudny, skup się na jednym małym kroku",
+      "Możesz poprosić o wsparcie społeczność w aplikacji",
+      "Czasem lepiej zrobić 50% zadania niż w ogóle go nie zacząć"
+    ]
+  }
+}

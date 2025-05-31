@@ -1,0 +1,399 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🎯 BrainVenture Academy - Mission System Demo</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        
+        .header {
+            text-align: center;
+            color: white;
+            margin-bottom: 30px;
+        }
+        
+        .header h1 {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+        }
+        
+        .header p {
+            font-size: 1.2em;
+            opacity: 0.9;
+        }
+        
+        .demo-section {
+            background: white;
+            border-radius: 15px;
+            padding: 30px;
+            margin-bottom: 20px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+        }
+        
+        .dashboard-widget {
+            background: linear-gradient(135deg, #FF6B6B, #4ECDC4);
+            color: white;
+            padding: 25px;
+            border-radius: 15px;
+            margin-bottom: 20px;
+        }
+        
+        .mission-card {
+            background: #f8f9fa;
+            border: 1px solid #e9ecef;
+            border-radius: 10px;
+            padding: 20px;
+            margin-bottom: 15px;
+            transition: transform 0.2s;
+        }
+        
+        .mission-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+        
+        .mission-header {
+            display: flex;
+            justify-content: between;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+        
+        .mission-title {
+            font-size: 1.3em;
+            font-weight: bold;
+            color: #2c3e50;
+        }
+        
+        .difficulty-badge {
+            background: #27ae60;
+            color: white;
+            padding: 5px 12px;
+            border-radius: 20px;
+            font-size: 0.8em;
+            margin-left: auto;
+        }
+        
+        .mission-meta {
+            display: flex;
+            gap: 20px;
+            margin-bottom: 15px;
+            font-size: 0.9em;
+            color: #666;
+        }
+        
+        .daily-task {
+            background: #e8f4fd;
+            border-left: 4px solid #3498db;
+            padding: 15px;
+            margin: 10px 0;
+            border-radius: 5px;
+        }
+        
+        .progress-bar {
+            width: 100%;
+            height: 8px;
+            background: #e9ecef;
+            border-radius: 4px;
+            overflow: hidden;
+            margin: 10px 0;
+        }
+        
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #3498db, #2ecc71);
+            transition: width 0.3s ease;
+        }
+        
+        .btn {
+            background: #3498db;
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 25px;
+            cursor: pointer;
+            font-size: 1em;
+            transition: all 0.2s;
+        }
+        
+        .btn:hover {
+            background: #2980b9;
+            transform: translateY(-1px);
+        }
+        
+        .btn-success {
+            background: #27ae60;
+        }
+        
+        .btn-success:hover {
+            background: #229954;
+        }
+        
+        .flow-step {
+            display: flex;
+            align-items: center;
+            margin: 15px 0;
+            padding: 15px;
+            background: #f8f9fa;
+            border-radius: 10px;
+        }
+        
+        .step-number {
+            background: #3498db;
+            color: white;
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 15px;
+            font-weight: bold;
+        }
+        
+        .xp-display {
+            background: #f39c12;
+            color: white;
+            padding: 5px 12px;
+            border-radius: 15px;
+            font-weight: bold;
+            display: inline-block;
+            margin: 5px 0;
+        }
+        
+        .feature-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+            margin: 20px 0;
+        }
+        
+        .feature-card {
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            border: 1px solid #e9ecef;
+        }
+        
+        .feature-icon {
+            font-size: 2em;
+            margin-bottom: 10px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🎯 BrainVenture Academy</h1>
+            <p>Praktyczne Misje - System Demonstracyjny</p>
+        </div>
+
+        <!-- DASHBOARD WIDGET SIMULATION -->
+        <div class="demo-section">
+            <h2>📊 Dashboard - Widget Misji</h2>
+            <div class="dashboard-widget">
+                <h3>🎯 Misje praktyczne: Strach przed stratą</h3>
+                <p>Zastosuj teorię w praktyce przez strukturalne zadania wielodniowe</p>
+                <div style="margin-top: 15px;">
+                    <div style="display: flex; justify-content: space-between; align-items: center;">
+                        <div>
+                            <strong>Dostępne misje:</strong> 3<br>
+                            <strong>Status:</strong> Gotowe do rozpoczęcia
+                        </div>
+                        <button class="btn" onclick="showMissionTab()">🎯 Idź do misji</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- MISSION TAB SIMULATION -->
+        <div class="demo-section" id="mission-tab" style="display:none;">
+            <h2>📚 Lekcja B1C1L1 - Zakładka Misje</h2>
+            
+            <!-- Mission 1 -->
+            <div class="mission-card">
+                <div class="mission-header">
+                    <div class="mission-title">🧠 Dziennik emocji inwestora</div>
+                    <div class="difficulty-badge">Łatwy</div>
+                </div>
+                <div class="mission-meta">
+                    <span>📅 3 dni</span>
+                    <span>🎯 Świadomość emocjonalna</span>
+                    <span class="xp-display">+25 XP</span>
+                </div>
+                <p>Przez 3 dni zapisuj swoje emocje przed każdą decyzją inwestycyjną</p>
+                
+                <div id="mission1-tasks" style="display:none; margin-top: 15px;">
+                    <h4>📋 Dzień 1: Obserwacja</h4>
+                    <div class="daily-task">
+                        <strong>Zadania na dziś:</strong>
+                        <ul style="margin: 10px 0 0 20px;">
+                            <li>Zapisuj emocje przed każdą decyzją inwestycyjną</li>
+                            <li>Oceń siłę emocji w skali 1-10</li>
+                            <li>Minimum 3 wpisy w ciągu dnia</li>
+                        </ul>
+                        <div style="margin-top: 10px;">
+                            <label>
+                                <input type="checkbox" onchange="updateProgress(1)"> Ukończone dzisiaj
+                            </label>
+                        </div>
+                    </div>
+                    <div class="progress-bar">
+                        <div class="progress-fill" id="progress1" style="width: 0%;"></div>
+                    </div>
+                    <small>Postęp: <span id="progress1-text">0/3 dni</span></small>
+                </div>
+                
+                <button class="btn" id="start-mission1" onclick="startMission(1)">🚀 Rozpocznij misję</button>
+            </div>
+
+            <!-- Mission 2 -->
+            <div class="mission-card">
+                <div class="mission-header">
+                    <div class="mission-title">🔄 Mistrz przeprogramowania strat</div>
+                    <div class="difficulty-badge" style="background: #f39c12;">Średni</div>
+                </div>
+                <div class="mission-meta">
+                    <span>📅 5 dni</span>
+                    <span>🎯 Reframing</span>
+                    <span class="xp-display">+50 XP</span>
+                </div>
+                <p>Naucz się przekształcać negatywne myśli o stratach w konstruktywne wnioski</p>
+                <button class="btn" onclick="alert('Najpierw ukończ poprzednią misję!')">🔒 Zablokowane</button>
+            </div>
+
+            <!-- Mission 3 -->
+            <div class="mission-card">
+                <div class="mission-header">
+                    <div class="mission-title">📱 Detoks od aplikacji inwestycyjnych</div>
+                    <div class="difficulty-badge" style="background: #e74c3c;">Trudny</div>
+                </div>
+                <div class="mission-meta">
+                    <span>📅 7 dni</span>
+                    <span>🎯 Zmiana nawyków</span>
+                    <span class="xp-display">+100 XP</span>
+                </div>
+                <p>Ograniczaj sprawdzanie portfela do określonych momentów</p>
+                <button class="btn" onclick="alert('Najpierw ukończ poprzednią misję!')">🔒 Zablokowane</button>
+            </div>
+        </div>
+
+        <!-- USER FLOW EXPLANATION -->
+        <div class="demo-section">
+            <h2>🚀 Przepływ Użytkownika</h2>
+            
+            <div class="flow-step">
+                <div class="step-number">1</div>
+                <div>
+                    <strong>Dashboard</strong><br>
+                    Użytkownik widzi widget misji "Strach przed stratą" z informacjami o dostępnych zadaniach
+                </div>
+            </div>
+            
+            <div class="flow-step">
+                <div class="step-number">2</div>
+                <div>
+                    <strong>Nawigacja</strong><br>
+                    Kliknięcie "🎯 Idź do misji" przenosi do lekcji B1C1L1 → Podsumowanie → zakładka Misje
+                </div>
+            </div>
+            
+            <div class="flow-step">
+                <div class="step-number">3</div>
+                <div>
+                    <strong>Rozpoczęcie misji</strong><br>
+                    Użytkownik może rozpocząć pierwszą misję, która staje się aktywna z codziennymi zadaniami
+                </div>
+            </div>
+            
+            <div class="flow-step">
+                <div class="step-number">4</div>
+                <div>
+                    <strong>Śledzenie postępów</strong><br>
+                    Codzienne zadania, pasek postępu, nagrody XP i odblokowanie kolejnych misji
+                </div>
+            </div>
+        </div>
+
+        <!-- FEATURES -->
+        <div class="demo-section">
+            <h2>✨ Kluczowe Funkcje</h2>
+            <div class="feature-grid">
+                <div class="feature-card">
+                    <div class="feature-icon">🎯</div>
+                    <h3>Praktyczne zadania</h3>
+                    <p>Wielodniowe misje aplikujące teorię w rzeczywistych sytuacjach inwestycyjnych</p>
+                </div>
+                
+                <div class="feature-card">
+                    <div class="feature-icon">📊</div>
+                    <h3>Śledzenie postępów</h3>
+                    <p>Codzienne zadania z checklistami i automatycznym śledzeniem ukończenia</p>
+                </div>
+                
+                <div class="feature-card">
+                    <div class="feature-icon">🎮</div>
+                    <h3>Gamifikacja</h3>
+                    <p>System XP, poziomy trudności, odblokowywanie kolejnych misji</p>
+                </div>
+                
+                <div class="feature-card">
+                    <div class="feature-icon">🧠</div>
+                    <h3>Świadomość emocjonalna</h3>
+                    <p>Praktyki rozwijające kontrolę nad emocjami w inwestowaniu</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let mission1Progress = 0;
+        
+        function showMissionTab() {
+            document.getElementById('mission-tab').style.display = 'block';
+            document.getElementById('mission-tab').scrollIntoView({ behavior: 'smooth' });
+        }
+        
+        function startMission(missionId) {
+            if (missionId === 1) {
+                document.getElementById('mission1-tasks').style.display = 'block';
+                document.getElementById('start-mission1').textContent = '✅ Misja aktywna';
+                document.getElementById('start-mission1').className = 'btn btn-success';
+                document.getElementById('start-mission1').onclick = null;
+            }
+        }
+        
+        function updateProgress(missionId) {
+            if (missionId === 1) {
+                mission1Progress += 33.33;
+                if (mission1Progress > 100) mission1Progress = 100;
+                
+                document.getElementById('progress1').style.width = mission1Progress + '%';
+                document.getElementById('progress1-text').textContent = 
+                    Math.ceil(mission1Progress / 33.33) + '/3 dni';
+                
+                if (mission1Progress >= 100) {
+                    alert('🎉 Gratulacje! Misja ukończona! +25 XP');
+                }
+            }
+        }
+    </script>
+</body>
+</html>
