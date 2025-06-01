@@ -413,8 +413,7 @@ def show_test_results():
     """
     # Pobierz aktualny typ urządzenia
     device_type = get_device_type()
-    
-    # Calculate dominant type
+      # Calculate dominant type
     dominant_type = calculate_test_results(st.session_state.test_scores)
       # Update user data
     users_data = load_user_data()
@@ -422,6 +421,11 @@ def show_test_results():
     users_data[st.session_state.username]["test_taken"] = True
     users_data[st.session_state.username]["test_scores"] = st.session_state.test_scores  # Save test scores
     users_data[st.session_state.username]["xp"] += 50  # Bonus XP for completing the test
+    
+    # Add timestamp for completion tracking
+    from utils.time_utils import get_current_timestamp
+    users_data[st.session_state.username]["test_completion_date"] = get_current_timestamp()
+    
     save_user_data(users_data)
     
     # Check for achievements after test completion

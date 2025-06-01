@@ -20,6 +20,7 @@ from utils.components import (
     add_animations_css, data_chart, user_stats_panel, lesson_card
 )
 from utils.real_time_updates import live_xp_indicator
+from utils.time_utils import calculate_relative_time
 
 def calculate_xp_progress(user_data):
     """Calculate XP progress and dynamically determine the user's level"""
@@ -332,11 +333,18 @@ def show_recent_activities(user_data):
         })
     
     if degen_type:
+        # Get test completion timestamp or use fallback
+        test_completion_date = user_data.get('test_completion_date', None)
+        if test_completion_date:
+            test_time_text = calculate_relative_time(test_completion_date)
+        else:
+            test_time_text = "niedawno"  # Fallback for users without timestamps
+            
         activities.append({
             'icon': '🧬',
             'color': '#3498db',
             'title': f'Odkryto typ inwestora: {degen_type}',
-            'time': '1 dzień temu'
+            'time': test_time_text
         })
     
     activities.append({
