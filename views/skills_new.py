@@ -31,9 +31,9 @@ def show_skill_tree():
     # Inicjalizuj stan kontekstowego menu
     if 'context_menu_open' not in st.session_state:
         st.session_state.context_menu_open = False
-        st.session_state.context_menu_category = None
-      # Pobierz dane użytkownika
+        st.session_state.context_menu_category = None      # Pobierz dane użytkownika
     from data.users import get_current_user_data
+    users_data = load_user_data()
     user_data = get_current_user_data(st.session_state.username)
     user_skills = user_data.get("skills", {})
     user_xp = user_data.get("xp", 0)

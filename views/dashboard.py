@@ -5,7 +5,7 @@ import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
 from datetime import datetime, timedelta
-from data.users import load_user_data, save_user_data
+from data.users import load_user_data, save_user_data, get_current_user_data
 from data.test_questions import DEGEN_TYPES
 from config.settings import DAILY_MISSIONS, XP_LEVELS, USER_AVATARS
 from data.lessons import load_lessons
@@ -19,7 +19,7 @@ from utils.components import (
     xp_level_display, zen_button, notification, leaderboard_item, 
     add_animations_css, data_chart, user_stats_panel, lesson_card
 )
-from utils.real_time_updates import get_live_user_stats, live_xp_indicator
+from utils.real_time_updates import live_xp_indicator
 
 def calculate_xp_progress(user_data):
     """Calculate XP progress and dynamically determine the user's level"""
@@ -606,16 +606,14 @@ def show_dashboard():
     device_type = get_device_type()
       # Używamy naszego komponentu nagłówka - bez dodatkowego CSS
     zen_header("Dashboard Degena")
-    
-    # Add live XP indicator
+      # Add live XP indicator
     live_xp_indicator()
     
     # Dodajemy animacje CSS
     add_animations_css()
 
-    # Use real-time user stats instead of cached data
-    live_stats = get_live_user_stats(st.session_state.username)
-    user_data = live_stats
+    # Use current user data instead of live stats
+    user_data = get_current_user_data(st.session_state.username)
     
     # Główny kontener dashboard
     st.markdown('<div class="dashboard-container">', unsafe_allow_html=True)

@@ -13,7 +13,7 @@ from matplotlib.projections import register_projection
 from matplotlib.spines import Spine
 from matplotlib.transforms import Affine2D
 from data.test_questions import DEGEN_TYPES
-from data.users import load_user_data, save_user_data, update_single_user_field
+from data.users import load_user_data, save_user_data, update_single_user_field, get_current_user_data
 from PIL import Image
 from utils.components import zen_header, zen_button, notification, content_section, tip_block
 from utils.material3_components import apply_material3_theme
@@ -47,7 +47,7 @@ from views.degen_explorer import plot_radar_chart
 from views.dashboard import calculate_xp_progress
 from utils.components import zen_header, zen_button, notification, content_section, stat_card, xp_level_display, goal_card, badge_card, progress_bar, tip_block, quote_block,  add_animations_css
 from utils.user_components import user_stats_panel
-from utils.real_time_updates import get_live_user_stats, live_xp_indicator
+from utils.real_time_updates import live_xp_indicator
 
 def show_profile():
     # Zastosuj style Material 3
@@ -62,12 +62,11 @@ def show_profile():
       # Pobierz aktualny typ urządzenia
     device_type = get_device_type()
     zen_header("Profil użytkownika")
-    
-    # Add live XP indicator
+      # Add live XP indicator
     live_xp_indicator()
     
-    # Use real-time user stats instead of cached data
-    user_data = get_live_user_stats(st.session_state.username)
+    # Use current user data to ensure degen test results are included
+    user_data = get_current_user_data(st.session_state.username)
     style = get_user_style(st.session_state.username)
     
     # Wyświetl personalizowane style
