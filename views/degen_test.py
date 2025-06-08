@@ -255,7 +255,7 @@ def show_degen_test():
         progress_bar(progress=progress_value, color="#4CAF50")  # Poprawione wywołanie funkcji
         st.markdown(f"**Postęp testu: {int(progress_value * 100)}%**")  # Etykieta jako oddzielny element
         st.markdown("</div>", unsafe_allow_html=True)
-      else:
+    else:
         # Show test results
         dominant_type = calculate_test_results(st.session_state.test_scores)        # Update user data
         users_data = load_user_data()
@@ -338,21 +338,20 @@ def show_degen_test():
             with col2:
                 content_section(
                     "Twoje wyzwania:", 
-                    "\n".join([f"- ⚠️ {challenge}" for challenge in DEGEN_TYPES[dominant_type]["challenges"]]),
-                    icon="🚧",
+                    "\n".join([f"- ⚠️ {challenge}" for challenge in DEGEN_TYPES[dominant_type]["challenges"]]),                    icon="🚧",
                     collapsed=False
                 )
         
         tip_block(DEGEN_TYPES[dominant_type]["strategy"], title="Rekomendowana strategia", icon="🎯")
         
         # Dodanie szczegółowych informacji o typie degena
-        content_section(
-            "Szczegółowy opis twojego typu degena", 
-            degen_details.get(dominant_type, "Szczegółowy opis dla tego typu degena nie jest jeszcze dostępny."),
-            icon="🔍",
-            collapsed=True
-        )
-          # Additional options
+        with st.expander("🔍 Szczegółowy opis twojego typu degena", expanded=False):
+            if dominant_type in degen_details:
+                st.markdown(degen_details[dominant_type])
+            else:
+                st.info("Szczegółowy opis dla tego typu degena nie jest jeszcze dostępny.")
+        
+        # Additional options
         if zen_button("Wykonaj test ponownie"):
             st.session_state.test_step = 0
             st.session_state.test_scores = {degen_type: 0 for degen_type in DEGEN_TYPES}

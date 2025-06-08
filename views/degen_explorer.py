@@ -193,123 +193,94 @@ def show_degen_explorer_tab():
         list(DEGEN_TYPES.keys()),
         format_func=lambda x: f"{x} - {DEGEN_TYPES[x]['description'][:50]}..."
     )
-    
     if selected_type:
         # Tworzenie sekcji dla wybranego typu
         color = DEGEN_TYPES[selected_type]["color"]
-        content_section(
-            f"{selected_type}", 
-            DEGEN_TYPES[selected_type]["description"],
-            icon="🔍",
-            border_color=color,
-            collapsed=False
-        )
+        
+        # Main description using markdown
+        st.markdown(f"### 🔍 {selected_type}")
+        st.markdown(DEGEN_TYPES[selected_type]["description"])
         
         # Mocne strony i wyzwania w dwóch kolumnach
         if device_type == 'mobile':
             # Na telefonach wyświetl sekcje jedna pod drugą
-            content_section("Mocne strony:", 
-                           "\n".join([f"- ✅ {strength}" for strength in DEGEN_TYPES[selected_type]["strengths"]]), 
-                           icon="💪", 
-                           collapsed=False)
+            st.markdown("### 💪 Mocne strony:")
+            for strength in DEGEN_TYPES[selected_type]["strengths"]:
+                st.markdown(f"- ✅ {strength}")
             
-            content_section("Wyzwania:", 
-                           "\n".join([f"- ⚠️ {challenge}" for challenge in DEGEN_TYPES[selected_type]["challenges"]]), 
-                           icon="🚧", 
-                           collapsed=False)
+            st.markdown("### 🚧 Wyzwania:")
+            for challenge in DEGEN_TYPES[selected_type]["challenges"]:
+                st.markdown(f"- ⚠️ {challenge}")
         else:
             col1, col2 = st.columns(2)
             with col1:
-                content_section("Mocne strony:", 
-                                "\n".join([f"- ✅ {strength}" for strength in DEGEN_TYPES[selected_type]["strengths"]]), 
-                                icon="💪", 
-                                collapsed=False)
+                st.markdown("### 💪 Mocne strony:")
+                for strength in DEGEN_TYPES[selected_type]["strengths"]:
+                    st.markdown(f"- ✅ {strength}")
             
             with col2:
-                content_section("Wyzwania:", 
-                            "\n".join([f"- ⚠️ {challenge}" for challenge in DEGEN_TYPES[selected_type]["challenges"]]), 
-                            icon="🚧", 
-                            collapsed=False)
-        
-        # Rekomendowana strategia jako tip_block
+                st.markdown("### 🚧 Wyzwania:")
+                for challenge in DEGEN_TYPES[selected_type]["challenges"]:
+                    st.markdown(f"- ⚠️ {challenge}")
+          # Rekomendowana strategia jako tip_block
         tip_block(clean_html(DEGEN_TYPES[selected_type]["strategy"]), title="Rekomendowana strategia", icon="🎯")
         
         # Szczegółowy opis z degen_details.py
         st.markdown("---")
         st.subheader("Szczegółowa analiza typu")
         if selected_type in degen_details:
-            content_section(
-                "Pełny opis",
-                degen_details[selected_type],
-                icon="📚",
-                collapsed=True
-            )
+            with st.expander("📚 Pełny opis", expanded=False):
+                st.markdown(degen_details[selected_type])
         else:
             notification("Szczegółowy opis dla tego typu degena nie jest jeszcze dostępny.", type="warning")
         
         # Porównanie z innymi typami
         st.markdown("---")
         st.subheader("Porównaj z innymi typami")
-        
-        # Pozwól użytkownikowi wybrać drugi typ do porównania
+          # Pozwól użytkownikowi wybrać drugi typ do porównania
         comparison_type = st.selectbox(
             "Wybierz typ degena do porównania:",
             [t for t in DEGEN_TYPES.keys() if t != selected_type],
             format_func=lambda x: f"{x} - {DEGEN_TYPES[x]['description'][:50]}..."
         )
+        
         if comparison_type:
             # Tabela porównawcza
             col1, col2 = st.columns(2)
             
-            # Przygotuj listy poza f-stringiem dla pierwszego typu
-            strengths_list_1 = "\n".join([f"- ✅ {strength}" for strength in DEGEN_TYPES[selected_type]["strengths"]])
-            challenges_list_1 = "\n".join([f"- ⚠️ {challenge}" for challenge in DEGEN_TYPES[selected_type]["challenges"]])
-            strategy_text_1 = clean_html(DEGEN_TYPES[selected_type]["strategy"])
-            
             # Dla pierwszego typu (wybranego)
             with col1:
-                content_section(
-                    selected_type,
-                    f"""**Opis:** {DEGEN_TYPES[selected_type]['description']}
-        
-**Mocne strony:**
-{strengths_list_1}
-
-**Wyzwania:**
-{challenges_list_1}
-
-**Strategia:**
-{strategy_text_1}
-                    """,
-                    icon="🔍",
-                    border_color=DEGEN_TYPES[selected_type]["color"],
-                    collapsed=False
-                )
-            
-            # Przygotuj listy poza f-stringiem dla drugiego typu
-            strengths_list_2 = "\n".join([f"- ✅ {strength}" for strength in DEGEN_TYPES[comparison_type]["strengths"]])
-            challenges_list_2 = "\n".join([f"- ⚠️ {challenge}" for challenge in DEGEN_TYPES[comparison_type]["challenges"]])
-            strategy_text_2 = clean_html(DEGEN_TYPES[comparison_type]["strategy"])
+                st.markdown(f"### 🔍 {selected_type}")
+                with st.container():
+                    st.markdown(f"**Opis:** {DEGEN_TYPES[selected_type]['description']}")
+                    
+                    st.markdown("**Mocne strony:**")
+                    for strength in DEGEN_TYPES[selected_type]["strengths"]:
+                        st.markdown(f"- ✅ {strength}")
+                    
+                    st.markdown("**Wyzwania:**")
+                    for challenge in DEGEN_TYPES[selected_type]["challenges"]:
+                        st.markdown(f"- ⚠️ {challenge}")
+                    
+                    st.markdown("**Strategia:**")
+                    st.markdown(clean_html(DEGEN_TYPES[selected_type]["strategy"]))
             
             # Dla drugiego typu (porównywanego)
             with col2:
-                content_section(
-                    comparison_type,
-                    f"""**Opis:** {DEGEN_TYPES[comparison_type]['description']}
-        
-**Mocne strony:**
-{strengths_list_2}
-
-**Wyzwania:**
-{challenges_list_2}
-
-**Strategia:**
-{strategy_text_2}
-                    """,
-                    icon="🔍",
-                    border_color=DEGEN_TYPES[comparison_type]["color"],
-                    collapsed=False
-                )
+                st.markdown(f"### 🔍 {comparison_type}")
+                with st.container():
+                    st.markdown(f"**Opis:** {DEGEN_TYPES[comparison_type]['description']}")
+                    
+                    st.markdown("**Mocne strony:**")
+                    for strength in DEGEN_TYPES[comparison_type]["strengths"]:
+                        st.markdown(f"- ✅ {strength}")
+                    
+                    st.markdown("**Wyzwania:**")
+                    for challenge in DEGEN_TYPES[comparison_type]["challenges"]:
+                        st.markdown(f"- ⚠️ {challenge}")
+                    
+                    st.markdown("**Strategia:**")
+                    st.markdown(clean_html(DEGEN_TYPES[comparison_type]["strategy"]))
       # Nawigacja
     st.markdown("---")
     
@@ -490,22 +461,21 @@ def show_test_results():
             )
         with col2:
             content_section(
-                "Twoje wyzwania:", 
-                "\n".join([f"- ⚠️ {challenge}" for challenge in DEGEN_TYPES[dominant_type]["challenges"]]),
-                icon="🚧",
+                "Twoje wyzwania:",            "\n".join([f"- ⚠️ {challenge}" for challenge in DEGEN_TYPES[dominant_type]["challenges"]]),
+                                icon="🚧",
                 collapsed=False
             )
-    
-    tip_block(DEGEN_TYPES[dominant_type]["strategy"], title="Rekomendowana strategia", icon="🎯")
-    
-    # Dodanie szczegółowych informacji o typie degena
-    content_section(
-        "Szczegółowy opis twojego typu degena", 
-        degen_details.get(dominant_type, "Szczegółowy opis dla tego typu degena nie jest jeszcze dostępny."),
-        icon="🔍",
-        collapsed=True
-    )
-      # Additional options
+        
+        tip_block(DEGEN_TYPES[dominant_type]["strategy"], title="Rekomendowana strategia", icon="🎯")
+        
+        # Dodanie szczegółowych informacji o typie degena
+        with st.expander("🔍 Szczegółowy opis twojego typu degena", expanded=False):
+            if dominant_type in degen_details:
+                st.markdown(degen_details[dominant_type])
+            else:
+                st.info("Szczegółowy opis dla tego typu degena nie jest jeszcze dostępny.")
+        
+        # Additional options
     if zen_button("Wykonaj test ponownie"):
         st.session_state.test_step = 0
         st.session_state.test_scores = {degen_type: 0 for degen_type in DEGEN_TYPES}

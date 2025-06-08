@@ -432,19 +432,14 @@ def show_profile():
                 tip_block(
                     DEGEN_TYPES[degen_type]["strategy"],
                     title="Rekomendowana strategia",
-                    icon="🎯"
-                )
+                    icon="🎯"                )
                 
                 # Detailed description
                 if degen_type in degen_details:
-                    content_section(
-                        "Szczegółowy opis twojego typu degena", 
-                        degen_details[degen_type],
-                        icon="📚",
-                        collapsed=True
-                    )
-            else:
-                st.warning("Szczegółowy opis dla tego typu degena nie jest jeszcze dostępny.")
+                    with st.expander("📚 Szczegółowy opis twojego typu degena", expanded=False):
+                        st.markdown(degen_details[degen_type])
+                else:
+                    st.warning("Szczegółowy opis dla tego typu degena nie jest jeszcze dostępny.")
         else:
             notification(
                 "Nie określono jeszcze twojego typu degena. Wykonaj test degena, aby odkryć swój unikalny styl inwestowania i dostosowane rekomendacje.",
