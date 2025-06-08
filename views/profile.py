@@ -15,7 +15,7 @@ from matplotlib.transforms import Affine2D
 from data.test_questions import DEGEN_TYPES
 from data.users import load_user_data, save_user_data, update_single_user_field, get_current_user_data
 from PIL import Image
-from utils.components import zen_header, zen_button, notification, content_section, tip_block
+from utils.components import zen_header, zen_button, notification, tip_block
 from utils.material3_components import apply_material3_theme
 from utils.layout import get_device_type, responsive_grid, responsive_container, toggle_device_view, apply_responsive_styles, get_responsive_figure_size
 
@@ -45,7 +45,7 @@ from config.settings import USER_AVATARS, THEMES, DEGEN_TYPES, BADGES, BADGE_CAT
 from data.degen_details import degen_details
 from views.degen_explorer import plot_radar_chart
 from views.dashboard import calculate_xp_progress
-from utils.components import zen_header, zen_button, notification, content_section, stat_card, xp_level_display, goal_card, badge_card, progress_bar, tip_block, quote_block,  add_animations_css
+from utils.components import zen_header, zen_button, notification, stat_card, xp_level_display, goal_card, badge_card, progress_bar, tip_block, quote_block,  add_animations_css
 from utils.user_components import user_stats_panel
 from utils.real_time_updates import live_xp_indicator
 
@@ -368,21 +368,15 @@ def show_profile():
         
         if user_data.get('degen_type'):
             degen_type = user_data['degen_type']
-            
-            # Header with degen type
+              # Header with degen type
             st.markdown(f"<h2 style='text-align: center;'>{degen_type}</h2>", unsafe_allow_html=True)
             tagline = DEGEN_TYPES.get(degen_type, {}).get("tagline", "Twój unikalny styl inwestowania")
             st.markdown(f"<div style='text-align: center; color: #666; margin-bottom: 20px;'>{tagline}</div>", unsafe_allow_html=True)
             
             if degen_type in DEGEN_TYPES:
                 # Description
-                content_section(
-                    "Opis",
-                    DEGEN_TYPES[degen_type]["description"],
-                    icon="📖",
-                    border_color="#3498db",
-                    collapsed=False
-                )
+                with st.expander("📖 Opis", expanded=True):
+                    st.markdown(DEGEN_TYPES[degen_type]["description"])
                   # Radar chart if available
                 if 'test_scores' in user_data:
                     st.subheader("Twój profil inwestycyjny")
@@ -411,22 +405,11 @@ def show_profile():
                 col1, col2 = st.columns(2)
                 
                 with col1:
-                    content_section(
-                        "Mocne strony", 
-                        "\n".join([f"- ✅ {strength}" for strength in DEGEN_TYPES[degen_type]["strengths"]]),
-                        icon="💪",
-                        border_color="#27ae60",
-                        collapsed=False
-                    )
+                    with st.expander("💪 Mocne strony", expanded=True):                        st.markdown("\n".join([f"- ✅ {strength}" for strength in DEGEN_TYPES[degen_type]["strengths"]]))
                 
                 with col2:
-                    content_section(
-                        "Wyzwania", 
-                        "\n".join([f"- ⚠️ {challenge}" for challenge in DEGEN_TYPES[degen_type]["challenges"]]),
-                        icon="🔍",
-                        border_color="#e74c3c",
-                        collapsed=False
-                    )
+                    with st.expander("🔍 Wyzwania", expanded=True):
+                        st.markdown("\n".join([f"- ⚠️ {challenge}" for challenge in DEGEN_TYPES[degen_type]["challenges"]]))
                 
                 # Strategy
                 tip_block(

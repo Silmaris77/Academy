@@ -2,6 +2,7 @@
 Funkcje do generowania interaktywnych map myśli dla lekcji
 """
 import streamlit as st
+import re
 
 def create_lesson_mind_map(lesson_data):
     """
@@ -44,20 +45,18 @@ def create_b1c1l1_mind_map():
         # Definiuj węzły
         nodes = []
         edges = []
-        
-        # Centralny węzeł
+          # Centralny węzeł - kolor z bloku 1 Skills (pomarańczowy-czerwony)
         nodes.append(Node(id="central", 
                          label="💸 STRACH PRZED STRATĄ", 
                          size=30,
-                         color="#FF6B6B",
-                         font={"size": 16, "color": "white"}))
+                         color="#FF9950",
+                         font={"size": 16, "color": "#FF9950"}))
         
-        # Główne koncepty
+        # Główne koncepty - kolory z bloków Skills
         concepts = [
-            {"id": "teoria", "label": "📊 Teoria perspektywy", "color": "#4ECDC4"},
-            {"id": "dyspozycja", "label": "🔄 Efekt dyspozycji", "color": "#45B7D1"},
-            {"id": "dopamina", "label": "🧠 Dopamina", "color": "#96CEB4"},
-            {"id": "framing", "label": "🖼️ Framing", "color": "#FECA57"}
+            {"id": "teoria", "label": "📊 Teoria perspektywy", "color": "#43C6AC"},    # Block 2
+            {"id": "dyspozycja", "label": "🔄 Efekt dyspozycji", "color": "#667eea"},  # Block 3            {"id": "dopamina", "label": "🧠 Dopamina", "color": "#f093fb"},           # Block 4
+            {"id": "framing", "label": "🖼️ Framing", "color": "#4facfe"}              # Block 5
         ]
         
         for concept in concepts:
@@ -65,7 +64,7 @@ def create_b1c1l1_mind_map():
                             label=concept["label"],
                             size=20,
                             color=concept["color"],
-                            font={"size": 12, "color": "white"}))
+                            font={"size": 12, "color": concept["color"]}))  # Font color matches node color
             edges.append(Edge(source="central", target=concept["id"]))
         
         # Szczegóły teorii perspektywy
@@ -95,19 +94,24 @@ def create_b1c1l1_mind_map():
             {"id": "pozytywny", "label": "😊 Pozytywne vs negatywne ujęcie", "parent": "framing"},
             {"id": "manipulacja", "label": "🎭 Podatność na manipulację", "parent": "framing"}
         ]
-        
-        # Dodaj wszystkie szczegóły
+          # Dodaj wszystkie szczegóły - używają jaśniejszych odcieni kolorów z bloków Skills
         all_details = teoria_details + dyspozycja_details + dopamina_details + framing_details
+        detail_colors = {
+            "teoria": "#67DFD0",    # Jaśniejszy odcień Block 2
+            "dyspozycja": "#8A9BFF", # Jaśniejszy odcień Block 3  
+            "dopamina": "#F5B6FF",   # Jaśniejszy odcień Block 4
+            "framing": "#7DC6FF"     # Jaśniejszy odcień Block 5
+        }
         
         for detail in all_details:
+            parent_color = detail_colors.get(detail["parent"], "#DDA0DD")
             nodes.append(Node(id=detail["id"],
                             label=detail["label"],
                             size=12,
-                            color="#DDA0DD",
-                            font={"size": 10, "color": "black"}))
+                            color=parent_color,
+                            font={"size": 10, "color": parent_color}))
             edges.append(Edge(source=detail["parent"], target=detail["id"]))
-        
-        # Rozwiązania praktyczne
+          # Rozwiązania praktyczne - kolor z Block 3 Skills (jaśniejszy odcień)
         solutions = [
             {"id": "zoom_out", "label": "🔍 Zoom out - szeroka perspektywa"},
             {"id": "limit_strat", "label": "🚧 Wyznacz limit strat"},
@@ -115,20 +119,22 @@ def create_b1c1l1_mind_map():
             {"id": "plan", "label": "📋 Trzymaj się planu"}
         ]
         
+        solution_color = "#8A9BFF"  # Jaśniejszy odcień Block 3 color
         for solution in solutions:
             nodes.append(Node(id=solution["id"],
                             label=solution["label"],
                             size=15,
-                            color="#90EE90",
-                            font={"size": 11, "color": "black"}))
+                            color=solution_color,
+                            font={"size": 11, "color": solution_color}))
             edges.append(Edge(source="central", target=solution["id"]))
         
-        # Case study - Kuba
+        # Case study - Kuba (kolor z Block 1 Skills)
+        case_study_color = "#FF9950"
         nodes.append(Node(id="kuba",
                         label="👨‍💻 Case Study: Kuba i $MOONZ",
                         size=18,
-                        color="#FF8C42",
-                        font={"size": 12, "color": "white"}))
+                        color=case_study_color,
+                        font={"size": 12, "color": case_study_color}))
         edges.append(Edge(source="central", target="kuba"))
         
         kuba_details = [
@@ -137,22 +143,22 @@ def create_b1c1l1_mind_map():
             {"id": "panika", "label": "😰 Panika i sprawdzanie co 3 min", "parent": "kuba"}
         ]
         
+        kuba_detail_color = "#FFB380"  # Jaśniejszy odcień Block 1 color
         for detail in kuba_details:
             nodes.append(Node(id=detail["id"],
                             label=detail["label"],
                             size=10,
-                            color="#FFB347",
-                            font={"size": 9, "color": "black"}))
+                            color=kuba_detail_color,
+                            font={"size": 9, "color": kuba_detail_color}))
             edges.append(Edge(source=detail["parent"], target=detail["id"]))
-        
-        # Konfiguracja wyświetlania
+          # Konfiguracja wyświetlania - highlight color zsynchronizowany z Skills Block 2
         config = Config(width=800, 
                        height=600,
                        directed=False,
                        physics=True,
                        hierarchical=False,
                        nodeHighlightBehavior=True,
-                       highlightColor="#F7A7A6",
+                       highlightColor="#43C6AC",  # Block 2 Skills color
                        collapsible=False)
         
         # Wyświetl mapę
@@ -188,15 +194,15 @@ def create_data_driven_mind_map(mind_map_data):
         
         nodes = []
         edges = []
-        
-        # Centralny węzeł
+          # Centralny węzeł - domyślnie używa koloru z Bloku 2 Skills
         central = mind_map_data.get('central_node', {})
+        central_color = central.get('color', '#43C6AC')  # Block 2 color as default
         nodes.append(Node(
             id=central.get('id', 'main_topic'),
             label=central.get('label', '🎯 GŁÓWNY TEMAT'),
             size=central.get('size', 30),
-            color=central.get('color', '#FF6B6B'),
-            font={"size": central.get('font_size', 16), "color": "white"}
+            color=central_color,
+            font={"size": central.get('font_size', 16), "color": central_color}
         ))
         
         # Kategorie główne
@@ -205,7 +211,7 @@ def create_data_driven_mind_map(mind_map_data):
                 id=category.get('id', 'category'),
                 label=category.get('label', 'Kategoria'),
                 size=category.get('size', 20),
-                color=category.get('color', '#4ECDC4'),
+                color=category.get('color', '#43C6AC'),  # Skills Block 2 color as default
                 font={"size": category.get('font_size', 12), "color": "white"}
             ))
             edges.append(Edge(source=central.get('id', 'main_topic'), target=category.get('id', 'category')))
@@ -258,8 +264,7 @@ def create_data_driven_mind_map(mind_map_data):
         # Dodatkowe połączenia
         for connection in mind_map_data.get('connections', []):
             edges.append(Edge(source=connection.get('from'), target=connection.get('to')))
-        
-        # Konfiguracja
+          # Konfiguracja
         config_data = mind_map_data.get('config', {})
         config = Config(
             width=config_data.get('width', 800),
@@ -268,7 +273,7 @@ def create_data_driven_mind_map(mind_map_data):
             physics=config_data.get('physics', True),
             hierarchical=config_data.get('hierarchical', False),
             nodeHighlightBehavior=True,
-            highlightColor="#F7A7A6",
+            highlightColor="#43C6AC",  # Zsynchronizowany z Skills Block 2
             collapsible=False
         )
         
@@ -298,54 +303,68 @@ def create_auto_generated_mind_map(lesson_data):
         # Informacja o automatycznym generowaniu
         st.info("🤖 Ta mapa myśli została wygenerowana automatycznie na podstawie struktury lekcji. "
                "Aby dodać dedykowaną mapę myśli, dodaj sekcję 'mind_map' do pliku JSON lekcji.")
-        
-        # Centralny węzeł z tytułem lekcji
+          # Centralny węzeł z tytułem lekcji - kolor z bloku 2 Skills (morski)
         title = lesson_data.get('title', 'Lekcja')
         nodes.append(Node(id="central", 
                          label=f"📚 {title}", 
                          size=25,
-                         color="#6C5CE7",
-                         font={"size": 14, "color": "white"}))
-        
-        # Dodaj sekcje lekcji jako węzły
+                         color="#43C6AC",
+                         font={"size": 14, "color": "#43C6AC"}))
+          # Dodaj sekcje lekcji jako węzły - używa kolorów zsynchronizowanych z blokami Skills
         if 'sections' in lesson_data:
             sections = lesson_data['sections']
+              # Kolory zsynchronizowane z Skills section blocks (pierwsze kolory gradientów)
+            section_colors = [
+                "#FF9950",  # Block 1: Emocje & Mózg (pomarańczowy-czerwony)
+                "#43C6AC",  # Block 2: Wewnętrzny Kompas (morski-zielony)
+                "#667eea",  # Block 3: Świadomość Działania (niebieski-fioletowy)
+                "#f093fb",  # Block 4: Elastyczność & Testowanie (różowy-magenta)
+                "#4facfe",  # Block 5: Mistrzostwo & Wspólnota (niebieski-cyan)
+                "#FF9950",  # Cycle back to Block 1 for additional sections
+                "#43C6AC",  # Block 2 repeated
+                "#667eea",  # Block 3 repeated
+                "#f093fb",  # Block 4 repeated
+                "#4facfe"   # Block 5 repeated
+            ]
             
             if 'learning' in sections and 'sections' in sections['learning']:
                 for i, section in enumerate(sections['learning']['sections']):
                     section_id = f"section_{i}"
                     section_title = section.get('title', f'Sekcja {i+1}')
+                    # Usuń emoji z początku tytułu
+                    section_title = re.sub(r'^[^\w\s]+\s*', '', section_title)
                     # Skróć tytuł jeśli jest za długi
-                    if len(section_title) > 50:
-                        section_title = section_title[:47] + "..."
+                    if len(section_title) > 60:
+                        section_title = section_title[:57] + "..."
+                    
+                    # Użyj koloru z palety zsynchronizowanej z blokami Skills
+                    color = section_colors[i % len(section_colors)]
                     
                     nodes.append(Node(id=section_id,
                                     label=section_title,
                                     size=15,
-                                    color="#74B9FF",
-                                    font={"size": 10, "color": "white"}))
+                                    color=color,
+                                    font={"size": 10, "color": color}))
                     edges.append(Edge(source="central", target=section_id))
         
         # Dodaj elementy standardowe lekcji
         standard_elements = []
-        
-        # Quiz jeśli istnieje
+          # Quiz jeśli istnieje - kolor z bloku 4 (różowy)
         if lesson_data.get('sections', {}).get('opening_quiz'):
-            standard_elements.append({"id": "quiz", "label": "🧠 Quiz", "color": "#FD79A8"})
+            standard_elements.append({"id": "quiz", "label": "🧠 Quiz", "color": "#f093fb"})
         
-        # Refleksja jeśli istnieje
+        # Refleksja jeśli istnieje - kolor z bloku 5 (niebieski-cyan)
         if lesson_data.get('sections', {}).get('reflection'):
-            standard_elements.append({"id": "reflection", "label": "🤔 Refleksja", "color": "#FDCB6E"})
-        
-        # XP Reward
+            standard_elements.append({"id": "reflection", "label": "🤔 Refleksja", "color": "#4facfe"})
+          # XP Reward - kolor z bloku 1 (pomarańczowy)
         if lesson_data.get('xp_reward'):
             xp = lesson_data.get('xp_reward', 0)
-            standard_elements.append({"id": "xp", "label": f"⭐ {xp} XP", "color": "#FFD93D"})
+            standard_elements.append({"id": "xp", "label": f"⭐ {xp} XP", "color": "#FF9950"})
         
-        # Dodaj inne elementy
+        # Dodaj inne elementy - kolory zsynchronizowane z blokami Skills
         standard_elements.extend([
-            {"id": "summary", "label": "📝 Podsumowanie", "color": "#A29BFE"},
-            {"id": "practice", "label": "💪 Ćwiczenia", "color": "#6C5CE7"}
+            {"id": "summary", "label": "📝 Podsumowanie", "color": "#667eea"},  # Block 3 color
+            {"id": "practice", "label": "💪 Ćwiczenia", "color": "#f093fb"}     # Block 4 color
         ])
         
         for element in standard_elements:
@@ -353,7 +372,7 @@ def create_auto_generated_mind_map(lesson_data):
                             label=element["label"],
                             size=12,
                             color=element["color"],
-                            font={"size": 10, "color": "white"}))
+                            font={"size": 10, "color": element["color"]}))
             edges.append(Edge(source="central", target=element["id"]))
         
         config = Config(width=700, 
@@ -362,7 +381,7 @@ def create_auto_generated_mind_map(lesson_data):
                        physics=True,
                        hierarchical=False,
                        nodeHighlightBehavior=True,
-                       highlightColor="#F7A7A6")
+                       highlightColor="#43C6AC")  # Zsynchronizowany z Skills Block 2
         
         return agraph(nodes=nodes, edges=edges, config=config)
         
