@@ -3,7 +3,7 @@
 
 import json
 import os
-from datetime import datetime, timedelta
+from datetime import datetime, timedelta, timezone
 from typing import List, Dict, Any, Optional, Union
 from config.settings import BADGES, BADGE_CATEGORIES, BADGE_TIERS, XP_LEVELS
 
@@ -343,8 +343,8 @@ def add_badge_activity(user_data: Dict[str, Any], new_badges: List[str]):
         "type": "badge_earned",
         "badges": new_badges,
         "badge_names": [BADGES[badge_id]['name'] for badge_id in new_badges],
-        "timestamp": datetime.now().isoformat(),
-        "date": datetime.now().strftime('%Y-%m-%d')
+        "timestamp": datetime.now(timezone.utc).isoformat(),  # Ensure UTC and ISO format
+        "date": datetime.now(timezone.utc).strftime('%Y-%m-%d') # Ensure UTC
     }
     
     activities = user_data.get('recent_activities', [])

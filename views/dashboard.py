@@ -21,6 +21,7 @@ from utils.components import (
 )
 from utils.real_time_updates import live_xp_indicator
 from utils.time_utils import calculate_relative_time
+from utils.lesson_utils import get_lesson_title # Added import
 
 def calculate_xp_progress(user_data):
     """Calculate XP progress and dynamically determine the user's level"""
@@ -317,56 +318,65 @@ def show_recent_activities(user_data):
         </div>
         <div class="activity-list">
     """, unsafe_allow_html=True)
-    
-    # Przykładowe aktywności na podstawie danych użytkownika
-    completed_lessons = user_data.get('completed_lessons', [])
-    degen_type = user_data.get('degen_type', None)
-    
-    activities = []
-    
-    if completed_lessons:
-        activities.append({
-            'icon': '✓',
-            'color': '#27ae60',
-            'title': f'Ukończono lekcję: {completed_lessons[-1] if completed_lessons else "Brak"}',
-            'time': '2 godziny temu'
-        })
-    
-    if degen_type:
-        # Get test completion timestamp or use fallback
-        test_completion_date = user_data.get('test_completion_date', None)
-        if test_completion_date:
-            test_time_text = calculate_relative_time(test_completion_date)
-        else:
-            test_time_text = "niedawno"  # Fallback for users without timestamps
-            
-        activities.append({
-            'icon': '🧬',
-            'color': '#3498db',
-            'title': f'Odkryto typ inwestora: {degen_type}',
-            'time': test_time_text
-        })
-    
-    activities.append({
-        'icon': '🔥',
-        'color': '#e67e22',
-        'title': 'Rozpoczęto nową passę dzienną',
-        'time': '3 godziny temu'
-    })
-    
-    for activity in activities:
-        st.markdown(f"""
-            <div class="activity-item">
-                <div class="activity-icon" style="background: rgba({activity['color'][1:3]}, {activity['color'][3:5]}, {activity['color'][5:7]}, 0.1); color: {activity['color']};">
-                    {activity['icon']}
+
+    recent_activities = user_data.get('recent_activities', [])
+
+    if not recent_activities:
+        st.markdown("<p class='empty-activity'>Brak ostatnich aktywności.</p>", unsafe_allow_html=True)
+    else:
+        for activity_data in recent_activities[:5]: # Display up to 5 recent activities
+            activity_type = activity_data.get("type")
+            details = activity_data.get("details", {})
+            timestamp_str = activity_data.get("timestamp")
+
+            time_text = calculate_relative_time(timestamp_str) if timestamp_str else "Nieznana data"
+            title = "Nieznana aktywność"
+            icon = "🔔" # Default icon
+            color = "#7f8c8d" # Default color (grey)
+
+            if activity_type == "lesson_completed":
+                lesson_id = details.get("lesson_id", "Nieznana lekcja")
+                lesson_title = get_lesson_title(lesson_id)
+                title = f"Ukończono lekcję: {lesson_title}"
+                icon = "✅"
+                color = "#27ae60" # Green
+            elif activity_type == "degen_type_discovered":
+                degen_type_name = details.get("degen_type", "Nieznany typ")
+                title = f"Odkryto typ inwestora: {degen_type_name}"
+                icon = "🧬"
+                color = "#3498db" # Blue
+            elif activity_type == "daily_streak_started": # Assuming this is a possible type
+                title = "Rozpoczęto nową passę dzienną"
+                icon = "🔥"
+                color = "#e67e22" # Orange
+            elif activity_type == "badge_earned":
+                badge_names = details.get("badge_names", [])
+                if badge_names:
+                    title = f"Zdobyto odznakę: {', '.join(badge_names)}"
+                else:
+                    title = "Zdobyto nową odznakę"
+                icon = "🏆"
+                color = "#f1c40f" # Yellow
+            # Add more elif blocks here for other activity types as needed
+            # e.g., quiz_completed, mission_completed, xp_gained etc.
+            # Ensure 'details' in add_recent_activity call contains necessary info.
+
+            # Convert hex color to RGB for rgba background
+            hex_color = color.lstrip('#')
+            rgb_color = tuple(int(hex_color[i:i+2], 16) for i in (0, 2, 4))
+
+            st.markdown(f"""
+                <div class="activity-item">
+                    <div class="activity-icon" style="background: rgba({rgb_color[0]}, {rgb_color[1]}, {rgb_color[2]}, 0.1); color: {color};">
+                        {icon}
+                    </div>
+                    <div class="activity-content">
+                        <div class="activity-title">{title}</div>
+                        <div class="activity-time">{time_text}</div>
+                    </div>
                 </div>
-                <div class="activity-content">
-                    <div class="activity-title">{activity['title']}</div>
-                    <div class="activity-time">{activity['time']}</div>
-                </div>
-            </div>
-        """, unsafe_allow_html=True)
-    
+            """, unsafe_allow_html=True)
+
     st.markdown("""
         </div>
     </div>

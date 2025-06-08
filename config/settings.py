@@ -1,3 +1,30 @@
+"""
+Ustawienia globalne dla aplikacji ZenDegenAcademy
+"""
+
+# Ścieżka do pliku JSON zawierającego dane wszystkich lekcji
+# Upewnij się, że ten plik istnieje i zawiera poprawne dane w formacie:
+# {
+#   "B1C1L1": {
+#     "metadata": {
+#       "title": "Pełna Nazwa Lekcji B1C1L1",
+#       "description": "Opis lekcji...",
+#       "category": "Podstawy"
+#     },
+#     "content": { ... }
+#   },
+#   ...
+# }
+LESSONS_FILE_PATH = "data/lessons.json"
+
+# Inne ustawienia globalne mogą być dodane tutaj
+APP_NAME = "ZenDegenAcademy"
+APP_VERSION = "1.1.0"
+
+# Upewnij się, że ta linia istnieje, jeśli nie, zostanie dodana.
+# Jeśli plik jest pusty, cała zawartość powyżej zostanie dodana.
+# Jeśli plik istnieje i zawiera już LESSONS_FILE_PATH, nie zostanie zmieniony.
+
 import streamlit as st
 
 # Page configuration

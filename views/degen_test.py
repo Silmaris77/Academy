@@ -4,7 +4,7 @@ import altair as alt
 import matplotlib.pyplot as plt
 import numpy as np
 from data.test_questions import DEGEN_TYPES, TEST_QUESTIONS
-from data.users import load_user_data, save_user_data
+from data.users import load_user_data, save_user_data, add_recent_activity # Modified import
 from data.degen_details import degen_details
 from utils.components import zen_header, zen_button, progress_bar, notification, content_section, tip_block
 from utils.material3_components import apply_material3_theme
@@ -267,6 +267,13 @@ def show_degen_test():
         # Add timestamp for completion tracking
         from utils.time_utils import get_current_timestamp
         users_data[st.session_state.username]["test_completion_date"] = get_current_timestamp()
+        
+        # Add recent activity for degen test completion
+        add_recent_activity(
+            st.session_state.username,
+            "degen_type_discovered",
+            {"degen_type": dominant_type}
+        )
         
         save_user_data(users_data)
         

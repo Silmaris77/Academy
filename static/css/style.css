@@ -246,7 +246,7 @@ button[kind="header"] {
 
 /* Przyciski w sidebarze - ciemniejsze */
 .stSidebar [data-testid="stButton"] button {
-    background: #f8f9fa !important;  /* lekko szary */
+    background: #cfe7ff !important;  /* kolor przycisków sidebar */
     border: 1px solid #c0c0c0 !important;
     color: #34495e !important;  /* ciemniejszy tekst */
     font-weight: 500;
