@@ -3,7 +3,6 @@ import random
 import altair as alt
 import pandas as pd
 import numpy as np
-import matplotlib.pyplot as plt
 from datetime import datetime, timedelta
 from data.users import load_user_data, save_user_data, get_current_user_data
 from data.test_questions import DEGEN_TYPES
