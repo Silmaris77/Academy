@@ -111,7 +111,16 @@ def is_booster_active(username, booster_id):
         return False, None
     
     booster_data = user_data['active_boosters'][booster_id]
-    expiration_str = booster_data.get('expires_at')
+    
+    # Handle both string and dictionary formats for backwards compatibility
+    if isinstance(booster_data, str):
+        # Legacy format: direct string timestamp
+        expiration_str = booster_data
+    elif isinstance(booster_data, dict):
+        # New format: dictionary with expires_at key
+        expiration_str = booster_data.get('expires_at')
+    else:
+        return False, None
     
     if not expiration_str:
         return False, None

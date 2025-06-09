@@ -227,9 +227,9 @@ def get_daily_missions(username):
 
 def show_stats_section(user_data, device_type):
     """Sekcja z kartami statystyk - alternatywne podejście z kolumnami"""
-    
-    # Oblicz dane statystyk
+      # Oblicz dane statystyk
     xp = user_data.get('xp', 0)
+    degencoins = user_data.get('degencoins', 0)
     completed_lessons = len(user_data.get('completed_lessons', []))
     missions_progress = get_daily_missions_progress(st.session_state.username)
     streak = missions_progress['streak']
@@ -237,6 +237,7 @@ def show_stats_section(user_data, device_type):
     
     # Oblicz trend XP (przykładowy +15%)
     xp_change = "+15%"
+    degencoins_change = "+15%"
     lessons_change = f"+{min(3, completed_lessons)}"
     streak_change = f"+{min(1, streak)}"
     level_change = f"+{max(0, level - 1)}"
@@ -247,10 +248,11 @@ def show_stats_section(user_data, device_type):
     # 5 kart statystyk
     stats = [
         {"icon": "🏆", "value": f"{xp}", "label": "Punkty XP", "change": xp_change},
-        {"icon": "📚", "value": f"{completed_lessons}", "label": "Ukończone lekcje", "change": lessons_change},
-        {"icon": "🔥", "value": f"{streak}", "label": "Aktualna passa", "change": streak_change},
+        {"icon": "🪙", "value": f"{degencoins}", "label": "DegenCoins", "change": degencoins_change},
         {"icon": "⭐", "value": f"{level}", "label": "Poziom", "change": level_change},
-        {"icon": "🎯", "value": f"{missions_progress['completed']}", "label": "Dzisiejsze misje", "change": f"+{missions_progress['completed']}"}
+        {"icon": "📚", "value": f"{completed_lessons}", "label": "Ukończone lekcje", "change": lessons_change},
+        {"icon": "🔥", "value": f"{streak}", "label": "Aktualna passa", "change": streak_change}
+        # {"icon": "🎯", "value": f"{missions_progress['completed']}", "label": "Dzisiejsze misje", "change": f"+{missions_progress['completed']}"}
     ]
     
     # Wygeneruj kartę w każdej kolumnie

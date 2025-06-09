@@ -8,7 +8,7 @@ from utils.material3_components import apply_material3_theme
 # Check if this module is being used to avoid duplicate rendering
 _IS_SHOP_NEW_LOADED = False
 
-def buy_item(item_type, item_id, price, user_data, users_data):
+def buy_item(item_type, item_id, price, user_data, users_data, username):
     """
     Process the purchase of an item
     
@@ -18,16 +18,16 @@ def buy_item(item_type, item_id, price, user_data, users_data):
     - price: Cost in DegenCoins
     - user_data: User's data dictionary
     - users_data: All users' data dictionary
+    - username: Username of the current user
     
     Returns:
     - (success, message): Tuple with success status and message
-    """
-    # Sprawdź czy użytkownik ma wystarczającą ilość monet
-    if user_data.get('degen_coins', 0) < price:
+    """# Sprawdź czy użytkownik ma wystarczającą ilość monet
+    if user_data.get('degencoins', 0) < price:
         return False, "Nie masz wystarczającej liczby DegenCoins!"
     
     # Odejmij monety
-    user_data['degen_coins'] = user_data.get('degen_coins', 0) - price
+    user_data['degencoins'] = user_data.get('degencoins', 0) - price
     
     # Dodaj przedmiot do ekwipunku użytkownika
     if 'inventory' not in user_data:
@@ -48,9 +48,8 @@ def buy_item(item_type, item_id, price, user_data, users_data):
         # Ustawienie czasu wygaśnięcia na 24 godziny od teraz
         expiry_time = datetime.datetime.now() + timedelta(hours=24)
         user_data['active_boosters'][item_id] = expiry_time.isoformat()
-    
-    # Zapisz zmiany w danych użytkownika
-    users_data[user_data['username']] = user_data
+      # Zapisz zmiany w danych użytkownika
+    users_data[username] = user_data
     save_user_data(users_data)
     
     return True, f"Pomyślnie zakupiono przedmiot za {price} DegenCoins!"
@@ -76,9 +75,8 @@ def show_shop():
     # Wyświetl główną zawartość (bez używania sidebara)
     # Struktura kontentu dokładnie taka jak w innych zakładkach
     zen_header("Sklep 🛒")  # Używaj zen_header zamiast st.markdown dla spójności
-    
-    # Wyświetl ilość monet użytkownika
-    st.markdown(f"### Twoje DegenCoins: <span style='color: #FFA500;'>🪙 {user_data.get('degen_coins', 0)}</span>", unsafe_allow_html=True)
+      # Wyświetl ilość monet użytkownika
+    st.markdown(f"### Twoje DegenCoins: <span style='color: #FFA500;'>🪙 {user_data.get('degencoins', 0)}</span>", unsafe_allow_html=True)
     
     # Zakładki sklepu
     tab_avatars, tab_backgrounds, tab_special_lessons, tab_boosters = st.tabs(["Awatary", "Tła", "Specjalne Lekcje", "Boostery"])
@@ -130,10 +128,9 @@ def show_shop():
                             save_user_data(users_data)
                             st.success(f"Ustawiono {avatar['name']} jako aktywny awatar!")
                             st.rerun()
-                else:
-                    # Przycisk do zakupu
+                else:                    # Przycisk do zakupu
                     if st.button(f"Kup {avatar['name']}", key=f"buy_{avatar_id}"):
-                        success, message = buy_item('avatar', avatar_id, avatar['price'], user_data, users_data)
+                        success, message = buy_item('avatar', avatar_id, avatar['price'], user_data, users_data, st.session_state.username)
                         if success:
                             st.success(message)
                             st.rerun()
@@ -187,10 +184,9 @@ def show_shop():
                             save_user_data(users_data)
                             st.success(f"Ustawiono {bg['name']} jako aktywne tło!")
                             st.rerun()
-                else:
-                    # Przycisk do zakupu
+                else:                    # Przycisk do zakupu
                     if st.button(f"Kup {bg['name']}", key=f"buy_{bg_id}"):
-                        success, message = buy_item('background', bg_id, bg['price'], user_data, users_data)
+                        success, message = buy_item('background', bg_id, bg['price'], user_data, users_data, st.session_state.username)
                         if success:
                             st.success(message)
                             st.rerun()
@@ -237,10 +233,9 @@ def show_shop():
                         st.session_state.page = 'lesson'
                         st.session_state.lesson_id = f"special_{lesson_id}"
                         st.rerun()
-                else:
-                    # Przycisk do zakupu
+                else:                    # Przycisk do zakupu
                     if st.button(f"Kup {lesson['name']}", key=f"buy_{lesson_id}"):
-                        success, message = buy_item('special_lesson', lesson_id, lesson['price'], user_data, users_data)
+                        success, message = buy_item('special_lesson', lesson_id, lesson['price'], user_data, users_data, st.session_state.username)
                         if success:
                             st.success(message)
                             st.rerun()
@@ -296,10 +291,9 @@ def show_shop():
                 
                 if is_active:
                     st.success(f"Aktywny! Pozostały czas: {remaining_time}")
-                else:
-                    # Przycisk do zakupu
+                else:                    # Przycisk do zakupu
                     if st.button(f"Kup {booster['name']}", key=f"buy_{booster_id}"):
-                        success, message = buy_item('booster', booster_id, booster['price'], user_data, users_data)
+                        success, message = buy_item('booster', booster_id, booster['price'], user_data, users_data, st.session_state.username)
                         if success:
                             st.success(message)
                             st.rerun()

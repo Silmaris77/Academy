@@ -22,8 +22,7 @@ def register_user(username, password, password_confirm):
     """Register a new user"""
     users_data = load_user_data()
     if username in users_data:
-        return "Username already taken!"
-    elif password != password_confirm:
+        return "Username already taken!"    elif password != password_confirm:
         return "Passwords do not match!"
     elif not username or not password:
         return "Username and password are required!"
