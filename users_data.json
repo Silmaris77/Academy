@@ -2885,5 +2885,18 @@
       }
     },
     "degencoins": 50
+  },
+  "paw": {
+    "user_id": "ca432e84-27ce-49ed-9f35-2575b568c5c7",
+    "password": "paw",
+    "degen_type": null,
+    "xp": 0,
+    "degencoins": 0,
+    "level": 1,
+    "joined_date": "2025-06-09",
+    "completed_lessons": [],
+    "badges": [],
+    "test_taken": false,
+    "recent_activities": []
   }
 }
