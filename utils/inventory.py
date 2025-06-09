@@ -21,16 +21,16 @@ def activate_item(username, item_type, item_id):
     user_data = users_data[username]
     
     # Check if item exists in user's inventory
-    inventory_key = f"owned_{item_type}s"
-    if inventory_key not in user_data or item_id not in user_data[inventory_key]:
+    inventory_data = user_data.get('inventory', {})
+    if item_type not in inventory_data or item_id not in inventory_data[item_type]:
         return False, f"Nie posiadasz tego przedmiotu ({item_id})"
     
     # Handle different item types
     if item_type == 'avatar':
-        user_data['avatar'] = item_id
+        user_data['active_avatar'] = item_id
         
     elif item_type == 'background':
-        user_data['background'] = item_id
+        user_data['active_background'] = item_id
         
     elif item_type == 'special_lesson':
         # Unlock the special lesson
@@ -80,10 +80,13 @@ def get_user_inventory(username):
     
     user_data = users_data[username]
     
+    # Get inventory data from the new inventory structure
+    inventory_data = user_data.get('inventory', {})
+    
     inventory = {
-        'avatars': user_data.get('owned_avatars', []),
-        'backgrounds': user_data.get('owned_backgrounds', []),
-        'special_lessons': user_data.get('owned_special_lessons', []),
+        'avatars': inventory_data.get('avatar', []),
+        'backgrounds': inventory_data.get('background', []),
+        'special_lessons': inventory_data.get('special_lesson', []),
         'boosters': user_data.get('active_boosters', {})
     }
     

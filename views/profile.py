@@ -108,28 +108,41 @@ def show_profile():
     with tab1:
         st.markdown("<div class='profile-tab-content'>", unsafe_allow_html=True)
         personalization_cols = st.columns(2)
-        
-        # Avatar Selection
+          # Avatar Selection
         with personalization_cols[0]:
             st.markdown("<div class='st-bx'>", unsafe_allow_html=True)
             st.subheader("Wybierz avatar")
             
-            # Visual avatar selector with all options displayed
+            # Get user's inventory to check for owned premium avatars
+            inventory = get_user_inventory(st.session_state.username)
+            owned_premium_avatars = inventory.get('avatars', [])
+            
+            # Define premium avatar IDs (require purchase)
+            premium_avatars = {"diamond_degen", "crypto_wizard", "moon_hunter"}
+            
+            # Get available avatars for this user
+            available_avatars = {}
+            for avatar_id, avatar_emoji in USER_AVATARS.items():
+                # Always show basic avatars, only show premium if owned
+                if avatar_id not in premium_avatars or avatar_id in owned_premium_avatars:
+                    available_avatars[avatar_id] = avatar_emoji
+            
+            # Visual avatar selector with available options
             current_avatar = user_data.get('avatar', 'default')
             
-            # Create a visual avatar grid using Streamlit components instead of raw HTML/JS
-            # This approach avoids raw HTML/JS being shown to users
+            # Create a visual avatar grid using Streamlit components
             avatar_grid = st.container()
             with avatar_grid:
                 # Show header text
-                st.write("Kliknij, aby wybrać:")
+                st.write("Dostępne awatary:")
                 
                 # Create rows of avatars with 4 avatars per row
                 items_per_row = 4
-                avatar_rows = [list(USER_AVATARS.items())[i:i+items_per_row] for i in range(0, len(USER_AVATARS), items_per_row)]
+                avatar_items = list(available_avatars.items())
+                avatar_rows = [avatar_items[i:i+items_per_row] for i in range(0, len(avatar_items), items_per_row)]
                 
                 for row in avatar_rows:
-                    cols = st.columns(items_per_row)
+                    cols = st.columns(len(row))  # Dynamic column count based on row length
                     for i, (avatar_id, avatar_emoji) in enumerate(row):
                         with cols[i]:
                             # Style based on whether this avatar is selected
@@ -138,27 +151,38 @@ def show_profile():
                             # Add visible indicator for selected avatar
                             selected_indicator = "✓ " if avatar_id == current_avatar else ""
                             
+                            # Mark premium avatars
+                            premium_marker = "👑 " if avatar_id in premium_avatars else ""
+                            
                             st.markdown(f"""
                             <div style="text-align: center; cursor: pointer; {highlight}">
                                 <div style="font-size: 2.5rem; margin-bottom: 5px;">{avatar_emoji}</div>
-                                <div style="font-size: 0.8rem;">{selected_indicator}{avatar_id.title()}</div>
+                                <div style="font-size: 0.8rem;">{selected_indicator}{premium_marker}{avatar_id.replace('_', ' ').title()}</div>
                             </div>
                             """, unsafe_allow_html=True)
+                
+                # Show info about premium avatars
+                if len(owned_premium_avatars) > 0:
+                    st.success(f"🎉 Posiadasz {len(owned_premium_avatars)} premium awatar(ów)!")
+                else:
+                    st.info("💡 Kup premium awatary w sklepie, aby odblokować więcej opcji!")
             
-            # We still need a form to submit the selection
-            # Streamlit's JavaScript interaction is limited, so we use a dropdown for actual selection
-            selected_avatar = st.selectbox(
-                "Wybierz swojego avatara:",
-                options=list(USER_AVATARS.keys()),
-                format_func=lambda x: f"{USER_AVATARS[x]} - {x.title()}",
-                index=list(USER_AVATARS.keys()).index(current_avatar),
-                label_visibility="collapsed"
-            )
-            
-            if zen_button("Zapisz avatar", key="save_avatar"):
-                if update_user_avatar(st.session_state.username, selected_avatar):
-                    notification("Avatar został zaktualizowany!", type="success")
-                    st.rerun()
+            # Dropdown for actual selection (only available avatars)
+            if available_avatars:
+                selected_avatar = st.selectbox(
+                    "Wybierz swojego avatara:",
+                    options=list(available_avatars.keys()),
+                    format_func=lambda x: f"{available_avatars[x]} - {x.replace('_', ' ').title()}",
+                    index=list(available_avatars.keys()).index(current_avatar) if current_avatar in available_avatars else 0,
+                    label_visibility="collapsed"
+                )
+                
+                if zen_button("Zapisz avatar", key="save_avatar"):
+                    if update_user_avatar(st.session_state.username, selected_avatar):
+                        notification("Avatar został zaktualizowany!", type="success")
+                        st.rerun()
+            else:
+                st.error("Brak dostępnych awatarów!")
             
             st.markdown("</div>", unsafe_allow_html=True)
         

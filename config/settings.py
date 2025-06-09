@@ -74,6 +74,7 @@ DAILY_MISSIONS = [
 
 # User avatar options
 USER_AVATARS = {
+    # Basic avatars (free selection)
     "default": "👤",
     "zen": "🧘‍♂️",
     "yolo": "🚀",
@@ -82,7 +83,12 @@ USER_AVATARS = {
     "scientist": "🔬",
     "spreadsheet": "📊",
     "meta": "🔄",
-    "hype": "📣"
+    "hype": "📣",
+    
+    # Premium shop avatars (purchase required)
+    "diamond_degen": "💎",
+    "crypto_wizard": "🧙",
+    "moon_hunter": "🌕"
 }
 
 # Theme options
