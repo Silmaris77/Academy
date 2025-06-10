@@ -3,7 +3,7 @@
     "user_id": "741699e6-2ffe-4b0f-a36b-81e397686191",
     "password": "a",
     "degen_type": "Zen Degen",
-    "xp": 4181,
+    "xp": 4182,
     "level": 4,
     "joined_date": "2025-04-27",
     "completed_lessons": [
@@ -217,6 +217,13 @@
         "closing_quiz_completed": true,
         "closing_quiz_xp": 4,
         "closing_quiz_timestamp": "2025-05-29 11:06:57"
+      },
+      "B1C1L4": {
+        "intro_xp_awarded": true,
+        "intro_completed": true,
+        "intro_xp": 1,
+        "intro_degencoins": 1,
+        "intro_timestamp": "2025-06-10 12:47:14"
       }
     },
     "badge_data": {
@@ -637,7 +644,7 @@
         "timestamp": "2025-06-08T12:21:09.071964+00:00"
       }
     ],
-    "degencoins": 1531,
+    "degencoins": 1532,
     "inventory": {
       "avatar": [
         "diamond_degen",
@@ -2890,13 +2897,76 @@
     "user_id": "ca432e84-27ce-49ed-9f35-2575b568c5c7",
     "password": "paw",
     "degen_type": null,
-    "xp": 0,
-    "degencoins": 0,
+    "xp": 5,
+    "degencoins": 5,
     "level": 1,
     "joined_date": "2025-06-09",
     "completed_lessons": [],
     "badges": [],
     "test_taken": false,
-    "recent_activities": []
+    "recent_activities": [],
+    "lesson_progress": {
+      "B1C1L1": {
+        "intro_xp_awarded": true,
+        "intro_completed": true,
+        "intro_xp": 5,
+        "intro_degencoins": 5,
+        "intro_timestamp": "2025-06-09 13:48:55"
+      }
+    }
+  },
+  "Krzysio": {
+    "user_id": "7452a3e2-a97f-4169-b11b-87bce82b9f29",
+    "password": "krzysio",
+    "degen_type": null,
+    "xp": 1,
+    "degencoins": 1,
+    "level": 1,
+    "joined_date": "2025-06-10",
+    "completed_lessons": [],
+    "badges": [],
+    "test_taken": false,
+    "recent_activities": [],
+    "lesson_progress": {
+      "B1C1L4": {
+        "intro_xp_awarded": true,
+        "intro_completed": true,
+        "intro_xp": 1,
+        "intro_degencoins": 1,
+        "intro_timestamp": "2025-06-10 13:53:29",
+        "opening_quiz_xp_awarded": true,
+        "opening_quiz_completed": true,
+        "opening_quiz_xp": 0,
+        "opening_quiz_degencoins": 0,
+        "opening_quiz_timestamp": "2025-06-10 15:00:17"
+      }
+    }
+  },
+  "jan": {
+    "user_id": "82aed8ff-dcc2-4a8a-9d4b-fcc18957adcc",
+    "password": "jan",
+    "degen_type": null,
+    "xp": 1,
+    "degencoins": 1,
+    "level": 1,
+    "joined_date": "2025-06-10",
+    "completed_lessons": [],
+    "badges": [],
+    "test_taken": false,
+    "recent_activities": [],
+    "lesson_progress": {
+      "B1C1L4": {
+        "intro_xp_awarded": true,
+        "intro_completed": true,
+        "intro_xp": 1,
+        "intro_degencoins": 1,
+        "intro_timestamp": "2025-06-10 15:01:13",
+        "opening_quiz_xp_awarded": true,
+        "opening_quiz_completed": true,
+        "opening_quiz_xp": 0,
+        "opening_quiz_degencoins": 0,
+        "opening_quiz_timestamp": "2025-06-10 15:24:46"
+      }
+    }
   }
 }

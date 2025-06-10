@@ -179,11 +179,10 @@ def show_lesson():
         
         total_steps = len(step_order)
         base_xp = lesson.get('xp_reward', 100)
-        
-        # Mapowanie kroków do nazw wyświetlanych
+          # Mapowanie kroków do nazw wyświetlanych
         step_names = {
             'intro': 'Wprowadzenie',
-            'opening_quiz': 'Quiz startowy',
+            'opening_quiz': 'Samorefleksja',
             'content': 'Materiał',
             'reflection': 'Refleksja',
             'application': 'Zadania praktyczne',
@@ -388,9 +387,11 @@ def show_lesson():
 
         # Main content
         st.markdown("<div class='st-bx'>", unsafe_allow_html=True)
-        
-        # Nagłówek sekcji
-        st.markdown(f"<h1>{step_names.get(st.session_state.lesson_step, st.session_state.lesson_step.capitalize())}</h1>", unsafe_allow_html=True)
+          # Nagłówek sekcji
+        current_section_title = step_names.get(st.session_state.lesson_step, st.session_state.lesson_step.capitalize())
+        if st.session_state.lesson_step == 'opening_quiz':
+            current_section_title = "🪞 Narzędzie Samorefleksji"
+        st.markdown(f"<h1>{current_section_title}</h1>", unsafe_allow_html=True)
         
         # Main content logic for each step
         if st.session_state.lesson_step == 'intro':
@@ -427,15 +428,14 @@ def show_lesson():
                     
                     # Refresh user data for real-time updates
                     from utils.real_time_updates import refresh_user_data
-                    refresh_user_data()
-                  # Przejdź do następnego kroku
+                    refresh_user_data()                # Przejdź do następnego kroku
                 st.session_state.lesson_step = next_step
                 st.rerun()
             st.markdown("</div>", unsafe_allow_html=True)
         
         elif st.session_state.lesson_step == 'opening_quiz' and 'opening_quiz' in lesson.get('sections', {}):
             # Wyświetl quiz startowy (diagnostyczny)
-            st.info("📋 **Quiz diagnostyczny** - Ten quiz sprawdza Twój aktualny poziom wiedzy. Wynik nie wpływa na postęp w lekcji.")
+            st.info("🪞 **Narzędzie Samorefleksji** - Ten quiz pomaga Ci lepiej poznać siebie jako inwestora. Nie ma tu dobrych ani złych odpowiedzi - chodzi o szczerą autorefleksję. Twoje odpowiedzi nie wpływają na postęp w lekcji.")
             
             quiz_data = lesson['sections']['opening_quiz']
             quiz_complete, _, earned_points = display_quiz(quiz_data)
@@ -443,24 +443,22 @@ def show_lesson():
             # Natychmiast oznacz quiz jako ukończony w nawigacji po ukończeniu
             if quiz_complete:
                 st.session_state.lesson_progress['opening_quiz'] = True
-            
-            # Dodaj opcję pominięcia quizu
+              # Dodaj opcję pominięcia quizu
             st.markdown("---")
-            st.markdown("**Możesz:**")
+            st.markdown("**Twoje opcje:**")
             
             col1, col2 = st.columns(2)
             
             with col1:
                 # Przycisk "Pomiń quiz" - zawsze dostępny
                 st.markdown("<div class='next-button'>", unsafe_allow_html=True)
-                if zen_button("⏭️ Pomiń quiz", use_container_width=True):
+                if zen_button("⏭️ Przejdź do lekcji", use_container_width=True):
                     # Oznacz quiz jako pominięty (ale ukończony dla nawigacji)
                     st.session_state.lesson_progress['opening_quiz'] = True
                     
                     # Nie przyznawaj XP za pominięcie quizu
-                    st.info("Quiz diagnostyczny został pominięty. Możesz przejść do materiału lekcji.")
-                    
-                    # Przejdź do następnego kroku
+                    st.info("💭 W porządku! Przejdźmy do materiału lekcji. Zawsze możesz wrócić do samorefleksji później.")
+                      # Przejdź do następnego kroku
                     st.session_state.lesson_step = next_step
                     st.rerun()
                 st.markdown("</div>", unsafe_allow_html=True)
@@ -468,7 +466,7 @@ def show_lesson():
             with col2:
                 # Przycisk "Dalej" po quizie startowym - dostępny zawsze (niezależnie od wyniku)
                 st.markdown("<div class='next-button'>", unsafe_allow_html=True)
-                button_text = "Dalej" if quiz_complete else f"Dalej: {step_names.get(next_step, next_step.capitalize())}"
+                button_text = "Rozpocznij refleksję" if not quiz_complete else "Kontynuuj"
                 if zen_button(button_text, use_container_width=True):
                     # Award fragment XP using the new system for quiz participation (nie za wynik)
                     success, xp_awarded = award_fragment_xp(lesson_id, 'opening_quiz', step_xp_values['opening_quiz'])
@@ -480,7 +478,7 @@ def show_lesson():
                         st.session_state.lesson_progress['total_xp_earned'] += xp_awarded
                         
                         # Show real-time XP notification
-                        show_xp_notification(xp_awarded, f"Zdobyłeś {xp_awarded} XP za udział w quizie diagnostycznym!")
+                        show_xp_notification(xp_awarded, f"Zdobyłeś {xp_awarded} XP za szczerą samorefleksję!")
                         
                         # Refresh user data for real-time updates
                         from utils.real_time_updates import refresh_user_data
@@ -832,12 +830,15 @@ def show_lesson():
         
         # Oblicz aktualny postęp na podstawie XP (nie liczby kroków)
         completion_percent = (current_xp / max_xp) * 100 if max_xp > 0 else 0
-        
-        # Przygotuj dane o kluczowych krokach do wyświetlenia
+          # Przygotuj dane o kluczowych krokach do wyświetlenia
         key_steps_info = []
         if 'intro' in step_order:
             completed = st.session_state.lesson_progress.get('intro', False)
             key_steps_info.append(f"📖 Intro: {step_xp_values['intro']} XP {'✅' if completed else ''}")
+        
+        if 'opening_quiz' in step_order:
+            completed = st.session_state.lesson_progress.get('opening_quiz', False)
+            key_steps_info.append(f"🪞 Samorefleksja: {step_xp_values['opening_quiz']} XP {'✅' if completed else ''}")
         
         if 'content' in step_order:
             completed = st.session_state.lesson_progress.get('content', False)
@@ -892,10 +893,9 @@ def display_lesson(lesson_data):
     
     # Przygotuj dane zakładek
     tab_data = []
-    
-    # Dodaj zakładki w odpowiedniej kolejności
+      # Dodaj zakładki w odpowiedniej kolejności
     if 'opening_quiz' in lesson_data.get('sections', {}):
-        tab_data.append(("Quiz startowy", "opening_quiz"))
+        tab_data.append(("Samorefleksja", "opening_quiz"))
     
     if 'learning' in lesson_data.get('sections', {}):
         tab_data.append(("Nauka", "learning"))
@@ -981,15 +981,22 @@ def display_quiz(quiz_data, passing_threshold=60):
     if "description" in quiz_data:
         st.markdown(quiz_data['description'])
     
-    # Inicjalizacja stanu quizu jeśli jeszcze nie istnieje
+    # Sprawdź czy to quiz samodiagnozy (wszystkie correct_answer są null)
+    is_self_diagnostic = all(q.get('correct_answer') is None for q in quiz_data['questions'])
+      # Inicjalizacja stanu quizu jeśli jeszcze nie istnieje
     quiz_id = f"quiz_{quiz_data.get('title', '').replace(' ', '_').lower()}"
     if quiz_id not in st.session_state:
         st.session_state[quiz_id] = {
             "answered_questions": [],
             "correct_answers": 0,
             "total_questions": len(quiz_data['questions']),
-            "completed": False
+            "completed": False,
+            "total_points": 0  # Dla quizów samodiagnozy
         }
+    
+    # Backward compatibility: ensure total_points exists for existing sessions
+    if "total_points" not in st.session_state[quiz_id]:
+        st.session_state[quiz_id]["total_points"] = 0
     
     # Wyświetl wszystkie pytania
     for i, question in enumerate(quiz_data['questions']):
@@ -1000,26 +1007,30 @@ def display_quiz(quiz_data, passing_threshold=60):
         <div class="quiz-question">
             <h3>Pytanie {i+1}: {question['question']}</h3>
         </div>
-        """, unsafe_allow_html=True)
-        
+        """, unsafe_allow_html=True)        
         # Jeśli pytanie już zostało odpowiedziane, pokaż wynik
         if i in st.session_state[quiz_id]["answered_questions"]:
             selected = st.session_state.get(f"{question_id}_selected")
-            is_correct = selected == question.get('correct_answer')
+            correct_answer = question.get('correct_answer')
+            is_correct = correct_answer is not None and selected == correct_answer
             
             # Wyświetl odpowiedzi z oznaczeniem poprawnej
             for j, option in enumerate(question['options']):
-                # Dodaj walidację correct_answer
-                correct_answer = question.get('correct_answer', 0)
-                if correct_answer < 0 or correct_answer >= len(question['options']):
-                    correct_answer = 0  # Ustaw domyślną wartość, jeśli indeks jest nieprawidłowy
-                
-                if j == correct_answer:
-                    st.markdown(f"✅ **{option}** _(Poprawna odpowiedź)_")
-                elif j == selected and not is_correct:
-                    st.markdown(f"❌ **{option}** _(Twoja odpowiedź)_")
+                # Dla quizów samodiagnozy - wszystkie opcje równe
+                if is_self_diagnostic:
+                    if j == selected:
+                        st.markdown(f"✓ **{option}** _(Twoja odpowiedź)_")
+                    else:
+                        st.markdown(f"○ {option}")
                 else:
-                    st.markdown(f"○ {option}")
+                    # Dla quizów z poprawnymi odpowiedziami
+                    if correct_answer is not None:
+                        if j == correct_answer:
+                            st.markdown(f"✅ **{option}** _(Poprawna odpowiedź)_")
+                        elif j == selected and not is_correct:
+                            st.markdown(f"❌ **{option}** _(Twoja odpowiedź)_")
+                        else:
+                            st.markdown(f"○ {option}")
             
             # Wyświetl wyjaśnienie
             if "explanation" in question:
@@ -1028,21 +1039,29 @@ def display_quiz(quiz_data, passing_threshold=60):
             st.markdown("---")
         else:
             # Wyświetl opcje odpowiedzi jako przyciski
-            options = []
             for j, option in enumerate(question['options']):
-                if st.button(option, key=f"{question_id}_opt{j}"):
-                    # Zapisz wybraną odpowiedź
+                if st.button(option, key=f"{question_id}_opt{j}"):                    # Zapisz wybraną odpowiedź
                     st.session_state[f"{question_id}_selected"] = j
                     st.session_state[quiz_id]["answered_questions"].append(i)
                     
-                    # Aktualizuj liczbę poprawnych odpowiedzi
-                    if j == question.get('correct_answer'):
-                        st.session_state[quiz_id]["correct_answers"] += 1
-                        
-                        # Aktualizuj wynik quizu (dla podsumowania lekcji)
-                        if "quiz_score" in st.session_state:
-                            st.session_state.quiz_score += 5  # 5 XP za poprawną odpowiedź
-                      # Sprawdź, czy quiz został ukończony
+                    if is_self_diagnostic:
+                        # Dla quizów samodiagnozy - zlicz punkty (opcje 1-5 = j+1 punktów)
+                        points = j + 1
+                        # Ensure total_points exists before adding
+                        if "total_points" not in st.session_state[quiz_id]:
+                            st.session_state[quiz_id]["total_points"] = 0
+                        st.session_state[quiz_id]["total_points"] += points
+                    else:
+                        # Dla quizów z poprawnymi odpowiedziami - zlicz poprawne
+                        correct_answer = question.get('correct_answer')
+                        if correct_answer is not None and j == correct_answer:
+                            st.session_state[quiz_id]["correct_answers"] += 1
+                            
+                            # Aktualizuj wynik quizu (dla podsumowania lekcji)
+                            if "quiz_score" in st.session_state:
+                                st.session_state.quiz_score += 5  # 5 XP za poprawną odpowiedź
+                    
+                    # Sprawdź, czy quiz został ukończony
                     if len(st.session_state[quiz_id]["answered_questions"]) == st.session_state[quiz_id]["total_questions"]:
                         st.session_state[quiz_id]["completed"] = True
                         
@@ -1052,48 +1071,81 @@ def display_quiz(quiz_data, passing_threshold=60):
                         # Natychmiastowa aktualizacja nawigacji lekcji dla quiz startowy
                         elif 'opening_quiz' in quiz_id.lower() or 'startowy' in quiz_id.lower():
                             st.session_state.lesson_progress['opening_quiz'] = True
-                    
-                    # Odświeżenie strony
+                      # Odświeżenie strony
                     st.rerun()
             
             st.markdown("---")
-      # Sprawdź czy quiz jest ukończony i oblicz punkty
+    
+    # Sprawdź czy quiz jest ukończony i oblicz punkty
     is_completed = st.session_state[quiz_id].get("completed", False)
     
     if is_completed:
-        correct = st.session_state[quiz_id]["correct_answers"]
-        total = st.session_state[quiz_id]["total_questions"]
-        percentage = (correct / total) * 100
-        
-        # Oblicz punkty - wartość zależy od procentu odpowiedzi poprawnych
-        # Domyślna wartość, jeśli nie mamy dostępu do step_xp_values
-        quiz_xp_value = 15
-        earned_points = int(quiz_xp_value * (percentage / 100))
-          # Czy quiz został zdany (na podstawie passing_threshold)
-        is_passed = percentage >= passing_threshold
-        
-        st.markdown(f"""
-        <div class="quiz-summary">
-            <h3>Twój wynik: {correct}/{total} ({percentage:.0f}%)</h3>
-        </div>
-        """, unsafe_allow_html=True)
-        
-        if percentage >= 80:
-            st.success("Świetnie! Doskonale rozumiesz ten temat.")
-        elif percentage >= passing_threshold:
-            if passing_threshold > 60:
-                st.success(f"Bardzo dobrze! Osiągnąłeś wymagany próg {passing_threshold}% i możesz kontynuować.")
+        if is_self_diagnostic:
+            # Quiz samodiagnozy - wyświetl punkty i interpretację
+            total_points = st.session_state[quiz_id].get("total_points", 0)
+            
+            # Oblicz maksymalne możliwe punkty (liczba pytań × 5)
+            max_possible_points = len(quiz_data['questions']) * 5
+            
+            st.markdown(f"""
+            <div class="quiz-summary">
+                <h3>📊 Twój wynik: {total_points}/{max_possible_points} punktów</h3>
+            </div>
+            """, unsafe_allow_html=True)
+            
+            # Wyświetl interpretację wyników jeśli dostępna
+            if 'scoring' in quiz_data and 'interpretation' in quiz_data['scoring']:
+                interpretation_found = False
+                for score_range, interpretation in quiz_data['scoring']['interpretation'].items():
+                    # Parsuj zakres punktów (np. "10-20", "21-35", "36-50")
+                    if '-' in score_range:
+                        min_score, max_score = map(int, score_range.split('-'))
+                        if min_score <= total_points <= max_score:
+                            st.success(f"🧮 **Interpretacja wyników:**\n\n{interpretation}")
+                            interpretation_found = True
+                            break
+                
+                if not interpretation_found:
+                    st.info("🪞 Dziękujemy za szczerą samorefleksję! Twoje odpowiedzi pomogą nam lepiej dopasować materiał do Twojego stylu inwestowania.")
             else:
-                # Quiz diagnostyczny (opening quiz) - pozytywne podejście
-                st.info("📋 Dziękujemy za wypełnienie quizu diagnostycznego! Wynik pomaga nam dostosować materiał do Twojego poziomu.")
+                st.info("🪞 Dziękujemy za szczerą samorefleksję! Twoje odpowiedzi pomogą nam lepiej dopasować materiał do Twojego stylu inwestowania.")
+            
+            # Zawsze "zdany" dla quizu samodiagnozy
+            return is_completed, True, total_points
+            
         else:
-            if passing_threshold > 60:
-                st.error(f"Aby przejść dalej, musisz uzyskać przynajmniej {passing_threshold}% poprawnych odpowiedzi. Spróbuj ponownie!")
+            # Standardowy quiz z poprawnymi odpowiedziami
+            correct = st.session_state[quiz_id]["correct_answers"]
+            total = st.session_state[quiz_id]["total_questions"]
+            percentage = (correct / total) * 100
+            
+            # Oblicz punkty - wartość zależy od procentu odpowiedzi poprawnych
+            quiz_xp_value = 15
+            earned_points = int(quiz_xp_value * (percentage / 100))
+            
+            # Czy quiz został zdany (na podstawie passing_threshold)
+            is_passed = percentage >= passing_threshold
+            
+            st.markdown(f"""
+            <div class="quiz-summary">
+                <h3>Twój wynik: {correct}/{total} ({percentage:.0f}%)</h3>
+            </div>
+            """, unsafe_allow_html=True)
+            
+            if percentage >= 80:
+                st.success("Świetnie! Doskonale rozumiesz ten temat.")
+            elif percentage >= passing_threshold:
+                if passing_threshold > 60:
+                    st.success(f"Bardzo dobrze! Osiągnąłeś wymagany próg {passing_threshold}% i możesz kontynuować.")
+                else:
+                    st.success("Bardzo dobrze! Możesz kontynuować naukę.")
             else:
-                # Quiz diagnostyczny - pozytywny komunikat nawet przy niskim wyniku
-                st.info("📋 Dziękujemy za wypełnienie quizu diagnostycznego! Nie martw się wynikiem - to pomaga nam lepiej dopasować materiał.")
-        
-        return is_completed, is_passed, earned_points
+                if passing_threshold > 60:
+                    st.error(f"Aby przejść dalej, musisz uzyskać przynajmniej {passing_threshold}% poprawnych odpowiedzi. Spróbuj ponownie!")
+                else:
+                    st.warning("Spróbuj jeszcze raz - możesz to zrobić lepiej!")
+            
+            return is_completed, is_passed, earned_points
     
     # Quiz nie jest jeszcze ukończony
     return is_completed, False, 0
