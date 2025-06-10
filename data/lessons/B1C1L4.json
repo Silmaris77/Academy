@@ -1,39 +1,145 @@
 {
   "id": "B1C1L4",
   "xp_reward": 20,
-  "tag": "Psychologia inwestowania",
-  "description": "Ta lekcja wprowadza podstawy teorii perspektywy, efektu dyspozycji oraz zarządzania emocjami w inwestowaniu.",
-  "title": "Zmienność",
-  "difficulty": "Intermediate",
-  "intro": "<p>Witaj w lekcji o strachu przed stratą w kontekście inwestowania!</p>",
-  "sections": {
-    "opening_quiz": {
-      "title": "Quiz startowy",
-      "description": "Sprawdź swoją wiedzę przed rozpoczęciem lekcji",
+  "tag": "Emocje w inwestowaniu",
+  "description": "Ta lekcja pomoże Ci zrozumieć, jak emocje wpływają na Twoje decyzje inwestycyjne. Dowiesz się, jak unikać pułapek psychologicznych, które mogą prowadzić do strat.",  "title": "Emocjonalna zmienność a zmienność rynku",
+  "difficulty": "Intermediate",  "intro": {
+    "main": "<p>🚀🎢 <strong>Emocjonalny rollercoaster inwestora – jak ogarnąć chaos i zacząć wygrywać?</strong></p><p>Co jeśli powiem Ci, że aż 90% inwestorów traci pieniądze nie przez złe decyzje finansowe, tylko przez swoje emocje? 😱 Tak, dobrze słyszysz – emocje są głównym powodem, dla którego Twój portfel może wyglądać jak scena z horroru. 📉😵</p><p>Czujesz czasami, że twój portfel inwestycyjny to nie spokojny rejs po jeziorze, tylko emocjonalny rollercoaster bez zabezpieczeń? 📈📉😱 Spokojnie – nie jesteś w tym sam! W tej lekcji poznasz, dlaczego emocje potrafią tak bardzo mieszać na rynku i jak wpływają na twoje decyzje inwestycyjne.</p><p>Każdy inwestor zna ten moment, gdy nagle notowania spadają, a ty czujesz panikę, frustrację i chcesz sprzedawać wszystko, co masz. Albo odwrotnie – gdy wszyscy wokół zarabiają, a ciebie dopada FOMO, czyli strach przed przegapieniem świetnej okazji. Brzmi znajomo?</p><p><strong>W tej lekcji dowiesz się:</strong></p><ul><li>Czym dokładnie jest zmienność emocjonalna i jak się różni od zwykłej zmienności rynkowej.</li><li>Jakie są typowe błędy inwestorów pod wpływem emocji, np. panic selling, FOMO czy impulsywne zmiany strategii.</li><li>Jakie mechanizmy psychologiczne stoją za emocjonalnymi decyzjami na rynku.</li><li>Jak efektywnie zarządzać emocjami, by inwestować mądrze, spokojnie i świadomie.</li><li>Jak ustawić strategię odporną na huśtawkę emocji oraz konkretne techniki radzenia sobie z emocjami.</li></ul><p>Lekcja ta pomoże ci lepiej poznać siebie, zrozumieć swoje reakcje na zmiany rynkowe oraz opanować umiejętność świadomego działania, zamiast emocjonalnych decyzji. A wszystko po to, abyś mógł zachować spokój, zminimalizować błędy i osiągać stabilne wyniki inwestycyjne. 🌊✨</p><p>Pamiętaj – najlepszą inwestycją jest inwestycja w samego siebie! 💪🔥 Czas, abyś stał się inwestorem, który nie tylko rozumie rynek, ale przede wszystkim rozumie siebie. Gotowy na emocjonalny upgrade swojego inwestowania? 🚀✨ Zaczynamy!</p>",
+    "case_study": "<h3>📊💔 Tomek – jak emocje zrobiły mu \"rekt\" na rynku!</h3><p>Tomek ma 32 lata, ogarnia marketing, a inwestowaniem zainteresował się trzy lata temu. Początkowo krypto traktował jak gaming na sterydach – czysta adrenalina, szybkie strzały, szybki zarobek. Ale bardzo szybko okazało się, że codzienne inwestowanie przypomina raczej jazdę bez trzymanki, niż chillową przejażdżkę.</p><p>Jego dzień startował zawsze tak samo – od razu po przebudzeniu odblokowywał telefon, odpalając apkę z notowaniami. Każdy drobny spadek cen przyspieszał mu puls, a panika szybko zaczynała rządzić decyzjami. Tomek łapał się w sidła panic sellingu – wyprzedawał wszystko, żeby nie stracić więcej. Potem z frustracją i irytacją patrzył, jak rynek szybko odbija się w górę – a jego portfel był już pusty.</p><p>Najbardziej zapamiętał noc, gdy Bitcoin runął w dół o 15%. Tomek, w totalnej panice, wyprzedał całe swoje portfolio. Następnego dnia rano rynek ruszył gwałtownie w górę. Żal, frustracja i poczucie straconej szansy sprawiły, że natychmiast kupił wszystko z powrotem – oczywiście drożej. Ta emocjonalna jazda kosztowała go sporą sumę pieniędzy i jeszcze większe nerwy.</p><p>Innym razem Tomek padł ofiarą typowego FOMO. Grupka znajomych na Telegramie buzowała od informacji o modnym NFT – wszyscy zarabiali grube siano! Bez researchu, bez refleksji, Tomek wskoczył w NFT za sporą kasę. Tydzień później token był martwy, wartość niemal zerowa. Znów ogarnęło go poczucie złości, frustracji i porażki, że dał się \"wkręcić\" w coś bezmyślnie.</p><p>Jego kolejne decyzje inwestycyjne były coraz bardziej chaotyczne. Strategię zmieniał praktycznie codziennie, przerzucając się z ryzykownych aktywów na bezpieczne, by zaraz potem wracać do hazardowych ruchów. Portfel totalnie rozjechany, emocje coraz trudniejsze do ogarnięcia.</p><p>W końcu Tomek powiedział sobie dość. Zrozumiał, że jego największym przeciwnikiem nie jest rynek, ale własne emocje. Uznał, że pora zdobyć konkretne narzędzia do opanowania tej emocjonalnej jazdy.</p><p><strong>A jak Ty radzisz sobie z emocjami podczas inwestowania? 🌊🚀</strong></p><p><strong>✨ Pytania do autorefleksji:</strong></p><ol><li>Czy zdarza Ci się reagować impulsywnie na zmiany cen? Jak często?</li><li>Jakie emocje najczęściej odczuwasz, gdy rynek gwałtownie spada lub rośnie?</li><li>Jak wygląda Twoja typowa reakcja, gdy inwestycja zaczyna tracić na wartości?</li><li>Czy masz jasno określone zasady działania na rynku, czy raczej reagujesz spontanicznie?</li><li>Co możesz zrobić już dziś, by lepiej kontrolować swoje emocje podczas inwestowania?</li></ol>"
+  },
+ 
+  "sections": {    "opening_quiz": {
+      "title": "Quiz Samodiagnozy: Jak silnie emocjonalna zmienność rynku mnie dotyczy?",
+      "description": "Oceń swoje reakcje emocjonalne na wahania rynku w skali 1-5, gdzie 1 = nigdy, 5 = bardzo często",
       "questions": [
         {
-          "question": "Co to jest efekt dyspozycji?",
+          "question": "Gdy widzę nagły spadek wartości mojego portfela (np. o 10–15%), odczuwam silną potrzebę, by natychmiast coś zrobić (sprzedać lub dokupić).",
           "options": [
-            "Sposób organizacji naszego portfela inwestycyjnego",
-            "Tendencja do zbyt szybkiego sprzedawania zyskownych aktywów i zbyt długiego trzymania stratnych",
-            "Nawyk sprawdzania notowań co godzinę",
-            "Skłonność do inwestowania tylko w znane marki"
+            "1 - Nigdy",
+            "2 - Rzadko",
+            "3 - Czasami",
+            "4 - Często",
+            "5 - Bardzo często"
           ],
-          "correct_answer": 1,
-          "explanation": "Efekt dyspozycji to psychologiczna tendencja inwestorów do przedwczesnego sprzedawania zyskownych inwestycji i zbyt długiego trzymania stratnych."
+          "correct_answer": null,
+          "explanation": "To pytanie samodiagnozy - nie ma poprawnej odpowiedzi. Wysoka punktacja może wskazywać na skłonność do impulsywnych reakcji."
         },
         {
-          "question": "Ile razy silniej odczuwamy stratę niż równowartościowy zysk według teorii perspektywy?",
+          "question": "Zdarza mi się podejmować decyzje inwestycyjne impulsywnie – np. kupuję nowe aktywa bez wcześniejszego przygotowania, pod wpływem silnych emocji (FOMO, ekscytacja).",
           "options": [
-            "Tak samo",
-            "1,5 raza",
-            "2-2,5 raza",
-            "5 razy"
+            "1 - Nigdy",
+            "2 - Rzadko", 
+            "3 - Czasami",
+            "4 - Często",
+            "5 - Bardzo często"
           ],
-          "correct_answer": 2,
-          "explanation": "Według teorii perspektywy Kahnemana i Tversky'ego, ból straty jest około 2-2,5 raza silniejszy niż radość z równowartościowego zysku."
+          "correct_answer": null,
+          "explanation": "Impulsywne decyzje często prowadzą do strat. Najlepiej planować inwestycje z wyprzedzeniem."
+        },
+        {
+          "question": "W ciągu dnia wielokrotnie sprawdzam notowania moich inwestycji, szczególnie wtedy, gdy ceny dynamicznie się zmieniają.",
+          "options": [
+            "1 - Nigdy",
+            "2 - Rzadko",
+            "3 - Czasami", 
+            "4 - Często",
+            "5 - Bardzo często"
+          ],
+          "correct_answer": null,
+          "explanation": "Częste sprawdzanie notowań może zwiększać stres i prowadzić do emocjonalnych decyzji."
+        },
+        {
+          "question": "Odczuwam stres, napięcie lub niepokój, kiedy nie mam dostępu do informacji o stanie moich inwestycji przez kilka godzin.",
+          "options": [
+            "1 - Nigdy",
+            "2 - Rzadko",
+            "3 - Czasami",
+            "4 - Często", 
+            "5 - Bardzo często"
+          ],
+          "correct_answer": null,
+          "explanation": "Silny niepokój może wskazywać na nadmierną koncentrację na krótkoterminowych wahaniach."
+        },
+        {
+          "question": "Często zmieniam swoje decyzje inwestycyjne (np. kupuję i sprzedaję w krótkim odstępie czasu), reagując na newsy i opinie innych inwestorów, influencerów lub znajomych.",
+          "options": [
+            "1 - Nigdy",
+            "2 - Rzadko",
+            "3 - Czasami",
+            "4 - Często",
+            "5 - Bardzo często"
+          ],
+          "correct_answer": null,
+          "explanation": "Częste zmiany strategii pod wpływem zewnętrznych opinii mogą szkodzić długoterminowym wynikom."
+        },
+        {
+          "question": "Moje emocje często zmieniają się szybciej i gwałtowniej niż realne zmiany na rynku – nawet niewielkie wahania cen powodują u mnie duże wahania nastroju.",
+          "options": [
+            "1 - Nigdy",
+            "2 - Rzadko",
+            "3 - Czasami",
+            "4 - Często",
+            "5 - Bardzo często"
+          ],
+          "correct_answer": null,
+          "explanation": "Emocjonalna zmienność większa niż rynkowa może prowadzić do złych decyzji inwestycyjnych."
+        },
+        {
+          "question": "Zdarza mi się wątpić w przyjętą wcześniej strategię inwestycyjną, gdy widzę, że inni inwestorzy podejmują inne decyzje.",
+          "options": [
+            "1 - Nigdy",
+            "2 - Rzadko",
+            "3 - Czasami",
+            "4 - Często",
+            "5 - Bardzo często"
+          ],
+          "correct_answer": null,
+          "explanation": "Konsekwentne trzymanie się własnej strategii to klucz do długoterminowego sukcesu."
+        },
+        {
+          "question": "Łatwo ulegam emocjom rynku (strach, euforia) – często \"zarażam się\" nastrojami innych inwestorów, np. grup na Telegramie lub Twitterze.",
+          "options": [
+            "1 - Nigdy",
+            "2 - Rzadko",
+            "3 - Czasami",
+            "4 - Często",
+            "5 - Bardzo często"
+          ],
+          "correct_answer": null,
+          "explanation": "Zarażanie się emocjami tłumu to jedna z głównych przyczyn strat na rynku."
+        },
+        {
+          "question": "Podejmuję inwestycyjne decyzje szybciej, niż początkowo założyłem, jeśli widzę, że rynek się dynamicznie zmienia.",
+          "options": [
+            "1 - Nigdy",
+            "2 - Rzadko",
+            "3 - Czasami",
+            "4 - Często",
+            "5 - Bardzo często"
+          ],
+          "correct_answer": null,
+          "explanation": "Przyspieszanie decyzji pod presją rynku często prowadzi do błędów."
+        },
+        {
+          "question": "Po emocjonalnej decyzji inwestycyjnej odczuwam często żal lub frustrację z powodu tej decyzji.",
+          "options": [
+            "1 - Nigdy",
+            "2 - Rzadko",
+            "3 - Czasami",
+            "4 - Często",
+            "5 - Bardzo często"
+          ],
+          "correct_answer": null,
+          "explanation": "Żal po decyzjach może wskazywać na potrzebę lepszej kontroli emocji przed inwestowaniem."
         }
-      ]
+      ],
+      "scoring": {
+        "interpretation": {
+          "10-20": "🎯 Niski wpływ emocjonalnej zmienności - Masz stabilny emocjonalny styl inwestowania. Kontynuuj swoje dobre praktyki i dbaj o regularny przegląd swoich zasad inwestycyjnych.",
+          "21-35": "⚠️ Umiarkowany wpływ emocjonalnej zmienności - Czasem emocje biorą u Ciebie górę. Rozważ wdrożenie technik kontroli emocji oraz jasno zdefiniowanych reguł postępowania w sytuacjach stresowych.",
+          "36-50": "🚨 Silny wpływ emocjonalnej zmienności - Twoje emocje często przejmują kontrolę, co może negatywnie wpływać na Twoje decyzje inwestycyjne. Zastosuj natychmiastowe działania – jak 'rytuał emocjonalnego bezpieczeństwa' i regularne autorefleksje, aby ograniczyć negatywne skutki swoich emocji na decyzje finansowe."
+        }
+      }
     },
     "learning": {
       "sections": [
