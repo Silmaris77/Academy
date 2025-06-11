@@ -3,7 +3,7 @@
     "user_id": "741699e6-2ffe-4b0f-a36b-81e397686191",
     "password": "a",
     "degen_type": "Zen Degen",
-    "xp": 4182,
+    "xp": 4196,
     "level": 4,
     "joined_date": "2025-04-27",
     "completed_lessons": [
@@ -223,7 +223,22 @@
         "intro_completed": true,
         "intro_xp": 1,
         "intro_degencoins": 1,
-        "intro_timestamp": "2025-06-10 12:47:14"
+        "intro_timestamp": "2025-06-10 12:47:14",
+        "opening_quiz_xp_awarded": true,
+        "opening_quiz_completed": true,
+        "opening_quiz_xp": 0,
+        "opening_quiz_degencoins": 0,
+        "opening_quiz_timestamp": "2025-06-11 18:19:42",
+        "content_xp_awarded": true,
+        "content_completed": true,
+        "content_xp": 6,
+        "content_degencoins": 6,
+        "content_timestamp": "2025-06-11 18:19:43",
+        "practical_exercises_xp_awarded": true,
+        "practical_exercises_completed": true,
+        "practical_exercises_xp": 8,
+        "practical_exercises_degencoins": 8,
+        "practical_exercises_timestamp": "2025-06-11 18:19:45"
       }
     },
     "badge_data": {
@@ -644,7 +659,7 @@
         "timestamp": "2025-06-08T12:21:09.071964+00:00"
       }
     ],
-    "degencoins": 1532,
+    "degencoins": 1546,
     "inventory": {
       "avatar": [
         "diamond_degen",
@@ -2499,7 +2514,7 @@
     "user_id": "b29655fb-4aad-45ca-84b5-048a616d81fd",
     "password": "kasia",
     "degen_type": "Mad Scientist Degen",
-    "xp": 50,
+    "xp": 69,
     "level": 1,
     "joined_date": "2025-06-01",
     "completed_lessons": [],
@@ -2891,7 +2906,37 @@
         "earning_rate": 0.0
       }
     },
-    "degencoins": 50
+    "degencoins": 69,
+    "recent_activities": [],
+    "lesson_progress": {
+      "B1C1L4": {
+        "intro_xp_awarded": true,
+        "intro_completed": true,
+        "intro_xp": 1,
+        "intro_degencoins": 1,
+        "intro_timestamp": "2025-06-11 19:18:53",
+        "opening_quiz_xp_awarded": true,
+        "opening_quiz_completed": true,
+        "opening_quiz_xp": 0,
+        "opening_quiz_degencoins": 0,
+        "opening_quiz_timestamp": "2025-06-11 19:19:08",
+        "content_xp_awarded": true,
+        "content_completed": true,
+        "content_xp": 6,
+        "content_degencoins": 6,
+        "content_timestamp": "2025-06-11 19:19:13",
+        "practical_exercises_xp_awarded": true,
+        "practical_exercises_completed": true,
+        "practical_exercises_xp": 8,
+        "practical_exercises_degencoins": 8,
+        "practical_exercises_timestamp": "2025-06-11 19:19:18",
+        "closing_quiz_xp_awarded": true,
+        "closing_quiz_completed": true,
+        "closing_quiz_xp": 4,
+        "closing_quiz_degencoins": 4,
+        "closing_quiz_timestamp": "2025-06-11 19:35:14"
+      }
+    }
   },
   "paw": {
     "user_id": "ca432e84-27ce-49ed-9f35-2575b568c5c7",
@@ -3043,5 +3088,42 @@
       }
     },
     "avatar": "emo"
+  },
+  "john": {
+    "user_id": "28024bbe-3724-4f9b-8b65-8c84f162b13a",
+    "password": "john",
+    "degen_type": null,
+    "xp": 15,
+    "degencoins": 15,
+    "level": 1,
+    "joined_date": "2025-06-11",
+    "completed_lessons": [],
+    "badges": [],
+    "test_taken": false,
+    "recent_activities": [],
+    "lesson_progress": {
+      "B1C1L4": {
+        "intro_xp_awarded": true,
+        "intro_completed": true,
+        "intro_xp": 1,
+        "intro_degencoins": 1,
+        "intro_timestamp": "2025-06-11 18:35:43",
+        "opening_quiz_xp_awarded": true,
+        "opening_quiz_completed": true,
+        "opening_quiz_xp": 0,
+        "opening_quiz_degencoins": 0,
+        "opening_quiz_timestamp": "2025-06-11 18:35:51",
+        "content_xp_awarded": true,
+        "content_completed": true,
+        "content_xp": 6,
+        "content_degencoins": 6,
+        "content_timestamp": "2025-06-11 18:35:53",
+        "practical_exercises_xp_awarded": true,
+        "practical_exercises_completed": true,
+        "practical_exercises_xp": 8,
+        "practical_exercises_degencoins": 8,
+        "practical_exercises_timestamp": "2025-06-11 18:35:58"
+      }
+    }
   }
 }
