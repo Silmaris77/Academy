@@ -970,8 +970,97 @@ def display_reflection_sections(reflection_data):
             st.success("Twoja odpowiedź została zapisana!")
 
 def display_quiz(quiz_data, passing_threshold=60):
-    """Wyświetla quiz z pytaniami i opcjami odpowiedzi. Zwraca True, gdy quiz jest ukończony."""
+    """Wyświetla quiz z pytaniami i opcjami odpowiedzi. Zwraca True, gdy quiz jest ukończony."""    # Style CSS TYLKO dla przycisków odpowiedzi quiz - nie wpływa na nawigację
+    st.markdown("""
+    <style>
+    .quiz-question {
+        background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+        padding: 20px;+
+        border-radius: 15px;
+        margin: 20px 0;
+        border-left: 5px solid #4caf50;
+        box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+    }
     
+    .quiz-question h3 {
+        color: #2e7d32;
+        margin: 0;
+        font-size: 1.2em;
+    }
+    
+    /* Kontener dla przycisków odpowiedzi quiz */
+    .quiz-answers-section {
+        margin: 20px 0;
+    }
+    
+    /* Style TYLKO dla przycisków w kontenerze quiz-answers-section */
+    .quiz-answers-section .stButton > button {
+        background-color: #f8f9fa !important;
+        background-image: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%) !important;
+        border: 2px solid #dee2e6 !important;
+        color: #495057 !important;
+        font-weight: 500 !important;
+        border-radius: 8px !important;
+        padding: 12px 20px !important;
+        transition: all 0.2s ease !important;
+        box-shadow: 0 2px 4px rgba(0,0,0,0.1) !important;
+        min-height: 48px !important;
+        width: auto !important;
+        min-width: fit-content !important;
+        max-width: fit-content !important;
+        white-space: nowrap !important;
+    }
+    
+    .quiz-answers-section .stButton > button:hover {
+        background-color: #e9ecef !important;
+        background-image: linear-gradient(135deg, #e9ecef 0%, #d1ecf1 100%) !important;
+        border-color: #adb5bd !important;
+        color: #343a40 !important;
+        transform: translateY(-1px) !important;
+        box-shadow: 0 4px 8px rgba(0,0,0,0.15) !important;
+    }
+    
+    .quiz-answers-section .stButton > button:active {
+        transform: translateY(0px) scale(0.98) !important;
+        box-shadow: 0 2px 4px rgba(0,0,0,0.2) !important;
+    }
+    
+    /* Dodatkowe selektory dla różnych wersji Streamlit - TYLKO w quiz-answers-section */
+    .quiz-answers-section div[data-testid="stButton"] button {
+        background-color: #f8f9fa !important;
+        background-image: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%) !important;
+        border: 2px solid #dee2e6 !important;
+        color: #495057 !important;
+        font-weight: 500 !important;
+        border-radius: 8px !important;
+        padding: 12px 20px !important;
+        transition: all 0.2s ease !important;
+        box-shadow: 0 2px 4px rgba(0,0,0,0.1) !important;
+        min-height: 48px !important;
+        width: auto !important;
+        min-width: fit-content !important;
+        max-width: fit-content !important;
+        white-space: nowrap !important;
+    }
+    
+    .quiz-answers-section div[data-testid="stButton"] button:hover {
+        background-color: #e9ecef !important;
+        background-image: linear-gradient(135deg, #e9ecef 0%, #d1ecf1 100%) !important;
+        border-color: #adb5bd !important;
+        color: #343a40 !important;
+        transform: translateY(-1px) !important;
+        box-shadow: 0 4px 8px rgba(0,0,0,0.15) !important;
+    }
+    
+    /* Kontrola szerokości kolumn z przyciskami quiz */
+    .quiz-answers-section .css-1r6slb0, 
+    .quiz-answers-section .css-12oz5g7 {
+        max-width: fit-content !important;
+        width: auto !important;
+        flex: 0 0 auto !important;    }
+    </style>
+    """, unsafe_allow_html=True)
+
     if not quiz_data or "questions" not in quiz_data:
         st.warning("Ten quiz nie zawiera żadnych pytań.")
         return False, False, 0
@@ -980,10 +1069,107 @@ def display_quiz(quiz_data, passing_threshold=60):
     
     if "description" in quiz_data:
         st.markdown(quiz_data['description'])
-    
-    # Sprawdź czy to quiz samodiagnozy (wszystkie correct_answer są null)
+      # Sprawdź czy to quiz samodiagnozy (wszystkie correct_answer są null)
     is_self_diagnostic = all(q.get('correct_answer') is None for q in quiz_data['questions'])
-      # Inicjalizacja stanu quizu jeśli jeszcze nie istnieje
+    
+    # Style CSS z różnymi szerokościami dla różnych typów quizów
+    st.markdown(f"""
+    <style>
+    .quiz-question {{
+        background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+        padding: 20px;
+        border-radius: 15px;
+        margin: 20px 0;
+        border-left: 5px solid #4caf50;
+        box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+    }}
+    
+    .quiz-question h3 {{
+        color: #2e7d32;
+        margin: 0;
+        font-size: 1.2em;
+    }}
+    
+    /* Kontener dla przycisków odpowiedzi quiz */
+    .quiz-answers-section {{
+        margin: 20px 0;
+    }}
+    
+    /* Style dla quizów testowych - przyciski pełnej szerokości */
+    .quiz-answers-section.test-quiz .stButton > button {{
+        background-color: #f8f9fa !important;
+        background-image: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%) !important;
+        border: 2px solid #dee2e6 !important;
+        color: #495057 !important;
+        font-weight: 500 !important;
+        border-radius: 8px !important;
+        padding: 12px 20px !important;
+        transition: all 0.2s ease !important;
+        box-shadow: 0 2px 4px rgba(0,0,0,0.1) !important;
+        min-height: 48px !important;
+        width: 100% !important;
+        max-width: 100% !important;
+        white-space: normal !important;
+        text-align: left !important;
+    }}
+    
+    /* Style dla quizów autorefleksji - przyciski dopasowane do treści */
+    .quiz-answers-section.self-reflection-quiz .stButton > button {{
+        background-color: #f8f9fa !important;
+        background-image: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%) !important;
+        border: 2px solid #dee2e6 !important;
+        color: #495057 !important;
+        font-weight: 500 !important;
+        border-radius: 8px !important;
+        padding: 12px 20px !important;
+        transition: all 0.2s ease !important;
+        box-shadow: 0 2px 4px rgba(0,0,0,0.1) !important;
+        min-height: 48px !important;
+        width: auto !important;
+        min-width: fit-content !important;
+        max-width: fit-content !important;
+        white-space: nowrap !important;
+    }}
+    
+    /* Hover efekty dla obu typów */
+    .quiz-answers-section .stButton > button:hover {{
+        background-color: #e9ecef !important;
+        background-image: linear-gradient(135deg, #e9ecef 0%, #d1ecf1 100%) !important;
+        border-color: #adb5bd !important;
+        color: #343a40 !important;
+        transform: translateY(-1px) !important;
+        box-shadow: 0 4px 8px rgba(0,0,0,0.15) !important;
+    }}
+    
+    .quiz-answers-section .stButton > button:active {{
+        transform: translateY(0px) scale(0.98) !important;
+        box-shadow: 0 2px 4px rgba(0,0,0,0.2) !important;
+    }}
+    
+    /* Dodatkowe selektory dla różnych wersji Streamlit */
+    .quiz-answers-section.test-quiz div[data-testid="stButton"] button {{
+        width: 100% !important;
+        max-width: 100% !important;
+        white-space: normal !important;
+        text-align: left !important;
+    }}
+    
+    .quiz-answers-section.self-reflection-quiz div[data-testid="stButton"] button {{
+        width: auto !important;
+        min-width: fit-content !important;
+        max-width: fit-content !important;
+        white-space: nowrap !important;
+    }}
+    
+    /* Kontrola szerokości kolumn dla quizów autorefleksji */
+    .quiz-answers-section.self-reflection-quiz .css-1r6slb0, 
+    .quiz-answers-section.self-reflection-quiz .css-12oz5g7 {{
+        max-width: fit-content !important;
+        width: auto !important;
+        flex: 0 0 auto !important;
+    }}
+    </style>
+    """, unsafe_allow_html=True)
     quiz_id = f"quiz_{quiz_data.get('title', '').replace(' ', '_').lower()}"
     if quiz_id not in st.session_state:
         st.session_state[quiz_id] = {
@@ -1031,27 +1217,55 @@ def display_quiz(quiz_data, passing_threshold=60):
                             st.markdown(f"❌ **{option}** _(Twoja odpowiedź)_")
                         else:
                             st.markdown(f"○ {option}")
-            
-            # Wyświetl wyjaśnienie
+              # Wyświetl wyjaśnienie
             if "explanation" in question:
                 st.info(question['explanation'])
             
             st.markdown("---")
         else:
-            # Wyświetl opcje odpowiedzi jako przyciski
-            for j, option in enumerate(question['options']):
-                if st.button(option, key=f"{question_id}_opt{j}"):                    # Zapisz wybraną odpowiedź
-                    st.session_state[f"{question_id}_selected"] = j
-                    st.session_state[quiz_id]["answered_questions"].append(i)
+            # Określ typ quizu i użyj odpowiedniej klasy CSS
+            quiz_type_class = "self-reflection-quiz" if is_self_diagnostic else "test-quiz"
+            
+            # Rozpocznij sekcję przycisków odpowiedzi quiz z odpowiednią klasą
+            st.markdown(f'<div class="quiz-answers-section {quiz_type_class}">', unsafe_allow_html=True)
+            
+            if is_self_diagnostic:
+                # Quiz autorefleksji - przyciski krótkie, dopasowane do treści
+                for j, option in enumerate(question['options']):
+                    # Każdy przycisk w osobnej kolumnie o minimalnej szerokości
+                    col1, col2 = st.columns([1, 3])  # Pierwsza kolumna mała, druga większa ale niewykorzystana
                     
-                    if is_self_diagnostic:
-                        # Dla quizów samodiagnozy - zlicz punkty (opcje 1-5 = j+1 punktów)
-                        points = j + 1
-                        # Ensure total_points exists before adding
-                        if "total_points" not in st.session_state[quiz_id]:
-                            st.session_state[quiz_id]["total_points"] = 0
-                        st.session_state[quiz_id]["total_points"] += points
-                    else:
+                    with col1:
+                        if st.button(option, key=f"{question_id}_opt{j}"):
+                            # Zapisz wybraną odpowiedź
+                            st.session_state[f"{question_id}_selected"] = j
+                            st.session_state[quiz_id]["answered_questions"].append(i)
+                            
+                            # Dla quizów samodiagnozy - zlicz punkty (opcje 1-5 = j+1 punktów)
+                            points = j + 1
+                            # Ensure total_points exists before adding
+                            if "total_points" not in st.session_state[quiz_id]:
+                                st.session_state[quiz_id]["total_points"] = 0
+                            st.session_state[quiz_id]["total_points"] += points
+                            
+                            # Sprawdź, czy quiz został ukończony
+                            if len(st.session_state[quiz_id]["answered_questions"]) == st.session_state[quiz_id]["total_questions"]:
+                                st.session_state[quiz_id]["completed"] = True
+                                
+                                # Natychmiastowa aktualizacja nawigacji lekcji dla quiz startowy
+                                if 'opening_quiz' in quiz_id.lower() or 'startowy' in quiz_id.lower():
+                                    st.session_state.lesson_progress['opening_quiz'] = True
+                                
+                                # Odświeżenie strony
+                                st.rerun()
+            else:
+                # Quiz testowy - przyciski pełnej szerokości
+                for j, option in enumerate(question['options']):
+                    if st.button(option, key=f"{question_id}_opt{j}"):
+                        # Zapisz wybraną odpowiedź
+                        st.session_state[f"{question_id}_selected"] = j
+                        st.session_state[quiz_id]["answered_questions"].append(i)
+                        
                         # Dla quizów z poprawnymi odpowiedziami - zlicz poprawne
                         correct_answer = question.get('correct_answer')
                         if correct_answer is not None and j == correct_answer:
@@ -1060,19 +1274,20 @@ def display_quiz(quiz_data, passing_threshold=60):
                             # Aktualizuj wynik quizu (dla podsumowania lekcji)
                             if "quiz_score" in st.session_state:
                                 st.session_state.quiz_score += 5  # 5 XP za poprawną odpowiedź
-                    
-                    # Sprawdź, czy quiz został ukończony
-                    if len(st.session_state[quiz_id]["answered_questions"]) == st.session_state[quiz_id]["total_questions"]:
-                        st.session_state[quiz_id]["completed"] = True
                         
-                        # Natychmiastowa aktualizacja nawigacji lekcji dla quiz końcowy
-                        if 'closing_quiz' in quiz_id.lower() or 'końcowy' in quiz_id.lower():
-                            st.session_state.lesson_progress['closing_quiz'] = True
-                        # Natychmiastowa aktualizacja nawigacji lekcji dla quiz startowy
-                        elif 'opening_quiz' in quiz_id.lower() or 'startowy' in quiz_id.lower():
-                            st.session_state.lesson_progress['opening_quiz'] = True
-                      # Odświeżenie strony
-                    st.rerun()
+                        # Sprawdź, czy quiz został ukończony
+                        if len(st.session_state[quiz_id]["answered_questions"]) == st.session_state[quiz_id]["total_questions"]:
+                            st.session_state[quiz_id]["completed"] = True
+                            
+                            # Natychmiastowa aktualizacja nawigacji lekcji dla quiz końcowy
+                            if 'closing_quiz' in quiz_id.lower() or 'końcowy' in quiz_id.lower():
+                                st.session_state.lesson_progress['closing_quiz'] = True
+                            
+                            # Odświeżenie strony
+                            st.rerun()
+            
+            # Zakończ sekcję przycisków odpowiedzi quiz
+            st.markdown('</div>', unsafe_allow_html=True)
             
             st.markdown("---")
     

@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Test Przycisków Quiz</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 20px;
+            background-color: #ffffff;
+            color: #262730;
+        }
+        
+        .quiz-question {
+            background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+            padding: 20px;
+            border-radius: 15px;
+            margin: 20px 0;
+            border-left: 5px solid #4caf50;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        
+        .quiz-question h3 {
+            color: #2e7d32;
+            margin: 0;
+            font-size: 1.2em;
+        }
+        
+        /* Nowe style przycisków quiz */
+        .quiz-button {
+            background-color: #f8f9fa;
+            background-image: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+            border: 2px solid #dee2e6;
+            color: #495057;
+            font-weight: 500;
+            border-radius: 8px;
+            padding: 12px 20px;
+            transition: all 0.2s ease;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            min-height: 48px;
+            width: auto;
+            min-width: fit-content;
+            max-width: fit-content;
+            white-space: nowrap;
+            cursor: pointer;
+            font-size: 14px;
+            margin: 5px 0;
+            display: block;
+        }
+        
+        .quiz-button:hover {
+            background-color: #e9ecef;
+            background-image: linear-gradient(135deg, #e9ecef 0%, #d1ecf1 100%);
+            border-color: #adb5bd;
+            color: #343a40;
+            transform: translateY(-1px);
+            box-shadow: 0 4px 8px rgba(0,0,0,0.15);
+        }
+        
+        .quiz-button:active {
+            transform: translateY(0px) scale(0.98);
+            box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+        }
+        
+        .comparison {
+            display: flex;
+            gap: 40px;
+            margin: 20px 0;
+        }
+        
+        .comparison > div {
+            flex: 1;
+        }
+        
+        .old-button {
+            background: linear-gradient(135deg, #ff6b6b, #4ecdc4);
+            color: white;
+            border: none;
+            padding: 12px 20px;
+            border-radius: 8px;
+            cursor: pointer;
+            width: 100%;
+            margin: 5px 0;
+            font-size: 14px;
+            min-height: 48px;
+        }
+        
+        .old-button:hover {
+            opacity: 0.9;
+        }
+        
+        h2 {
+            color: #2e7d32;
+            border-bottom: 2px solid #4caf50;
+            padding-bottom: 10px;
+        }
+        
+        .info {
+            background-color: #e8f5e8;
+            padding: 15px;
+            border-radius: 8px;
+            margin: 20px 0;
+            border-left: 4px solid #4caf50;
+        }
+    </style>
+</head>
+<body>
+    <h1>Test Nowych Przycisków Quiz - ZenDegenAcademy</h1>
+    
+    <div class="info">
+        <strong>Cel:</strong> Przyciski mają być neutralne (bez jasnoniebieski kolorów), szerokość dopasowana do treści, wyrównane do lewej strony.
+    </div>
+    
+    <div class="quiz-question">
+        <h3>Pytanie 1: Która z poniższych opcji najlepiej opisuje blockchain?</h3>
+    </div>
+    
+    <h2>NOWE PRZYCISKI (Pożądany wygląd):</h2>
+    <button class="quiz-button">Zdecentralizowana baza danych</button>
+    <button class="quiz-button">Tradycyjna baza danych</button>
+    <button class="quiz-button">Scentralizowany system płatności</button>
+    <button class="quiz-button">Bardzo długa odpowiedź, która powinna się dopasować do szerokości treści automatycznie</button>
+    
+    <div class="comparison">
+        <div>
+            <h2>STARE PRZYCISKI (Problem):</h2>
+            <button class="old-button">Zdecentralizowana baza danych</button>
+            <button class="old-button">Tradycyjna baza danych</button>
+            <button class="old-button">Scentralizowany system płatności</button>
+            <button class="old-button">Bardzo długa odpowiedź, która powinna się dopasować do szerokości treści automatycznie</button>
+        </div>
+    </div>
+    
+    <div class="info">
+        <strong>Różnice:</strong>
+        <ul>
+            <li>✅ <strong>Kolory:</strong> Neutralne szare zamiast jasnoniebieski/kolorowy gradient</li>
+            <li>✅ <strong>Szerokość:</strong> Dopasowana do treści (auto-width) zamiast pełnej szerokości</li>
+            <li>✅ <strong>Wyrównanie:</strong> Do lewej strony zamiast na środku</li>
+            <li>✅ <strong>Hover efekty:</strong> Subtelne podniesienie i zmiana koloru</li>
+            <li>✅ <strong>Konsystentność:</strong> Zgodne z ogólnym designem aplikacji</li>
+        </ul>
+    </div>
+    
+    <div class="quiz-question">
+        <h3>Pytanie 2: Co to jest DeFi?</h3>
+    </div>
+    
+    <button class="quiz-button">Zdecentralizowane finanse</button>
+    <button class="quiz-button">Tradycyjne bankowość</button>
+    <button class="quiz-button">Kryptowaluta</button>
+    <button class="quiz-button">Protokół blockchain</button>
+    
+</body>
+</html>

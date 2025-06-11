@@ -2968,5 +2968,75 @@
         "opening_quiz_timestamp": "2025-06-10 15:24:46"
       }
     }
+  },
+  "asia": {
+    "user_id": "60458db4-0d58-46f6-8850-a9ba3d21ab31",
+    "password": "asia",
+    "degen_type": null,
+    "xp": 19,
+    "degencoins": 19,
+    "level": 1,
+    "joined_date": "2025-06-10",
+    "completed_lessons": [],
+    "badges": [],
+    "test_taken": false,
+    "recent_activities": [],
+    "lesson_progress": {
+      "B1C1L4": {
+        "intro_xp_awarded": true,
+        "intro_completed": true,
+        "intro_xp": 1,
+        "intro_degencoins": 1,
+        "intro_timestamp": "2025-06-10 22:52:49",
+        "opening_quiz_xp_awarded": true,
+        "opening_quiz_completed": true,
+        "opening_quiz_xp": 0,
+        "opening_quiz_degencoins": 0,
+        "opening_quiz_timestamp": "2025-06-10 22:53:38",
+        "content_xp_awarded": true,
+        "content_completed": true,
+        "content_xp": 6,
+        "content_degencoins": 6,
+        "content_timestamp": "2025-06-10 22:54:24",
+        "reflection_xp_awarded": true,
+        "reflection_completed": true,
+        "reflection_xp": 4,
+        "reflection_degencoins": 4,
+        "reflection_timestamp": "2025-06-10 22:54:28",
+        "application_xp_awarded": true,
+        "application_completed": true,
+        "application_xp": 4,
+        "application_degencoins": 4,
+        "application_timestamp": "2025-06-10 22:54:33",
+        "closing_quiz_xp_awarded": true,
+        "closing_quiz_completed": true,
+        "closing_quiz_xp": 4,
+        "closing_quiz_degencoins": 4,
+        "closing_quiz_timestamp": "2025-06-10 22:55:05"
+      }
+    }
+  },
+  "Jan": {
+    "user_id": "fb2f82f6-68c4-4ddc-93a0-fad04200de17",
+    "password": "jan",
+    "degen_type": null,
+    "xp": 1,
+    "degencoins": 1,
+    "level": 1,
+    "joined_date": "2025-06-10",
+    "completed_lessons": [],
+    "badges": [],
+    "test_taken": false,
+    "recent_activities": [],
+    "lesson_progress": {
+      "B1C1L4": {
+        "intro_xp_awarded": true,
+        "intro_completed": true,
+        "intro_xp": 1,
+        "intro_degencoins": 1,
+        "intro_timestamp": "2025-06-10 23:35:34"
+      }
+    },
+    "avatar": "emo"
   }
 }
