@@ -2973,8 +2973,8 @@
     "user_id": "60458db4-0d58-46f6-8850-a9ba3d21ab31",
     "password": "asia",
     "degen_type": null,
-    "xp": 19,
-    "degencoins": 19,
+    "xp": 27,
+    "degencoins": 27,
     "level": 1,
     "joined_date": "2025-06-10",
     "completed_lessons": [],
@@ -3012,7 +3012,12 @@
         "closing_quiz_completed": true,
         "closing_quiz_xp": 4,
         "closing_quiz_degencoins": 4,
-        "closing_quiz_timestamp": "2025-06-10 22:55:05"
+        "closing_quiz_timestamp": "2025-06-10 22:55:05",
+        "practical_exercises_xp_awarded": true,
+        "practical_exercises_completed": true,
+        "practical_exercises_xp": 8,
+        "practical_exercises_degencoins": 8,
+        "practical_exercises_timestamp": "2025-06-11 13:54:00"
       }
     }
   },

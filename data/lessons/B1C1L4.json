@@ -172,8 +172,7 @@
           "content": "<p>Na finał tej emocjonalnej jazdy powiedzmy sobie jedno: emocje to nie wróg publiczny numer jeden. Serio. Strach, euforia, niepewność – to nie błąd w systemie, tylko… funkcja. 😉</p><p>🔸 Strach? Może uratować Cię przed rzuceniem całych oszczędności w najnowszy memcoin z logiem banana.<br>🔸 Euforia? Czasem to właśnie ona daje Ci kopa do działania, gdy wszyscy inni siedzą w kącie i czekają na cud.</p><p>Ale! Kluczem jest to, żebyś to Ty trzymał lejce, a nie Twoje emocje galopowały jak mustangi po prerii, ciągnąc Cię w nieznane.</p><p>👉 Dlatego: pracuj nad samoświadomością, poznawaj swoje reakcje, ogarniaj swoją psychikę i nie zapominaj o zarządzaniu ryzykiem. To trochę jak z siłownią – nie chodzi o to, żebyś nigdy się nie zmęczył, tylko żebyś wiedział, jak oddychać pod ciężarem. 💪</p><p>Bo kiedy emocje nie będą już Tobą sterować jak NPC-em w grze, a Ty ogarniesz je jak boss, to nagle zmienność rynku przestanie być potworem z lochu, a stanie się tylko... kolejnym levelem do przejścia. 🎮</p><p>Na koniec, zostawiamy Ci starą, dobrą giełdową maksymę w wersji degen-style:</p><p><strong>\"Trzymaj emocje na krótkiej smyczy, a portfel na długim horyzoncie.\"</strong> 🧘‍♂️📈</p><p>Powodzenia, degenie. Do zobaczenia na kolejnej lekcji. 🚀</p>"
         }
       ]
-    },
-    "reflection": {
+    },    "reflection": {
       "sections": [
         {
           "title": "Zadanie 1: Inwestycyjny Flashback",
@@ -196,6 +195,91 @@
           "content": "<p>Przemyśl, jak różne podejścia do przedstawiania informacji o inwestycjach mogą wpływać na Twoje decyzje. Jakie ramy wykorzystujesz, by zminimalizować wpływ emocji?</p>"
         }
       ]
+    },
+    "practical_exercises": {
+      "description": "Połączone ćwiczenia praktyczne łączące refleksję i wdrożenie w życie",
+      "tabs": {
+        "reflection": {
+          "description": "📝 **Refleksja** - Pytania do przemyślenia, samoocena i dziennik inwestora",
+          "sections": [
+            {
+              "title": "Inwestycyjny Flashback",
+              "content": "<h4>💭 Analiza własnych doświadczeń</h4><p>Przypomnij sobie sytuację, w której podjąłeś decyzję inwestycyjną pod wpływem emocji. Odpowiedz szczerze na poniższe pytania:</p><ul><li><strong>Jakie emocje Ci towarzyszyły?</strong> (strach, euforia, FOMO, panika, pewność siebie)</li><li><strong>Co było wyzwalaczem tej emocji?</strong> (spadek ceny, wzrost, news, opinia znajomego)</li><li><strong>Jakie były skutki tej decyzji?</strong> (finansowe i emocjonalne)</li><li><strong>Co zrobiłbyś inaczej, mając obecną wiedzę?</strong></li></ul>",
+              "interactive": true
+            },
+            {
+              "title": "Dziennik emocji inwestora",
+              "content": "<h4>📊 Poznaj swoje wzorce</h4><p>Przez najbliższy tydzień notuj swoje emocje związane z inwestowaniem:</p><ul><li><strong>Data i czas:</strong> Kiedy sprawdziłeś portfel?</li><li><strong>Stan rynku:</strong> Wzrosty/spadki w %</li><li><strong>Twoje emocje:</strong> Co czułeś? (w skali 1-10)</li><li><strong>Impulsy:</strong> Co chciałeś zrobić?</li><li><strong>Co zrobiłeś:</strong> Jakie działania podjąłeś?</li></ul><p>Po tygodniu przeanalizuj wzorce - czy widzisz korelację między emocjami a decyzjami?</p>",
+              "interactive": true
+            },
+            {
+              "title": "Samoocena zarządzania emocjami",
+              "content": "<h4>🎯 Oceń swój aktualny poziom</h4><p>Zastanów się nad każdym obszarem i oceń siebie w skali 1-10:</p><ul><li><strong>Kontrola stresu podczas spadków</strong> - Jak radzisz sobie z paniczną sprzedażą?</li><li><strong>Opór na FOMO</strong> - Czy potrafisz powstrzymać się od impulsywnych zakupów?</li><li><strong>Dyscyplina strategii</strong> - Jak często odstępujesz od planu?</li><li><strong>Zarządzanie informacjami</strong> - Czy filtrujesz szum medialny?</li><li><strong>Długoterminowe myślenie</strong> - Czy potrafisz ignorować krótkoterminowe wahania?</li></ul><p>Które obszary wymagają największej poprawy?</p>",
+              "interactive": true
+            }
+          ]
+        },
+        "implementation": {
+          "description": "🎯 **Wdrożenie** - Konkretne zadania do wykonania, checklista działań i plan implementacji",
+          "sections": [
+            {
+              "title": "Plan awaryjny na emocjonalne kryzysy",
+              "content": "<h4>🚨 Stwórz swój protokół bezpieczeństwa</h4><p>Przygotuj konkretny plan działania na sytuacje wysokiego stresu emocjonalnego:</p><h5>1. Sygnały ostrzegawcze (kiedy zadziała plan):</h5><ul><li>Portfel spada o więcej niż ___%</li><li>Czuję silny impuls do sprzedaży/kupna</li><li>Sprawdzam ceny częściej niż ___ razy dziennie</li><li>Inne: ________________</li></ul><h5>2. Natychmiastowe działania (co robię w pierwszej kolejności):</h5><ul><li>Zamykam aplikację/stronę z cenami</li><li>Wykonuję ćwiczenie oddechowe (5 wdechów)</li><li>Inne: ________________</li></ul><h5>3. Zasady 24-godzinne (czego nie robię przez dobę):</h5><ul><li>Nie podejmuję żadnych decyzji inwestycyjnych</li><li>Nie sprawdzam cen</li><li>Inne: ________________</li></ul>",
+              "interactive": true
+            },
+            {
+              "title": "Automatyzacja jako ochrona przed emocjami",
+              "content": "<h4>🤖 Ustaw systemy, które myślą za Ciebie</h4><p>Zidentyfikuj obszary, które możesz zautomatyzować:</p><h5>1. Regularne inwestowanie:</h5><ul><li>Ustaw automatyczne przelewy na inwestycje (co miesiąc/tydzień)</li><li>Określ kwotę: _____ zł miesięcznie</li><li>Wybierz instrumenty (ETF, indeksy): ________________</li></ul><h5>2. Rebalansowanie portfela:</h5><ul><li>Ustal częstotliwość: co _____ miesięcy</li><li>Określ docelowe proporcje: ____% akcje, ____% obligacje, ____% inne</li></ul><h5>3. Stop-loss i take-profit:</h5><ul><li>Maksymalna akceptowalna strata: ____%</li><li>Poziom realizacji zysków: ____%</li></ul><h5>4. Ograniczenie dostępu do informacji:</h5><ul><li>Odinstaluj aplikacje z notowaniami z telefonu</li><li>Ustaw konkretne godziny sprawdzania portfela</li><li>Wyłącz powiadomienia push</li></ul>",
+              "interactive": true
+            },
+            {
+              "title": "Budowanie odporności emocjonalnej",
+              "content": "<h4>💪 Trening mentalny inwestora</h4><p>Codzienne praktyki wzmacniające kontrolę emocji:</p><h5>Tydzień 1-2: Podstawy</h5><ul><li><strong>Rano:</strong> 5 minut medytacji/oddychania przed sprawdzeniem portfela</li><li><strong>W ciągu dnia:</strong> Maksymalnie 2 sprawdzenia cen (ustal godziny)</li><li><strong>Wieczorem:</strong> Zapisz 3 rzeczy, za które jesteś wdzięczny (niezwiązane z inwestycjami)</li></ul><h5>Tydzień 3-4: Pogłębienie</h5><ul><li><strong>Dodaj:</strong> Cotygodniowy przegląd emocji i decyzji</li><li><strong>Ćwicz:</strong> Symulacje mentalne - \"co zrobię gdy portfel spadnie o 20%?\"</li><li><strong>Rozwijaj:</strong> Hobby niezwiązane z finansami (sport, sztuka, nauka)</li></ul><h5>Długoterminowo:</h5><ul><li>Regularne rozmowy z mentorem/doradcą</li><li>Ciągłe poszerzanie wiedzy finansowej</li><li>Budowanie sieci wsparcia (grupa inwestorów)</li></ul>",
+              "interactive": true
+            }
+          ]
+        },
+        "analysis": {
+          "description": "📊 **Analiza** - Ćwiczenia analityczne, case studies i symulacje scenariuszy",
+          "sections": [
+            {
+              "title": "Analiza przypadku: Tomek vs. Jego emocje",
+              "content": "<h4>🔍 Case Study: Emocjonalny rollercoaster</h4><p>Przeanalizuj historię Tomka z początku lekcji i odpowiedz na pytania:</p><h5>Sytuacja 1: Panic Selling podczas spadku Bitcoina o 15%</h5><ul><li><strong>Jakie emocje kierowały Tomkiem?</strong></li><li><strong>Jakie błędy poznawcze popełnił?</strong></li><li><strong>Jak mógł postąpić inaczej?</strong></li><li><strong>Jakie narzędzia/systemy mogły mu pomóc?</strong></li></ul><h5>Sytuacja 2: FOMO przy NFT na podstawie opinii znajomych</h5><ul><li><strong>Co poszło nie tak w procesie decyzyjnym?</strong></li><li><strong>Jakie pytania powinien był sobie zadać przed inwestycją?</strong></li><li><strong>Jak uniknąć podobnych pułapek w przyszłości?</strong></li></ul><h5>Twoje wnioski:</h5><ul><li><strong>Czy rozpoznajesz podobne wzorce u siebie?</strong></li><li><strong>Jakie konkretne działania podejmiesz, by uniknąć błędów Tomka?</strong></li></ul>",
+              "interactive": true
+            },
+            {
+              "title": "Symulacja: Kryzys 2020 vs. Twoja strategia",
+              "content": "<h4>🎲 Co by było, gdyby...?</h4><p>Wyobraź sobie, że jesteś inwestorem w marcu 2020 roku. Rynki spadają o 30-40% w ciągu miesięca z powodu pandemii.</p><h5>Scenariusz początkowy:</h5><ul><li>Masz 100,000 zł w portfelu (70% akcje, 20% obligacje, 10% gotówka)</li><li>Media piszą o końcu świata ekonomicznego</li><li>Przyjaciele sprzedają wszystko</li><li>Twój portfel stracił już 35,000 zł</li></ul><h5>Twoje opcje (wybierz jedną i uzasadnij):</h5><ol><li><strong>Sprzedajesz wszystko</strong> - \"lepiej strata 35k niż 100k\"</li><li><strong>Trzymasz pozycje</strong> - \"długoterminowo się odbije\"</li><li><strong>Dokupujesz</strong> - \"to okazja życia\"</li><li><strong>Rebalancujesz</strong> - \"wracam do docelowych proporcji\"</li></ol><h5>Analiza końcowa:</h5><ul><li><strong>Jakie emocje wpłynęłyby na Twoją decyzję?</strong></li><li><strong>Jak przygotowałbyś się mentalnie na taki scenariusz?</strong></li><li><strong>Jakie systemy/reguły pomogłyby Ci w takiej sytuacji?</strong></li></ul>",
+              "interactive": true
+            },
+            {
+              "title": "Analiza własnych inwestycji pod kątem emocji",
+              "content": "<h4>🔬 Audyt emocjonalny Twojego portfela</h4><p>Przyjrzyj się swoim ostatnim 5 znaczącym decyzjom inwestycyjnym:</p><table style='border-collapse: collapse; width: 100%;'><tr style='background: #f5f5f5;'><th style='border: 1px solid #ddd; padding: 8px;'>Decyzja</th><th style='border: 1px solid #ddd; padding: 8px;'>Emocja</th><th style='border: 1px solid #ddd; padding: 8px;'>Rezultat</th><th style='border: 1px solid #ddd; padding: 8px;'>Ocena</th></tr><tr><td style='border: 1px solid #ddd; padding: 8px;'>1. _______________</td><td style='border: 1px solid #ddd; padding: 8px;'>___________</td><td style='border: 1px solid #ddd; padding: 8px;'>___________</td><td style='border: 1px solid #ddd; padding: 8px;'>___/10</td></tr><tr><td style='border: 1px solid #ddd; padding: 8px;'>2. _______________</td><td style='border: 1px solid #ddd; padding: 8px;'>___________</td><td style='border: 1px solid #ddd; padding: 8px;'>___________</td><td style='border: 1px solid #ddd; padding: 8px;'>___/10</td></tr><tr><td style='border: 1px solid #ddd; padding: 8px;'>3. _______________</td><td style='border: 1px solid #ddd; padding: 8px;'>___________</td><td style='border: 1px solid #ddd; padding: 8px;'>___________</td><td style='border: 1px solid #ddd; padding: 8px;'>___/10</td></tr><tr><td style='border: 1px solid #ddd; padding: 8px;'>4. _______________</td><td style='border: 1px solid #ddd; padding: 8px;'>___________</td><td style='border: 1px solid #ddd; padding: 8px;'>___________</td><td style='border: 1px solid #ddd; padding: 8px;'>___/10</td></tr><tr><td style='border: 1px solid #ddd; padding: 8px;'>5. _______________</td><td style='border: 1px solid #ddd; padding: 8px;'>___________</td><td style='border: 1px solid #ddd; padding: 8px;'>___________</td><td style='border: 1px solid #ddd; padding: 8px;'>___/10</td></tr></table><h5>Pytania do analizy:</h5><ul><li><strong>Czy widzisz wzorce?</strong> (np. strach → sprzedaż, euforia → kupno)</li><li><strong>Które decyzje oceniasz najwyżej?</strong> Co je charakteryzowało?</li><li><strong>Które najniżej?</strong> Jakie emocje dominowały?</li><li><strong>Co możesz zmienić w przyszłości?</strong></li></ul>",
+              "interactive": true
+            }
+          ]
+        },
+        "autotest": {
+          "description": "🧠 **Autotest** - Mini-quizy sprawdzające, testy wiedzy praktycznej i scenariusze decyzyjne",
+          "sections": [
+            {
+              "title": "Test: Rozpoznawanie pułapek emocjonalnych",
+              "content": "<h4>🎯 Czy rozpoznasz sytuacje wysokiego ryzyka emocjonalnego?</h4><p>Dla każdej sytuacji oceń poziom ryzyka emocjonalnego (1-Niskie, 5-Bardzo wysokie) i napisz dlaczego:</p><h5>Scenariusz 1:</h5><p><em>\"Twoja akcja teknologiczna rośnie 5. dzień z rzędu o łącznie 40%. W grupie na Telegramie wszyscy piszą, że to dopiero początek hossy. Masz ochotę dołożyć więcej pieniędzy.\"</em></p><p>Ryzyko: ___/5 | Powód: ________________</p><h5>Scenariusz 2:</h5><p><em>\"Rynek spada już trzeci tydzień. Twój portfel stracił 15%. W wiadomościach mówią o możliwej recesji. Zastanawiasz się, czy nie wycofać się całkowicie z rynku.\"</em></p><p>Ryzyko: ___/5 | Powód: ________________</p><h5>Scenariusz 3:</h5><p><em>\"Sprawdzasz portfel raz w tygodniu w niedzielę wieczorem. Masz zapisane cele na 10 lat i trzymasz się ustalonej strategii niezależnie od krótkoterminowych wahań.\"</em></p><p>Ryzyko: ___/5 | Powód: ________________</p><h5>Scenariusz 4:</h5><p><em>\"Znajomy chwali się zyskiem 200% na kryptowalucie, o której nigdy nie słyszałeś. Twierdzi, że to pewna inwestycja na najbliższe miesiące.\"</em></p><p>Ryzyko: ___/5 | Powód: ________________</p>",
+              "interactive": true
+            },
+            {
+              "title": "Quiz: Co byś zrobił gdyby...?",
+              "content": "<h4>🤔 Szybkie decyzje w sytuacjach stresowych</h4><p>Wybierz najlepszą odpowiedź i uzasadnij swój wybór:</p><h5>Pytanie 1: Portfel spada o 20% w ciągu tygodnia</h5><ol type='a'><li>Sprzedaję wszystko zanim stracę więcej</li><li>Sprawdzam przyczyny spadku i trzymam się planu</li><li>Dokupuję, bo ceny są niższe</li><li>Panikuję i nie wiem co zrobić</li></ol><p>Twoja odpowiedź: ___ | Uzasadnienie: ________________</p><h5>Pytanie 2: Znajomi chwaliją się zyskami z nowej inwestycji</h5><ol type='a'><li>Od razu kupuję, żeby nie przegapić</li><li>Proszę o więcej informacji i analizuję</li><li>Ignoruję - trzymam się swojej strategii</li><li>Zastanawiam się, czy moja strategia jest dobra</li></ol><p>Twoja odpowiedź: ___ | Uzasadnienie: ________________</p><h5>Pytanie 3: Twoja inwestycja rośnie o 50% w miesiąc</h5><ol type='a'><li>Sprzedaję wszystko i realizuję zysk</li><li>Sprzedaję część według ustalonej strategii</li><li>Trzymam wszystko - może będzie jeszcze więcej</li><li>Dokupuję więcej tej samej inwestycji</li></ol><p>Twoja odpowiedź: ___ | Uzasadnienie: ________________</p>",
+              "interactive": true
+            },
+            {
+              "title": "Test samokontroli: Czy jesteś gotowy na zmienność?",
+              "content": "<h4>🛡️ Oceń swoją gotowość mentalną</h4><p>Odpowiedz szczerze TAK/NIE na każde pytanie:</p><ul><li>☐ Mam spisaną strategię inwestycyjną i cele długoterminowe</li><li>☐ Znam dokładnie skład swojego portfela i dlaczego w niego inwestuję</li><li>☐ Ustaliłem maksymalną kwotę, którą mogę stracić bez wpływu na życie</li><li>☐ Mam plan awaryjny na spadki portfela o 20%, 30% i 50%</li><li>☐ Sprawdzam ceny inwestycji rzadziej niż codziennie</li><li>☐ Potrafię ignorować krótkoterminowe newsy i opinie w internecie</li><li>☐ Nie dyskutuję o inwestycjach z osobami, które działają emocjonalnie</li><li>☐ Mam dodatkowe hobby/zainteresowania niezwiązane z finansami</li><li>☐ Regularnie edukuję się w zakresie psychologii inwestowania</li><li>☐ Potrafię poczekać z decyzją 24h gdy czuję silne emocje</li></ul><h5>Wynik:</h5><ul><li><strong>8-10 TAK:</strong> 🏆 Jesteś gotowy na zmienność! Kontynuuj dobre praktyki.</li><li><strong>5-7 TAK:</strong> ⚠️ Dobry start, ale warto popracować nad słabszymi obszarami.</li><li><strong>0-4 TAK:</strong> 🚨 Przed większymi inwestycjami warto wzmocnić przygotowanie mentalne.</li></ul><p><strong>Na jakich obszarach chcesz popracować w pierwszej kolejności?</strong></p>",
+              "interactive": true
+            }
+          ]
+        }
+      }
     },
     "closing_quiz": {
       "title": "Quiz końcowy",
