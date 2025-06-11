@@ -280,34 +280,156 @@
           ]
         }
       }
-    },
-    "closing_quiz": {
-      "title": "Quiz końcowy",
-      "description": "Sprawdź, ile zapamiętałeś z tej lekcji",
+    },    "closing_quiz": {
+      "title": "Quiz końcowy: Emocjonalna zmienność na rynku",
+      "description": "Sprawdź swoją wiedzę o zarządzaniu emocjami w inwestowaniu. Quiz zawiera 10 pytań - musisz uzyskać minimum 75% poprawnych odpowiedzi.",
+      "passing_threshold": 75,
       "questions": [
         {
-          "question": "Czym jest framing (efekt obramowania)?",
+          "question": "Jakie mechanizmy psychologiczne powodują, że inwestorzy reagują emocjonalnie podczas dużych wahań rynku?",
+          "type": "multiple_choice",
           "options": [
-            "Techniką zarządzania portfelem inwestycyjnym",
-            "Sposobem przedstawiania informacji, który wpływa na jej odbiór",
-            "Strategią dywersyfikacji inwestycji",
-            "Metodą analizy technicznej wykresów"
+            "Efekt zakotwiczenia",
+            "Heurystyka afektu",
+            "Strach przed stratą",
+            "Efekt Dunninga-Krugera"
           ],
-          "correct_answer": 1,
-          "explanation": "Framing to sposób przedstawiania tej samej informacji w różny sposób, co może znacząco wpłynąć na decyzje inwestora."
+          "correct_answers": [1, 2],
+          "explanation": "Heurystyka afektu sprawia, że emocje wpływają na nasze decyzje, a strach przed stratą (loss aversion) powoduje, że boimy się strat bardziej niż cieszymy się z zysków. Te mechanizmy prowadzą do emocjonalnych reakcji podczas wahań rynku."
         },
         {
-          "question": "Która z poniższych metod pomaga radzić sobie z wpływem dopaminy na decyzje inwestycyjne?",
+          "question": "Zmienność rynku rośnie, gdy inwestorzy:",
+          "type": "multiple_choice",
           "options": [
-            "Zwiększanie częstotliwości tradingu",
-            "Stawianie małych kwot na ryzykowne aktywa",
-            "Trzymanie się ustalonego wcześniej planu inwestycyjnego",
-            "Podążanie za trendami w mediach społecznościowych"
+            "masowo kupują opcje zabezpieczające przed spadkiem cen",
+            "stabilnie i regularnie inwestują długoterminowo",
+            "reagują gwałtownie na emocjonalne bodźce, np. medialne newsy",
+            "przestrzegają swoich strategii inwestycyjnych"
+          ],
+          "correct_answers": [0, 2],
+          "explanation": "Zmienność wzrasta gdy inwestorzy kupują zabezpieczenia (opcje put) z obawy przed spadkami oraz gdy reagują emocjonalnie na newsy, tworząc dodatkowe wahania cenowe. Stabilne inwestowanie i trzymanie się strategii redukuje zmienność."
+        },
+        {
+          "question": "Co dokładnie mierzy indeks VIX (Volatility Index)?",
+          "type": "single_choice",
+          "options": [
+            "Ilość pieniędzy wpłacanych na giełdę przez inwestorów",
+            "Wielkość obrotów giełdowych w danym dniu",
+            "Poziom oczekiwanej zmienności i strachu inwestorów na rynku akcji",
+            "Liczbę transakcji wykonanych danego dnia"
           ],
           "correct_answer": 2,
-          "explanation": "Trzymanie się ustalonego planu (stick to the plan) to jeden z kluczowych sposobów na ograniczenie emocjonalnego wpływu dopaminy na decyzje inwestycyjne."        }
-      ]
-    }  },
+          "explanation": "VIX, zwany 'indeksem strachu', mierzy oczekiwaną 30-dniową zmienność rynku akcji S&P 500 na podstawie cen opcji. Wysokie wartości VIX oznaczają większy strach i oczekiwaną zmienność na rynku."
+        },
+        {
+          "question": "Które działania są przykładami negatywnych skutków emocjonalnej zmienności inwestora?",
+          "type": "multiple_choice",
+          "options": [
+            "Panic selling",
+            "Zakupy pod wpływem FOMO",
+            "Rebalansowanie portfela zgodnie z wcześniejszym planem",
+            "Impulsywne zmiany strategii inwestycyjnej"
+          ],
+          "correct_answers": [0, 1, 3],
+          "explanation": "Panic selling, FOMO i impulsywne zmiany strategii to klasyczne przykłady emocjonalnych błędów. Rebalansowanie zgodnie z planem to pozytywne, racjonalne działanie, które pomaga kontrolować emocje."
+        },
+        {
+          "question": "Które podejścia inwestycyjne mogą pomóc zmniejszyć wpływ emocji na decyzje inwestycyjne?",
+          "type": "multiple_choice",
+          "options": [
+            "Automatyzacja inwestowania (np. ETF-y, stałe zlecenia zakupu)",
+            "Jasno określone limity strat i zysków",
+            "Regularne autorefleksje i prowadzenie dziennika inwestora",
+            "Codzienny intensywny monitoring wszystkich wiadomości rynkowych"
+          ],
+          "correct_answers": [0, 1, 2],
+          "explanation": "Automatyzacja, jasne limity i dziennik inwestora pomagają wyeliminować emocjonalne decyzje. Codzienny intensywny monitoring newsów może zwiększać stres i prowadzić do emocjonalnych reakcji."
+        },
+        {
+          "question": "Fear & Greed Index, czyli wskaźnik strachu i chciwości, pokazuje:",
+          "type": "single_choice",
+          "options": [
+            "Ile inwestorzy zarobili na akcjach w danym dniu",
+            "Jak długo trwa aktualna faza rynku (hossa czy bessa)",
+            "Dominującą emocję wśród inwestorów na rynku",
+            "Jak dużą zmienność będzie mieć rynek za rok"
+          ],
+          "correct_answer": 2,
+          "explanation": "Fear & Greed Index to wskaźnik sentymentu rynkowego, który analizuje różne czynniki (VIX, momentum, popyt na obligacje, etc.) aby określić, czy na rynku dominuje strach czy chciwość - dwie główne emocje napędzające rynki finansowe."
+        },
+        {
+          "question": "Jakie zachowania świadczą o dużej podatności inwestora na FOMO?",
+          "type": "multiple_choice",
+          "options": [
+            "Zakupy aktywów pod wpływem opinii influencerów bez analizy",
+            "Spokojne oczekiwanie na korekty cenowe do poziomów wcześniej ustalonych",
+            "Regularne sprawdzanie portfela co kilka minut w trakcie wzrostów",
+            "Trzymanie się wcześniej ustalonego planu inwestycyjnego bez zmian"
+          ],
+          "correct_answers": [0, 2],
+          "explanation": "FOMO objawia się impulsywnymi zakupami pod wpływem opinii innych oraz obsesyjnym sprawdzaniem portfela podczas wzrostów. Spokojne oczekiwanie i trzymanie się planu to przeciwieństwo FOMO - oznaczają dyscyplinę i kontrolę emocji."
+        },
+        {
+          "question": "Beta inwestycji o wartości 1,5 oznacza, że:",
+          "type": "single_choice",
+          "options": [
+            "Aktyw jest bardziej zmienny niż rynek – jeśli rynek wzrośnie o 10%, to aktyw przeciętnie wzrośnie o około 15%",
+            "Aktyw jest mniej zmienny niż rynek – jeśli rynek wzrośnie o 10%, aktyw wzrośnie tylko o 5%",
+            "Aktyw zawsze zyskuje 50% wartości w danym okresie",
+            "Aktyw nie reaguje na zmiany na rynku"
+          ],
+          "correct_answer": 0,
+          "explanation": "Beta 1,5 oznacza, że aktyw jest 1,5 raza bardziej zmienny niż rynek. Gdy rynek rośnie o 10%, aktyw teoretycznie wzrośnie o 15% (10% × 1,5). Podobnie przy spadkach - będą one większe niż rynkowe."
+        },
+        {
+          "question": "Z jakiego powodu 'Market timing' (próba wyczucia momentu wejścia/wyjścia z rynku) jest często nieskuteczny?",
+          "type": "multiple_choice",
+          "options": [
+            "Z powodu emocji inwestora, które zakłócają racjonalne decyzje",
+            "Ponieważ najlepsze dni wzrostowe na rynku są bardzo trudne do przewidzenia",
+            "Ponieważ regularne inwestowanie w stałych odstępach czasu zawsze przynosi straty",
+            "Bo istnieją systemy gwarantujące sukces w market timingu"
+          ],
+          "correct_answers": [0, 1],
+          "explanation": "Market timing jest trudny z powodu emocji (często kupujemy drogo w euforio i sprzedajemy tanio w panice) oraz nieprzewidywalności najlepszych dni na rynku. Przeoczenie kilku najlepszych dni może znacząco obniżyć zwroty."
+        },
+        {
+          "question": "Które strategie najlepiej pomagają inwestorom oswajać emocje na rynku?",
+          "type": "multiple_choice",
+          "options": [
+            "Tworzenie rytuałów działania na momenty stresu (np. spacer, przerwa)",
+            "Natychmiastowe działanie na każdym impulsie emocjonalnym",
+            "Jasne określenie swoich 'emocjonalnych' limitów i zasad działania",
+            "Ograniczenie bodźców informacyjnych (wyłączenie alertów, mediów społecznościowych)"
+          ],
+          "correct_answers": [0, 2, 3],
+          "explanation": "Rytuały antystresowe, jasne zasady działania i ograniczenie nadmiaru informacji pomagają kontrolować emocje. Natychmiastowe reagowanie na impulsy emocjonalne to przeciwieństwo dobrej strategii - prowadzi do błędów."
+        }
+      ],
+      "result_interpretation": {
+        "excellent": {
+          "threshold": 90,
+          "title": "🎯 Mistrz emocjonalnego zarządzania!",
+          "message": "Fantastycznie! Twoja wiedza o emocjonalnych aspektach inwestowania jest na najwyższym poziomie. Rozumiesz mechanizmy psychologiczne, potrafisz rozpoznać pułapki emocjonalne i znasz skuteczne strategie zarządzania. Teraz kluczowe jest konsekwentne stosowanie tej wiedzy w praktyce. Pamiętaj - nawet eksperci czasami ulegają emocjom, więc pozostań czujny i ciągle doskonał swoje umiejętności!"
+        },
+        "good": {
+          "threshold": 75,
+          "title": "🚀 Dobrze ogarniasz emocje, choć jest miejsce na rozwój!",
+          "message": "Świetny wynik! Masz solidne podstawy w zakresie psychologii inwestowania i rozumiesz większość kluczowych konceptów. Teraz skup się na praktycznym zastosowaniu tej wiedzy. Warto pogłębić te obszary, w których miałeś wątpliwości. Regularna praktyka i samodyscyplina pomogą Ci osiągnąć poziom mistrzostwa. Jesteś na dobrej drodze!"
+        },
+        "needs_improvement": {
+          "threshold": 60,
+          "title": "🧐 Czas jeszcze raz przejrzeć temat, emocje nadal Cię zaskakują",
+          "message": "Nie martw się - zarządzanie emocjami w inwestowaniu to jedna z najtrudniejszych umiejętności! Twój wynik pokazuje, że masz już pewne podstawy, ale warto je pogłębić. Skup się na zrozumieniu mechanizmów psychologicznych i praktycznych technikach kontroli emocji. Każdy ekspert przeszedł przez tę fazę nauki. Z czasem i praktyką będziesz coraz lepszy!"
+        },
+        "poor": {
+          "threshold": 0,
+          "title": "📚 Wróć do materiału - to fundament sukcesu!",
+          "message": "To dopiero początek Twojej przygody z psychologią inwestowania! Nie zniechęcaj się - ten temat jest bardzo złożony i wymaga czasu na przyswojenie. Polecam ponowne przeczytanie materiałów, skupienie się na kluczowych konceptach jak FOMO, panic selling czy VIX. Zanim zaczniesz inwestować większe kwoty, warto dobrze zrozumieć te mechanizmy. Każdy mistrz kiedyś był początkującym!"
+        }
+      }
+    }
+  },
   "outro": "<p>closing case study i podsumowanie</p>"
 }
 

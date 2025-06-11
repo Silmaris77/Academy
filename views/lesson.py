@@ -753,7 +753,7 @@ def show_lesson():
                         if submitted:
                             # Zapisz odpowiedź w stanie sesji
                             st.session_state[task_key] = user_solution
-                            st.success("Twoje rozwiązanie zostało zapisana!")
+                            st.success("Twoje rozwiązanie została zapisana!")
                             # Dodaj odświeżenie strony po zapisaniu
                             st.rerun()
               # Przycisk "Dalej" po zadaniach praktycznych
@@ -1104,7 +1104,9 @@ def display_reflection_sections(reflection_data):
             st.success("Twoja odpowiedź została zapisana!")
 
 def display_quiz(quiz_data, passing_threshold=60):
-    """Wyświetla quiz z pytaniami i opcjami odpowiedzi. Zwraca True, gdy quiz jest ukończony."""    # Style CSS TYLKO dla przycisków odpowiedzi quiz - nie wpływa na nawigację
+    """Wyświetla quiz z pytaniami i opcjami odpowiedzi. Zwraca True, gdy quiz jest ukończony."""
+    
+    # Style CSS TYLKO dla przycisków odpowiedzi quiz - nie wpływa na nawigację
     st.markdown("""
     <style>
     .quiz-question {
@@ -1191,10 +1193,10 @@ def display_quiz(quiz_data, passing_threshold=60):
     .quiz-answers-section .css-12oz5g7 {
         max-width: fit-content !important;
         width: auto !important;
-        flex: 0 0 auto !important;    }
-    </style>
+        flex: 0 0 auto !important;
+    }    </style>
     """, unsafe_allow_html=True)
-
+    
     if not quiz_data or "questions" not in quiz_data:
         st.warning("Ten quiz nie zawiera żadnych pytań.")
         return False, False, 0
@@ -1327,28 +1329,54 @@ def display_quiz(quiz_data, passing_threshold=60):
         <div class="quiz-question">
             <h3>Pytanie {i+1}: {question['question']}</h3>
         </div>
-        """, unsafe_allow_html=True)        
-        # Jeśli pytanie już zostało odpowiedziane, pokaż wynik
+        """, unsafe_allow_html=True)          # Jeśli pytanie już zostało odpowiedziane, pokaż wynik
         if i in st.session_state[quiz_id]["answered_questions"]:
             selected = st.session_state.get(f"{question_id}_selected")
-            correct_answer = question.get('correct_answer')
-            is_correct = correct_answer is not None and selected == correct_answer
+            question_type = question.get('type', 'single_choice')
             
             # Wyświetl odpowiedzi z oznaczeniem poprawnej
             for j, option in enumerate(question['options']):
                 # Dla quizów samodiagnozy - wszystkie opcje równe
                 if is_self_diagnostic:
-                    if j == selected:
-                        st.markdown(f"✓ **{option}** _(Twoja odpowiedź)_")
+                    if isinstance(selected, list):
+                        # Wielokrotny wybór w samodiagnozie (rzadko używane)
+                        if j in selected:
+                            st.markdown(f"✓ **{option}** _(Twoja odpowiedź)_")
+                        else:
+                            st.markdown(f"○ {option}")
                     else:
-                        st.markdown(f"○ {option}")
+                        # Pojedynczy wybór w samodiagnozie
+                        if j == selected:
+                            st.markdown(f"✓ **{option}** _(Twoja odpowiedź)_")
+                        else:
+                            st.markdown(f"○ {option}")
                 else:
                     # Dla quizów z poprawnymi odpowiedziami
-                    if correct_answer is not None:
-                        if j == correct_answer:
-                            st.markdown(f"✅ **{option}** _(Poprawna odpowiedź)_")
-                        elif j == selected and not is_correct:
-                            st.markdown(f"❌ **{option}** _(Twoja odpowiedź)_")
+                    if question_type == 'multiple_choice':
+                        # Pytania z wielokrotnym wyborem
+                        correct_answers = question.get('correct_answers', [])
+                        selected_list = selected if isinstance(selected, list) else []
+                        
+                        if j in correct_answers and j in selected_list:
+                            st.markdown(f"✅ **{option}** _(Poprawna odpowiedź - wybrana)_")
+                        elif j in correct_answers and j not in selected_list:
+                            st.markdown(f"✅ **{option}** _(Poprawna odpowiedź - nie wybrana)_")
+                        elif j not in correct_answers and j in selected_list:
+                            st.markdown(f"❌ **{option}** _(Niepoprawna odpowiedź - wybrana)_")
+                        else:
+                            st.markdown(f"○ {option}")
+                    else:
+                        # Pytania z pojedynczym wyborem
+                        correct_answer = question.get('correct_answer')
+                        is_correct = correct_answer is not None and selected == correct_answer
+                        
+                        if correct_answer is not None:
+                            if j == correct_answer:
+                                st.markdown(f"✅ **{option}** _(Poprawna odpowiedź)_")
+                            elif j == selected and not is_correct:
+                                st.markdown(f"❌ **{option}** _(Twoja odpowiedź)_")
+                            else:
+                                st.markdown(f"○ {option}")
                         else:
                             st.markdown(f"○ {option}")
               # Wyświetl wyjaśnienie
@@ -1374,56 +1402,74 @@ def display_quiz(quiz_data, passing_threshold=60):
                             # Zapisz wybraną odpowiedź
                             st.session_state[f"{question_id}_selected"] = j
                             st.session_state[quiz_id]["answered_questions"].append(i)
-                            
                             # Dla quizów samodiagnozy - zlicz punkty (opcje 1-5 = j+1 punktów)
                             points = j + 1
-                            # Ensure total_points exists before adding
                             if "total_points" not in st.session_state[quiz_id]:
                                 st.session_state[quiz_id]["total_points"] = 0
                             st.session_state[quiz_id]["total_points"] += points
-                            
-                            # Sprawdź, czy quiz został ukończony
                             if len(st.session_state[quiz_id]["answered_questions"]) == st.session_state[quiz_id]["total_questions"]:
                                 st.session_state[quiz_id]["completed"] = True
-                                
-                                # Natychmiastowa aktualizacja nawigacji lekcji dla quiz startowy
                                 if 'opening_quiz' in quiz_id.lower() or 'startowy' in quiz_id.lower():
                                     st.session_state.lesson_progress['opening_quiz'] = True
-                                
-                                # Odświeżenie strony
-                                st.rerun()
+                            st.rerun()
+                            return False, False, 0
             else:
                 # Quiz testowy - przyciski pełnej szerokości
-                for j, option in enumerate(question['options']):
-                    if st.button(option, key=f"{question_id}_opt{j}"):
-                        # Zapisz wybraną odpowiedź
-                        st.session_state[f"{question_id}_selected"] = j
-                        st.session_state[quiz_id]["answered_questions"].append(i)
-                        
-                        # Dla quizów z poprawnymi odpowiedziami - zlicz poprawne
-                        correct_answer = question.get('correct_answer')
-                        if correct_answer is not None and j == correct_answer:
-                            st.session_state[quiz_id]["correct_answers"] += 1
-                            
-                            # Aktualizuj wynik quizu (dla podsumowania lekcji)
-                            if "quiz_score" in st.session_state:
-                                st.session_state.quiz_score += 5  # 5 XP za poprawną odpowiedź
-                        
-                        # Sprawdź, czy quiz został ukończony
-                        if len(st.session_state[quiz_id]["answered_questions"]) == st.session_state[quiz_id]["total_questions"]:
-                            st.session_state[quiz_id]["completed"] = True
-                            
-                            # Natychmiastowa aktualizacja nawigacji lekcji dla quiz końcowy
-                            if 'closing_quiz' in quiz_id.lower() or 'końcowy' in quiz_id.lower():
-                                st.session_state.lesson_progress['closing_quiz'] = True
-                            
-                            # Odświeżenie strony
+                question_type = question.get('type', 'single_choice')
+                if question_type == 'multiple_choice':
+                    # Pytanie z wielokrotnym wyborem
+                    st.write("**Wybierz wszystkie poprawne odpowiedzi:**")
+                    
+                    # Zbierz aktualny stan checkboxów
+                    for j, option in enumerate(question['options']):
+                        checkbox_key = f"{question_id}_opt{j}"
+                        st.checkbox(option, key=checkbox_key)
+                    
+                    # Przycisk do zatwierdzenia odpowiedzi z unikatowym kluczem
+                    submit_key = f"{question_id}_submit"
+                      # Przycisk do zatwierdzenia odpowiedzi
+                    if st.button("Zatwierdź odpowiedzi", key=submit_key):
+                        selected_options = []
+                        for j, option in enumerate(question['options']):
+                            checkbox_key = f"{question_id}_opt{j}"
+                            if st.session_state.get(checkbox_key, False):
+                                selected_options.append(j)
+                        if selected_options:
+                            st.session_state[f"{question_id}_selected"] = selected_options
+                            st.session_state[quiz_id]["answered_questions"].append(i)
+                            correct_answers = question.get('correct_answers', [])
+                            if set(selected_options) == set(correct_answers):
+                                st.session_state[quiz_id]["correct_answers"] += 1
+                                if "quiz_score" in st.session_state:
+                                    st.session_state.quiz_score += 5
+                            if len(st.session_state[quiz_id]["answered_questions"]) == st.session_state[quiz_id]["total_questions"]:
+                                st.session_state[quiz_id]["completed"] = True
+                                if 'closing_quiz' in quiz_id.lower() or 'końcowy' in quiz_id.lower():
+                                    st.session_state.lesson_progress['closing_quiz'] = True
                             st.rerun()
+                            return False, False, 0
+                    else:
+                        st.warning("Wybierz przynajmniej jedną odpowiedź przed zatwierdzeniem.")
+                else:
+                    # Pytanie z pojedynczym wyborem (domyślne)
+                    for j, option in enumerate(question['options']):
+                        if st.button(option, key=f"{question_id}_opt{j}"):
+                            st.session_state[f"{question_id}_selected"] = j
+                            st.session_state[quiz_id]["answered_questions"].append(i)
+                            correct_answer = question.get('correct_answer')
+                            if correct_answer is not None and j == correct_answer:
+                                st.session_state[quiz_id]["correct_answers"] += 1
+                                if "quiz_score" in st.session_state:
+                                    st.session_state.quiz_score += 5
+                            if len(st.session_state[quiz_id]["answered_questions"]) == st.session_state[quiz_id]["total_questions"]:
+                                st.session_state[quiz_id]["completed"] = True
+                                if 'closing_quiz' in quiz_id.lower() or 'końcowy' in quiz_id.lower():
+                                    st.session_state.lesson_progress['closing_quiz'] = True
+                            st.rerun()
+                            return False, False, 0
+        st.markdown('</div>', unsafe_allow_html=True)
             
-            # Zakończ sekcję przycisków odpowiedzi quiz
-            st.markdown('</div>', unsafe_allow_html=True)
-            
-            st.markdown("---")
+        st.markdown("---")
     
     # Sprawdź czy quiz jest ukończony i oblicz punkty
     is_completed = st.session_state[quiz_id].get("completed", False)
@@ -1458,12 +1504,10 @@ def display_quiz(quiz_data, passing_threshold=60):
                     st.info("🪞 Dziękujemy za szczerą samorefleksję! Twoje odpowiedzi pomogą nam lepiej dopasować materiał do Twojego stylu inwestowania.")
             else:
                 st.info("🪞 Dziękujemy za szczerą samorefleksję! Twoje odpowiedzi pomogą nam lepiej dopasować materiał do Twojego stylu inwestowania.")
-            
-            # Zawsze "zdany" dla quizu samodiagnozy
+              # Zawsze "zdany" dla quizu samodiagnozy
             return is_completed, True, total_points
             
-        else:
-            # Standardowy quiz z poprawnymi odpowiedziami
+        else:            # Standardowy quiz z poprawnymi odpowiedziami
             correct = st.session_state[quiz_id]["correct_answers"]
             total = st.session_state[quiz_id]["total_questions"]
             percentage = (correct / total) * 100
@@ -1481,22 +1525,49 @@ def display_quiz(quiz_data, passing_threshold=60):
             </div>
             """, unsafe_allow_html=True)
             
-            if percentage >= 80:
-                st.success("Świetnie! Doskonale rozumiesz ten temat.")
-            elif percentage >= passing_threshold:
-                if passing_threshold > 60:
-                    st.success(f"Bardzo dobrze! Osiągnąłeś wymagany próg {passing_threshold}% i możesz kontynuować.")
-                else:
-                    st.success("Bardzo dobrze! Możesz kontynuować naukę.")
+            # Wyświetl interpretację wyników jeśli dostępna (nowy system)
+            if 'result_interpretation' in quiz_data:
+                interpretation_found = False
+                interpretations = quiz_data['result_interpretation']
+                
+                # Sprawdź każdy próg interpretacji od najwyższego do najniższego
+                for key in ['excellent', 'good', 'needs_improvement', 'poor']:
+                    if key in interpretations:
+                        threshold = interpretations[key].get('threshold', 0)
+                        if percentage >= threshold:
+                            title = interpretations[key].get('title', 'Wynik')
+                            message = interpretations[key].get('message', 'Brak opisu')
+                            st.success(f"**{title}**\n\n{message}")
+                            interpretation_found = True
+                            break
+                
+                if not interpretation_found:
+                    # Fallback do standardowych komunikatów
+                    if percentage >= 80:
+                        st.success("Świetnie! Doskonale rozumiesz ten temat.")
+                    elif percentage >= passing_threshold:
+                        if passing_threshold > 60:
+                            st.success(f"Bardzo dobrze! Osiągnąłeś wymagany próg {passing_threshold}% i możesz kontynuować.")
+                        else:
+                            st.success("Bardzo dobrze! Możesz kontynuować naukę.")
+                    else:
+                        if passing_threshold > 60:
+                            st.error(f"Aby przejść dalej, musisz uzyskać przynajmniej {passing_threshold}% poprawnych odpowiedzi. Spróbuj ponownie!")
+                        else:
+                            st.warning("Spróbuj jeszcze raz - możesz to zrobić lepiej!")
             else:
-                if passing_threshold > 60:
-                    st.error(f"Aby przejść dalej, musisz uzyskać przynajmniej {passing_threshold}% poprawnych odpowiedzi. Spróbuj ponownie!")
+                # Standardowe komunikaty jeśli brak interpretacji
+                if percentage >= 80:
+                    st.success("Świetnie! Doskonale rozumiesz ten temat.")
+                elif percentage >= passing_threshold:
+                    if passing_threshold > 60:
+                        st.success(f"Bardzo dobrze! Osiągnąłeś wymagany próg {passing_threshold}% i możesz kontynuować.")
+                    else:
+                        st.success("Bardzo dobrze! Możesz kontynuować naukę.")
                 else:
-                    st.warning("Spróbuj jeszcze raz - możesz to zrobić lepiej!")
+                    if passing_threshold > 60:
+                        st.error(f"Aby przejść dalej, musisz uzyskać przynajmniej {passing_threshold}% poprawnych odpowiedzi. Spróbuj ponownie!")
+                    else:                        st.warning("Spróbuj jeszcze raz - możesz to zrobić lepiej!")
             
-            return is_completed, is_passed, earned_points
-    
-    # Quiz nie jest jeszcze ukończony
+            return is_completed, is_passed, earned_points    # Quiz nie jest jeszcze ukończony
     return is_completed, False, 0
-
-# Dodaj CSS do poprawy wyglądu expanderów, z uwzględnieniem urządzeń mobilnych
