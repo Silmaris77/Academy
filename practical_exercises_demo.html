@@ -1,0 +1,492 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ćwiczenia Praktyczne - Demo Implementation</title>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', sans-serif;
+            line-height: 1.6;
+            margin: 0;
+            padding: 20px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+        }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 15px;
+            padding: 30px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+        }
+        .header {
+            text-align: center;
+            margin-bottom: 40px;
+            padding-bottom: 20px;
+            border-bottom: 3px solid #667eea;
+        }
+        .header h1 {
+            color: #333;
+            margin: 0;
+            font-size: 2.5em;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        .tabs {
+            display: flex;
+            background: #f8f9fa;
+            border-radius: 10px;
+            padding: 5px;
+            margin-bottom: 30px;
+            flex-wrap: wrap;
+        }
+        .tab {
+            flex: 1;
+            padding: 15px 20px;
+            text-align: center;
+            border: none;
+            background: transparent;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-weight: 600;
+            min-width: 200px;
+            margin: 2px;
+        }
+        .tab.active {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.3);
+        }
+        .tab:hover:not(.active) {
+            background: #e9ecef;
+            transform: translateY(-1px);
+        }
+        .tab-content {
+            display: none;
+            background: #f8f9fa;
+            border-radius: 10px;
+            padding: 30px;
+        }
+        .tab-content.active {
+            display: block;
+            animation: fadeIn 0.3s ease-in;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .section {
+            background: white;
+            border-radius: 10px;
+            padding: 25px;
+            margin-bottom: 25px;
+            border-left: 5px solid #667eea;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+        }
+        .section h3 {
+            color: #333;
+            margin-top: 0;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .interactive-form {
+            background: #f1f3f4;
+            border-radius: 8px;
+            padding: 20px;
+            margin-top: 15px;
+        }
+        .form-group {
+            margin-bottom: 20px;
+        }
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: #333;
+        }
+        .form-control {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #e9ecef;
+            border-radius: 6px;
+            font-size: 14px;
+            transition: border-color 0.3s ease;
+            box-sizing: border-box;
+        }
+        .form-control:focus {
+            outline: none;
+            border-color: #667eea;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        }
+        .btn {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.3);
+        }
+        .status {
+            background: #d4edda;
+            color: #155724;
+            padding: 15px;
+            border-radius: 6px;
+            margin-bottom: 20px;
+            border: 1px solid #c3e6cb;
+        }
+        .features {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+            margin: 30px 0;
+        }
+        .feature {
+            background: white;
+            padding: 25px;
+            border-radius: 10px;
+            border-left: 5px solid #28a745;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+        }
+        .emoji {
+            font-size: 1.5em;
+            margin-right: 10px;
+        }
+        @media (max-width: 768px) {
+            .tabs {
+                flex-direction: column;
+            }
+            .tab {
+                margin-bottom: 5px;
+            }
+            .container {
+                padding: 20px;
+                margin: 10px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">            <h1>🎯 Ćwiczenia Praktyczne</h1>
+            <p style="font-size: 1.2em; color: #666; margin: 10px 0;">
+                Logiczna progresja: Test → Refleksja → Analiza → Akcja
+            </p>
+        </div>
+
+        <div class="status">
+            <strong>✅ Status implementacji:</strong> KOMPLETNA i gotowa do produkcji!
+        </div>        <div class="tabs">
+            <button class="tab active" onclick="showTab('autotest')">🧠 Autotest</button>
+            <button class="tab" onclick="showTab('reflection')">📝 Refleksja</button>
+            <button class="tab" onclick="showTab('analysis')">📊 Analiza</button>
+            <button class="tab" onclick="showTab('implementation')">🎯 Wdrożenie</button>
+        </div>
+
+        <div id="autotest" class="tab-content active">
+            <h2>🧠 Autotest</h2>
+            <p><strong>Mini-quizy sprawdzające, testy wiedzy praktycznej i scenariusze decyzyjne</strong></p>
+            
+            <div class="section">
+                <h3><span class="emoji">🎯</span>Test: Rozpoznawanie pułapek emocjonalnych</h3>
+                <p>Oceń poziom ryzyka emocjonalnego w różnych scenariuszach.</p>
+                <div class="interactive-form">
+                    <div class="form-group">
+                        <label>Scenariusz 1: Akcja rośnie 5. dzień z rzędu o 40%. Poziom ryzyka (1-5):</label>
+                        <input type="range" min="1" max="5" class="form-control" style="height: 10px;">
+                    </div>
+                    <div class="form-group">
+                        <label>Powód oceny:</label>
+                        <textarea class="form-control" rows="2" placeholder="Dlaczego tak oceniasz..."></textarea>
+                    </div>
+                    <button class="btn">Zapisz ocenę</button>
+                </div>
+            </div>
+
+            <div class="section">
+                <h3><span class="emoji">🤔</span>Quiz: Co byś zrobił gdyby...?</h3>
+                <p>Wybierz najlepszą odpowiedź w sytuacjach stresowych.</p>
+                <div class="interactive-form">
+                    <div class="form-group">
+                        <label>Portfel spada o 20% w ciągu tygodnia. Co robisz?</label>
+                        <select class="form-control">
+                            <option>Sprzedaję wszystko</option>
+                            <option>Sprawdzam przyczyny i trzymam się planu</option>
+                            <option>Dokupuję bo ceny są niższe</option>
+                            <option>Panikuję</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Uzasadnienie:</label>
+                        <textarea class="form-control" rows="2" placeholder="Dlaczego ta opcja..."></textarea>
+                    </div>
+                    <button class="btn">Zapisz odpowiedź</button>
+                </div>
+            </div>
+
+            <div class="section">
+                <h3><span class="emoji">🛡️</span>Test samokontroli</h3>
+                <p>Oceń swoją gotowość mentalną na zmienność rynku.</p>
+                <div class="interactive-form">
+                    <div class="form-group">
+                        <label>Checklist gotowości (zaznacz co masz):</label>
+                        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin: 15px 0;">
+                            <label><input type="checkbox"> Spisaną strategię inwestycyjną</label>
+                            <label><input type="checkbox"> Plan awaryjny na spadki</label>
+                            <label><input type="checkbox"> Ustaloną max. kwotę strat</label>
+                            <label><input type="checkbox"> Rzadko sprawdzam ceny</label>
+                            <label><input type="checkbox"> Ignoruję krótkoterminowe newsy</label>
+                            <label><input type="checkbox"> Hobby niezwiązane z finansami</label>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label>Na jakich obszarach chcesz popracować?</label>
+                        <textarea class="form-control" rows="3" placeholder="Obszary do poprawy..."></textarea>
+                    </div>
+                    <button class="btn">Zapisz wyniki</button>
+                </div>
+            </div>
+        </div>
+
+        <div id="reflection" class="tab-content">
+            <h2>📝 Refleksja</h2>
+            <p><strong>Pytania do przemyślenia, samoocena i dziennik inwestora</strong></p>
+            
+            <div class="section">
+                <h3><span class="emoji">💭</span>Inwestycyjny Flashback</h3>
+                <p>Przypomnij sobie sytuację, w której podjąłeś decyzję inwestycyjną pod wpływem emocji.</p>
+                <div class="interactive-form">
+                    <div class="form-group">
+                        <label>Jakie emocje Ci towarzyszyły?</label>
+                        <textarea class="form-control" rows="3" placeholder="Opisz swoje emocje..."></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label>Co było wyzwalaczem tej emocji?</label>
+                        <textarea class="form-control" rows="2" placeholder="Opisz sytuację..."></textarea>
+                    </div>
+                    <button class="btn">Zapisz odpowiedź</button>
+                </div>
+            </div>
+
+            <div class="section">
+                <h3><span class="emoji">📊</span>Dziennik emocji inwestora</h3>
+                <p>Przez najbliższy tydzień notuj swoje emocje związane z inwestowaniem.</p>
+                <div class="interactive-form">
+                    <div class="form-group">
+                        <label>Plan śledzenia emocji na najbliższy tydzień:</label>
+                        <textarea class="form-control" rows="4" placeholder="Opisz jak będziesz notować swoje emocje..."></textarea>
+                    </div>
+                    <button class="btn">Zapisz plan</button>
+                </div>
+            </div>
+
+            <div class="section">
+                <h3><span class="emoji">🎯</span>Samoocena zarządzania emocjami</h3>
+                <p>Oceń swój aktualny poziom w skali 1-10.</p>
+                <div class="interactive-form">
+                    <div class="form-group">
+                        <label>Kontrola stresu podczas spadków (1-10):</label>
+                        <input type="range" min="1" max="10" class="form-control" style="height: 10px;">
+                    </div>
+                    <div class="form-group">
+                        <label>Które obszary wymagają największej poprawy?</label>
+                        <textarea class="form-control" rows="3" placeholder="Opisz obszary do poprawy..."></textarea>
+                    </div>
+                    <button class="btn">Zapisz samoocenę</button>
+                </div>
+            </div>        </div>
+
+        <div id="implementation" class="tab-content">
+            <h2>🎯 Wdrożenie</h2>
+            <p><strong>Konkretne zadania do wykonania, checklista działań i plan implementacji</strong></p>
+            
+            <div class="section">
+                <h3><span class="emoji">🚨</span>Plan awaryjny na emocjonalne kryzysy</h3>
+                <p>Przygotuj konkretny plan działania na sytuacje wysokiego stresu emocjonalnego.</p>
+                <div class="interactive-form">
+                    <div class="form-group">
+                        <label>Sygnały ostrzegawcze (kiedy zadziała plan):</label>
+                        <textarea class="form-control" rows="3" placeholder="Lista sygnałów..."></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label>Natychmiastowe działania:</label>
+                        <textarea class="form-control" rows="3" placeholder="Co robię w pierwszej kolejności..."></textarea>
+                    </div>
+                    <button class="btn">Zapisz plan awaryjny</button>
+                </div>
+            </div>
+
+            <div class="section">
+                <h3><span class="emoji">🤖</span>Automatyzacja jako ochrona przed emocjami</h3>
+                <p>Zidentyfikuj obszary, które możesz zautomatyzować.</p>
+                <div class="interactive-form">
+                    <div class="form-group">
+                        <label>Automatyczne przelewy - kwota miesięcznie:</label>
+                        <input type="number" class="form-control" placeholder="Kwota w zł">
+                    </div>
+                    <div class="form-group">
+                        <label>Strategia automatyzacji:</label>
+                        <textarea class="form-control" rows="4" placeholder="Opisz swoją strategię automatyzacji..."></textarea>
+                    </div>
+                    <button class="btn">Zapisz strategię</button>
+                </div>
+            </div>
+
+            <div class="section">
+                <h3><span class="emoji">💪</span>Budowanie odporności emocjonalnej</h3>
+                <p>Codzienne praktyki wzmacniające kontrolę emocji.</p>
+                <div class="interactive-form">
+                    <div class="form-group">
+                        <label>Plan treningów mentalnych na pierwsze 2 tygodnie:</label>
+                        <textarea class="form-control" rows="4" placeholder="Opisz swój plan treningów..."></textarea>
+                    </div>
+                    <button class="btn">Zapisz plan treningów</button>
+                </div>
+            </div>        </div>
+
+        <div id="analysis" class="tab-content">
+            <h2>📊 Analiza</h2>
+            <p><strong>Ćwiczenia analityczne, case studies i symulacje scenariuszy</strong></p>
+            
+            <div class="section">
+                <h3><span class="emoji">🔍</span>Analiza przypadku: Tomek vs. Jego emocje</h3>
+                <p>Przeanalizuj historię Tomka z początku lekcji.</p>
+                <div class="interactive-form">
+                    <div class="form-group">
+                        <label>Jakie emocje kierowały Tomkiem podczas panic sellingu?</label>
+                        <textarea class="form-control" rows="3" placeholder="Analiza emocji..."></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label>Czy rozpoznajesz podobne wzorce u siebie?</label>
+                        <textarea class="form-control" rows="3" placeholder="Twoja autorefleksja..."></textarea>
+                    </div>
+                    <button class="btn">Zapisz analizę</button>
+                </div>
+            </div>
+
+            <div class="section">
+                <h3><span class="emoji">🎲</span>Symulacja: Kryzys 2020 vs. Twoja strategia</h3>
+                <p>Wyobraź sobie, że jesteś inwestorem w marcu 2020 roku.</p>
+                <div class="interactive-form">
+                    <div class="form-group">
+                        <label>Twoja decyzja w sytuacji spadku o 35%:</label>
+                        <select class="form-control">
+                            <option>Sprzedajesz wszystko</option>
+                            <option>Trzymasz pozycje</option>
+                            <option>Dokupujesz</option>
+                            <option>Rebalancujesz</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Uzasadnienie decyzji:</label>
+                        <textarea class="form-control" rows="3" placeholder="Dlaczego wybrałeś tę opcję..."></textarea>
+                    </div>
+                    <button class="btn">Zapisz symulację</button>
+                </div>
+            </div>
+
+            <div class="section">
+                <h3><span class="emoji">🔬</span>Audyt emocjonalny Twojego portfela</h3>
+                <p>Przyjrzyj się swoim ostatnim 5 znaczącym decyzjom inwestycyjnym.</p>
+                <div class="interactive-form">
+                    <div class="form-group">
+                        <label>Analiza własnych decyzji:</label>
+                        <textarea class="form-control" rows="5" placeholder="Opisz 5 ostatnich decyzji i emocje, które im towarzyszyły..."></textarea>
+                    </div>
+                    <button class="btn">Zapisz audyt</button>
+                </div>
+            </div>        </div>
+
+        <div class="features">
+            <div class="feature">
+                <h3>✅ Implementacja Kompletna</h3>
+                <p><strong>12 interaktywnych sekcji</strong> rozłożonych na 4 specjalistyczne pod-zakładki z kompleksowym systemem formularzy.</p>
+            </div>
+            <div class="feature">
+                <h3>🎯 Integracja XP</h3>
+                <p><strong>40% całkowitego XP lekcji</strong> przyznawane za ukończenie wszystkich ćwiczeń praktycznych.</p>
+            </div>
+            <div class="feature">
+                <h3>📱 Responsive Design</h3>
+                <p><strong>Pełna responsywność</strong> - działa na wszystkich urządzeniach z automatycznym dostosowaniem layoutu.</p>
+            </div>
+            <div class="feature">
+                <h3>🔄 Kompatybilność Wsteczna</h3>
+                <p><strong>Pełna kompatybilność</strong> ze starymi lekcjami - nowe funkcje nie łamią istniejącej struktury.</p>
+            </div>
+        </div>        <div style="background: #e3f2fd; padding: 25px; border-radius: 10px; margin-top: 30px; text-align: center;">
+            <h3>🚀 Gotowe do wdrożenia!</h3>
+            <p>Implementacja ćwiczeń praktycznych została zakończona z nową logiczną kolejnością:</p>
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 15px; margin: 20px 0;">
+                <div style="background: white; padding: 15px; border-radius: 8px; border-left: 4px solid #667eea;">
+                    <strong>1. 🧠 Autotest</strong><br>
+                    <small>Sprawdzenie aktualnego stanu wiedzy</small>
+                </div>
+                <div style="background: white; padding: 15px; border-radius: 8px; border-left: 4px solid #667eea;">
+                    <strong>2. 📝 Refleksja</strong><br>
+                    <small>Przemyślenie własnych doświadczeń</small>
+                </div>
+                <div style="background: white; padding: 15px; border-radius: 8px; border-left: 4px solid #667eea;">
+                    <strong>3. 📊 Analiza</strong><br>
+                    <small>Case studies i scenariusze</small>
+                </div>
+                <div style="background: white; padding: 15px; border-radius: 8px; border-left: 4px solid #667eea;">
+                    <strong>4. 🎯 Wdrożenie</strong><br>
+                    <small>Konkretny plan działania</small>
+                </div>
+            </div>
+            <p><strong>Następny krok:</strong> <code>streamlit run main.py</code> → Przejdź do lekcji B1C1L4 → Testuj sekcję "🎯 Ćwiczenia praktyczne"</p>
+        </div>
+    </div>
+
+    <script>        function showTab(tabName) {
+            // Hide all tab contents
+            const tabContents = document.querySelectorAll('.tab-content');
+            tabContents.forEach(content => {
+                content.classList.remove('active');
+            });
+
+            // Remove active class from all tabs
+            const tabs = document.querySelectorAll('.tab');
+            tabs.forEach(tab => {
+                tab.classList.remove('active');
+            });
+
+            // Show selected tab content
+            document.getElementById(tabName).classList.add('active');
+
+            // Add active class to clicked tab
+            event.target.classList.add('active');
+        }
+
+        // Add some interactivity to forms
+        document.querySelectorAll('.btn').forEach(btn => {
+            btn.addEventListener('click', function(e) {
+                e.preventDefault();
+                
+                // Simple success simulation
+                const originalText = this.textContent;
+                this.textContent = '✅ Zapisano!';
+                this.style.background = '#28a745';
+                
+                setTimeout(() => {
+                    this.textContent = originalText;
+                    this.style.background = 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)';
+                }, 2000);
+            });
+        });
+    </script>
+</body>
+</html>
