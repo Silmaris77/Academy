@@ -3,7 +3,7 @@
     "user_id": "741699e6-2ffe-4b0f-a36b-81e397686191",
     "password": "a",
     "degen_type": "Zen Degen",
-    "xp": 4196,
+    "xp": 4200,
     "level": 4,
     "joined_date": "2025-04-27",
     "completed_lessons": [
@@ -97,7 +97,7 @@
     ],
     "test_taken": true,
     "theme": "yolo",
-    "avatar": "diamond_degen",
+    "avatar": "crypto_wizard",
     "goals": [
       {
         "id": 0,
@@ -238,7 +238,12 @@
         "practical_exercises_completed": true,
         "practical_exercises_xp": 8,
         "practical_exercises_degencoins": 8,
-        "practical_exercises_timestamp": "2025-06-11 18:19:45"
+        "practical_exercises_timestamp": "2025-06-11 18:19:45",
+        "closing_quiz_xp_awarded": true,
+        "closing_quiz_completed": true,
+        "closing_quiz_xp": 4,
+        "closing_quiz_degencoins": 4,
+        "closing_quiz_timestamp": "2025-06-12 13:08:52"
       }
     },
     "badge_data": {
@@ -659,7 +664,7 @@
         "timestamp": "2025-06-08T12:21:09.071964+00:00"
       }
     ],
-    "degencoins": 1546,
+    "degencoins": 1550,
     "inventory": {
       "avatar": [
         "diamond_degen",
@@ -676,9 +681,13 @@
       ]
     },
     "active_boosters": {
-      "xp_boost": "2025-06-10T12:40:16.977088"
+      "xp_boost": {
+        "expires_at": "2025-06-14T15:56:10.600451",
+        "activated_at": "2025-06-13T15:56:10.600470"
+      }
     },
-    "active_avatar": "diamond_degen"
+    "active_avatar": "diamond_degen",
+    "active_background": "zen_garden"
   },
   "q": {
     "user_id": "f5584873-053a-4645-a36e-fc6868674ac4",
