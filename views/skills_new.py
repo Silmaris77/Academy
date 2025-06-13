@@ -7,7 +7,7 @@ from data.course_data import (
     get_blocks, get_categories, get_lessons_for_category, 
     get_category_info, get_block_info, get_course_statistics
 )
-from utils.course_map import create_course_structure_map, create_simplified_course_map, show_course_statistics
+from utils.course_map import create_course_structure_map, create_simplified_course_map, show_course_statistics, create_interactive_hierarchical_map
 import random
 
 def show_skill_tree():
@@ -83,31 +83,15 @@ def show_skill_tree():
         }
       # Header i nowy tytuł
     st.markdown("<h1 class='skills-header'>Mapa Rozwoju Inwestora 🌿</h1>", unsafe_allow_html=True)
-    
-    # System zakładek
+      # System zakładek
     tab1, tab2, tab3 = st.tabs(["🗺️ Mapa Kursu", "📊 Statystyki", "🎯 Umiejętności"])
     
     with tab1:
         st.markdown("### Interaktywna Mapa Struktury Kursu")
-        st.markdown("Eksploruj pełną strukturę kursu BrainVenture Academy - od modułów po poszczególne lekcje.")
+        st.markdown("Eksploruj strukturę kursu BrainVenture Academy w interaktywny sposób - klikaj węzły, aby rozwijać i zwijać kolejne poziomy.")
         
-        # Opcje wyświetlania mapy
-        col1, col2 = st.columns(2)
-        with col1:
-            map_type = st.selectbox(
-                "Typ mapy:",
-                ["Pełna struktura", "Uproszczona mapa"],
-                help="Wybierz typ wizualizacji struktury kursu"
-            )
-        
-        with col2:
-            st.write("")  # Puste miejsce dla zachowania układu
-        
-        # Wyświetl odpowiednią mapę
-        if map_type == "Pełna struktura":
-            create_course_structure_map()
-        else:
-            create_simplified_course_map()
+        # Wyświetl interaktywną hierarchiczną mapę
+        create_interactive_hierarchical_map()
     
     with tab2:
         st.markdown("### Statystyki Kursu")
