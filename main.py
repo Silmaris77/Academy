@@ -41,34 +41,6 @@ css_path = os.path.join(os.path.dirname(__file__), "static", "css", "style.css")
 css = load_css(css_path)
 st.markdown(f"<style>{css}</style>", unsafe_allow_html=True)
 
-# Ścieżka do ulepszeń mobilnych CSS
-mobile_css_path = os.path.join(os.path.dirname(__file__), "static", "css", "mobile_improvements.css")
-if os.path.exists(mobile_css_path):
-    mobile_css = load_css(mobile_css_path)
-    st.markdown(f"<style>{mobile_css}</style>", unsafe_allow_html=True)
-
-# Ścieżka do ulepszeń menu mobilnego CSS
-mobile_menu_css_path = os.path.join(os.path.dirname(__file__), "static", "css", "mobile_menu_enhanced.css")
-if os.path.exists(mobile_menu_css_path):
-    mobile_menu_css = load_css(mobile_menu_css_path)
-    st.markdown(f"<style>{mobile_menu_css}</style>", unsafe_allow_html=True)
-
-# Ścieżka do finalnych poprawek mobilnych CSS
-mobile_fixes_css_path = os.path.join(os.path.dirname(__file__), "static", "css", "mobile_fixes_final.css")
-if os.path.exists(mobile_fixes_css_path):
-    mobile_fixes_css = load_css(mobile_fixes_css_path)
-    st.markdown(f"<style>{mobile_fixes_css}</style>", unsafe_allow_html=True)
-
-# Dodaj meta tagi dla lepszego wsparcia mobilnego
-st.markdown("""
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-<meta name="mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-status-bar-style" content="default">
-<meta name="theme-color" content="#667eea">
-<meta name="apple-mobile-web-app-title" content="ZenDegen Academy">
-""", unsafe_allow_html=True)
-
 def main():
     # Initialize session state
     init_session_state()
@@ -109,77 +81,13 @@ def main():
                 import views.shop_new
                 views.shop_new._IS_SHOP_NEW_LOADED = False  # Reset flag each time
                 from views.shop_new import show_shop
-                show_shop()
+                show_shop()            
             except Exception as e:
                 st.error(f"Błąd podczas ładowania sklepu: {e}")
                 import traceback
                 st.code(traceback.format_exc())
         elif st.session_state.get('page') == 'admin':
             show_admin_dashboard()
-
-st.markdown("""
-<style>
-div.stButton > button { 
-    margin-bottom: 1px; 
-}
-
-/* Poprawa widoczności tekstu w przyciskach przy różnych stanach */
-div.stButton > button:hover {
-    color: #000000 !important; /* Czarny tekst dla lepszego kontrastu */
-    font-weight: bold;
-}
-
-/* Przyciski z niebieskim tłem */
-section[data-testid="stSidebar"] div.stButton > button:hover,
-div.stButton > button[kind="primary"]:hover {
-    color: black !important; /* Biały tekst na niebieskim tle */
-    text-shadow: 0 0 2px rgba(0,0,0,0.5); /* Cień tekstu dla lepszej widoczności */
-    font-weight: bold;
-}
-
-/* Przyciski w aplikacji - "POKAŻ LEK", "ANALITYKA" itp. */
-button[kind="secondary"] {
-    color: black !important;
-    text-shadow: 0 0 2px rgba(0,0,0,0.5); 
-    font-weight: bold !important;
-}
-
-button[kind="secondary"]:hover {
-    color: white !important;
-    background-color: var(--primary-color) !important;
-}
-
-/* Style poprawiające responsywność na urządzeniach mobilnych */
-@media (max-width: 768px) {
-    /* Zwiększenie obszaru klikalnego dla elementów rozwijanego menu */
-    .st-expander {
-        padding: 10px 0;
-    }
-    
-    /* Zwiększenie rozmiaru czcionki w rozwijanym menu */
-    .st-expander .st-expander-header {
-        font-size: 1.2rem !important;
-        padding: 15px 10px !important;
-    }
-    
-    /* Zapewnienie wystarczającej przestrzeni dla zawartości rozwijanej */
-    .st-expander .st-expander-content {
-        padding: 12px !important;
-    }
-    
-    /* Dodanie wyraźnego wskaźnika dotyku */
-    .st-expander .st-expander-header:after {
-        content: '▼';
-        margin-left: 8px;
-        font-size: 0.8rem;
-    }
-    
-    .st-expander.st-expander-expanded .st-expander-header:after {
-        content: '▲';
-    }
-}
-</style>
-""", unsafe_allow_html=True)
 
 if __name__ == "__main__":
     main()
