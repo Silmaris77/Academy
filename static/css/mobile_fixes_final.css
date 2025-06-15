@@ -36,9 +36,7 @@
     
     /* Reset wszystkich stylów przycisków main dla nowej struktury */
     .main [data-testid="stButton"] button {
-        /* Resetowanie poprzednich stylów */
-        all: unset !important;
-        
+        /* NIE resetujemy all: unset! */
         /* Nowe style bazowane na screenshocie */
         display: flex !important;
         align-items: center !important;
