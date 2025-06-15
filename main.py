@@ -30,16 +30,44 @@ except Exception as e:
     st.code(traceback.format_exc())
     st.stop()  # Stop execution if imports fail
 
-# Załaduj plik CSS
+# Załaduj pliki CSS
 def load_css(css_file):
     with open(css_file, "r", encoding="utf-8") as f:
         css = f.read()
     return css
 
-# Ścieżka do pliku CSS
+# Ścieżka do głównego pliku CSS
 css_path = os.path.join(os.path.dirname(__file__), "static", "css", "style.css")
 css = load_css(css_path)
 st.markdown(f"<style>{css}</style>", unsafe_allow_html=True)
+
+# Ścieżka do ulepszeń mobilnych CSS
+mobile_css_path = os.path.join(os.path.dirname(__file__), "static", "css", "mobile_improvements.css")
+if os.path.exists(mobile_css_path):
+    mobile_css = load_css(mobile_css_path)
+    st.markdown(f"<style>{mobile_css}</style>", unsafe_allow_html=True)
+
+# Ścieżka do ulepszeń menu mobilnego CSS
+mobile_menu_css_path = os.path.join(os.path.dirname(__file__), "static", "css", "mobile_menu_enhanced.css")
+if os.path.exists(mobile_menu_css_path):
+    mobile_menu_css = load_css(mobile_menu_css_path)
+    st.markdown(f"<style>{mobile_menu_css}</style>", unsafe_allow_html=True)
+
+# Ścieżka do finalnych poprawek mobilnych CSS
+mobile_fixes_css_path = os.path.join(os.path.dirname(__file__), "static", "css", "mobile_fixes_final.css")
+if os.path.exists(mobile_fixes_css_path):
+    mobile_fixes_css = load_css(mobile_fixes_css_path)
+    st.markdown(f"<style>{mobile_fixes_css}</style>", unsafe_allow_html=True)
+
+# Dodaj meta tagi dla lepszego wsparcia mobilnego
+st.markdown("""
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="theme-color" content="#667eea">
+<meta name="apple-mobile-web-app-title" content="ZenDegen Academy">
+""", unsafe_allow_html=True)
 
 def main():
     # Initialize session state
