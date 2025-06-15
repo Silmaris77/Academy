@@ -52,9 +52,8 @@ def main():
             
             # Nawigacja
             navigation_menu()
-            
-            # Przycisk wylogowania na dole sidebara
-            if st.button("Wyloguj się", key="logout_button"):
+              # Przycisk wylogowania na dole sidebara
+            if st.button("🚪 Wyloguj się", key="logout_button"):
                 clear_session()
                 st.rerun()
                   # Page routing
