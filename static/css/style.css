@@ -1161,3 +1161,113 @@ div.stButton > button {
 .dark-mode .compact-item:hover {
     background: #404040;
 }
+
+/* ===== DODATKOWE ULEPSZENIA RESPONSYWNE ===== */
+
+/* Lepsze wsparcie dla viewport na mobilnych */
+@viewport {
+    width: device-width;
+    zoom: 1.0;
+}
+
+/* Podstawowe ulepszenia dla wszystkich urządzeń */
+* {
+    box-sizing: border-box;
+}
+
+/* Streamlit container adjustments */
+.main .block-container {
+    max-width: 100%;
+    padding-left: 1rem;
+    padding-right: 1rem;
+}
+
+/* Better touch targets */
+@media (max-width: 768px) {
+    /* Ensure all interactive elements are at least 44px */
+    button, input, select, textarea, a {
+        min-height: 44px;
+        min-width: 44px;
+    }
+    
+    /* Improved readability */
+    body {
+        font-size: 16px;
+        line-height: 1.5;
+    }
+    
+    /* Better spacing for cards */
+    .degen-card, .mission-card, .goal-card, .badge-card {
+        margin-bottom: 1rem;
+        padding: 1rem;
+    }
+    
+    /* Stack columns on mobile */
+    .dashboard-container {
+        grid-template-columns: 1fr !important;
+        gap: 1rem;
+        padding: 1rem;
+    }
+}
+
+/* Ultra-small screens */
+@media (max-width: 480px) {
+    .main .block-container {
+        padding-left: 0.5rem;
+        padding-right: 0.5rem;
+    }
+    
+    /* Single column stats */
+    .stats-section {
+        grid-template-columns: 1fr !important;
+    }
+    
+    /* Smaller cards */
+    .stat-card {
+        padding: 0.75rem;
+        min-height: 80px;
+    }
+}
+
+/* High DPI displays */
+@media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 192dpi) {
+    /* Sharper borders and shadows */
+    .degen-card, .mission-card, .stat-card {
+        box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
+        border: 0.5px solid rgba(0,0,0,0.1);
+    }
+}
+
+/* Landscape orientation optimizations */
+@media (max-width: 768px) and (orientation: landscape) {
+    /* Use horizontal space better in landscape */
+    .stats-section {
+        grid-template-columns: repeat(auto-fit, minmax(120px, 1fr)) !important;
+    }
+    
+    .stat-card {
+        padding: 0.5rem;
+        min-height: 70px;
+    }
+    
+    .stat-value {
+        font-size: 1.2rem;
+    }
+    
+    .stat-label {
+        font-size: 0.75rem;
+    }
+}
+
+/* Focus management for better accessibility */
+@media (max-width: 768px) {
+    *:focus {
+        outline: 2px solid #667eea;
+        outline-offset: 2px;
+    }
+    
+    /* Remove outline for mouse users */
+    *:focus:not(:focus-visible) {
+        outline: none;
+    }
+}
