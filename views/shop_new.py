@@ -39,15 +39,17 @@ def buy_item(item_type, item_id, price, user_data, users_data, username):
     # Dodaj przedmiot do odpowiedniej kategorii (unikaj duplikatów)
     if item_id not in user_data['inventory'][item_type]:
         user_data['inventory'][item_type].append(item_id)
-    
-    # Dodaj specjalną obsługę dla boosterów (dodając datę wygaśnięcia)
+      # Dodaj specjalną obsługę dla boosterów (dodając datę wygaśnięcia)
     if item_type == 'booster':
         if 'active_boosters' not in user_data:
             user_data['active_boosters'] = {}
         
         # Ustawienie czasu wygaśnięcia na 24 godziny od teraz
         expiry_time = datetime.datetime.now() + timedelta(hours=24)
-        user_data['active_boosters'][item_id] = expiry_time.isoformat()
+        user_data['active_boosters'][item_id] = {
+            'expires_at': expiry_time.isoformat(),
+            'activated_at': datetime.datetime.now().isoformat()
+        }
       # Zapisz zmiany w danych użytkownika
     users_data[username] = user_data
     save_user_data(users_data)
@@ -273,13 +275,21 @@ def show_shop():
                 st.markdown(f"## {booster['name']}")
                 st.markdown(f"Cena: 🪙 {booster['price']}")
                 st.markdown(booster['description'])
-                
-                # Sprawdź czy booster jest aktywny
+                  # Sprawdź czy booster jest aktywny
                 is_active = False
                 remaining_time = None
                 
                 if 'active_boosters' in user_data and booster_id in user_data.get('active_boosters', {}):
-                    expiry_time = datetime.datetime.fromisoformat(user_data['active_boosters'][booster_id])
+                    booster_data = user_data['active_boosters'][booster_id]
+                    
+                    # Handle both old format (string) and new format (object with expires_at)
+                    if isinstance(booster_data, str):
+                        expiry_time = datetime.datetime.fromisoformat(booster_data)
+                    elif isinstance(booster_data, dict) and 'expires_at' in booster_data:
+                        expiry_time = datetime.datetime.fromisoformat(booster_data['expires_at'])
+                    else:
+                        continue  # Skip invalid booster data
+                    
                     now = datetime.datetime.now()
                     
                     if expiry_time > now:
