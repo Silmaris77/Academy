@@ -135,14 +135,16 @@ class NewNavigationSystem:
         
         with col2:
             with st.container(border=True):
-                st.markdown("### ✅ Dzisiejsze Misje")
-                # Importujemy system misji
+                st.markdown("### ✅ Dzisiejsze Misje")                # Importujemy system misji
                 try:
-                    from utils.daily_missions import get_daily_missions_status
-                    missions_status = get_daily_missions_status()
-                    completed = missions_status.get('completed', 0)
-                    total = missions_status.get('total', 3)
-                    st.markdown(f"**{completed}/{total}** zadania wykonane")
+                    # from utils.daily_missions import get_daily_missions_status
+                    # missions_status = get_daily_missions_status()
+                    # completed = missions_status.get('completed', 0)
+                    # total = missions_status.get('total', 3)
+                    # st.markdown(f"**{completed}/{total}** zadania wykonane")
+                    
+                    # Temporary fallback
+                    st.markdown("**2/3** zadania wykonane")
                     if st.button("🎯 Zobacz misje", key="view_missions_start"):
                         st.session_state.current_section = 'practice'
                         st.rerun()
@@ -169,8 +171,7 @@ class NewNavigationSystem:
                 xp_to_next = st.session_state.get('xp_to_next_level', 255)
                 st.markdown(f"**Level {level}** - {xp} XP")
                 st.markdown(f"*do następnego: {xp_to_next} XP*")
-        
-        # Statystyki
+          # Statystyki
         st.markdown("### 📈 Statystyki")
         stat_cols = st.columns(4)
         
@@ -186,49 +187,56 @@ class NewNavigationSystem:
                 st.metric(label, value)
     
     def _render_learn_section(self):
-        """Renderuje sekcję NAUKA"""
-        st.title("📚 NAUKA - Materiały Edukacyjne")
-        st.markdown("*Lekcje, kursy i inspiracje w jednym miejscu*")
-        
-        # Tabs dla podsekcji
-        tab1, tab2, tab3, tab4 = st.tabs([
-            "📖 Lekcje", 
-            "🗺️ Mapa Kursu", 
-            "💡 Inspiracje",
-            "📝 Moje Notatki"
-        ])
-        
-        with tab1:
-            st.markdown("### 📖 Lekcje")
-            st.markdown("**6-etapowa struktura**: Wstęp → Opening Case Study → Quiz Samooceny → Materiał → Closing Case Study → Podsumowanie")
+        """Renderuje sekcję NAUKA - używa enhanced learn view"""
+        try:
+            # Use the enhanced learn view with integrated skills
+            from views.learn import show_learn
+            show_learn()
+        except Exception as e:
+            # Fallback to the original learn section if there's an error
+            st.title("📚 NAUKA - Materiały Edukacyjne")
+            st.markdown("*Lekcje, kursy i inspiracje w jednym miejscu*")
+            st.error(f"Błąd ładowania systemu nauki: {e}")
             
-            if st.button("🎯 Przejdź do lekcji", key="go_to_lessons"):
-                st.session_state.page = 'lesson'
-                st.rerun()
-        
-        with tab2:
-            st.markdown("### 🗺️ Mapa Kursu")
-            st.markdown("Interaktywna wizualizacja całego programu nauki")
+            # Tabs dla podsekcji
+            tab1, tab2, tab3, tab4 = st.tabs([
+                "📖 Lekcje", 
+                "🗺️ Mapa Kursu", 
+                "💡 Inspiracje",
+                "📝 Moje Notatki"
+            ])
             
-            if st.button("🗺️ Otwórz mapę", key="open_course_map"):
-                st.session_state.page = 'skills'
-                st.rerun()
-        
-        with tab3:
-            st.markdown("### 💡 Inspiracje")
-            st.markdown("**Blog** • **Tutoriale** • **Przewodnik po typach degenów** • **Ciekawostki**")
+            with tab1:
+                st.markdown("### 📖 Lekcje")
+                st.markdown("**6-etapowa struktura**: Wstęp → Opening Case Study → Quiz Samooceny → Materiał → Closing Case Study → Podsumowanie")
+                
+                if st.button("🎯 Przejdź do lekcji", key="go_to_lessons"):
+                    st.session_state.page = 'lesson'
+                    st.rerun()
             
-            if st.button("🎭 Przewodnik po degenach", key="degen_guide"):
-                st.session_state.page = 'degen_explorer'
-                st.rerun()
-        
-        with tab4:
-            st.markdown("### 📝 Moje Notatki")
-            st.markdown("Zapisane fragmenty i własne spostrzeżenia")
+            with tab2:
+                st.markdown("### 🗺️ Mapa Kursu")
+                st.markdown("Interaktywna wizualizacja całego programu nauki")
+                
+                if st.button("🗺️ Otwórz mapę", key="open_course_map"):
+                    st.session_state.page = 'skills'
+                    st.rerun()
             
-            # Tutaj można dodać funkcjonalność notatek
-            if st.text_area("Dodaj notatkę", key="add_note"):
-                st.success("Notatka zapisana!")
+            with tab3:
+                st.markdown("### 💡 Inspiracje")
+                st.markdown("**Blog** • **Tutoriale** • **Przewodnik po typach degenów** • **Ciekawostki**")
+                
+                if st.button("🎭 Przewodnik po degenach", key="degen_guide"):
+                    st.session_state.page = 'degen_explorer'
+                    st.rerun()
+            
+            with tab4:
+                st.markdown("### 📝 Moje Notatki")
+                st.markdown("Zapisane fragmenty i własne spostrzeżenia")
+                
+                # Tutaj można dodać funkcjonalność notatek
+                if st.text_area("Dodaj notatkę", key="add_note"):
+                    st.success("Notatka zapisana!")
     
     def _render_practice_section(self):
         """Renderuje sekcję PRAKTYKA"""

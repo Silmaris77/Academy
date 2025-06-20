@@ -21,7 +21,7 @@ import_traceback = ""
 
 try:
     from utils.session import init_session_state, clear_session
-    from utils.new_navigation import initialize_new_navigation  # type: ignore
+    from utils.new_navigation import initialize_new_navigation
     from views.login import show_login_page
     
     # Import starych views (będą stopniowo zastępowane)
@@ -37,7 +37,8 @@ except Exception as e:
     IMPORTS_OK = False
     import_error = str(e)
     import_traceback = traceback.format_exc()
-      # Create fallback functions
+    
+    # Create fallback functions
     def init_session_state():
         if 'logged_in' not in st.session_state:
             st.session_state.logged_in = False
