@@ -48,15 +48,15 @@ def main():
     if st.session_state.logged_in:
         with st.sidebar:
             st.markdown(f"### Witaj, {st.session_state.username}!")
-            
-            # Nawigacja
+              # Nawigacja
             navigation_menu()
             
             # Przycisk wylogowania na dole sidebara
             if st.button("🚪 Wyloguj się", key="logout_button"):
                 clear_session()
                 st.rerun()
-      # Page routing
+    
+    # Page routing
     if not st.session_state.logged_in:
         show_login_page()
     else:
@@ -66,8 +66,6 @@ def main():
             show_lesson()
         elif st.session_state.page == 'profile':
             show_profile()
-        elif st.session_state.page == 'skills':
-            show_skill_tree()
         elif st.session_state.get('page') == 'admin':
             show_admin_dashboard()
 

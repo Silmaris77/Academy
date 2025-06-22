@@ -252,7 +252,6 @@ def navigation_menu():
     menu_options = [
         {"id": "dashboard", "name": "Dashboard", "icon": "🏠"},
         {"id": "lesson", "name": "Lekcje", "icon": "📚"},
-        {"id": "skills", "name": "Umiejętności", "icon": "🌳"},
         {"id": "profile", "name": "Profil", "icon": "👤"}
     ]
     

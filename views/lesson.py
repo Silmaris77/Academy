@@ -9,6 +9,7 @@ from utils.lesson_progress import (
     is_lesson_fully_completed, get_fragment_xp_breakdown, mark_lesson_as_completed
 )
 from utils.real_time_updates import get_live_user_stats, live_xp_indicator, show_xp_notification
+from views.skills_new import show_skill_tree
 
 def get_difficulty_stars(difficulty):
     """Konwertuje poziom trudności (liczba lub tekst) na odpowiednią liczbę gwiazdek."""
@@ -36,7 +37,7 @@ def get_difficulty_stars(difficulty):
     return '⭐' * difficulty_level
 
 def show_lesson():
-    """Show lesson view"""
+    """Show lesson view with tabs for lessons and course structure"""
     
     # Zastosuj style Material 3
     apply_material3_theme()
@@ -49,6 +50,21 @@ def show_lesson():
     device_type = get_device_type()
     
     zen_header("Kurs Zen Degen Academy")
+    
+    # Create main tabs
+    tab1, tab2 = st.tabs(["📚 Dostępne Lekcje", "🌳 Struktura Kursu"])
+    
+    with tab1:
+        show_lessons_content()
+    
+    with tab2:
+        show_skill_tree()
+
+def show_lessons_content():
+    """Show the lessons content (original show_lesson content)"""
+    # Pobierz aktualny typ urządzenia
+    device_type = get_device_type()
+    
     lessons = load_lessons()
     
     # Check if we're viewing a specific lesson or the overview

@@ -641,17 +641,17 @@ def show_dashboard():
             show_dashboard_sidebar(user_data, device_type)
             st.markdown('</div>', unsafe_allow_html=True)
     
-    st.markdown('</div>', unsafe_allow_html=True)    # Sekcja promująca rozwój umiejętności
-    st.markdown("""
-    <div class="dashboard-section">
-        <h3>🌳 Rozwijaj swoje umiejętności</h3>
-        <p>Ulepszaj swoje umiejętności inwestycyjne i odblokuj nowe możliwości.</p>
-    </div>
-    """, unsafe_allow_html=True)
+    # st.markdown('</div>', unsafe_allow_html=True)    # Sekcja promująca rozwój umiejętności
+    # st.markdown("""
+    # <div class="dashboard-section">
+    #     <h3>🌳 Rozwijaj swoje umiejętności</h3>
+    #     <p>Ulepszaj swoje umiejętności inwestycyjne i odblokuj nowe możliwości.</p>
+    # </div>
+    # """, unsafe_allow_html=True)
 
-    if zen_button("Przejdź do drzewa umiejętności", key="goto_skills"):
-        st.session_state.page = "skills"
-        st.rerun()
+    # if zen_button("Przejdź do drzewa umiejętności", key="goto_skills"):
+    #     st.session_state.page = "skills"
+    #     st.rerun()
 
     # Admin button for admin users
     admin_users = ["admin", "zenmaster"]  # Lista administratorów
