@@ -1,0 +1,1223 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Propozycje Layoutów Mobilnych - ZenDegenAcademy</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            padding: 20px;
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .proposal-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(375px, 1fr));
+            gap: 30px;
+            margin-bottom: 40px;
+        }
+
+        .phone-container {
+            background: #1a1a1a;
+            border-radius: 30px;
+            padding: 8px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            position: relative;
+            height: 750px;
+            transition: transform 0.3s ease;
+        }
+
+        .phone-container:hover {
+            transform: translateY(-10px);
+        }
+
+        .phone-screen {
+            background: white;
+            border-radius: 25px;
+            height: 100%;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .status-bar {
+            background: #1a1a1a;
+            color: white;
+            padding: 8px 20px;
+            font-size: 12px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .proposal-title {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 15px 20px;
+            text-align: center;
+            font-weight: bold;
+            font-size: 16px;
+        }
+
+        .app-content {
+            height: calc(100% - 80px);
+            position: relative;
+            overflow: hidden;
+        }
+
+        /* === PROPOSAL 1: HAMBURGER + FAB CLASSIC === */
+        .proposal-1 .header {
+            background: #667eea;
+            color: white;
+            padding: 15px 20px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+
+        .hamburger {
+            font-size: 24px;
+            cursor: pointer;
+            padding: 8px;
+            border-radius: 8px;
+            transition: all 0.3s;
+        }
+
+        .hamburger:hover {
+            background: rgba(255,255,255,0.1);
+        }
+
+        .app-title {
+            font-size: 18px;
+            font-weight: bold;
+        }
+
+        .user-avatar {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            background: rgba(255,255,255,0.2);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 16px;
+        }
+
+        .main-content {
+            padding: 20px;
+            height: calc(100% - 70px);
+            overflow-y: auto;
+        }
+
+        .quick-stats {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+
+        .stat-card {
+            background: white;
+            border-radius: 15px;
+            padding: 20px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            text-align: center;
+        }
+
+        .stat-icon {
+            font-size: 32px;
+            margin-bottom: 10px;
+        }
+
+        .stat-value {
+            font-size: 24px;
+            font-weight: bold;
+            color: #667eea;
+        }
+
+        .stat-label {
+            font-size: 12px;
+            color: #666;
+            margin-top: 5px;
+        }
+
+        .fab {
+            position: absolute;
+            bottom: 20px;
+            right: 20px;
+            width: 56px;
+            height: 56px;
+            background: #e74c3c;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 24px;
+            box-shadow: 0 8px 25px rgba(231, 76, 60, 0.4);
+            cursor: pointer;
+            transition: all 0.3s;
+            z-index: 1000;
+        }
+
+        .fab:hover {
+            transform: scale(1.1);
+            box-shadow: 0 12px 30px rgba(231, 76, 60, 0.6);
+        }
+
+        .drawer {
+            position: absolute;
+            top: 0;
+            left: -280px;
+            width: 280px;
+            height: 100%;
+            background: white;
+            box-shadow: 5px 0 20px rgba(0,0,0,0.3);
+            transition: all 0.3s ease;
+            z-index: 999;
+        }
+
+        .drawer.active {
+            left: 0;
+        }
+
+        .drawer-header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 30px 20px;
+            text-align: center;
+        }
+
+        .drawer-avatar {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            background: rgba(255,255,255,0.2);
+            margin: 0 auto 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+        }
+
+        .drawer-user-name {
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+
+        .drawer-user-level {
+            font-size: 14px;
+            opacity: 0.9;
+        }
+
+        .drawer-menu {
+            padding: 20px 0;
+        }
+
+        .drawer-item {
+            display: flex;
+            align-items: center;
+            padding: 15px 20px;
+            cursor: pointer;
+            transition: all 0.3s;
+            border-left: 4px solid transparent;
+        }
+
+        .drawer-item:hover {
+            background: #f8f9fa;
+            border-left-color: #667eea;
+        }
+
+        .drawer-item.active {
+            background: #e8f0fe;
+            border-left-color: #667eea;
+            color: #667eea;
+        }
+
+        .drawer-icon {
+            font-size: 20px;
+            margin-right: 15px;
+            min-width: 25px;
+        }
+
+        .drawer-label {
+            font-weight: 500;
+        }
+
+        .drawer-badge {
+            margin-left: auto;
+            background: #e74c3c;
+            color: white;
+            border-radius: 12px;
+            padding: 2px 8px;
+            font-size: 10px;
+            font-weight: bold;
+        }
+
+        .overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0,0,0,0.5);
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s;
+            z-index: 998;
+        }
+
+        .overlay.active {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        /* === PROPOSAL 2: BOTTOM TAB + CONTEXTUAL FAB === */
+        .proposal-2 .tab-content {
+            height: calc(100% - 70px);
+            padding: 20px;
+            overflow-y: auto;
+        }
+
+        .bottom-tabs {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: white;
+            border-top: 1px solid #e0e0e0;
+            display: flex;
+            box-shadow: 0 -5px 20px rgba(0,0,0,0.1);
+        }
+
+        .tab {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 12px 8px;
+            cursor: pointer;
+            transition: all 0.3s;
+            position: relative;
+        }
+
+        .tab.active {
+            color: #667eea;
+        }
+
+        .tab.active::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: #667eea;
+        }
+
+        .tab-icon {
+            font-size: 20px;
+            margin-bottom: 4px;
+        }
+
+        .tab-label {
+            font-size: 10px;
+            font-weight: 500;
+        }
+
+        .notification-dot {
+            position: absolute;
+            top: 8px;
+            right: 18px;
+            width: 8px;
+            height: 8px;
+            background: #e74c3c;
+            border-radius: 50%;
+        }
+
+        .contextual-fab {
+            position: absolute;
+            bottom: 90px;
+            right: 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .mini-fab {
+            width: 40px;
+            height: 40px;
+            background: #667eea;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 16px;
+            box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);
+            cursor: pointer;
+            transition: all 0.3s;
+            opacity: 0;
+            transform: translateY(20px);
+        }
+
+        .mini-fab.show {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .main-fab {
+            width: 56px;
+            height: 56px;
+            background: #e74c3c;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 24px;
+            box-shadow: 0 8px 25px rgba(231, 76, 60, 0.4);
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .main-fab.rotated {
+            transform: rotate(45deg);
+        }
+
+        /* === PROPOSAL 3: SLIDE-OUT NAVIGATION === */
+        .proposal-3 .slide-nav {
+            position: absolute;
+            bottom: 20px;
+            left: 20px;
+            right: 20px;
+            background: white;
+            border-radius: 25px;
+            padding: 15px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            transform: translateY(0);
+            transition: all 0.3s;
+        }
+
+        .slide-nav.collapsed {
+            transform: translateY(calc(100% - 60px));
+        }
+
+        .slide-handle {
+            width: 40px;
+            height: 4px;
+            background: #ddd;
+            border-radius: 2px;
+            margin: 0 auto 20px;
+            cursor: pointer;
+        }
+
+        .slide-nav-content {
+            max-height: 200px;
+            overflow: hidden;
+            transition: all 0.3s;
+        }
+
+        .slide-nav.collapsed .slide-nav-content {
+            max-height: 0;
+        }
+
+        .nav-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 15px;
+        }
+
+        .nav-card {
+            background: #f8f9fa;
+            border-radius: 15px;
+            padding: 15px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .nav-card:hover {
+            background: #667eea;
+            color: white;
+            transform: translateY(-2px);
+        }
+
+        .nav-card-icon {
+            font-size: 24px;
+            margin-bottom: 8px;
+        }
+
+        .nav-card-label {
+            font-size: 12px;
+            font-weight: 500;
+        }
+
+        /* === PROPOSAL 4: GESTURE + FAB === */
+        .proposal-4 .gesture-area {
+            height: 100%;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .page-indicator {
+            position: absolute;
+            top: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            gap: 8px;
+            z-index: 100;
+        }
+
+        .page-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: rgba(255,255,255,0.3);
+            transition: all 0.3s;
+        }
+
+        .page-dot.active {
+            background: white;
+            transform: scale(1.2);
+        }
+
+        .gesture-hint {
+            position: absolute;
+            bottom: 100px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: rgba(0,0,0,0.7);
+            color: white;
+            padding: 8px 15px;
+            border-radius: 20px;
+            font-size: 12px;
+            z-index: 100;
+        }
+
+        .swipe-content {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            height: 100%;
+            padding: 60px 20px 20px;
+            color: white;
+            text-align: center;
+        }
+
+        .smart-fab {
+            position: absolute;
+            bottom: 20px;
+            right: 20px;
+            width: 56px;
+            height: 56px;
+            background: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.3);
+            cursor: pointer;
+            transition: all 0.3s;
+            z-index: 100;
+        }
+
+        .smart-fab:hover {
+            transform: scale(1.1);
+        }
+
+        /* === PROPOSAL 5: ADAPTIVE HEADER + SPEED DIAL === */
+        .proposal-5 .adaptive-header {
+            background: white;
+            padding: 15px 20px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            transition: all 0.3s;
+        }
+
+        .adaptive-header.compact {
+            padding: 10px 20px;
+        }
+
+        .header-title {
+            font-size: 20px;
+            font-weight: bold;
+            color: #333;
+            transition: all 0.3s;
+        }
+
+        .adaptive-header.compact .header-title {
+            font-size: 16px;
+        }
+
+        .header-actions {
+            display: flex;
+            gap: 10px;
+        }
+
+        .header-btn {
+            width: 40px;
+            height: 40px;
+            border-radius: 20px;
+            background: #f8f9fa;
+            border: none;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 16px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .header-btn:hover {
+            background: #667eea;
+            color: white;
+        }
+
+        .speed-dial {
+            position: absolute;
+            bottom: 20px;
+            right: 20px;
+            z-index: 100;
+        }
+
+        .speed-dial-menu {
+            position: absolute;
+            bottom: 70px;
+            right: 0;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            opacity: 0;
+            visibility: hidden;
+            transform: translateY(20px);
+            transition: all 0.3s;
+        }
+
+        .speed-dial.active .speed-dial-menu {
+            opacity: 1;
+            visibility: visible;
+            transform: translateY(0);
+        }
+
+        .speed-dial-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .speed-dial-label {
+            background: rgba(0,0,0,0.8);
+            color: white;
+            padding: 8px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            white-space: nowrap;
+        }
+
+        .speed-dial-btn {
+            width: 45px;
+            height: 45px;
+            border-radius: 50%;
+            background: #667eea;
+            border: none;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 18px;
+            cursor: pointer;
+            transition: all 0.3s;
+            box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);
+        }
+
+        .action-cards {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+            margin-top: 20px;
+        }
+
+        .action-card {
+            background: white;
+            border-radius: 15px;
+            padding: 20px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .action-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 25px rgba(0,0,0,0.15);
+        }
+
+        .card-icon {
+            font-size: 32px;
+            margin-bottom: 10px;
+        }
+
+        .card-title {
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+
+        .card-desc {
+            font-size: 12px;
+            color: #666;
+        }
+
+        /* === SHARED COMPONENTS === */
+        .progress-ring {
+            display: inline-block;
+            margin: 10px 0;
+        }
+
+        .lesson-preview {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border-radius: 15px;
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+
+        .lesson-title {
+            font-size: 16px;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+
+        .lesson-progress {
+            background: rgba(255,255,255,0.2);
+            height: 8px;
+            border-radius: 4px;
+            overflow: hidden;
+        }
+
+        .lesson-progress-fill {
+            background: white;
+            height: 100%;
+            border-radius: 4px;
+            transition: width 0.3s;
+        }
+
+        @media (max-width: 768px) {
+            .proposal-grid {
+                grid-template-columns: 1fr;
+                padding: 10px;
+            }
+            
+            body {
+                padding: 10px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1 style="text-align: center; color: white; margin-bottom: 30px; font-size: 28px;">
+            📱 Propozycje Layoutów Mobilnych ZenDegenAcademy
+        </h1>
+        
+        <div class="proposal-grid">
+            
+            <!-- PROPOSAL 1: HAMBURGER + FAB CLASSIC -->
+            <div class="phone-container">
+                <div class="phone-screen proposal-1">
+                    <div class="status-bar">
+                        <div>📶 T-Mobile 5G</div>
+                        <div>🔋 85% 14:32</div>
+                    </div>
+                    <div class="proposal-title">1. Hamburger Menu + FAB Classic</div>
+                    
+                    <div class="app-content">
+                        <div class="header">
+                            <div class="hamburger" onclick="toggleDrawer('proposal-1')">☰</div>
+                            <div class="app-title">ZenDegen Academy</div>
+                            <div class="user-avatar">🧘‍♂️</div>
+                        </div>
+                        
+                        <div class="main-content">
+                            <div class="lesson-preview">
+                                <div class="lesson-title">📚 Kontynuuj: Psychologia Rynku</div>
+                                <div style="margin: 10px 0;">Postęp: 65%</div>
+                                <div class="lesson-progress">
+                                    <div class="lesson-progress-fill" style="width: 65%"></div>
+                                </div>
+                            </div>
+                            
+                            <div class="quick-stats">
+                                <div class="stat-card">
+                                    <div class="stat-icon">💎</div>
+                                    <div class="stat-value">1,250</div>
+                                    <div class="stat-label">Total XP</div>
+                                </div>
+                                <div class="stat-card">
+                                    <div class="stat-icon">🔥</div>
+                                    <div class="stat-value">7</div>
+                                    <div class="stat-label">Streak</div>
+                                </div>
+                            </div>
+                            
+                            <div class="action-cards">
+                                <div class="action-card">
+                                    <div class="card-icon">🧠</div>
+                                    <div class="card-title">Test Degena</div>
+                                    <div class="card-desc">Sprawdź swój typ</div>
+                                </div>
+                                <div class="action-card">
+                                    <div class="card-icon">🎯</div>
+                                    <div class="card-title">Misje Dzienne</div>
+                                    <div class="card-desc">2/3 ukończone</div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="fab" onclick="quickAction()">⚡</div>
+                        
+                        <div class="drawer" id="drawer-proposal-1">
+                            <div class="drawer-header">
+                                <div class="drawer-avatar">🧘‍♂️</div>
+                                <div class="drawer-user-name">Zenowy Degen</div>
+                                <div class="drawer-user-level">Poziom 12 • 1,250 XP</div>
+                            </div>
+                            <div class="drawer-menu">
+                                <div class="drawer-item active">
+                                    <div class="drawer-icon">🏠</div>
+                                    <div class="drawer-label">Dashboard</div>
+                                </div>
+                                <div class="drawer-item">
+                                    <div class="drawer-icon">📚</div>
+                                    <div class="drawer-label">Lekcje</div>
+                                    <div class="drawer-badge">3</div>
+                                </div>
+                                <div class="drawer-item">
+                                    <div class="drawer-icon">⚡</div>
+                                    <div class="drawer-label">Praktykowanie</div>
+                                </div>
+                                <div class="drawer-item">
+                                    <div class="drawer-icon">👤</div>
+                                    <div class="drawer-label">Profil & Test</div>
+                                </div>
+                                <div class="drawer-item">
+                                    <div class="drawer-icon">🛒</div>
+                                    <div class="drawer-label">Sklep</div>
+                                </div>
+                                <div class="drawer-item">
+                                    <div class="drawer-icon">⚙️</div>
+                                    <div class="drawer-label">Ustawienia</div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="overlay" id="overlay-proposal-1" onclick="closeDrawer('proposal-1')"></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- PROPOSAL 2: BOTTOM TAB + CONTEXTUAL FAB -->
+            <div class="phone-container">
+                <div class="phone-screen proposal-2">
+                    <div class="status-bar">
+                        <div>📶 T-Mobile 5G</div>
+                        <div>🔋 85% 14:32</div>
+                    </div>
+                    <div class="proposal-title">2. Bottom Tabs + Contextual FAB</div>
+                    
+                    <div class="app-content">
+                        <div class="tab-content">
+                            <h2 style="margin-bottom: 20px; color: #333;">🏠 Dashboard</h2>
+                            
+                            <div class="lesson-preview">
+                                <div class="lesson-title">📚 Aktualnie: Psychologia Rynku</div>
+                                <div style="margin: 10px 0;">Krok 3/5 • 65% ukończone</div>
+                                <div class="lesson-progress">
+                                    <div class="lesson-progress-fill" style="width: 65%"></div>
+                                </div>
+                            </div>
+                            
+                            <div class="quick-stats">
+                                <div class="stat-card">
+                                    <div class="stat-icon">🎯</div>
+                                    <div class="stat-value">3/5</div>
+                                    <div class="stat-label">Dzienne cele</div>
+                                </div>
+                                <div class="stat-card">
+                                    <div class="stat-icon">📈</div>
+                                    <div class="stat-value">+15%</div>
+                                    <div class="stat-label">Ten tydzień</div>
+                                </div>
+                            </div>
+                            
+                            <div class="action-cards">
+                                <div class="action-card">
+                                    <div class="card-icon">🧠</div>
+                                    <div class="card-title">Test Degena</div>
+                                    <div class="card-desc">Sprawdź swój typ inwestora</div>
+                                </div>
+                                <div class="action-card">
+                                    <div class="card-icon">🎮</div>
+                                    <div class="card-title">Mini Gry</div>
+                                    <div class="card-desc">Trenuj umiejętności</div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="contextual-fab">
+                            <div class="mini-fab" style="transition-delay: 0.2s;">📚</div>
+                            <div class="mini-fab" style="transition-delay: 0.1s;">🧠</div>
+                            <div class="main-fab" onclick="toggleContextualFab(this)">+</div>
+                        </div>
+                        
+                        <div class="bottom-tabs">
+                            <div class="tab active">
+                                <div class="tab-icon">🏠</div>
+                                <div class="tab-label">Start</div>
+                            </div>
+                            <div class="tab">
+                                <div class="tab-icon">📚</div>
+                                <div class="tab-label">Nauka</div>
+                                <div class="notification-dot"></div>
+                            </div>
+                            <div class="tab">
+                                <div class="tab-icon">⚡</div>
+                                <div class="tab-label">Praktyka</div>
+                            </div>
+                            <div class="tab">
+                                <div class="tab-icon">👤</div>
+                                <div class="tab-label">Profil</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- PROPOSAL 3: SLIDE-OUT NAVIGATION -->
+            <div class="phone-container">
+                <div class="phone-screen proposal-3">
+                    <div class="status-bar">
+                        <div>📶 T-Mobile 5G</div>
+                        <div>🔋 85% 14:32</div>
+                    </div>
+                    <div class="proposal-title">3. Slide-out Navigation Panel</div>
+                    
+                    <div class="app-content">
+                        <div style="padding: 20px; height: 100%;">
+                            <h2 style="margin-bottom: 20px; color: #333;">Witaj, Zenowy Degenie! 🧘‍♂️</h2>
+                            
+                            <div class="lesson-preview">
+                                <div class="lesson-title">📖 Bieżąca lekcja</div>
+                                <div style="margin: 10px 0; font-size: 14px;">Psychologia Rynku - Emocje w Tradingu</div>
+                                <div class="lesson-progress">
+                                    <div class="lesson-progress-fill" style="width: 65%"></div>
+                                </div>
+                                <div style="margin-top: 10px; font-size: 12px;">65% ukończone</div>
+                            </div>
+                            
+                            <div class="action-cards">
+                                <div class="action-card">
+                                    <div class="card-icon">🎯</div>
+                                    <div class="card-title">Dzienne Cele</div>
+                                    <div class="card-desc">3/5 ukończone</div>
+                                </div>
+                                <div class="action-card">
+                                    <div class="card-icon">🏆</div>
+                                    <div class="card-title">Osiągnięcia</div>
+                                    <div class="card-desc">12 zdobytych</div>
+                                </div>
+                                <div class="action-card">
+                                    <div class="card-icon">📊</div>
+                                    <div class="card-title">Statystyki</div>
+                                    <div class="card-desc">Postęp tygodnia</div>
+                                </div>
+                                <div class="action-card">
+                                    <div class="card-icon">🔥</div>
+                                    <div class="card-title">Streak</div>
+                                    <div class="card-desc">7 dni z rzędu!</div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="slide-nav" id="slide-nav" onclick="toggleSlideNav()">
+                            <div class="slide-handle"></div>
+                            <div class="slide-nav-content">
+                                <div class="nav-grid">
+                                    <div class="nav-card">
+                                        <div class="nav-card-icon">🏠</div>
+                                        <div class="nav-card-label">Dashboard</div>
+                                    </div>
+                                    <div class="nav-card">
+                                        <div class="nav-card-icon">📚</div>
+                                        <div class="nav-card-label">Lekcje</div>
+                                    </div>
+                                    <div class="nav-card">
+                                        <div class="nav-card-icon">⚡</div>
+                                        <div class="nav-card-label">Praktyka</div>
+                                    </div>
+                                    <div class="nav-card">
+                                        <div class="nav-card-icon">👤</div>
+                                        <div class="nav-card-label">Profil</div>
+                                    </div>
+                                    <div class="nav-card">
+                                        <div class="nav-card-icon">🧠</div>
+                                        <div class="nav-card-label">Test</div>
+                                    </div>
+                                    <div class="nav-card">
+                                        <div class="nav-card-icon">🛒</div>
+                                        <div class="nav-card-label">Sklep</div>
+                                    </div>
+                                    <div class="nav-card">
+                                        <div class="nav-card-icon">🎮</div>
+                                        <div class="nav-card-label">Gry</div>
+                                    </div>
+                                    <div class="nav-card">
+                                        <div class="nav-card-icon">⚙️</div>
+                                        <div class="nav-card-label">Ustawienia</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- PROPOSAL 4: GESTURE + SMART FAB -->
+            <div class="phone-container">
+                <div class="phone-screen proposal-4">
+                    <div class="status-bar">
+                        <div>📶 T-Mobile 5G</div>
+                        <div>🔋 85% 14:32</div>
+                    </div>
+                    <div class="proposal-title">4. Gesture Navigation + Smart FAB</div>
+                    
+                    <div class="app-content">
+                        <div class="gesture-area">
+                            <div class="page-indicator">
+                                <div class="page-dot active"></div>
+                                <div class="page-dot"></div>
+                                <div class="page-dot"></div>
+                                <div class="page-dot"></div>
+                            </div>
+                            
+                            <div class="swipe-content">
+                                <h2 style="margin-bottom: 30px;">🏠 Dashboard</h2>
+                                
+                                <div style="background: rgba(255,255,255,0.1); border-radius: 20px; padding: 25px; margin-bottom: 30px;">
+                                    <h3 style="margin-bottom: 15px;">📚 Aktywna Lekcja</h3>
+                                    <div style="font-size: 16px; margin-bottom: 10px;">Psychologia Rynku</div>
+                                    <div style="margin-bottom: 15px;">Etap 3/5 • 65% ukończone</div>
+                                    <div style="background: rgba(255,255,255,0.2); height: 8px; border-radius: 4px;">
+                                        <div style="background: white; height: 100%; width: 65%; border-radius: 4px;"></div>
+                                    </div>
+                                </div>
+                                
+                                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px;">
+                                    <div style="background: rgba(255,255,255,0.1); border-radius: 15px; padding: 20px; text-align: center;">
+                                        <div style="font-size: 32px; margin-bottom: 10px;">💎</div>
+                                        <div style="font-size: 24px; font-weight: bold;">1,250</div>
+                                        <div style="font-size: 14px; opacity: 0.8;">Total XP</div>
+                                    </div>
+                                    <div style="background: rgba(255,255,255,0.1); border-radius: 15px; padding: 20px; text-align: center;">
+                                        <div style="font-size: 32px; margin-bottom: 10px;">🔥</div>
+                                        <div style="font-size: 24px; font-weight: bold;">7</div>
+                                        <div style="font-size: 14px; opacity: 0.8;">Dni streak</div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="gesture-hint">← Przesuń aby nawigować →</div>
+                            <div class="smart-fab" onclick="smartFabAction()">🧠</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- PROPOSAL 5: ADAPTIVE HEADER + SPEED DIAL -->
+            <div class="phone-container">
+                <div class="phone-screen proposal-5">
+                    <div class="status-bar">
+                        <div>📶 T-Mobile 5G</div>
+                        <div>🔋 85% 14:32</div>
+                    </div>
+                    <div class="proposal-title">5. Adaptive Header + Speed Dial FAB</div>
+                    
+                    <div class="app-content">
+                        <div class="adaptive-header">
+                            <div class="header-title">🧘‍♂️ ZenDegen Academy</div>
+                            <div class="header-actions">
+                                <button class="header-btn">🔔</button>
+                                <button class="header-btn">👤</button>
+                            </div>
+                        </div>
+                        
+                        <div style="padding: 20px; height: calc(100% - 70px); overflow-y: auto;">
+                            <div class="lesson-preview">
+                                <div class="lesson-title">📚 Kontynuuj naukę</div>
+                                <div style="margin: 10px 0;">Psychologia Rynku • Lekcja 4/7</div>
+                                <div class="lesson-progress">
+                                    <div class="lesson-progress-fill" style="width: 65%"></div>
+                                </div>
+                            </div>
+                            
+                            <h3 style="margin: 20px 0; color: #333;">Szybkie akcje</h3>
+                            <div class="action-cards">
+                                <div class="action-card">
+                                    <div class="card-icon">🧠</div>
+                                    <div class="card-title">Test Degena</div>
+                                    <div class="card-desc">Określ swój typ inwestora</div>
+                                </div>
+                                <div class="action-card">
+                                    <div class="card-icon">📊</div>
+                                    <div class="card-title">Portfolio</div>
+                                    <div class="card-desc">Sprawdź swoje postępy</div>
+                                </div>
+                                <div class="action-card">
+                                    <div class="card-icon">🎯</div>
+                                    <div class="card-title">Misje</div>
+                                    <div class="card-desc">2/3 dzienne ukończone</div>
+                                </div>
+                                <div class="action-card">
+                                    <div class="card-icon">🏆</div>
+                                    <div class="card-title">Rankingi</div>
+                                    <div class="card-desc">#3 w tej klasie</div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="speed-dial" id="speed-dial" onclick="toggleSpeedDial()">
+                            <div class="speed-dial-menu">
+                                <div class="speed-dial-item">
+                                    <div class="speed-dial-label">Kontynuuj lekcję</div>
+                                    <button class="speed-dial-btn">📚</button>
+                                </div>
+                                <div class="speed-dial-item">
+                                    <div class="speed-dial-label">Test degena</div>
+                                    <button class="speed-dial-btn">🧠</button>
+                                </div>
+                                <div class="speed-dial-item">
+                                    <div class="speed-dial-label">Nowa misja</div>
+                                    <button class="speed-dial-btn">🎯</button>
+                                </div>
+                            </div>
+                            <div class="main-fab">⚡</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div style="background: rgba(255,255,255,0.1); border-radius: 20px; padding: 30px; margin-top: 40px; color: white;">
+            <h2 style="margin-bottom: 20px; text-align: center;">📋 Podsumowanie Propozycji</h2>
+            
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 20px; margin-top: 30px;">
+                <div style="background: rgba(255,255,255,0.1); border-radius: 15px; padding: 20px;">
+                    <h3>🍔 1. Hamburger + FAB Classic</h3>
+                    <p><strong>Zalety:</strong> Znany UX pattern, łatwa nawigacja, oszczędność miejsca</p>
+                    <p><strong>Zastosowanie:</strong> Główna nawigacja w drawer, FAB dla najważniejszej akcji</p>
+                </div>
+                
+                <div style="background: rgba(255,255,255,0.1); border-radius: 15px; padding: 20px;">
+                    <h3>📱 2. Bottom Tabs + Contextual FAB</h3>
+                    <p><strong>Zalety:</strong> Szybki dostęp, kontekstowe akcje, Material Design</p>
+                    <p><strong>Zastosowanie:</strong> 4 główne sekcje w bottom tabs, FAB dostosowany do treści</p>
+                </div>
+                
+                <div style="background: rgba(255,255,255,0.1); border-radius: 15px; padding: 20px;">
+                    <h3>📲 3. Slide-out Navigation</h3>
+                    <p><strong>Zalety:</strong> Kompaktowy, wszystkie opcje w jednym miejscu</p>
+                    <p><strong>Zastosowanie:</strong> Wysuwany panel z siatką nawigacji</p>
+                </div>
+                
+                <div style="background: rgba(255,255,255,0.1); border-radius: 15px; padding: 20px;">
+                    <h3>👆 4. Gesture + Smart FAB</h3>
+                    <p><strong>Zalety:</strong> Nowoczesny, intuicyjny, minimalistyczny</p>
+                    <p><strong>Zastosowanie:</strong> Swipe między sekcjami, FAB dostosowany do kontekstu</p>
+                </div>
+                
+                <div style="background: rgba(255,255,255,0.1); border-radius: 15px; padding: 20px;">
+                    <h3>⚡ 5. Adaptive + Speed Dial</h3>
+                    <p><strong>Zalety:</strong> Elastyczny header, szybkie akcje w FAB menu</p>
+                    <p><strong>Zastosowanie:</strong> Header dostosowuje się do scrollowania, FAB z menu akcji</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function toggleDrawer(proposalId) {
+            const drawer = document.getElementById(`drawer-${proposalId}`);
+            const overlay = document.getElementById(`overlay-${proposalId}`);
+            drawer.classList.add('active');
+            overlay.classList.add('active');
+        }
+
+        function closeDrawer(proposalId) {
+            const drawer = document.getElementById(`drawer-${proposalId}`);
+            const overlay = document.getElementById(`overlay-${proposalId}`);
+            drawer.classList.remove('active');
+            overlay.classList.remove('active');
+        }
+
+        function toggleContextualFab(fab) {
+            const parent = fab.parentElement;
+            const miniFabs = parent.querySelectorAll('.mini-fab');
+            const isActive = fab.classList.contains('rotated');
+            
+            if (isActive) {
+                fab.classList.remove('rotated');
+                miniFabs.forEach(mini => mini.classList.remove('show'));
+            } else {
+                fab.classList.add('rotated');
+                miniFabs.forEach((mini, index) => {
+                    setTimeout(() => mini.classList.add('show'), index * 100);
+                });
+            }
+        }
+
+        function toggleSlideNav() {
+            const slideNav = document.getElementById('slide-nav');
+            slideNav.classList.toggle('collapsed');
+        }
+
+        function toggleSpeedDial() {
+            const speedDial = document.getElementById('speed-dial');
+            speedDial.classList.toggle('active');
+        }
+
+        function quickAction() {
+            alert('Szybka akcja wykonana! ⚡');
+        }
+
+        function smartFabAction() {
+            alert('Smart FAB dostosowany do kontekstu! 🧠');
+        }
+
+        // Initialize collapsed states
+        document.addEventListener('DOMContentLoaded', () => {
+            document.getElementById('slide-nav').classList.add('collapsed');
+        });
+
+        // Close speed dial when clicking outside
+        document.addEventListener('click', (e) => {
+            if (!e.target.closest('.speed-dial')) {
+                document.getElementById('speed-dial').classList.remove('active');
+            }
+        });
+    </script>
+</body>
+</html>
