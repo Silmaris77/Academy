@@ -2,7 +2,7 @@
   "a": {
     "user_id": "741699e6-2ffe-4b0f-a36b-81e397686191",
     "password": "a",
-    "degen_type": "Zen Degen",
+    "degen_type": "Mad Scientist Degen",
     "xp": 4200,
     "level": 4,
     "joined_date": "2025-04-27",
@@ -121,14 +121,14 @@
       }
     ],
     "test_scores": {
-      "Zen Degen": 9,
-      "YOLO Degen": 9,
-      "Emo Degen": 4,
-      "Strategist Degen": 3,
-      "Mad Scientist Degen": 3,
-      "Spreadsheet Degen": 6,
-      "Meta Degen": 3,
-      "Hype Degen": 8
+      "Zen Degen": 0,
+      "YOLO Degen": 1,
+      "Emo Degen": 0,
+      "Strategist Degen": 0,
+      "Mad Scientist Degen": 15,
+      "Spreadsheet Degen": 9,
+      "Meta Degen": 12,
+      "Hype Degen": 6
     },
     "daily_missions": [
       "Medytacja mindfulness",
@@ -446,27 +446,27 @@
       },
       "badge_progress": {
         "xp_master": {
-          "progress": 83.62,
+          "progress": 84.0,
           "conditions_status": {
-            "xp_progress": "4181/5000"
+            "xp_progress": "4200/5000"
           },
-          "last_updated": "2025-06-08T14:46:23.045472",
+          "last_updated": "2025-06-22T12:25:15.098233",
           "next_steps": [
-            "Zdobądź jeszcze 819 XP"
+            "Zdobądź jeszcze 800 XP"
           ],
           "estimated_completion": null
         },
         "quiz_perfectionist": {
           "progress": 0,
           "conditions_status": {},
-          "last_updated": "2025-06-08T14:46:23.044912",
+          "last_updated": "2025-06-22T12:25:15.097924",
           "next_steps": [],
           "estimated_completion": null
         },
         "speed_learner": {
           "progress": 0,
           "conditions_status": {},
-          "last_updated": "2025-06-08T14:46:23.045120",
+          "last_updated": "2025-06-22T12:25:15.098041",
           "next_steps": [],
           "estimated_completion": null
         },
@@ -475,7 +475,7 @@
           "conditions_status": {
             "streak_progress": "0/3"
           },
-          "last_updated": "2025-06-08T14:46:23.045164",
+          "last_updated": "2025-06-22T12:25:15.098071",
           "next_steps": [
             "Kontynuuj streak przez 3 dni"
           ],
@@ -486,7 +486,7 @@
           "conditions_status": {
             "streak_progress": "0/3"
           },
-          "last_updated": "2025-06-08T14:46:23.045194",
+          "last_updated": "2025-06-22T12:25:15.098085",
           "next_steps": [
             "Kontynuuj streak przez 3 dni"
           ],
@@ -497,7 +497,7 @@
           "conditions_status": {
             "streak_progress": "0/3"
           },
-          "last_updated": "2025-06-08T14:46:23.045219",
+          "last_updated": "2025-06-22T12:25:15.098096",
           "next_steps": [
             "Kontynuuj streak przez 3 dni"
           ],
@@ -506,70 +506,70 @@
         "daily_mission_hero": {
           "progress": 0,
           "conditions_status": {},
-          "last_updated": "2025-06-08T14:46:23.045246",
+          "last_updated": "2025-06-22T12:25:15.098109",
           "next_steps": [],
           "estimated_completion": null
         },
         "weekend_scholar": {
           "progress": 0,
           "conditions_status": {},
-          "last_updated": "2025-06-08T14:46:23.045360",
+          "last_updated": "2025-06-22T12:25:15.098136",
           "next_steps": [],
           "estimated_completion": null
         },
         "night_owl": {
           "progress": 0,
           "conditions_status": {},
-          "last_updated": "2025-06-08T14:46:23.045410",
+          "last_updated": "2025-06-22T12:25:15.098157",
           "next_steps": [],
           "estimated_completion": null
         },
         "early_bird": {
           "progress": 0,
           "conditions_status": {},
-          "last_updated": "2025-06-08T14:46:23.045425",
+          "last_updated": "2025-06-22T12:25:15.098180",
           "next_steps": [],
           "estimated_completion": null
         },
         "zen_master": {
           "progress": 0,
           "conditions_status": {},
-          "last_updated": "2025-06-08T14:46:23.045435",
+          "last_updated": "2025-06-22T12:25:15.098192",
           "next_steps": [],
           "estimated_completion": null
         },
         "market_analyst": {
           "progress": 0,
           "conditions_status": {},
-          "last_updated": "2025-06-08T14:46:23.045444",
+          "last_updated": "2025-06-22T12:25:15.098202",
           "next_steps": [],
           "estimated_completion": null
         },
         "strategy_guru": {
           "progress": 0,
           "conditions_status": {},
-          "last_updated": "2025-06-08T14:46:23.045452",
+          "last_updated": "2025-06-22T12:25:15.098212",
           "next_steps": [],
           "estimated_completion": null
         },
         "multi_degen": {
           "progress": 0,
           "conditions_status": {},
-          "last_updated": "2025-06-08T14:46:23.045679",
+          "last_updated": "2025-06-22T12:25:15.098253",
           "next_steps": [],
           "estimated_completion": null
         },
         "self_aware": {
           "progress": 0,
           "conditions_status": {},
-          "last_updated": "2025-06-08T14:46:23.045702",
+          "last_updated": "2025-06-22T12:25:15.098264",
           "next_steps": [],
           "estimated_completion": null
         },
         "degen_king": {
           "progress": 0,
           "conditions_status": {},
-          "last_updated": "2025-06-08T14:46:23.045728",
+          "last_updated": "2025-06-22T12:25:15.098280",
           "next_steps": [],
           "estimated_completion": null
         },
@@ -578,63 +578,63 @@
           "conditions_status": {
             "community_joined": false
           },
-          "last_updated": "2025-06-08T14:46:23.045752",
+          "last_updated": "2025-06-22T12:25:15.098292",
           "next_steps": [],
           "estimated_completion": null
         },
         "helpful_friend": {
           "progress": 0,
           "conditions_status": {},
-          "last_updated": "2025-06-08T14:46:23.045771",
+          "last_updated": "2025-06-22T12:25:15.098303",
           "next_steps": [],
           "estimated_completion": null
         },
         "mentor": {
           "progress": 0,
           "conditions_status": {},
-          "last_updated": "2025-06-08T14:46:23.045789",
+          "last_updated": "2025-06-22T12:25:15.098313",
           "next_steps": [],
           "estimated_completion": null
         },
         "influencer": {
           "progress": 0,
           "conditions_status": {},
-          "last_updated": "2025-06-08T14:46:23.045812",
+          "last_updated": "2025-06-22T12:25:15.098324",
           "next_steps": [],
           "estimated_completion": null
         },
         "badge_master": {
           "progress": 0,
           "conditions_status": {},
-          "last_updated": "2025-06-08T14:46:23.045857",
+          "last_updated": "2025-06-22T12:25:15.098340",
           "next_steps": [],
           "estimated_completion": null
         },
         "legend": {
           "progress": 0,
           "conditions_status": {},
-          "last_updated": "2025-06-08T14:46:23.045913",
+          "last_updated": "2025-06-22T12:25:15.098370",
           "next_steps": [],
           "estimated_completion": null
         },
         "dedicated_student": {
           "progress": 0,
           "conditions_status": {},
-          "last_updated": "2025-06-08T14:46:23.045947",
+          "last_updated": "2025-06-22T12:25:15.098387",
           "next_steps": [],
           "estimated_completion": null
         },
         "secret_discoverer": {
           "progress": 0,
           "conditions_status": {},
-          "last_updated": "2025-06-08T14:46:23.045969",
+          "last_updated": "2025-06-22T12:25:15.098402",
           "next_steps": [],
           "estimated_completion": null
         },
         "midnight_learner": {
           "progress": 0,
           "conditions_status": {},
-          "last_updated": "2025-06-08T14:46:23.046029",
+          "last_updated": "2025-06-22T12:25:15.098433",
           "next_steps": [],
           "estimated_completion": null
         }
@@ -687,7 +687,8 @@
       }
     },
     "active_avatar": "diamond_degen",
-    "active_background": "zen_garden"
+    "active_background": "zen_garden",
+    "test_date": "2025-06-22 12:25:15"
   },
   "q": {
     "user_id": "f5584873-053a-4645-a36e-fc6868674ac4",

@@ -51,27 +51,22 @@ def main():
             
             # Nawigacja
             navigation_menu()
-              # Przycisk wylogowania na dole sidebara
+            
+            # Przycisk wylogowania na dole sidebara
             if st.button("🚪 Wyloguj się", key="logout_button"):
                 clear_session()
-                st.rerun()    # Page routing
+                st.rerun()
+    
+    # Page routing
     if not st.session_state.logged_in:
-        show_login_page()    
+        show_login_page()
     else:
         if st.session_state.page == 'dashboard':
             show_dashboard()
-        elif st.session_state.page == 'degen_test':
-            # Redirect to profile since the test is now part of the profile
-            st.session_state.page = 'profile'
-            st.rerun()
         elif st.session_state.page == 'lesson':
             show_lesson()
         elif st.session_state.page == 'profile':
             show_profile()
-        elif st.session_state.page == 'degen_explorer':
-            # Redirect to profile since explorer is now part of the profile
-            st.session_state.page = 'profile'
-            st.rerun()
         elif st.session_state.page == 'skills':
             show_skill_tree()
         elif st.session_state.page == 'shop':
