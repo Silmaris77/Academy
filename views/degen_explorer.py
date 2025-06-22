@@ -1,23 +1,27 @@
-import streamlit as st
-import pandas as pd
-import altair as alt
-import matplotlib.pyplot as plt
-import numpy as np
-from PIL import Image
-from data.test_questions import DEGEN_TYPES, TEST_QUESTIONS
-from data.degen_details import degen_details
-from data.users import load_user_data, save_user_data
-from utils.components import zen_header, content_section, quote_block, tip_block, notification, zen_button, progress_bar
-from utils.material3_components import apply_material3_theme
-from utils.layout import get_device_type, responsive_grid, responsive_container, toggle_device_view, apply_responsive_styles, get_responsive_figure_size
-from utils.achievements import check_achievements
-import re
+# DEPRECATED - PRZENIESIONY DO PROFILE.PY
+# 
+# Ten plik jest przestarzały i został zastąpiony.
+# Wszystkie funkcje z tego pliku zostały przeniesione do:
+# views/profile.py
+#
+# Zakładka "Eksplorator" została usunięta z nawigacji.
+# Wszystkie funkcje (Test Degena, Eksplorator Typów) są teraz dostępne
+# w zakładce "Profil" jako pod-zakładki.
+#
+# Ten plik może zostać usunięty po potwierdzeniu, że aplikacja działa poprawnie.
+#
+# Data migracji: 2025-06-20
+# Status: DEPRECATED - DO NOT USE
 
-# Poprawka dla funkcji clean_html, aby była bardziej skuteczna
-def clean_html(text):
-    """Usuwa wszystkie tagi HTML z tekstu i normalizuje białe znaki"""
-    # Najpierw usuń wszystkie tagi HTML
-    text_without_tags = re.sub(r'<.*?>', '', text)
+import streamlit as st
+
+def show_degen_explorer():
+    """DEPRECATED - Funkcja przeniesiona do views/profile.py"""
+    st.error("⚠️ Ta funkcja została przeniesiona do zakładki Profil!")
+    st.info("Przejdź do zakładki 'Profil' aby uzyskać dostęp do testu Degena i eksploratora typów.")
+    if st.button("Przejdź do Profilu"):
+        st.session_state.page = 'profile'
+        st.rerun()
     # Normalizuj białe znaki (zamień wiele spacji, tabulacji, nowych linii na pojedyncze spacje)
     normalized_text = re.sub(r'\s+', ' ', text_without_tags)
     return normalized_text.strip()

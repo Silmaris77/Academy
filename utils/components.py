@@ -254,7 +254,6 @@ def navigation_menu():
         {"id": "lesson", "name": "Lekcje", "icon": "📚"},
         {"id": "skills", "name": "Umiejętności", "icon": "🌳"},
         {"id": "shop", "name": "Sklep", "icon": "🛒"},
-        {"id": "degen_explorer", "name": "Eksplorator", "icon": "🔍"},
         {"id": "profile", "name": "Profil", "icon": "👤"}
     ]
     

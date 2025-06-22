@@ -20,7 +20,6 @@ try:
     from views.dashboard import show_dashboard
     from views.lesson import show_lesson
     from views.profile import show_profile
-    from views.degen_explorer import show_degen_explorer
     from views.skills_new import show_skill_tree
     from views.admin import show_admin_dashboard
     
@@ -55,23 +54,24 @@ def main():
               # Przycisk wylogowania na dole sidebara
             if st.button("🚪 Wyloguj się", key="logout_button"):
                 clear_session()
-                st.rerun()
-                  # Page routing
+                st.rerun()    # Page routing
     if not st.session_state.logged_in:
         show_login_page()    
     else:
         if st.session_state.page == 'dashboard':
             show_dashboard()
         elif st.session_state.page == 'degen_test':
-            # Redirect to degen_explorer since the test is now part of the explorer
-            st.session_state.page = 'degen_explorer'
+            # Redirect to profile since the test is now part of the profile
+            st.session_state.page = 'profile'
             st.rerun()
         elif st.session_state.page == 'lesson':
             show_lesson()
         elif st.session_state.page == 'profile':
             show_profile()
         elif st.session_state.page == 'degen_explorer':
-            show_degen_explorer()
+            # Redirect to profile since explorer is now part of the profile
+            st.session_state.page = 'profile'
+            st.rerun()
         elif st.session_state.page == 'skills':
             show_skill_tree()
         elif st.session_state.page == 'shop':

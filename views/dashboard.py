@@ -6,11 +6,12 @@ import numpy as np
 from datetime import datetime, timedelta
 from data.users import load_user_data, save_user_data, get_current_user_data
 from data.test_questions import DEGEN_TYPES
-from config.settings import DAILY_MISSIONS, XP_LEVELS, USER_AVATARS
+from config.settings import DAILY_MISSIONS, USER_AVATARS
 from data.lessons import load_lessons
 from utils.goals import get_user_goals, calculate_goal_metrics
 from utils.daily_missions import get_daily_missions_progress
-from views.degen_explorer import plot_radar_chart
+from utils.xp_system import calculate_xp_progress, get_level_xp_range
+from views.profile import plot_radar_chart
 from utils.material3_components import apply_material3_theme
 from utils.layout import get_device_type, responsive_grid, responsive_container, toggle_device_view
 from utils.components import (
@@ -21,26 +22,6 @@ from utils.components import (
 from utils.real_time_updates import live_xp_indicator
 from utils.time_utils import calculate_relative_time
 from utils.lesson_utils import get_lesson_title # Added import
-
-def calculate_xp_progress(user_data):
-    """Calculate XP progress and dynamically determine the user's level"""
-    # Dynamically determine the user's level based on XP
-    for level, xp_threshold in sorted(XP_LEVELS.items(), reverse=True):
-        if user_data['xp'] >= xp_threshold:
-            user_data['level'] = level
-            break
-
-    # Calculate progress to the next level
-    next_level = user_data['level'] + 1
-    if next_level in XP_LEVELS:
-        current_level_xp = XP_LEVELS[user_data['level']]
-        next_level_xp = XP_LEVELS[next_level]
-        xp_needed = next_level_xp - current_level_xp
-        xp_progress = user_data['xp'] - current_level_xp
-        xp_percentage = min(100, int((xp_progress / xp_needed) * 100))
-        return xp_percentage, xp_needed - xp_progress
-
-    return 100, 0
 
 def get_top_users(limit=5):
     """Get top users by XP"""
@@ -522,8 +503,11 @@ def show_progress_widget(user_data):
     """Widget postępu w sidebarze"""
     xp = user_data.get('xp', 0)
     level = user_data.get('level', 1)
-    next_level_xp = XP_LEVELS.get(level + 1, xp + 100)
-    current_level_xp = XP_LEVELS.get(level, 0)
+    
+    # Get XP range for current level using utils function
+    level_info = get_level_xp_range(level)
+    next_level_xp = level_info['next_level_xp'] or (xp + 100)
+    current_level_xp = level_info['current_level_xp'] or 0
     
     # Zabezpieczenie przed None values
     if next_level_xp is None:
@@ -571,16 +555,15 @@ def show_investor_profile_compact(user_data):
             <div style="font-size: 12px; color: var(--text-secondary); margin-top: 4px;">
                 Twój dominujący typ
             </div>
-        </div>
-        """, unsafe_allow_html=True)
+        </div>        """, unsafe_allow_html=True)
         
         if zen_button("Zobacz szczegóły", key="profile_details"):
-            st.session_state.page = 'degen_explorer'
+            st.session_state.page = 'profile'
             st.rerun()
     else:
         st.info("Wykonaj test, aby odkryć swój profil")
         if zen_button("Wykonaj test", key="take_test_sidebar"):
-            st.session_state.page = 'degen_explorer'
+            st.session_state.page = 'profile'
             st.rerun()
     
     st.markdown("</div>", unsafe_allow_html=True)

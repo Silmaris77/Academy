@@ -12,7 +12,7 @@ from matplotlib.projections.polar import PolarAxes
 from matplotlib.projections import register_projection
 from matplotlib.spines import Spine
 from matplotlib.transforms import Affine2D
-from data.test_questions import DEGEN_TYPES
+from data.test_questions import DEGEN_TYPES, TEST_QUESTIONS
 from data.users import load_user_data, save_user_data, update_single_user_field, get_current_user_data
 from PIL import Image
 from utils.components import zen_header, zen_button, notification, tip_block
@@ -43,11 +43,11 @@ from utils.inventory import (
 from utils.badge_display import BadgeDisplaySystem
 from config.settings import USER_AVATARS, THEMES, DEGEN_TYPES, BADGES, BADGE_CATEGORIES
 from data.degen_details import degen_details
-from views.degen_explorer import plot_radar_chart
-from views.dashboard import calculate_xp_progress
+from utils.xp_system import calculate_xp_progress
 from utils.components import zen_header, zen_button, notification, stat_card, xp_level_display, goal_card, badge_card, progress_bar, tip_block, quote_block,  add_animations_css
 from utils.user_components import user_stats_panel
 from utils.real_time_updates import live_xp_indicator
+from utils.achievements import check_achievements
 
 def show_profile():
     # Zastosuj style Material 3
@@ -100,9 +100,8 @@ def show_profile():
     )
     
     st.markdown("</div>", unsafe_allow_html=True)
-    
-    # Main Profile Tabs
-    tab1, tab2, tab3, tab4 = st.tabs(["Personalizacja", "Ekwipunek", "Odznaki", "Typ Degena"])
+      # Main Profile Tabs
+    tab1, tab2, tab3, tab4, tab5 = st.tabs(["Personalizacja", "Ekwipunek", "Odznaki", "Typ Degena", "Eksplorator Typów"])
     
     # Tab 1: Personalization
     with tab1:
@@ -384,80 +383,26 @@ def show_profile():
         # Use Step 5 badge display system
         show_badges_section()
         st.markdown("</div>", unsafe_allow_html=True)
-    
-    # Tab 4: Degen Type
+      # Tab 4: Degen Type with Test
     with tab4:
         st.markdown("<div class='profile-tab-content'>", unsafe_allow_html=True)
-        st.markdown("<div class='st-bx'>", unsafe_allow_html=True)
         
-        if user_data.get('degen_type'):
-            degen_type = user_data['degen_type']
-              # Header with degen type
-            st.markdown(f"<h2 style='text-align: center;'>{degen_type}</h2>", unsafe_allow_html=True)
-            tagline = DEGEN_TYPES.get(degen_type, {}).get("tagline", "Twój unikalny styl inwestowania")
-            st.markdown(f"<div style='text-align: center; color: #666; margin-bottom: 20px;'>{tagline}</div>", unsafe_allow_html=True)
-            
-            if degen_type in DEGEN_TYPES:
-                # Description
-                with st.expander("📖 Opis", expanded=True):
-                    st.markdown(DEGEN_TYPES[degen_type]["description"])
-                  # Radar chart if available
-                if 'test_scores' in user_data:
-                    st.subheader("Twój profil inwestycyjny")
-                    
-                    # Ensure the radar chart is responsive by passing device_type
-                    radar_fig = plot_radar_chart(user_data['test_scores'], device_type=device_type)
-                    
-                    # Add mobile-specific styles for the chart container
-                    if device_type == 'mobile':
-                        st.markdown("""
-                        <style>
-                        .radar-chart-container {
-                            margin: 0 -20px; /* Negative margin to use full width on mobile */
-                            padding-bottom: 15px;
-                        }
-                        </style>
-                        <div class="radar-chart-container">
-                        """, unsafe_allow_html=True)
-                        
-                    st.pyplot(radar_fig)
-                    
-                    if device_type == 'mobile':
-                        st.markdown("</div>", unsafe_allow_html=True)
-                
-                # Strengths and challenges in two columns
-                col1, col2 = st.columns(2)
-                
-                with col1:
-                    with st.expander("💪 Mocne strony", expanded=True):                        st.markdown("\n".join([f"- ✅ {strength}" for strength in DEGEN_TYPES[degen_type]["strengths"]]))
-                
-                with col2:
-                    with st.expander("🔍 Wyzwania", expanded=True):
-                        st.markdown("\n".join([f"- ⚠️ {challenge}" for challenge in DEGEN_TYPES[degen_type]["challenges"]]))
-                
-                # Strategy
-                tip_block(
-                    DEGEN_TYPES[degen_type]["strategy"],
-                    title="Rekomendowana strategia",
-                    icon="🎯"                )
-                
-                # Detailed description
-                if degen_type in degen_details:
-                    with st.expander("📚 Szczegółowy opis twojego typu degena", expanded=False):
-                        st.markdown(degen_details[degen_type])
-                else:
-                    st.warning("Szczegółowy opis dla tego typu degena nie jest jeszcze dostępny.")
-        else:
-            notification(
-                "Nie określono jeszcze twojego typu degena. Wykonaj test degena, aby odkryć swój unikalny styl inwestowania i dostosowane rekomendacje.",
-                type="info"
-            )
-            
-            if zen_button("Wykonaj test Degena", key="take_test"):
-                st.session_state.page = 'degen_explorer'
-                st.rerun()
+        # Sub-tabs within Typ Degena
+        degen_subtab1, degen_subtab2 = st.tabs(["🧠 Test Degena", "� Mój Typ"])
         
+        with degen_subtab1:
+            # Show Degen Test (imported functionality from degen_explorer)
+            show_degen_test_section()
+        
+        with degen_subtab2:
+            # Show current degen type info
+            show_current_degen_type()
+            
         st.markdown("</div>", unsafe_allow_html=True)
+      # Tab 5: Eksplorator Typów (moved from degen_explorer)
+    with tab5:
+        st.markdown("<div class='profile-tab-content'>", unsafe_allow_html=True)
+        show_degen_explorer_section()
         st.markdown("</div>", unsafe_allow_html=True)
 
 def show_badges_section():
@@ -657,3 +602,463 @@ def show_badges_section():
                         </div>
                     </div>
                     """, unsafe_allow_html=True)
+
+# Helper functions imported from degen_explorer
+def clean_html(text):
+    """Usuwa wszystkie tagi HTML z tekstu i normalizuje białe znaki"""
+    text_without_tags = re.sub(r'<.*?>', '', text)
+    normalized_text = re.sub(r'\s+', ' ', text_without_tags)
+    return normalized_text.strip()
+
+def calculate_test_results(scores):
+    """Calculate the dominant degen type based on test scores"""
+    return max(scores.items(), key=lambda x: x[1])[0]
+
+def show_degen_test_section():
+    """Wyświetla sekcję testu degena w profilu"""
+    device_type = get_device_type()
+    
+    # Informacja o teście
+    if 'show_test_info' not in st.session_state:
+        st.session_state.show_test_info = True
+    
+    if st.session_state.show_test_info:
+        st.markdown("""
+        ### 🧠 Test typu degena
+        
+        Ten test pomoże Ci sprawdzić, **jakim typem inwestora (degena)** jesteś.
+        
+        - Każde pytanie ma **8 odpowiedzi** – każda reprezentuje inny styl inwestycyjny.
+        - **Wybierz tę odpowiedź, która najlepiej opisuje Twoje zachowanie lub sposób myślenia.**
+        - Po zakończeniu zobaczysz graficzny wynik w postaci wykresu radarowego.
+        
+        🧩 Gotowy?
+        """)
+        if zen_button("Rozpocznij test", key="start_degen_test"):
+            st.session_state.show_test_info = False
+            if 'test_step' not in st.session_state:
+                st.session_state.test_step = 0
+                st.session_state.test_scores = {degen_type: 0 for degen_type in DEGEN_TYPES}
+            st.rerun()
+    
+    # Tryb testu    
+    elif 'test_step' not in st.session_state:
+        st.session_state.test_step = 0
+        st.session_state.test_scores = {degen_type: 0 for degen_type in DEGEN_TYPES}
+        st.rerun()
+    
+    elif st.session_state.test_step < len(TEST_QUESTIONS):
+        # Display current question
+        question = TEST_QUESTIONS[st.session_state.test_step]
+        
+        st.markdown("<div class='st-bx'>", unsafe_allow_html=True)
+        st.subheader(f"Pytanie {st.session_state.test_step + 1} z {len(TEST_QUESTIONS)}")
+        st.markdown(f"### {question['question']}")
+        
+        # Render options
+        options = question['options']
+        
+        # Użyj responsywnego układu w zależności od typu urządzenia
+        if device_type == 'mobile':
+            # Na telefonach wyświetl opcje jedna pod drugą
+            for i in range(len(options)):
+                if zen_button(f"{options[i]['text']}", key=f"q{st.session_state.test_step}_opt{i}", use_container_width=True):
+                    # Add scores for the answer
+                    for degen_type, score in options[i]['scores'].items():
+                        st.session_state.test_scores[degen_type] += score
+                    
+                    st.session_state.test_step += 1
+                    st.rerun()
+        else:
+            # Na tabletach i desktopach użyj dwóch kolumn
+            col1, col2 = st.columns(2)
+            for i in range(len(options)):
+                if i < len(options) // 2:
+                    with col1:
+                        if zen_button(f"{options[i]['text']}", key=f"q{st.session_state.test_step}_opt{i}", use_container_width=True):
+                            # Add scores for the answer
+                            for degen_type, score in options[i]['scores'].items():
+                                st.session_state.test_scores[degen_type] += score
+                            
+                            st.session_state.test_step += 1
+                            st.rerun()
+                else:
+                    with col2:
+                        if zen_button(f"{options[i]['text']}", key=f"q{st.session_state.test_step}_opt{i}", use_container_width=True):
+                            # Add scores for the answer
+                            for degen_type, score in options[i]['scores'].items():
+                                st.session_state.test_scores[degen_type] += score
+                            
+                            st.session_state.test_step += 1
+                            st.rerun()
+        
+        # Progress bar
+        progress_value = st.session_state.test_step / len(TEST_QUESTIONS)
+        progress_bar(progress=progress_value, color="#4CAF50")
+        st.markdown(f"**Postęp testu: {int(progress_value * 100)}%**")
+        st.markdown("</div>", unsafe_allow_html=True)
+    
+    else:
+        # Show test results
+        show_test_results()
+
+def show_test_results():
+    """Wyświetla wyniki testu degena"""
+    device_type = get_device_type()
+    
+    # Calculate result
+    result = calculate_test_results(st.session_state.test_scores)
+    
+    st.markdown("<div class='st-bx'>", unsafe_allow_html=True)
+    st.success("🎉 Test zakończony!")
+    st.markdown(f"## Twój typ degena: **{result}**")
+    
+    if result in DEGEN_TYPES:
+        tagline = DEGEN_TYPES[result].get('tagline', 'Unikalny styl inwestowania')
+        description = DEGEN_TYPES[result].get('description', 'Opis niedostępny')
+        
+        st.markdown(f"*{tagline}*")
+        st.markdown(description)
+        
+        # Show radar chart
+        st.subheader("Twój profil inwestycyjny")
+        radar_fig = plot_radar_chart(st.session_state.test_scores, device_type=device_type)
+        st.pyplot(radar_fig)
+        
+        # Save results
+        if zen_button("Zapisz wyniki", key="save_test_results"):
+            users_data = load_user_data()
+            if st.session_state.username not in users_data:
+                users_data[st.session_state.username] = {}
+            
+            users_data[st.session_state.username]['degen_type'] = result
+            users_data[st.session_state.username]['test_scores'] = st.session_state.test_scores
+            users_data[st.session_state.username]['test_date'] = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+            
+            save_user_data(users_data)
+            
+            # Check for achievements
+            check_achievements(st.session_state.username)
+            
+            notification("Wyniki testu zostały zapisane!", type="success")
+            
+            # Reset test state
+            for key in ['test_step', 'test_scores', 'show_test_info']:
+                if key in st.session_state:
+                    del st.session_state[key]
+            
+            st.rerun()
+    
+    st.markdown("</div>", unsafe_allow_html=True)
+    
+    # Option to restart test
+    if zen_button("Wykonaj test ponownie", key="restart_test"):
+        for key in ['test_step', 'test_scores', 'show_test_info']:
+            if key in st.session_state:
+                del st.session_state[key]
+        st.rerun()
+
+def show_current_degen_type():
+    """Wyświetla informacje o aktualnym typie degena użytkownika"""
+    device_type = get_device_type()
+    user_data = get_current_user_data()
+    
+    st.markdown("<div class='st-bx'>", unsafe_allow_html=True)
+    
+    if user_data.get('degen_type'):
+        degen_type = user_data['degen_type']
+          # Header with degen type
+        st.markdown(f"<h2 style='text-align: center;'>{degen_type}</h2>", unsafe_allow_html=True)
+        tagline = DEGEN_TYPES.get(degen_type, {}).get("tagline", "Twój unikalny styl inwestowania")
+        st.markdown(f"<div style='text-align: center; color: #666; margin-bottom: 20px;'>{tagline}</div>", unsafe_allow_html=True)
+        
+        if degen_type in DEGEN_TYPES:
+            # Description
+            with st.expander("📖 Opis", expanded=True):
+                description = DEGEN_TYPES[degen_type].get("description", "Opis niedostępny")
+                st.markdown(description)
+                
+            # Radar chart if available
+            if 'test_scores' in user_data:
+                st.subheader("Twój profil inwestycyjny")
+                
+                radar_fig = plot_radar_chart(user_data['test_scores'], device_type=device_type)
+                
+                # Add mobile-specific styles for the chart container
+                if device_type == 'mobile':
+                    st.markdown("""
+                    <style>
+                    .radar-chart-container {
+                        margin: 0 -20px;
+                        padding-bottom: 15px;
+                    }
+                    </style>
+                    <div class="radar-chart-container">
+                    """, unsafe_allow_html=True)
+                    
+                st.pyplot(radar_fig)
+                
+                if device_type == 'mobile':
+                    st.markdown("</div>", unsafe_allow_html=True)
+              # Strengths and challenges in two columns
+            col1, col2 = st.columns(2)
+            
+            with col1:
+                with st.expander("💪 Mocne strony", expanded=True):
+                    strengths = DEGEN_TYPES[degen_type].get("strengths", ["Brak danych"])
+                    st.markdown("\n".join([f"- ✅ {strength}" for strength in strengths]))
+            
+            with col2:
+                with st.expander("🔍 Wyzwania", expanded=True):
+                    challenges = DEGEN_TYPES[degen_type].get("challenges", ["Brak danych"])
+                    st.markdown("\n".join([f"- ⚠️ {challenge}" for challenge in challenges]))
+            
+            # Strategy
+            strategy = DEGEN_TYPES[degen_type].get("strategy", "Strategia niedostępna")
+            tip_block(
+                strategy,
+                title="Rekomendowana strategia",
+                icon="🎯"
+            )
+            
+            # Detailed description
+            if degen_type in degen_details:
+                with st.expander("📚 Szczegółowy opis twojego typu degena", expanded=False):
+                    st.markdown(degen_details[degen_type])
+            else:
+                st.warning("Szczegółowy opis dla tego typu degena nie jest jeszcze dostępny.")
+                
+            # Test info and retake option
+            if 'test_date' in user_data:
+                st.info(f"📅 Test wykonany: {user_data['test_date']}")
+            
+            if zen_button("Wykonaj test ponownie", key="retake_test"):
+                # Reset test state
+                for key in ['test_step', 'test_scores', 'show_test_info']:
+                    if key in st.session_state:
+                        del st.session_state[key]
+                st.session_state.show_test_info = True
+                st.rerun()
+    else:
+        notification(
+            "Nie określono jeszcze twojego typu degena. Wykonaj test degena w zakładce powyżej, aby odkryć swój unikalny styl inwestowania i dostosowane rekomendacje.",
+            type="info"
+        )
+    
+    st.markdown("</div>", unsafe_allow_html=True)
+
+def show_degen_explorer_section():
+    """Wyświetla sekcję eksploratora typów degenów"""
+    device_type = get_device_type()
+    
+    # Wprowadzenie do typów degenów
+    st.markdown("""
+    ## 🔍 Poznaj różne style inwestycyjne
+    
+    Każdy inwestor ma unikalne podejście do rynków finansowych, uwarunkowane cechami osobowości,
+    emocjami, strategiami i wzorcami zachowań. Poniżej znajdziesz szczegółowe opisy wszystkich
+    typów degenów, które pomogą Ci zrozumieć różne style inwestycyjne i ich implikacje.
+    
+    Wybierz interesujący Cię typ degena z listy i odkryj:
+    - Charakterystykę głównych cech
+    - Profil emocjonalny
+    - Zachowania i postawy
+    - Kluczowe wyzwania
+    - Ścieżkę rozwoju inwestorskiego
+    """)
+      # Wybór typu degena
+    selected_type = st.selectbox(
+        "Wybierz typ degena do szczegółowej analizy:",
+        list(DEGEN_TYPES.keys()),
+        format_func=lambda x: f"{x} - {DEGEN_TYPES[x].get('description', 'Brak opisu')[:50]}...",
+        key="explorer_selectbox"
+    )
+    
+    if selected_type:        # Tworzenie sekcji dla wybranego typu
+        color = DEGEN_TYPES[selected_type].get("color", "#667eea")
+        
+        # Main description using markdown
+        tagline = DEGEN_TYPES[selected_type].get('tagline', 'Unikalny styl inwestowania')
+        description = DEGEN_TYPES[selected_type].get('description', 'Brak opisu')
+        
+        st.markdown(f"""
+        <div style="background: linear-gradient(135deg, {color}22, {color}11); 
+                    border-left: 4px solid {color}; 
+                    padding: 20px; 
+                    border-radius: 10px; 
+                    margin: 20px 0;">
+            <h2 style="color: {color};">🎯 {selected_type}</h2>
+            <p style="font-size: 16px; color: #2c3e50; margin-bottom: 10px;">
+                <strong>{tagline}</strong>
+            </p>
+            <p style="color: #34495e;">
+                {description}
+            </p>
+        </div>
+        """, unsafe_allow_html=True)
+        
+        # Detailed information if available
+        if selected_type in degen_details:
+            with st.expander("📚 Szczegółowy opis", expanded=False):
+                st.markdown(degen_details[selected_type])
+          # Porównanie z innym typem
+        st.markdown("### 🔄 Porównaj z innym typem")
+        
+        comparison_type = st.selectbox(
+            "Wybierz typ do porównania:",
+            [t for t in DEGEN_TYPES.keys() if t != selected_type],
+            format_func=lambda x: f"{x} - {DEGEN_TYPES[x].get('tagline', 'Styl inwestycyjny')}",
+            key="comparison_selectbox"
+        )
+        
+        if comparison_type:
+            col1, col2 = st.columns(2)
+              # Dla pierwszego typu (wybranego)
+            with col1:
+                st.markdown(f"### 🔍 {selected_type}")
+                with st.container():
+                    description = DEGEN_TYPES[selected_type].get('description', 'Brak opisu')
+                    st.markdown(f"**Opis:** {description}")
+                    
+                    st.markdown("**Mocne strony:**")
+                    strengths = DEGEN_TYPES[selected_type].get("strengths", ["Brak danych"])
+                    for strength in strengths:
+                        st.markdown(f"- ✅ {strength}")
+                    
+                    st.markdown("**Wyzwania:**")
+                    challenges = DEGEN_TYPES[selected_type].get("challenges", ["Brak danych"])
+                    for challenge in challenges:
+                        st.markdown(f"- ⚠️ {challenge}")
+                    
+                    st.markdown("**Strategia:**")
+                    strategy = DEGEN_TYPES[selected_type].get("strategy", "Strategia niedostępna")
+                    st.markdown(clean_html(strategy))
+            
+            # Dla drugiego typu (porównywanego)
+            with col2:
+                st.markdown(f"### 🔍 {comparison_type}")
+                with st.container():
+                    description = DEGEN_TYPES[comparison_type].get('description', 'Brak opisu')
+                    st.markdown(f"**Opis:** {description}")
+                    
+                    st.markdown("**Mocne strony:**")
+                    strengths = DEGEN_TYPES[comparison_type].get("strengths", ["Brak danych"])
+                    for strength in strengths:
+                        st.markdown(f"- ✅ {strength}")
+                    
+                    st.markdown("**Wyzwania:**")
+                    challenges = DEGEN_TYPES[comparison_type].get("challenges", ["Brak danych"])
+                    for challenge in challenges:
+                        st.markdown(f"- ⚠️ {challenge}")
+                    
+                    st.markdown("**Strategia:**")
+                    strategy = DEGEN_TYPES[comparison_type].get("strategy", "Strategia niedostępna")
+                    st.markdown(clean_html(strategy))
+
+def plot_radar_chart(scores, device_type=None):
+    """Generate a radar chart for test results
+    
+    Args:
+        scores: Dictionary of degen types and their scores
+        device_type: Device type ('mobile', 'tablet', or 'desktop')
+    """
+    # Jeśli device_type nie został przekazany, pobierz go
+    if device_type is None:
+        device_type = get_device_type()
+        
+    # Upewnij się, że labels i values są listami o tym samym rozmiarze
+    labels = list(scores.keys())
+    values = [float(v) for v in scores.values()]
+    
+    # Utwórz kąty i od razu skonwertuj na stopnie
+    num_vars = len(labels)
+    angles_degrees = np.linspace(0, 360, num_vars, endpoint=False)
+    angles_radians = np.radians(angles_degrees)
+    
+    # Tworzenie zamkniętych list bez używania wycinków [:-1]
+    values_closed = np.concatenate((values, [values[0]]))
+    angles_radians_closed = np.concatenate((angles_radians, [angles_radians[0]]))
+    
+    # Użyj funkcji helper do ustalenia rozmiaru wykresu
+    fig_size = get_responsive_figure_size(device_type)
+    
+    # Dostosuj pozostałe parametry w zależności od urządzenia
+    if device_type == 'mobile':
+        title_size = 14
+        font_size = 6.5
+        grid_alpha = 0.3
+        line_width = 1.5
+        marker_size = 4
+    elif device_type == 'tablet':
+        title_size = 16
+        font_size = 8
+        grid_alpha = 0.4
+        line_width = 2
+        marker_size = 5
+    else:  # desktop
+        title_size = 18
+        font_size = 9
+        grid_alpha = 0.5
+        line_width = 2.5
+        marker_size = 6
+    
+    # Tworzenie i konfiguracja wykresu
+    fig, ax = plt.subplots(figsize=fig_size, subplot_kw=dict(polar=True))
+    
+    # Dodaj przezroczyste tło za etykietami dla lepszej czytelności
+    ax.set_facecolor('white')
+    if device_type == 'mobile':
+        # Na telefonach zwiększ kontrast
+        ax.set_facecolor('#f8f8f8')
+    
+    # Plot the radar chart with marker size adjusted for device
+    ax.plot(angles_radians_closed, values_closed, 'o-', linewidth=line_width, markersize=marker_size)
+    ax.fill(angles_radians_closed, values_closed, alpha=0.25)
+    
+    # Ensure we have a valid limit
+    max_val = max(values) if max(values) > 0 else 1
+    y_max = max_val * 1.2  # Add some padding at the top
+    ax.set_ylim(0, y_max)
+    
+    # Adjust label positions and appearance for better device compatibility
+    # For mobile, rotate labels to fit better on small screens
+    if device_type == 'mobile':
+        # Use shorter labels on mobile
+        ax.set_thetagrids(angles_degrees, labels, fontsize=font_size-1)
+        plt.setp(ax.get_xticklabels(), rotation=67.5)  # Rotate labels for better fit
+    else:
+        ax.set_thetagrids(angles_degrees, labels, fontsize=font_size)
+    
+    # Set title with responsive size
+    ax.set_title("Twój profil inwestycyjny", size=title_size, pad=20)
+    
+    # Dostosuj siatkę i oś
+    ax.grid(True, alpha=grid_alpha)
+    
+    # Dodaj etykiety z wartościami
+    # Dostosuj odległość etykiet od wykresu
+    label_pad = max_val * (0.05 if device_type == 'mobile' else 0.1)
+    
+    # Poprawiona wersja:
+    for i, (angle, value) in enumerate(zip(angles_radians, values)):
+        color = DEGEN_TYPES[labels[i]].get("color", "#3498db")
+        
+        # Na telefonach wyświetl tylko nazwę typu bez wyniku
+        if device_type == 'mobile':
+            display_text = f"{labels[i].split()[0]}"  # Use only the first word
+        else:
+            display_text = f"{labels[i]}\n({value})"
+            
+        # Add text labels with background for better visibility
+        ax.text(angle, value + label_pad, display_text, 
+                horizontalalignment='center', verticalalignment='center',
+                fontsize=font_size, color=color, fontweight='bold',
+                bbox=dict(facecolor='white', alpha=0.7, pad=1.5, edgecolor='none'))
+    
+    # Optimize layout
+    plt.tight_layout(pad=1.0 if device_type == 'mobile' else 1.5)
+    
+    # Use high DPI for better rendering on high-resolution displays
+    fig.set_dpi(120 if device_type == 'mobile' else 100)
+    
+    return fig

@@ -227,7 +227,7 @@ class NewNavigationSystem:
                 st.markdown("**Blog** • **Tutoriale** • **Przewodnik po typach degenów** • **Ciekawostki**")
                 
                 if st.button("🎭 Przewodnik po degenach", key="degen_guide"):
-                    st.session_state.page = 'degen_explorer'
+                    st.session_state.page = 'profile'
                     st.rerun()
             
             with tab4:
@@ -355,7 +355,7 @@ class NewNavigationSystem:
             st.markdown(f"**Twój typ**: {degen_type}")
             
             if st.button("🧬 Przejdź do testu", key="go_to_degen_test"):
-                st.session_state.page = 'degen_explorer'
+                st.session_state.page = 'profile'
                 st.rerun()
         
         with tab2:
