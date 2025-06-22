@@ -48,6 +48,67 @@ from utils.components import zen_header, zen_button, notification, stat_card, xp
 from utils.user_components import user_stats_panel
 from utils.real_time_updates import live_xp_indicator
 from utils.achievements import check_achievements
+from datetime import datetime, timedelta
+
+def buy_item(item_type, item_id, price, user_data, users_data, username):
+    """
+    Process the purchase of an item
+    
+    Parameters:
+    - item_type: Type of the item (avatar, background, special_lesson, booster)
+    - item_id: Unique identifier of the item
+    - price: Cost in DegenCoins
+    - user_data: User's data dictionary
+    - users_data: All users' data dictionary
+    - username: Username of the current user
+    
+    Returns:
+    - (success, message): Tuple with success status and message
+    """
+    # Sprawdź czy użytkownik ma wystarczającą ilość monet
+    if user_data.get('degencoins', 0) < price:
+        return False, "Nie masz wystarczającej liczby DegenCoins!"
+    
+    # Odejmij monety
+    user_data['degencoins'] = user_data.get('degencoins', 0) - price
+      # Dodaj przedmiot do ekwipunku użytkownika
+    if 'inventory' not in user_data:
+        user_data['inventory'] = {}
+    
+    # Map plural to singular for consistency with inventory system
+    item_type_mapping = {
+        'avatars': 'avatar',
+        'backgrounds': 'background', 
+        'special_lessons': 'special_lesson',
+        'boosters': 'booster'
+    }
+    
+    inventory_key = item_type_mapping.get(item_type, item_type)
+    
+    if inventory_key not in user_data['inventory']:
+        user_data['inventory'][inventory_key] = []
+    
+    # Dodaj przedmiot do odpowiedniej kategorii (unikaj duplikatów)
+    if item_id not in user_data['inventory'][inventory_key]:
+        user_data['inventory'][inventory_key].append(item_id)
+    
+    # Dodaj specjalną obsługę dla boosterów (dodając datę wygaśnięcia)
+    if item_type == 'booster':
+        if 'active_boosters' not in user_data:
+            user_data['active_boosters'] = {}
+        
+        # Ustawienie czasu wygaśnięcia na 24 godziny od teraz
+        expiry_time = datetime.now() + timedelta(hours=24)
+        user_data['active_boosters'][item_id] = {
+            'expires_at': expiry_time.isoformat(),
+            'purchased_at': datetime.now().isoformat()
+        }
+    
+    # Zapisz zaktualizowane dane
+    users_data[username] = user_data
+    save_user_data(users_data)
+    
+    return True, f"Pomyślnie zakupiono {item_id.replace('_', ' ').title()}!"
 
 def show_profile():
     # Zastosuj style Material 3
@@ -64,9 +125,9 @@ def show_profile():
     zen_header("Profil użytkownika")
       # Add live XP indicator
     live_xp_indicator()
-    
-    # Use current user data to ensure degen test results are included
+      # Use current user data to ensure degen test results are included
     user_data = get_current_user_data(st.session_state.username)
+    users_data = load_user_data()  # For shop transactions
     style = get_user_style(st.session_state.username)
     
     # Wyświetl personalizowane style
@@ -231,9 +292,8 @@ def show_profile():
         
         # Load user inventory
         inventory = get_user_inventory(st.session_state.username)
-        
-        # Create subtabs for different inventory categories
-        inv_tabs = st.tabs(["Awatary", "Tła", "Specjalne Lekcje", "Boostery"])
+          # Create subtabs for different inventory categories
+        inv_tabs = st.tabs(["Awatary", "Tła", "Specjalne Lekcje", "Boostery", "🛒 Sklep"])
         
         # Tab for Avatars
         with inv_tabs[0]:
@@ -252,8 +312,7 @@ def show_profile():
                                 <div style="font-size: 0.9rem;">{avatar_id.replace('_', ' ').title()}</div>
                             </div>
                             """, unsafe_allow_html=True)
-                            
-                            # Add a button to activate this avatar
+                              # Add a button to activate this avatar
                             if st.button(f"Aktywuj {avatar_id.title()}", key=f"activate_avatar_{avatar_id}"):
                                 success, message = activate_item(st.session_state.username, 'avatar', avatar_id)
                                 if success:
@@ -262,10 +321,7 @@ def show_profile():
                                 else:
                                     notification(message, type="error")
             else:
-                st.info("Nie posiadasz żadnych awatarów. Kup je w sklepie!")
-                if st.button("Przejdź do sklepu", key="go_to_shop_avatars"):
-                    st.session_state.page = 'shop'
-                    st.rerun()
+                st.info("Nie posiadasz żadnych awatarów. Sprawdź zakładkę Sklep!")
         
         # Tab for Backgrounds
         with inv_tabs[1]:
@@ -283,8 +339,7 @@ def show_profile():
                             <div style="font-size: 1rem; font-weight: bold;">{bg_id.replace('_', ' ').title()}</div>
                         </div>
                         """, unsafe_allow_html=True)
-                        
-                        # Add a button to activate this background
+                          # Add a button to activate this background
                         if st.button(f"Aktywuj {bg_id.title()}", key=f"activate_bg_{bg_id}"):
                             success, message = activate_item(st.session_state.username, 'background', bg_id)
                             if success:
@@ -293,10 +348,7 @@ def show_profile():
                             else:
                                 notification(message, type="error")
             else:
-                st.info("Nie posiadasz żadnych teł. Kup je w sklepie!")
-                if st.button("Przejdź do sklepu", key="go_to_shop_bgs"):
-                    st.session_state.page = 'shop'
-                    st.rerun()
+                st.info("Nie posiadasz żadnych teł. Sprawdź zakładkę Sklep!")
         
         # Tab for Special Lessons
         with inv_tabs[2]:
@@ -317,8 +369,7 @@ def show_profile():
                             </div>
                         </div>
                         """, unsafe_allow_html=True)
-                        
-                        # Add a button to unlock this special lesson
+                          # Add a button to unlock this special lesson
                         if st.button(f"Odblokuj lekcję", key=f"unlock_lesson_{lesson_id}"):
                             success, message = activate_item(st.session_state.username, 'special_lesson', lesson_id)
                             if success:
@@ -327,10 +378,7 @@ def show_profile():
                             else:
                                 notification(message, type="error")
             else:
-                st.info("Nie posiadasz żadnych specjalnych lekcji. Kup je w sklepie!")
-                if st.button("Przejdź do sklepu", key="go_to_shop_lessons"):
-                    st.session_state.page = 'shop'
-                    st.rerun()
+                st.info("Nie posiadasz żadnych specjalnych lekcji. Sprawdź zakładkę Sklep!")
         
         # Tab for Boosters
         with inv_tabs[3]:
@@ -360,8 +408,7 @@ def show_profile():
                         </div>
                     </div>
                     """, unsafe_allow_html=True)
-                    
-                    # Add button to reactivate if not active
+                      # Add button to reactivate if not active
                     if not is_active:
                         if st.button(f"Reaktywuj {booster_id.replace('_', ' ').title()}", key=f"reactivate_booster_{booster_id}"):
                             success, message = activate_item(st.session_state.username, 'booster', booster_id)
@@ -371,10 +418,224 @@ def show_profile():
                             else:
                                 notification(message, type="error")
             else:
-                st.info("Nie posiadasz żadnych boosterów. Kup je w sklepie!")
-                if st.button("Przejdź do sklepu", key="go_to_shop_boosters"):
-                    st.session_state.page = 'shop'
-                    st.rerun()
+                st.info("Nie posiadasz żadnych boosterów. Kup je w poniższej zakładce Sklep!")
+        
+        # Tab 5: Shop
+        with inv_tabs[4]:
+            st.subheader("🛒 Sklep")            # Display user's DegenCoins
+            st.markdown(f"### Twoje DegenCoins: <span style='color: #FFA500;'>🪙 {user_data.get('degencoins', 0)}</span>", unsafe_allow_html=True)
+            
+            # Shop tabs
+            shop_tabs = st.tabs(["Awatary", "Tła", "Specjalne Lekcje", "Boostery"])
+            
+            # Avatars Shop
+            with shop_tabs[0]:
+                st.markdown("#### Awatary Premium 🔗")
+                
+                # Lista dostępnych awatarów
+                avatars = {
+                    "diamond_degen": {
+                        "name": "💎 Diamond Degen",
+                        "price": 500,
+                        "description": "Pokazuje twoje zaangażowanie w rozwój jako inwestor."
+                    },
+                    "crypto_wizard": {
+                        "name": "🧙 Crypto Wizard",
+                        "price": 750,
+                        "description": "Awatar dla tych, którzy mistrzowsko opanowali sztukę inwestowania."
+                    },                    "moon_hunter": {
+                        "name": "🌕 Moon Hunter",
+                        "price": 1000,
+                        "description": "Dla tych, którzy zawsze celują wysoko."
+                    }
+                }
+                
+                # Wyświetl dostępne awatary w trzech kolumnach
+                cols = st.columns(3)
+                
+                for i, (avatar_id, avatar) in enumerate(avatars.items()):
+                    with cols[i % 3]:
+                        st.markdown(f"**{avatar['name']}**")
+                        st.markdown(f"Cena: 🪙 {avatar['price']}")
+                        st.markdown(f"*{avatar['description']}*")
+                          # Sprawdź czy użytkownik posiada już ten awatar
+                        user_has_item = 'inventory' in user_data and 'avatar' in user_data.get('inventory', {}) and avatar_id in user_data['inventory']['avatar']
+                        
+                        if user_has_item:
+                            st.success("✅ Posiadasz")
+                        else:
+                            # Przycisk do zakupu
+                            if st.button(f"Kup {avatar['name']}", key=f"buy_avatar_{avatar_id}"):
+                                success, message = buy_item('avatars', avatar_id, avatar['price'], user_data, users_data, st.session_state.username)
+                                if success:
+                                    st.success(message)
+                                    st.rerun()
+                                else:
+                                    st.error(message)
+            
+            # Backgrounds Shop
+            with shop_tabs[1]:
+                st.markdown("#### Tła Premium 🖼️")
+                
+                # Lista dostępnych teł
+                backgrounds = {
+                    "crypto_city": {
+                        "name": "🏙️ Crypto City",
+                        "price": 300,
+                        "description": "Nowoczesne miasto przyszłości."
+                    },
+                    "zen_garden": {
+                        "name": "🌿 Zen Garden",
+                        "price": 400,
+                        "description": "Spokojny ogród dla zrównoważonych inwestorów."
+                    },
+                    "space_station": {
+                        "name": "🚀 Space Station",
+                        "price": 600,
+                        "description": "Dla inwestorów, którzy sięgają gwiazd."
+                    }
+                }
+                
+                # Wyświetl dostępne tła w trzech kolumnach
+                cols = st.columns(3)
+                
+                for i, (bg_id, bg) in enumerate(backgrounds.items()):
+                    with cols[i % 3]:
+                        st.markdown(f"**{bg['name']}**")
+                        st.markdown(f"Cena: 🪙 {bg['price']}")
+                        st.markdown(f"*{bg['description']}*")
+                          # Sprawdź czy użytkownik posiada już to tło
+                        user_has_item = 'inventory' in user_data and 'background' in user_data.get('inventory', {}) and bg_id in user_data['inventory']['background']
+                        
+                        if user_has_item:
+                            st.success("✅ Posiadasz")
+                        else:
+                            # Przycisk do zakupu
+                            if st.button(f"Kup {bg['name']}", key=f"buy_bg_{bg_id}"):
+                                success, message = buy_item('backgrounds', bg_id, bg['price'], user_data, users_data, st.session_state.username)
+                                if success:
+                                    st.success(message)
+                                    st.rerun()
+                                else:
+                                    st.error(message)
+            
+            # Special Lessons Shop
+            with shop_tabs[2]:
+                st.markdown("#### Specjalne Lekcje 📚")
+                
+                # Lista dostępnych specjalnych lekcji
+                special_lessons = {
+                    "market_psychology": {
+                        "name": "📊 Psychologia Rynku Zaawansowana",
+                        "price": 800,
+                        "description": "Zaawansowane techniki psychologii rynku."
+                    },
+                    "risk_management": {
+                        "name": "🛡️ Zarządzanie Ryzykiem Pro",
+                        "price": 700,
+                        "description": "Profesjonalne techniki zarządzania ryzykiem."
+                    },
+                    "trading_mastery": {
+                        "name": "🧠 Mistrzostwo Tradingowe",
+                        "price": 1200,
+                        "description": "Odkryj sekrety mistrzów tradingu."
+                    }
+                }
+                
+                # Wyświetl dostępne lekcje w trzech kolumnach
+                cols = st.columns(3)
+                
+                for i, (lesson_id, lesson) in enumerate(special_lessons.items()):
+                    with cols[i % 3]:
+                        st.markdown(f"**{lesson['name']}**")
+                        st.markdown(f"Cena: 🪙 {lesson['price']}")
+                        st.markdown(f"*{lesson['description']}*")
+                          # Sprawdź czy użytkownik posiada już tę lekcję
+                        user_has_item = 'inventory' in user_data and 'special_lesson' in user_data.get('inventory', {}) and lesson_id in user_data['inventory']['special_lesson']
+                        
+                        if user_has_item:
+                            st.success("✅ Posiadasz")
+                            if st.button(f"Rozpocznij lekcję", key=f"start_{lesson_id}"):
+                                st.session_state.page = 'lesson'
+                                st.session_state.lesson_id = f"special_{lesson_id}"
+                                st.rerun()
+                        else:
+                            # Przycisk do zakupu
+                            if st.button(f"Kup {lesson['name']}", key=f"buy_lesson_{lesson_id}"):
+                                success, message = buy_item('special_lessons', lesson_id, lesson['price'], user_data, users_data, st.session_state.username)
+                                if success:
+                                    st.success(message)
+                                    st.rerun()
+                                else:
+                                    st.error(message)
+            
+            # Boosters Shop
+            with shop_tabs[3]:
+                st.markdown("#### Boostery ⚡")
+                
+                # Lista dostępnych boosterów
+                boosters = {
+                    "xp_boost": {
+                        "name": "⚡ XP Boost",
+                        "price": 200,
+                        "description": "Zwiększa ilość zdobywanego XP o 50% przez 24 godziny."
+                    },
+                    "coin_boost": {
+                        "name": "🪙 Coin Boost",
+                        "price": 300,
+                        "description": "Zwiększa ilość zdobywanych monet o 50% przez 24 godziny."
+                    },
+                    "focus_boost": {
+                        "name": "🎯 Focus Boost",
+                        "price": 250,
+                        "description": "Zwiększa szybkość ukończenia lekcji o 30% przez 24 godziny."
+                    }
+                }
+                
+                # Wyświetl dostępne boostery w trzech kolumnach
+                cols = st.columns(3)
+                
+                for i, (booster_id, booster) in enumerate(boosters.items()):
+                    with cols[i % 3]:
+                        st.markdown(f"**{booster['name']}**")
+                        st.markdown(f"Cena: 🪙 {booster['price']}")
+                        st.markdown(f"*{booster['description']}*")
+                        
+                        # Sprawdź czy booster jest aktywny
+                        is_active = False
+                        remaining_time = None
+                        
+                        if 'active_boosters' in user_data and booster_id in user_data.get('active_boosters', {}):
+                            booster_data = user_data['active_boosters'][booster_id]
+                            
+                            # Handle both old format (string) and new format (object with expires_at)
+                            if isinstance(booster_data, str):
+                                expiry_time = datetime.fromisoformat(booster_data)
+                            elif isinstance(booster_data, dict) and 'expires_at' in booster_data:
+                                expiry_time = datetime.fromisoformat(booster_data['expires_at'])
+                            else:
+                                continue  # Skip invalid booster data
+                            
+                            now = datetime.now()
+                            
+                            if expiry_time > now:
+                                is_active = True
+                                remaining_seconds = (expiry_time - now).total_seconds()
+                                remaining_hours = int(remaining_seconds // 3600)
+                                remaining_minutes = int((remaining_seconds % 3600) // 60)
+                                remaining_time = f"{remaining_hours}h {remaining_minutes}m"
+                        
+                        if is_active:
+                            st.success(f"Aktywny! Pozostały czas: {remaining_time}")
+                        else:
+                            # Przycisk do zakupu
+                            if st.button(f"Kup {booster['name']}", key=f"buy_booster_{booster_id}"):
+                                success, message = buy_item('boosters', booster_id, booster['price'], user_data, users_data, st.session_state.username)
+                                if success:
+                                    st.success(message)
+                                    st.rerun()
+                                else:
+                                    st.error(message)
         
         st.markdown("</div>", unsafe_allow_html=True)
       # Tab 3: Badges

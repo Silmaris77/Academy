@@ -56,8 +56,7 @@ def main():
             if st.button("🚪 Wyloguj się", key="logout_button"):
                 clear_session()
                 st.rerun()
-    
-    # Page routing
+      # Page routing
     if not st.session_state.logged_in:
         show_login_page()
     else:
@@ -69,17 +68,6 @@ def main():
             show_profile()
         elif st.session_state.page == 'skills':
             show_skill_tree()
-        elif st.session_state.page == 'shop':
-            try:
-                # Direct import to ensure we only use the new shop
-                import views.shop_new
-                views.shop_new._IS_SHOP_NEW_LOADED = False  # Reset flag each time
-                from views.shop_new import show_shop
-                show_shop()            
-            except Exception as e:
-                st.error(f"Błąd podczas ładowania sklepu: {e}")
-                import traceback
-                st.code(traceback.format_exc())
         elif st.session_state.get('page') == 'admin':
             show_admin_dashboard()
 

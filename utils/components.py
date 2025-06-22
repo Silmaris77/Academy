@@ -253,7 +253,6 @@ def navigation_menu():
         {"id": "dashboard", "name": "Dashboard", "icon": "🏠"},
         {"id": "lesson", "name": "Lekcje", "icon": "📚"},
         {"id": "skills", "name": "Umiejętności", "icon": "🌳"},
-        {"id": "shop", "name": "Sklep", "icon": "🛒"},
         {"id": "profile", "name": "Profil", "icon": "👤"}
     ]
     
