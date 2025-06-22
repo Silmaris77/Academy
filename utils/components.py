@@ -255,15 +255,23 @@ def navigation_menu():
         {"id": "profile", "name": "Profil", "icon": "👤"}
     ]
     
-    for option in menu_options:
-        # Dodaj stylizację dla aktywnego przycisku bez parametru active
+    for option in menu_options:        # Dodaj stylizację dla aktywnego przycisku bez parametru active
         button_label = f"{option['icon']} {option['name']}"
         
         # Użyj zen_button bez parametru active
         if zen_button(
             button_label, 
-            key=f"nav_{option['id']}"
-        ):
+            key=f"nav_{option['id']}"        ):
+            # Jeśli klikamy na "Lekcje", resetuj stan bieżącej lekcji aby wrócić do przeglądu
+            if option['id'] == 'lesson':
+                st.session_state.current_lesson = None
+                st.session_state.lesson_reset_requested = True  # Flaga do jednokrotnego resetu
+                # Wyczyść również inne stany związane z lekcją
+                if 'lesson_step' in st.session_state:
+                    st.session_state.lesson_step = 'intro'
+                if 'lesson_finished' in st.session_state:
+                    st.session_state.lesson_finished = False
+            
             st.session_state.page = option['id']
             st.rerun()
         

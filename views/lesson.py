@@ -39,6 +39,15 @@ def get_difficulty_stars(difficulty):
 def show_lesson():
     """Show lesson view with tabs for lessons and course structure"""
     
+    # Sprawdź czy został zażądany reset stanu lekcji przez kliknięcie "Lekcje" w nawigacji
+    if st.session_state.get('lesson_reset_requested', False):
+        # Reset lekcji zażądany - wyczyść stan
+        st.session_state.current_lesson = None
+        if 'lesson_finished' in st.session_state:
+            st.session_state.lesson_finished = False
+        # Usuń flagę resetu po jednorazowym użyciu
+        st.session_state.lesson_reset_requested = False
+    
     # Zastosuj style Material 3
     apply_material3_theme()
     
@@ -132,10 +141,8 @@ def show_lessons_content():
                         category=lesson.get('tag', category),
                         completed=is_completed,
                         button_text="Powtórz lekcję" if is_completed else "Rozpocznij",
-                        button_key=f"start_{lesson_id}",
-                        lesson_id=lesson_id,
-                        on_click=lambda lesson_id=lesson_id: (
-                            setattr(st.session_state, 'current_lesson', lesson_id),
+                        button_key=f"start_{lesson_id}",                        lesson_id=lesson_id,                        on_click=lambda _, lid=lesson_id: (
+                            setattr(st.session_state, 'current_lesson', lid),
                             setattr(st.session_state, 'lesson_step', 'intro'),
                             setattr(st.session_state, 'quiz_score', 0) if 'quiz_score' in st.session_state else None,
                             st.rerun()
@@ -160,24 +167,19 @@ def show_lessons_content():
         if 'lesson_progress' not in st.session_state:
             st.session_state.lesson_progress = {
                 'intro': fragment_progress.get('intro_completed', False),
-                'opening_quiz': fragment_progress.get('opening_quiz_completed', False),
                 'content': fragment_progress.get('content_completed', False),
                 'practical_exercises': fragment_progress.get('practical_exercises_completed', False),
                 'reflection': fragment_progress.get('reflection_completed', False),  # backward compatibility
                 'application': fragment_progress.get('application_completed', False),  # backward compatibility
-                'closing_quiz': fragment_progress.get('closing_quiz_completed', False),
                 'summary': fragment_progress.get('summary_completed', False),
                 'total_xp_earned': fragment_progress.get('total_xp_earned', 0),
                 'steps_completed': 0,
                 'quiz_scores': {},
                 'answers': {}
-            }
-        
-        # Oblicz całkowitą liczbę dostępnych kroków w tej lekcji
+            }# Oblicz całkowitą liczbę dostępnych kroków w tej lekcji
         available_steps = ['intro', 'content', 'summary']
         if 'sections' in lesson:
-            if 'opening_quiz' in lesson.get('sections', {}):
-                available_steps.append('opening_quiz')
+            # Usunięto opening_quiz i closing_quiz z osobnych kroków - są teraz zintegrowane w zakładkach
             if 'practical_exercises' in lesson.get('sections', {}):
                 available_steps.append('practical_exercises')
             elif 'reflection' in lesson.get('sections', {}) or 'application' in lesson.get('sections', {}):
@@ -186,16 +188,12 @@ def show_lessons_content():
                     available_steps.append('reflection')
                 if 'application' in lesson.get('sections', {}):
                     available_steps.append('application')
-            if 'closing_quiz' in lesson.get('sections', {}):
-                available_steps.append('closing_quiz')
-        
-        # Ustal kolejność kroków
+          # Ustal kolejność kroków (bez opening_quiz i closing_quiz jako osobnych kroków)
         step_order = ['intro']
-        if 'opening_quiz' in available_steps:
-            step_order.append('opening_quiz')
         step_order.extend(['content'])
         
         # Nowa sekcja ćwiczeń praktycznych zamiast osobnych reflection i application
+        # closing_quiz jest teraz zintegrowany w sekcji practical_exercises
         if 'practical_exercises' in available_steps:
             step_order.append('practical_exercises')
         elif 'reflection' in available_steps or 'application' in available_steps:
@@ -205,34 +203,25 @@ def show_lessons_content():
             if 'application' in available_steps:
                 step_order.append('application')
         
-        if 'closing_quiz' in available_steps:
-            step_order.append('closing_quiz')
+        # closing_quiz usunięty jako osobny krok - jest teraz w zakładce practical_exercises
         step_order.append('summary')
         
         total_steps = len(step_order)
-        base_xp = lesson.get('xp_reward', 100)
-
-        # Mapowanie kroków do nazw wyświetlanych
+        base_xp = lesson.get('xp_reward', 100)        # Mapowanie kroków do nazw wyświetlanych (usunięto opening_quiz i closing_quiz)
         step_names = {
             'intro': 'Wprowadzenie',
-            'opening_quiz': 'Samorefleksja',
             'content': 'Materiał',
             'practical_exercises': 'Ćwiczenia praktyczne',
             'reflection': 'Refleksja',  # backward compatibility
             'application': 'Zadania praktyczne',  # backward compatibility
-            'closing_quiz': 'Quiz końcowy',
             'summary': 'Podsumowanie'
-        }
-
-        # Mapowanie kroków do wartości XP (nowy system procentowy)
+        }        # Mapowanie kroków do wartości XP (usunięto opening_quiz i closing_quiz)
         step_xp_values = {
             'intro': int(base_xp * 0.05),          # 5% całkowitego XP
-            'opening_quiz': int(base_xp * 0.00),   # 0% całkowitego XP
             'content': int(base_xp * 0.30),        # 30% całkowitego XP (Merytoryka)
-            'practical_exercises': int(base_xp * 0.40),  # 40% całkowitego XP (nowa połączona sekcja)
+            'practical_exercises': int(base_xp * 0.60),  # 60% całkowitego XP (nowa połączona sekcja z quizem końcowym)
             'reflection': int(base_xp * 0.20),     # 20% całkowitego XP (backward compatibility)
             'application': int(base_xp * 0.20),    # 20% całkowitego XP (backward compatibility)
-            'closing_quiz': int(base_xp * 0.20),   # 20% całkowitego XP
             'summary': int(base_xp * 0.05)         # 5% całkowitego XP
         }
         
@@ -422,17 +411,13 @@ def show_lessons_content():
                         )
 
         # Main content
-        st.markdown("<div class='st-bx'>", unsafe_allow_html=True)
-          # Nagłówek sekcji
+        st.markdown("<div class='st-bx'>", unsafe_allow_html=True)        # Nagłówek sekcji
         current_section_title = step_names.get(st.session_state.lesson_step, st.session_state.lesson_step.capitalize())
-        if st.session_state.lesson_step == 'opening_quiz':
-            current_section_title = "🪞 Narzędzie Samorefleksji"
         st.markdown(f"<h1>{current_section_title}</h1>", unsafe_allow_html=True)
-        
-        # Main content logic for each step
+          # Main content logic for each step
         if st.session_state.lesson_step == 'intro':
-            # Podziel wprowadzenie na dwie zakładki
-            intro_tabs = st.tabs(["Wprowadzenie", "Case Study"])
+            # Podziel wprowadzenie na trzy zakładki: Wprowadzenie, Case Study, Quiz Samodiagnozy
+            intro_tabs = st.tabs(["Wprowadzenie", "Case Study", "🪞 Quiz Samodiagnozy"])
             
             with intro_tabs[0]:
                 # Wyświetl główne wprowadzenie
@@ -449,6 +434,28 @@ def show_lessons_content():
                     st.markdown(lesson["intro"]["case_study"], unsafe_allow_html=True)
                 else:
                     st.warning("Brak studium przypadku w tej lekcji.")
+            
+            with intro_tabs[2]:
+                # Wyświetl quiz samodiagnozy
+                if 'sections' in lesson and 'opening_quiz' in lesson.get('sections', {}):
+                    st.info("🪞 **Quiz Samodiagnozy** - Ten quiz pomaga Ci lepiej poznać siebie jako inwestora. Nie ma tu dobrych ani złych odpowiedzi - chodzi o szczerą autorefleksję. Twoje odpowiedzi nie wpływają na postęp w lekcji.")
+                    
+                    quiz_data = lesson['sections']['opening_quiz']
+                    quiz_complete, _, earned_points = display_quiz(quiz_data)
+                      # Oznacz quiz jako ukończony po wypełnieniu
+                    if quiz_complete:
+                        quiz_xp_key = f"opening_quiz_xp_{lesson_id}"
+                        if not st.session_state.get(quiz_xp_key, False):
+                            # Award fragment XP for quiz participation
+                            fragment_xp = get_fragment_xp_breakdown(lesson.get('xp_reward', 30))
+                            success, earned_xp = award_fragment_xp(lesson_id, 'intro_quiz', fragment_xp['intro'] // 3)  # 1/3 of intro XP
+                            st.session_state[quiz_xp_key] = True
+                            if success and earned_xp > 0:
+                                show_xp_notification(earned_xp, "za szczerą samorefleksję")
+                        
+                        st.success("✅ Dziękujemy za szczerą samorefleksję!")
+                else:
+                    st.info("Ten quiz samodiagnozy nie jest dostępny dla tej lekcji.")
               # Przycisk "Dalej" po wprowadzeniu            st.markdown("<div class='next-button'>", unsafe_allow_html=True)
             if zen_button(f"Dalej: {step_names.get(next_step, next_step.capitalize())}", use_container_width=False):
                 # Award fragment XP using the new system
@@ -467,64 +474,7 @@ def show_lessons_content():
                     refresh_user_data()                # Przejdź do następnego kroku
                 st.session_state.lesson_step = next_step
                 st.rerun()
-            st.markdown("</div>", unsafe_allow_html=True)
-        
-        elif st.session_state.lesson_step == 'opening_quiz' and 'opening_quiz' in lesson.get('sections', {}):
-            # Wyświetl quiz startowy (diagnostyczny)
-            st.info("🪞 **Narzędzie Samorefleksji** - Ten quiz pomaga Ci lepiej poznać siebie jako inwestora. Nie ma tu dobrych ani złych odpowiedzi - chodzi o szczerą autorefleksję. Twoje odpowiedzi nie wpływają na postęp w lekcji.")
-            
-            quiz_data = lesson['sections']['opening_quiz']
-            quiz_complete, _, earned_points = display_quiz(quiz_data)
-            
-            # Natychmiast oznacz quiz jako ukończony w nawigacji po ukończeniu
-            if quiz_complete:
-                st.session_state.lesson_progress['opening_quiz'] = True
-              # Dodaj opcję pominięcia quizu
-            st.markdown("---")
-            st.markdown("**Twoje opcje:**")
-            
-            col1, col2 = st.columns(2)
-            
-            with col1:
-                # Przycisk "Pomiń quiz" - zawsze dostępny
-                st.markdown("<div class='next-button'>", unsafe_allow_html=True)
-                if zen_button("⏭️ Przejdź do lekcji", use_container_width=True):
-                    # Oznacz quiz jako pominięty (ale ukończony dla nawigacji)
-                    st.session_state.lesson_progress['opening_quiz'] = True
-                    
-                    # Nie przyznawaj XP za pominięcie quizu
-                    st.info("💭 W porządku! Przejdźmy do materiału lekcji. Zawsze możesz wrócić do samorefleksji później.")
-                      # Przejdź do następnego kroku
-                    st.session_state.lesson_step = next_step
-                    st.rerun()
-                st.markdown("</div>", unsafe_allow_html=True)
-            
-            with col2:
-                # Przycisk "Dalej" po quizie startowym - dostępny zawsze (niezależnie od wyniku)
-                st.markdown("<div class='next-button'>", unsafe_allow_html=True)
-                button_text = "Rozpocznij refleksję" if not quiz_complete else "Kontynuuj"
-                if zen_button(button_text, use_container_width=True):
-                    # Award fragment XP using the new system for quiz participation (nie za wynik)
-                    success, xp_awarded = award_fragment_xp(lesson_id, 'opening_quiz', step_xp_values['opening_quiz'])
-                    
-                    if success and xp_awarded > 0:
-                        # Update session state for UI compatibility
-                        st.session_state.lesson_progress['opening_quiz'] = True
-                        st.session_state.lesson_progress['steps_completed'] += 1
-                        st.session_state.lesson_progress['total_xp_earned'] += xp_awarded
-                        
-                        # Show real-time XP notification
-                        show_xp_notification(xp_awarded, f"Zdobyłeś {xp_awarded} XP za szczerą samorefleksję!")
-                        
-                        # Refresh user data for real-time updates
-                        from utils.real_time_updates import refresh_user_data
-                        refresh_user_data()
-                    
-                    # Przejdź do następnego kroku
-                    st.session_state.lesson_step = next_step
-                    st.rerun()
-                st.markdown("</div>", unsafe_allow_html=True)
-        
+            st.markdown("</div>", unsafe_allow_html=True)        
         elif st.session_state.lesson_step == 'content':
             # Diagnozowanie problemu z wyświetlaniem treści
             if 'sections' not in lesson:
@@ -575,8 +525,7 @@ def show_lessons_content():
                     # Przygotuj zakładki dla różnych typów ćwiczeń
                     sub_tabs_data = practical_data['tabs']
                     available_tabs = []
-                    tab_keys = []
-                      # Sprawdź które zakładki są dostępne i przygotuj je w logicznej kolejności uczenia się
+                    tab_keys = []                      # Sprawdź które zakładki są dostępne i przygotuj je w logicznej kolejności uczenia się
                     # 1. Autotest - sprawdzenie aktualnego stanu
                     if 'autotest' in sub_tabs_data:
                         available_tabs.append("🧠 Autotest")
@@ -597,51 +546,79 @@ def show_lessons_content():
                         available_tabs.append("🎯 Wdrożenie")
                         tab_keys.append('implementation')
                     
+                    # 5. Quiz końcowy - przeniesiony z osobnego kroku
+                    if 'closing_quiz' in lesson.get('sections', {}):
+                        available_tabs.append("🎓 Quiz końcowy")
+                        tab_keys.append('closing_quiz')
+                    
                     if available_tabs:
                         # Wyświetl pod-zakładki
                         tabs = st.tabs(available_tabs)
                         
                         for i, (tab_key, tab_title) in enumerate(zip(tab_keys, available_tabs)):
                             with tabs[i]:
-                                tab_data = sub_tabs_data[tab_key]
-                                
-                                # Wyświetl opis zakładki jeśli istnieje
-                                if 'description' in tab_data:
-                                    st.info(tab_data['description'])
-                                
-                                # Wyświetl sekcje w zakładce
-                                if 'sections' in tab_data:
-                                    for section in tab_data['sections']:
-                                        st.markdown(f"### {section.get('title', 'Sekcja')}")
-                                        st.markdown(section.get('content', 'Brak treści'), unsafe_allow_html=True)
+                                if tab_key == 'closing_quiz':
+                                    # Specjalna obsługa dla quizu końcowego
+                                    st.info("🎓 **Quiz końcowy** - Sprawdź swoją wiedzę z tej lekcji. Musisz uzyskać minimum 75% poprawnych odpowiedzi, aby przejść dalej.")
+                                    
+                                    quiz_data = lesson['sections']['closing_quiz']
+                                    quiz_completed, quiz_passed, earned_points = display_quiz(quiz_data, passing_threshold=75)
+                                    
+                                    # Oznacz quiz jako ukończony po wypełnieniu
+                                    if quiz_completed:
+                                        closing_quiz_xp_key = f"closing_quiz_xp_{lesson_id}"
+                                        if not st.session_state.get(closing_quiz_xp_key, False):
+                                            # Award fragment XP for quiz completion
+                                            fragment_xp = get_fragment_xp_breakdown(lesson.get('xp_reward', 30))
+                                            # Quiz końcowy dostaje 1/3 z XP practical_exercises 
+                                            success, earned_xp = award_fragment_xp(lesson_id, 'closing_quiz', step_xp_values['practical_exercises'] // 3)
+                                            st.session_state[closing_quiz_xp_key] = True
+                                            if success and earned_xp > 0:
+                                                show_xp_notification(earned_xp, f"Zdobyłeś {earned_xp} XP za ukończenie quizu końcowego!")
                                         
-                                        # Jeśli sekcja wymaga odpowiedzi użytkownika
-                                        if section.get('interactive', False):
-                                            # Generuj klucz dla przechowywania odpowiedzi
-                                            section_key = f"practical_{tab_key}_{section.get('title', '').replace(' ', '_').lower()}"
-                                            
-                                            # Użyj formularza dla lepszego UX
-                                            with st.form(key=f"form_{section_key}"):
-                                                # Pobierz istniejącą odpowiedź (jeśli jest)
-                                                existing_response = st.session_state.get(section_key, "")
-                                                
-                                                # Wyświetl pole tekstowe z istniejącą odpowiedzią
-                                                user_response = st.text_area(
-                                                    "Twoja odpowiedź:",
-                                                    value=existing_response,
-                                                    height=200,
-                                                    key=f"input_{section_key}"
-                                                )
-                                                
-                                                # Przycisk do zapisywania odpowiedzi w formularzu
-                                                submitted = st.form_submit_button("Zapisz odpowiedź")
-                                                
-                                                if submitted:
-                                                    # Zapisz odpowiedź w stanie sesji
-                                                    st.session_state[section_key] = user_response
-                                                    st.success("Twoja odpowiedź została zapisana!")
+                                        if quiz_passed:
+                                            st.success("✅ Gratulacje! Zaliczyłeś quiz końcowy!")
+                                        else:
+                                            st.error("❌ Aby przejść dalej, musisz uzyskać przynajmniej 75% poprawnych odpowiedzi. Spróbuj ponownie!")
                                 else:
-                                    st.warning(f"Zakładka '{tab_title}' nie zawiera sekcji do wyświetlenia.")
+                                    # Standardowa obsługa dla innych zakładek
+                                    tab_data = sub_tabs_data[tab_key]
+                                    
+                                    # Wyświetl opis zakładki jeśli istnieje
+                                    if 'description' in tab_data:
+                                        st.info(tab_data['description'])
+                                    
+                                    # Wyświetl sekcje w zakładce
+                                    if 'sections' in tab_data:
+                                        for section in tab_data['sections']:
+                                            st.markdown(f"### {section.get('title', 'Sekcja')}")
+                                            st.markdown(section.get('content', 'Brak treści'), unsafe_allow_html=True)
+                                            
+                                            # Jeśli sekcja wymaga odpowiedzi użytkownika
+                                            if section.get('interactive', False):
+                                                # Generuj klucz dla przechowywania odpowiedzi
+                                                section_key = f"practical_{tab_key}_{section.get('title', '').replace(' ', '_').lower()}"
+                                                  # Użyj formularza dla lepszego UX
+                                                with st.form(key=f"form_{section_key}"):
+                                                    # Pobierz istniejącą odpowiedź (jeśli jest)
+                                                    existing_response = st.session_state.get(section_key, "")
+                                                    
+                                                    # Wyświetl pole tekstowe z istniejącą odpowiedzią
+                                                    user_response = st.text_area(
+                                                        "Twoja odpowiedź:",
+                                                        value=existing_response,
+                                                        height=200,
+                                                        key=f"input_{section_key}"
+                                                    )
+                                                      # Przycisk do zapisywania odpowiedzi w formularzu
+                                                    submitted = st.form_submit_button("Zapisz odpowiedź")
+                                                    
+                                                    if submitted:
+                                                        # Zapisz odpowiedź w stanie sesji
+                                                        st.session_state[section_key] = user_response
+                                                        st.success("Twoja odpowiedź została zapisana!")
+                                    else:
+                                        st.warning(f"Zakładka '{tab_title}' nie zawiera sekcji do wyświetlenia.")
                     else:
                         st.warning("Nie znaleziono dostępnych pod-zakładek w sekcji ćwiczeń praktycznych.")
             
@@ -793,59 +770,7 @@ def show_lessons_content():
                   # Przejdź do następnego kroku
                 st.session_state.lesson_step = next_step
                 st.rerun()
-            st.markdown("</div>", unsafe_allow_html=True)
-        
-        elif st.session_state.lesson_step == 'closing_quiz':
-            # Wyświetl quiz końcowy
-            if 'sections' not in lesson:
-                st.error("Lekcja nie zawiera klucza 'sections'!")
-            elif 'closing_quiz' not in lesson.get('sections', {}):
-                st.error("Lekcja nie zawiera sekcji 'closing_quiz'!")
-            else:
-                # Użyj funkcji display_quiz do wyświetlenia quizu z wymaganiem 75%
-                quiz_completed, quiz_passed, earned_points = display_quiz(lesson['sections']['closing_quiz'], passing_threshold=75)
-                
-                # Natychmiast oznacz quiz jako ukończony w nawigacji po ukończeniu
-                if quiz_completed:
-                    st.session_state.lesson_progress['closing_quiz'] = True
-                    
-                    # Sprawdź czy quiz został zdany z wymaganym wynikiem 75%
-                    if quiz_passed:
-                        # Przycisk "Dalej" po quizie końcowym - tylko jeśli zdany z 75%
-                        st.markdown("<div class='next-button'>", unsafe_allow_html=True)
-                        if zen_button(f"Dalej: {step_names.get(next_step, next_step.capitalize())}", use_container_width=False):
-                            # Award fragment XP using the new system
-                            success, xp_awarded = award_fragment_xp(lesson_id, 'closing_quiz', step_xp_values['closing_quiz'])
-                            
-                            if success and xp_awarded > 0:
-                                # Update session state for UI compatibility
-                                st.session_state.lesson_progress['steps_completed'] += 1
-                                st.session_state.lesson_progress['total_xp_earned'] += xp_awarded
-                                
-                                # Show real-time XP notification
-                                show_xp_notification(xp_awarded, f"Zdobyłeś {xp_awarded} XP za ukończenie quizu końcowego!")
-                                
-                                # Refresh user data for real-time updates
-                                from utils.real_time_updates import refresh_user_data
-                                refresh_user_data()
-                            
-                            # Przejdź do następnego kroku
-                            st.session_state.lesson_step = next_step
-                            st.rerun()
-                        st.markdown("</div>", unsafe_allow_html=True)
-                    else:
-                        # Quiz ukończony ale nie zdany - wyświetl komunikat o konieczności uzyskania 75%
-                        st.error("Aby przejść dalej, musisz uzyskać przynajmniej 75% poprawnych odpowiedzi w quizie końcowym. Spróbuj ponownie!")
-                        
-                        # Przycisk do powtórzenia quizu
-                        st.markdown("<div class='next-button'>", unsafe_allow_html=True)
-                        if zen_button("🔄 Spróbuj ponownie", use_container_width=False):                            # Resetuj stan quizu końcowego
-                            quiz_session_key = f"quiz_{lesson['sections']['closing_quiz'].get('title', '').replace(' ', '_').lower()}"
-                            if quiz_session_key in st.session_state:
-                                del st.session_state[quiz_session_key]
-                            st.rerun()
-                        st.markdown("</div>", unsafe_allow_html=True)
-        
+            st.markdown("</div>", unsafe_allow_html=True)        
         elif st.session_state.lesson_step == 'summary':
             # Wyświetl podsumowanie lekcji w podziale na zakładki, podobnie jak wprowadzenie
             if 'outro' in lesson:
@@ -975,16 +900,13 @@ def show_lessons_content():
                 current_xp += fragment_progress[step_xp_key]
           # Oblicz aktualny postęp na podstawie XP (nie liczby kroków)
         completion_percent = (current_xp / max_xp) * 100 if max_xp > 0 else 0
-        
-        # Przygotuj dane o kluczowych krokach do wyświetlenia
+          # Przygotuj dane o kluczowych krokach do wyświetlenia
         key_steps_info = []
         if 'intro' in step_order:
             completed = st.session_state.lesson_progress.get('intro', False)
             key_steps_info.append(f"📖 Intro: {step_xp_values['intro']} XP {'✅' if completed else ''}")
         
-        if 'opening_quiz' in step_order:
-            completed = st.session_state.lesson_progress.get('opening_quiz', False)
-            key_steps_info.append(f"🪞 Samorefleksja: {step_xp_values['opening_quiz']} XP {'✅' if completed else ''}")
+        # opening_quiz usunięte - jest teraz zintegrowane w zakładce intro
         
         if 'content' in step_order:
             completed = st.session_state.lesson_progress.get('content', False)
@@ -1001,9 +923,6 @@ def show_lessons_content():
         if 'application' in step_order:
             completed = st.session_state.lesson_progress.get('application', False)
             key_steps_info.append(f"💪 Zadania: {step_xp_values['application']} XP {'✅' if completed else ''}")
-        if 'closing_quiz' in step_order:
-            completed = st.session_state.lesson_progress.get('closing_quiz', False)
-            key_steps_info.append(f"🧠 Quiz: {step_xp_values['closing_quiz']} XP {'✅' if completed else ''}")
         
         if 'summary' in step_order:
             completed = st.session_state.lesson_progress.get('summary', False)
@@ -1042,32 +961,22 @@ def display_lesson(lesson_data):
         st.markdown(lesson_data['intro'], unsafe_allow_html=True)
     
     # Przygotuj dane zakładek
-    tab_data = []
-      # Dodaj zakładki w odpowiedniej kolejności
-    if 'opening_quiz' in lesson_data.get('sections', {}):
-        tab_data.append(("Samorefleksja", "opening_quiz"))
+    tab_data = []    # Dodaj zakładki w odpowiedniej kolejności (usunięto opening_quiz - jest teraz w intro)
     
     if 'learning' in lesson_data.get('sections', {}):
-        tab_data.append(("Nauka", "learning"))
-    
+        tab_data.append(("Nauka", "learning"))    
     if 'reflection' in lesson_data.get('sections', {}):
         tab_data.append(("Refleksja", "reflection"))
-    
-    if 'closing_quiz' in lesson_data.get('sections', {}):
-        tab_data.append(("Quiz końcowy", "closing_quiz"))
     
     # Wyodrębnij tytuły zakładek
     tab_titles = [title for title, _ in tab_data]
     
     # Wyświetl zakładki tylko jeśli są jakieś dane do wyświetlenia
     if tab_titles:
-        tabs = st.tabs(tab_titles)
-          # Dla każdej zakładki wyświetl odpowiednią zawartość
+        tabs = st.tabs(tab_titles)        # Dla każdej zakładki wyświetl odpowiednią zawartość
         for i, (_, tab_name) in enumerate(tab_data):
             with tabs[i]:
-                if tab_name in ["opening_quiz", "closing_quiz"]:
-                    display_quiz(lesson_data['sections'][tab_name])
-                elif tab_name == "learning":
+                if tab_name == "learning":
                     display_learning_sections(lesson_data['sections'][tab_name])
                 elif tab_name == "reflection":
                     display_reflection_sections(lesson_data['sections'][tab_name])
@@ -1417,16 +1326,14 @@ def display_quiz(quiz_data, passing_threshold=60):
                         if st.button(option, key=f"{question_id}_opt{j}"):
                             # Zapisz wybraną odpowiedź
                             st.session_state[f"{question_id}_selected"] = j
-                            st.session_state[quiz_id]["answered_questions"].append(i)
-                            # Dla quizów samodiagnozy - zlicz punkty (opcje 1-5 = j+1 punktów)
+                            st.session_state[quiz_id]["answered_questions"].append(i)                            # Dla quizów samodiagnozy - zlicz punkty (opcje 1-5 = j+1 punktów)
                             points = j + 1
                             if "total_points" not in st.session_state[quiz_id]:
                                 st.session_state[quiz_id]["total_points"] = 0
                             st.session_state[quiz_id]["total_points"] += points
                             if len(st.session_state[quiz_id]["answered_questions"]) == st.session_state[quiz_id]["total_questions"]:
                                 st.session_state[quiz_id]["completed"] = True
-                                if 'opening_quiz' in quiz_id.lower() or 'startowy' in quiz_id.lower():
-                                    st.session_state.lesson_progress['opening_quiz'] = True
+                                # Usunięto opening_quiz handling - jest teraz zintegrowane w intro
                             st.rerun()
                             return False, False, 0
             else:
@@ -1460,8 +1367,6 @@ def display_quiz(quiz_data, passing_threshold=60):
                                     st.session_state.quiz_score += 5
                             if len(st.session_state[quiz_id]["answered_questions"]) == st.session_state[quiz_id]["total_questions"]:
                                 st.session_state[quiz_id]["completed"] = True
-                                if 'closing_quiz' in quiz_id.lower() or 'końcowy' in quiz_id.lower():
-                                    st.session_state.lesson_progress['closing_quiz'] = True
                             st.rerun()
                             return False, False, 0
                     else:
@@ -1479,8 +1384,6 @@ def display_quiz(quiz_data, passing_threshold=60):
                                     st.session_state.quiz_score += 5
                             if len(st.session_state[quiz_id]["answered_questions"]) == st.session_state[quiz_id]["total_questions"]:
                                 st.session_state[quiz_id]["completed"] = True
-                                if 'closing_quiz' in quiz_id.lower() or 'końcowy' in quiz_id.lower():
-                                    st.session_state.lesson_progress['closing_quiz'] = True
                             st.rerun()
                             return False, False, 0
         st.markdown('</div>', unsafe_allow_html=True)
