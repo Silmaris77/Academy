@@ -22,6 +22,7 @@ try:
     from views.profile import show_profile
     from views.skills_new import show_skill_tree
     from views.admin import show_admin_dashboard
+    from views.inspirations import show_inspirations_page
     
     # Import shop module is done within the routing section
 except Exception as e:
@@ -42,21 +43,18 @@ st.markdown(f"<style>{css}</style>", unsafe_allow_html=True)
 
 def main():
     # Initialize session state
-    init_session_state()
-    
-    # Sidebar for logged-in users
+    init_session_state()    # Sidebar for logged-in users
     if st.session_state.logged_in:
         with st.sidebar:
             st.markdown(f"### Witaj, {st.session_state.username}!")
-              # Nawigacja
+            # Nawigacja
             navigation_menu()
             
             # Przycisk wylogowania na dole sidebara
             if st.button("🚪 Wyloguj się", key="logout_button"):
                 clear_session()
                 st.rerun()
-    
-    # Page routing
+      # Page routing
     if not st.session_state.logged_in:
         show_login_page()
     else:
@@ -64,6 +62,8 @@ def main():
             show_dashboard()
         elif st.session_state.page == 'lesson':
             show_lesson()
+        elif st.session_state.page == 'inspirations':
+            show_inspirations_page()
         elif st.session_state.page == 'profile':
             show_profile()
         elif st.session_state.get('page') == 'admin':

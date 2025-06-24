@@ -244,12 +244,14 @@ button[kind="header"] {
     box-shadow: 0 4px 8px rgba(109, 213, 250, 0.2);
 }
 
-/* Przyciski w sidebarze - ciemniejsze */
+/* Przyciski w sidebarze - jednolity wygląd */
 .stSidebar [data-testid="stButton"] button {
-    background: #cfe7ff !important;  /* kolor przycisków sidebar */
+    background: #cfe7ff !important;
     border: 1px solid #c0c0c0 !important;
-    color: #34495e !important;  /* ciemniejszy tekst */
+    color: #34495e !important;
     font-weight: 500;
+    border-radius: 6px !important;
+    transition: all 0.3s ease !important;
 }
 
 .stSidebar [data-testid="stButton"] button:hover:not(:disabled) {
@@ -259,10 +261,14 @@ button[kind="header"] {
     box-shadow: 0 3px 6px rgba(52, 73, 94, 0.2);
 }
 
+/* KLUCZOWE: Przyciski disabled wyglądają tak samo jak normalne */
 .stSidebar [data-testid="stButton"] button:disabled {
-    background: linear-gradient(to right, #2c3e50, #34495e) !important;
-    color: white !important;
-    border: 1px solid #2c3e50 !important;
+    background: #cfe7ff !important;  /* identyczne jak normalne */
+    border: 1px solid #c0c0c0 !important;  /* identyczne jak normalne */
+    color: #34495e !important;  /* identyczne jak normalne */
+    font-weight: 500;
+    opacity: 1 !important;  /* usuń wygaszenie */
+    cursor: pointer !important;  /* zachowaj wskaźnik */
 }
 
 [data-testid="stButton"] button:active {
@@ -1271,3 +1277,5 @@ div.stButton > button {
         outline: none;
     }
 }
+
+

@@ -111,17 +111,17 @@ def buy_item(item_type, item_id, price, user_data, users_data, username):
     return True, f"Pomyślnie zakupiono {item_id.replace('_', ' ').title()}!"
 
 def show_profile():
-    # Zastosuj style Material 3
+    # Zastosuj style Material 3 (tak jak w dashboard)
     apply_material3_theme()
-    
-    # Zastosuj responsywne style
-    apply_responsive_styles()
     
     # Opcja wyboru urządzenia w trybie deweloperskim
     if st.session_state.get('dev_mode', False):
         toggle_device_view()
-      # Pobierz aktualny typ urządzenia
+    
+    # Pobierz aktualny typ urządzenia
     device_type = get_device_type()
+    
+    # Używamy naszego komponentu nagłówka - tak jak w dashboard
     zen_header("Profil użytkownika")
       # Add live XP indicator
     live_xp_indicator()

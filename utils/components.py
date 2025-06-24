@@ -252,21 +252,22 @@ def navigation_menu():
     menu_options = [
         {"id": "dashboard", "name": "Dashboard", "icon": "🏠"},
         {"id": "lesson", "name": "Lekcje", "icon": "📚"},
+        {"id": "inspirations", "name": "Inspiracje", "icon": "💡"},
         {"id": "profile", "name": "Profil", "icon": "👤"}
     ]
     
-    for option in menu_options:        # Dodaj stylizację dla aktywnego przycisku bez parametru active
+    for option in menu_options:
         button_label = f"{option['icon']} {option['name']}"
         
-        # Użyj zen_button bez parametru active
+        # Użyj zen_button bez dodatkowej stylizacji
         if zen_button(
             button_label, 
-            key=f"nav_{option['id']}"        ):
+            key=f"nav_{option['id']}"
+        ):
             # Jeśli klikamy na "Lekcje", resetuj stan bieżącej lekcji aby wrócić do przeglądu
             if option['id'] == 'lesson':
                 st.session_state.current_lesson = None
-                st.session_state.lesson_reset_requested = True  # Flaga do jednokrotnego resetu
-                # Wyczyść również inne stany związane z lekcją
+                st.session_state.lesson_reset_requested = True
                 if 'lesson_step' in st.session_state:
                     st.session_state.lesson_step = 'intro'
                 if 'lesson_finished' in st.session_state:
@@ -274,17 +275,8 @@ def navigation_menu():
             
             st.session_state.page = option['id']
             st.rerun()
-        
-        # Opcjonalnie, możesz dodać stylizację dla aktywnego przycisku używając CSS
-        if st.session_state.page == option['id']:
-            st.markdown(f"""
-            <style>
-            div[data-testid="stButton"] button[kind="secondary"][data-testid="baseButton-secondary"][aria-label="{button_label}"] {{
-                background-color: rgba(255, 255, 255, 0.1);
-                border-left: 3px solid #4CAF50;
-            }}
-            </style>
-            """, unsafe_allow_html=True)
+
+        # USUNIĘTE: Problematyczna stylizacja CSS dla aktywnych przycisków
 
 # Komponenty statystyk i danych
 
