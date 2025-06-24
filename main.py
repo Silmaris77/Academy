@@ -49,12 +49,12 @@ def main():
             st.markdown(f"### Witaj, {st.session_state.username}!")
             # Nawigacja
             navigation_menu()
-            
-            # Przycisk wylogowania na dole sidebara
+              # Przycisk wylogowania na dole sidebara
             if st.button("🚪 Wyloguj się", key="logout_button"):
                 clear_session()
                 st.rerun()
-      # Page routing
+    
+    # Page routing
     if not st.session_state.logged_in:
         show_login_page()
     else:
