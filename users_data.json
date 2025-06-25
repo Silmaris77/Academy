@@ -3,7 +3,7 @@
     "user_id": "741699e6-2ffe-4b0f-a36b-81e397686191",
     "password": "a",
     "degen_type": "YOLO Degen",
-    "xp": 4200,
+    "xp": 4201,
     "level": 7,
     "joined_date": "2025-04-27",
     "completed_lessons": [
@@ -243,7 +243,12 @@
         "closing_quiz_completed": true,
         "closing_quiz_xp": 4,
         "closing_quiz_degencoins": 4,
-        "closing_quiz_timestamp": "2025-06-12 13:08:52"
+        "closing_quiz_timestamp": "2025-06-12 13:08:52",
+        "summary_xp_awarded": true,
+        "summary_completed": true,
+        "summary_xp": 1,
+        "summary_degencoins": 1,
+        "summary_timestamp": "2025-06-25 15:53:43"
       }
     },
     "badge_data": {
@@ -664,7 +669,7 @@
         "timestamp": "2025-06-08T12:21:09.071964+00:00"
       }
     ],
-    "degencoins": 49,
+    "degencoins": 50,
     "inventory": {
       "avatar": [
         "diamond_degen",

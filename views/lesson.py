@@ -210,12 +210,12 @@ def show_lessons_content():
         base_xp = lesson.get('xp_reward', 100)        # Mapowanie kroków do nazw wyświetlanych (usunięto opening_quiz i closing_quiz)
         step_names = {
             'intro': 'Wprowadzenie',
-            'content': 'Materiał',
-            'practical_exercises': 'Ćwiczenia praktyczne',
+            'content': 'Nauka',
+            'practical_exercises': 'Praktyka',
             'reflection': 'Refleksja',  # backward compatibility
             'application': 'Zadania praktyczne',  # backward compatibility
             'summary': 'Podsumowanie'
-        }        # Mapowanie kroków do wartości XP (usunięto opening_quiz i closing_quiz)
+        }# Mapowanie kroków do wartości XP (usunięto opening_quiz i closing_quiz)
         step_xp_values = {
             'intro': int(base_xp * 0.05),          # 5% całkowitego XP
             'content': int(base_xp * 0.30),        # 30% całkowitego XP (Merytoryka)
