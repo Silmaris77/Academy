@@ -171,3 +171,32 @@ def get_random_inspiration():
     if inspirations:
         return random.choice(inspirations)
     return None
+
+def mark_inspiration_as_read(inspiration_id):
+    """Oznacza inspirację jako przeczytaną"""
+    if 'read_inspirations' not in st.session_state:
+        st.session_state.read_inspirations = []
+    
+    if inspiration_id not in st.session_state.read_inspirations:
+        st.session_state.read_inspirations.append(inspiration_id)
+
+def is_inspiration_read(inspiration_id):
+    """Sprawdza czy inspiracja została przeczytana"""
+    if 'read_inspirations' not in st.session_state:
+        return False
+    return inspiration_id in st.session_state.read_inspirations
+
+def get_read_inspirations():
+    """Pobiera listę przeczytanych inspiracji"""
+    if 'read_inspirations' not in st.session_state:
+        return []
+    
+    read_ids = st.session_state.read_inspirations
+    all_inspirations = get_all_inspirations()
+    
+    read_list = []
+    for insp in all_inspirations:
+        if insp.get("id") in read_ids:
+            read_list.append(insp)
+    
+    return read_list

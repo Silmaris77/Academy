@@ -4,12 +4,13 @@ from utils.components import zen_header, zen_button
 from utils.material3_components import apply_material3_theme
 from utils.layout import get_device_type, toggle_device_view
 from utils.inspirations_loader import (
-    load_inspirations_data, get_categories, get_featured_inspirations,
+    load_inspirations_data, get_categories,
     get_inspirations_by_category, search_inspirations, get_inspiration_by_id,
     load_inspiration_content, increment_inspiration_views, get_inspiration_views,
     mark_inspiration_as_favorite, unmark_inspiration_as_favorite, 
-    is_inspiration_favorite, get_favorite_inspirations, get_difficulty_emoji,
-    get_difficulty_text, get_random_inspiration, get_all_inspirations
+    is_inspiration_favorite, get_favorite_inspirations,
+    get_random_inspiration, get_all_inspirations,
+    mark_inspiration_as_read, is_inspiration_read, get_read_inspirations
 )
 
 def show_inspirations_page():
@@ -39,8 +40,7 @@ def show_inspirations_page():
     
     # Main navigation
     show_navigation()
-    
-    # Content based on current view mode
+      # Content based on current view mode
     if st.session_state.inspiration_view_mode == 'overview':
         show_overview()
     elif st.session_state.inspiration_view_mode == 'categories':
@@ -49,6 +49,8 @@ def show_inspirations_page():
         show_search_view()
     elif st.session_state.inspiration_view_mode == 'favorites':
         show_favorites_view()
+    elif st.session_state.inspiration_view_mode == 'read':
+        show_read_view()
     elif st.session_state.inspiration_view_mode == 'detail':
         show_inspiration_detail()
 
@@ -89,8 +91,7 @@ def add_inspirations_styles():
         transform: translateY(-1px) !important;
         box-shadow: 0 4px 12px rgba(0,0,0,0.1) !important;
     }
-    
-    /* Podstawowe hover dla przycisków */
+      /* Podstawowe hover dla przycisków */
     .stButton button {
         transition: all 0.3s ease !important;
     }
@@ -99,12 +100,50 @@ def add_inspirations_styles():
         transform: translateY(-2px) !important;
         box-shadow: 0 4px 12px rgba(59, 130, 246, 0.3) !important;
     }
+      /* Style dla kart inspiracji - wyrównanie przycisków */
+    .inspiration-card-buttons {
+        display: flex !important;
+        justify-content: space-between !important;
+        align-items: center !important;
+        gap: 0.75rem !important;
+        margin-top: 1rem !important;
+    }
+    
+    .inspiration-card-buttons .stButton:first-child button {
+        margin-right: auto !important;
+        justify-content: flex-start !important;
+    }
+    
+    .inspiration-card-buttons .stButton:last-child button {
+        margin-left: auto !important;
+        justify-content: flex-end !important;
+    }
+    
+    /* Lepsze wyrównanie przycisków w kartach */
+    [data-testid="column"]:nth-child(1) [data-testid="stButton"] button {
+        width: 100% !important;
+        text-align: left !important;
+        justify-content: flex-start !important;
+    }
+    
+    [data-testid="column"]:nth-child(2) [data-testid="stButton"] button {
+        width: 100% !important;
+        text-align: right !important;
+        justify-content: flex-end !important;
+    }
     
     /* Mobile */
     @media (max-width: 768px) {
         .main .block-container {
             padding-left: 1rem;
             padding-right: 1rem;
+        }
+        
+        /* Na mobile przyciski zajmują całą szerokość */
+        [data-testid="column"] [data-testid="stButton"] button {
+            width: 100% !important;
+            text-align: center !important;
+            justify-content: center !important;
         }
     }
     </style>
@@ -114,7 +153,7 @@ def show_navigation():
     """Wyświetla nawigację między sekcjami inspiracji"""
     st.markdown('<div class="inspirations-nav-bar">', unsafe_allow_html=True)
     
-    col1, col2, col3, col4 = st.columns(4)
+    col1, col2, col3, col4, col5 = st.columns(5)
     
     with col1:
         if st.button("🏠 Przegląd", key="nav_overview"):
@@ -136,21 +175,28 @@ def show_navigation():
             st.session_state.inspiration_view_mode = 'favorites'
             st.rerun()
     
+    with col5:
+        if st.button("✅ Przeczytane", key="nav_read"):
+            st.session_state.inspiration_view_mode = 'read'
+            st.rerun()
+    
     st.markdown('</div>', unsafe_allow_html=True)
 
 def show_overview():
-    """Strona główna inspiracji"""
+    """Strona główna inspiracji - wszystkie artykuły"""
     
-    # Featured inspirations
-    st.subheader("🌟 Polecane Inspiracje")
-    featured = get_featured_inspirations()
+    # Wszystkie inspiracje
+    st.subheader("📚 Wszystkie Inspiracje")
+    all_inspirations = get_all_inspirations()
     
-    if featured:
-        display_inspirations_grid(featured, featured=True)
+    if all_inspirations:
+        st.info(f"📖 Dostępnych jest **{len(all_inspirations)}** inspiracji do przeczytania!")
+        display_inspirations_grid(all_inspirations, featured=False)
     else:
-        st.info("Brak polecanych inspiracji")
-      # Quick access to categories
-    st.subheader("🗂️ Kategorie")
+        st.info("Brak dostępnych inspiracji")
+    
+    # Quick access to categories
+    st.subheader("🗂️ Przeglądaj po kategoriach")
     categories = get_categories()
     
     if categories:
@@ -231,6 +277,18 @@ def show_favorites_view():
     else:
         st.info("Nie masz jeszcze ulubionych inspiracji. Dodaj je klikając ⭐ na kartach inspiracji.")
 
+def show_read_view():
+    """Widok przeczytanych inspiracji"""
+    st.subheader("✅ Przeczytane inspiracje")
+    
+    read_inspirations = get_read_inspirations()
+    
+    if read_inspirations:
+        st.info(f"📖 Przeczytałeś już **{len(read_inspirations)}** inspiracji!")
+        display_inspirations_grid(read_inspirations)
+    else:
+        st.info("Nie przeczytałeś jeszcze żadnej inspiracji. Rozpocznij czytanie w sekcji Przegląd!")
+
 def display_inspirations_grid(inspirations, featured=False):
     """Wyświetla siatkę inspiracji w kolumnach"""
     
@@ -255,49 +313,50 @@ def show_single_inspiration_card(inspiration, featured=False, card_index=0):
     """Wyświetla pojedynczą kartę inspiracji używając kolorowych kontenerów Streamlit"""
     
     # Przygotuj dane
-    difficulty_emoji = get_difficulty_emoji(inspiration.get('difficulty', 'beginner'))
-    difficulty_text = get_difficulty_text(inspiration.get('difficulty', 'beginner'))
     reading_time = inspiration.get('reading_time', 5)
     views = get_inspiration_views(inspiration['id'])
     is_fav = is_inspiration_favorite(inspiration['id'])
+    is_read = is_inspiration_read(inspiration['id'])
     fav_icon = "⭐" if is_fav else "☆"
     
-    # Użyj kolorowego kontenera na podstawie typu
-    if featured:
-        container_type = "info"  # Niebieski kontener
-        container_icon = "🌟"
-    else:
-        container_type = "success"  # Zielony kontener  
-        container_icon = "💡"
+    # Wszystkie karty używają tego samego stylu (zielony kontener z ikoną 💡)
+    container_icon = "💡"
     
-    # Kontener z kolorem
+    # Kontener z kolorem - przyciski WEWNĄTRZ kontenera
     with st.container(border=True):
-        # Używamy kolorowego alertu jako tła
-        if featured:
-            st.info(f"### {container_icon} {inspiration['title']}\n\n{inspiration['description']}", icon=container_icon)
-        else:
-            st.success(f"### {container_icon} {inspiration['title']}\n\n{inspiration['description']}", icon=container_icon)
+        st.success(f"### {inspiration['title']}\n\n{inspiration['description']}", icon=container_icon)
         
-        # Meta informacje
-        col1, col2, col3 = st.columns(3)
+        # Meta informacje (bez poziomu trudności)
+        col1, col2 = st.columns(2)
         with col1:
-            st.caption(f"{difficulty_emoji} {difficulty_text}")
-        with col2:
             st.caption(f"📖 {reading_time} min")
-        with col3:
+        with col2:
             st.caption(f"👁️ {views} wyświetleń")
-          # Tagi
+        
+        # Tagi
         tags = inspiration.get('tags', [])
         if tags and isinstance(tags, (list, tuple)):
             # Pokaż maksymalnie 3 tagi
             display_tags = tags[:3] if len(tags) > 3 else tags
-            st.caption("🏷️ " + " • ".join(display_tags))
+            st.caption("🏷️ " + " • ".join(display_tags))        # Przyciski WEWNĄTRZ kontenera - wyrównane do krawędzi
+        # Sprawdź czy artykuł został przeczytany i dostosuj tekst przycisku
+        if is_read:
+            button_text = "✅ PRZECZYTANE"
+            button_type = "secondary"
+            help_text = "Artykuł przeczytany - kliknij by czytać ponownie"
+        else:
+            button_text = "📖 CZYTAJ"
+            button_type = "primary"
+            help_text = "Przeczytaj inspirację"
         
-        # Przyciski
-        col_fav, col_read = st.columns(2)
+        # Div z klasą CSS dla lepszego wyrównania
+        st.markdown('<div class="inspiration-card-buttons">', unsafe_allow_html=True)
+        
+        # Kolumny z gap dla przycisków
+        col_fav, col_read = st.columns([1, 1], gap="medium")
         
         with col_fav:
-            if st.button(fav_icon, key=f"fav_{inspiration['id']}_{card_index}", help="Dodaj/usuń z ulubionych"):
+            if st.button(f"{fav_icon} Ulubione", key=f"fav_{inspiration['id']}_{card_index}", help="Dodaj/usuń z ulubionych", use_container_width=True):
                 if is_fav:
                     unmark_inspiration_as_favorite(inspiration['id'])
                 else:
@@ -305,11 +364,13 @@ def show_single_inspiration_card(inspiration, featured=False, card_index=0):
                 st.rerun()
         
         with col_read:
-            if st.button("📖 CZYTAJ", key=f"read_{inspiration['id']}_{card_index}", type="primary"):
+            if st.button(button_text, key=f"read_{inspiration['id']}_{card_index}", type=button_type, help=help_text, use_container_width=True):
                 st.session_state.current_inspiration = inspiration['id']
                 st.session_state.inspiration_view_mode = 'detail'
                 increment_inspiration_views(inspiration['id'])
                 st.rerun()
+        
+        st.markdown('</div>', unsafe_allow_html=True)
 
 def show_inspiration_detail():
     """Wyświetla szczegóły inspiracji"""
@@ -327,19 +388,14 @@ def show_inspiration_detail():
     if st.button("← Powrót", key="back_to_overview"):
         st.session_state.inspiration_view_mode = 'overview'
         st.rerun()
-    
-    # Title and meta
+      # Title and meta
     st.title(inspiration['title'])
     
-    col1, col2, col3 = st.columns(3)
+    col1, col2 = st.columns(2)
     with col1:
-        difficulty_emoji = get_difficulty_emoji(inspiration.get('difficulty', 'beginner'))
-        difficulty_text = get_difficulty_text(inspiration.get('difficulty', 'beginner'))
-        st.write(f"{difficulty_emoji} **Poziom:** {difficulty_text}")
-    with col2:
         reading_time = inspiration.get('reading_time', 5)
         st.write(f"📖 **Czas czytania:** {reading_time} min")
-    with col3:
+    with col2:
         views = get_inspiration_views(inspiration['id'])
         st.write(f"👁️ **Wyświetlenia:** {views}")
       # Tags
@@ -347,12 +403,13 @@ def show_inspiration_detail():
     if tags and isinstance(tags, (list, tuple)):
         formatted_tags = [f"*{tag}*" for tag in tags]
         st.write("**Tagi:** " + " • ".join(formatted_tags))
-    
-    # Content
+      # Content
     st.markdown("---")
     content = load_inspiration_content(inspiration['id'])
     if content:
         st.markdown(content)
+        # Oznacz inspirację jako przeczytaną gdy treść zostanie wyświetlona
+        mark_inspiration_as_read(inspiration['id'])
     else:
         st.info("Zawartość inspiracji będzie dostępna wkrótce...")
     
