@@ -256,6 +256,12 @@ def navigation_menu():
         {"id": "profile", "name": "Profil", "icon": "👤"}
     ]
     
+    # Dodaj opcję Admin dla uprawnionych użytkowników
+    if st.session_state.get('logged_in', False):
+        admin_users = ["admin", "zenmaster", "Anna"]  # Lista administratorów
+        if st.session_state.get('username') in admin_users:
+            menu_options.append({"id": "admin", "name": "Admin", "icon": "⚙️"})
+    
     for option in menu_options:
         button_label = f"{option['icon']} {option['name']}"
         

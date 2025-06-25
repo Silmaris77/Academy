@@ -1262,7 +1262,8 @@
     "completed_lessons": [],
     "badges": [],
     "test_taken": false,
-    "degencoins": 0
+    "degencoins": 0,
+    "recent_activities": []
   },
   "zenmaster": {
     "user_id": "0cfd617c-e5e5-412e-9911-8d860723cc2b",
@@ -3596,9 +3597,6 @@
       }
     },
     "avatar": "emo"
-  },
-  "null": {
-    "recent_activities": []
   },
   "null": {
     "recent_activities": []

@@ -9,9 +9,8 @@ def init_session_state():
         st.session_state.username = None
         
     if "page" not in st.session_state:
-        st.session_state.page = "dashboard"
-      # Upewnij się, że strona jest poprawna
-    valid_pages = ["dashboard", "lesson", "profile", "skills", "shop", "inspirations"]
+        st.session_state.page = "dashboard"    # Upewnij się, że strona jest poprawna
+    valid_pages = ["dashboard", "lesson", "profile", "skills", "shop", "inspirations", "admin"]
     if st.session_state.page not in valid_pages:
         st.session_state.page = "dashboard"
 
