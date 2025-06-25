@@ -1261,14 +1261,33 @@
     "user_id": "5234fd92-04d2-4b92-b284-fe437260a815",
     "password": "a",
     "degen_type": null,
-    "xp": 0,
+    "xp": 19,
     "level": 1,
     "joined_date": "2025-05-21",
     "completed_lessons": [],
     "badges": [],
     "test_taken": false,
-    "degencoins": 0,
-    "recent_activities": []
+    "degencoins": 19,
+    "recent_activities": [],
+    "lesson_progress": {
+      "B1C1L4": {
+        "intro_xp_awarded": true,
+        "intro_completed": true,
+        "intro_xp": 1,
+        "intro_degencoins": 1,
+        "intro_timestamp": "2025-06-25 16:19:23",
+        "content_xp_awarded": true,
+        "content_completed": true,
+        "content_xp": 6,
+        "content_degencoins": 6,
+        "content_timestamp": "2025-06-25 16:19:36",
+        "practical_exercises_xp_awarded": true,
+        "practical_exercises_completed": true,
+        "practical_exercises_xp": 12,
+        "practical_exercises_degencoins": 12,
+        "practical_exercises_timestamp": "2025-06-25 16:20:04"
+      }
+    }
   },
   "zenmaster": {
     "user_id": "0cfd617c-e5e5-412e-9911-8d860723cc2b",

@@ -309,109 +309,83 @@ def show_lessons_content():
                 content: '▲';
                 float: right;
                 margin-left: 10px;
-            }        }
-        </style>
-        """, unsafe_allow_html=True)
-
-        # Lesson navigation in sidebar
+            }        }        </style>
+        """, unsafe_allow_html=True)        # Sidebar pozostaje pusty - nawigacja przeniesiona na główną stronę
         with st.sidebar:
-            st.markdown("<h3>Nawigacja lekcji</h3>", unsafe_allow_html=True)
-            
-            # Dodaj przycisk powrotu do przeglądu lekcji
-            if zen_button("Wszystkie lekcje", use_container_width=True):
-                st.session_state.current_lesson = None
-                st.rerun()
-            
-            # Wyświetl pełną mapę kroków lekcji z zaznaczeniem obecnego
-            st.markdown("<h4>Mapa lekcji:</h4>", unsafe_allow_html=True)
-            
-            # Dodaj style dla przycisków nawigacji
+            pass
+
+        # Nawigacja pozioma na głównej stronie
+        def show_horizontal_lesson_navigation():
+            """Wyświetla poziomą nawigację lekcji na głównej stronie"""
             st.markdown("""
             <style>
-            .nav-btn-current {
-                background-color: #2196F3 !important;
-                color: white !important;
-                font-weight: bold !important;
-                pointer-events: none;
+            .lesson-nav-container {
+                background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
+                padding: 1rem;
+                border-radius: 12px;
+                margin-bottom: 2rem;
+                box-shadow: 0 2px 8px rgba(0,0,0,0.1);
             }
-            .nav-btn-completed {
-                background-color: #4CAF50 !important;
-                color: white !important;
-            }
-            .nav-btn-locked {
-                background-color: #f0f2f6 !important;
-                color: #666 !important;
-                pointer-events: none;
-            }
-            </style>
+            .lesson-nav-title {
+                text-align: center;
+                font-size: 1.1rem;
+                font-weight: 600;
+                color: #334155;
+                margin-bottom: 1rem;            }            </style>
             """, unsafe_allow_html=True)
-
+            
+            st.markdown('<div class="lesson-nav-container">', unsafe_allow_html=True)
+            st.markdown('<div class="lesson-nav-title">📚 Nawigacja lekcji</div>', unsafe_allow_html=True)
+            
+            # Stwórz 4 kolumny dla przycisków nawigacji
+            cols = st.columns(4)
+            
             for i, step in enumerate(step_order):
                 if step in available_steps:
-                    step_name = step_names.get(step, step.capitalize())
-                    
-                    # Sprawdź status kroku
-                    is_completed = st.session_state.lesson_progress.get(step, False)
-                    is_current = (step == st.session_state.lesson_step)
-                    
-                    # Ikony statusu
-                    check_icon = "✅ " if is_completed else ""
-                    current_icon = "👉 " if is_current else ""
-                    
-                    # Tekst przycisku - bez ikony dla aktualnego kroku jeśli jest już ikona ukończenia
-                    if is_current and is_completed:
-                        button_text = f"{current_icon}{i+1}. {step_name}"
-                    else:
-                        button_text = f"{current_icon if is_current else ''}{check_icon if is_completed and not is_current else ''}{i+1}. {step_name}"
-                    
-                    # Wyświetl element w odpowiednim stylu
-                    if is_current:
-                        # Element aktualny - niebieski przycisk (ten sam kształt co ukończone elementy)
-                        st.button(button_text, key=f"current_step_{step}", disabled=True, use_container_width=True)
-                        # Stylizuj przycisk za pomocą CSS
-                        st.markdown("""
-                        <style>
-                        button[data-testid="baseButton-secondary"]:disabled {
-                            background-color: #1976D2 !important;
-                            color: white !important;
-                            opacity: 1 !important;
-                            font-weight: bold !important;
-                            cursor: default !important;
-                            border-radius: 5px !important;
-                            box-shadow: none !important;
-                        }
-                        </style>
-                        """, unsafe_allow_html=True)
-                    elif is_completed:
-                        # Ukończony element - zielony, klikalny
-                        if st.button(button_text, key=f"completed_step_{step}", use_container_width=True):
-                            # Przejdź do wybranego kroku po kliknięciu
-                            st.session_state.lesson_step = step
-                            st.rerun()
-                        # Stylizuj przycisk za pomocą CSS
-                        st.markdown("""
-                        <style>
-                        button[data-testid="baseButton-secondary"]:not(:disabled) {
-                            background-color: #4CAF50 !important;
-                            color: white !important;
-                            border-radius: 5px !important;
-                        }
-                        </style>
-                        """, unsafe_allow_html=True)
-                    else:
-                        # Przyszły element - szary div
-                        st.markdown(
-                            f"""
-                            <div style="color: #666; padding: 8px; 
-                                      border-radius: 5px; margin-bottom: 5px; text-align: center;">
-                                {i+1}. {step_name}
-                            </div>
-                            """, 
-                            unsafe_allow_html=True
-                        )
+                    with cols[i]:
+                        step_name = step_names.get(step, step.capitalize())
+                        
+                        # Sprawdź status kroku
+                        is_completed = st.session_state.lesson_progress.get(step, False)
+                        is_current = (step == st.session_state.lesson_step)
+                        
+                        # Określ styl przycisku
+                        if is_current:
+                            # Aktualny krok - niebieski
+                            button_text = f"👉 {i+1}. {step_name}"
+                            button_type = "primary"
+                            disabled = False
+                        elif is_completed:
+                            # Ukończony krok - zielony z checkmarkiem
+                            button_text = f"✅ {i+1}. {step_name}"
+                            button_type = "secondary"
+                            disabled = False
+                        else:
+                            # Przyszły krok - szary, zablokowany
+                            button_text = f"{i+1}. {step_name}"
+                            button_type = "secondary"
+                            disabled = True
+                        
+                        # Wyświetl przycisk
+                        if st.button(
+                            button_text, 
+                            key=f"nav_step_{step}_{i}", 
+                            type=button_type,
+                            disabled=disabled,
+                            use_container_width=True,
+                            help=f"Przejdź do: {step_name}" if not disabled else f"Ukończ poprzednie kroki aby odblokować: {step_name}"
+                        ):
+                            if not is_current:  # Tylko jeśli nie jest to aktualny krok
+                                st.session_state.lesson_step = step
+                                st.rerun()
+            
+            st.markdown('</div>', unsafe_allow_html=True)
+        
+        # Wyświetl poziomą nawigację
+        show_horizontal_lesson_navigation()
 
         # Main content
-        st.markdown("<div class='st-bx'>", unsafe_allow_html=True)        # Nagłówek sekcji
+        st.markdown("<div class='st-bx'>", unsafe_allow_html=True)# Nagłówek sekcji
         current_section_title = step_names.get(st.session_state.lesson_step, st.session_state.lesson_step.capitalize())
         st.markdown(f"<h1>{current_section_title}</h1>", unsafe_allow_html=True)
           # Main content logic for each step
