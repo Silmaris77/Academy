@@ -698,7 +698,17 @@
     },
     "active_avatar": "moon_hunter",
     "active_background": "zen_garden",
-    "test_date": "2025-06-22 13:54:10"
+    "test_date": "2025-06-22 13:54:10",
+    "inspirations": {
+      "read": [
+        "sukces_compound_effect"
+      ],
+      "favorites": [
+        "mindset_milionaire_1",
+        "motywacja_degen_power",
+        "sukces_compound_effect"
+      ]
+    }
   },
   "q": {
     "user_id": "f5584873-053a-4645-a36e-fc6868674ac4",
@@ -1292,6 +1302,20 @@
         "closing_quiz_degencoins": 4,
         "closing_quiz_timestamp": "2025-06-26 12:03:10"
       }
+    },
+    "inspirations": {
+      "read": [
+        "produktywnosc_deep_work",
+        "zdrowie_trader_wellness",
+        "finanse_risk_management",
+        "relacje_networking_web3"
+      ],
+      "favorites": [
+        "mindset_milionaire_1",
+        "motywacja_degen_power",
+        "finanse_risk_management",
+        "rozwoj_comfort_zone"
+      ]
     }
   },
   "zenmaster": {
@@ -3629,5 +3653,26 @@
   },
   "null": {
     "recent_activities": []
+  },
+  "osa": {
+    "user_id": "47d205af-c0e2-41d2-9a8f-523122cc5e67",
+    "password": "osa",
+    "degen_type": null,
+    "xp": 0,
+    "degencoins": 0,
+    "level": 1,
+    "joined_date": "2025-06-26",
+    "completed_lessons": [],
+    "badges": [],
+    "test_taken": false,
+    "inspirations": {
+      "read": [
+        "mindset_milionaire_1"
+      ],
+      "favorites": [
+        "sukces_compound_effect",
+        "produktywnosc_deep_work"
+      ]
+    }
   }
 }
