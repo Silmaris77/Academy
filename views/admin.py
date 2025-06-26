@@ -101,29 +101,45 @@ def get_degen_type_distribution():
     return pd.DataFrame(degen_distribution)
 
 def plot_user_activity_over_time():
-    """Generuje wykres aktywności użytkowników w czasie"""
+    """Generuje wykres aktywności użytkowników w czasie na podstawie rzeczywistych danych"""
     users_data = load_user_data()
     
-    # W rzeczywistej aplikacji te dane byłyby pobierane z historii logowań
-    # Dla demonstracji generujemy przykładowe dane
-    
-    # Symulacja dziennej aktywności
+    # Pobierz rzeczywiste daty z ostatnich 30 dni
     today = datetime.now()
     dates = [(today - timedelta(days=i)).strftime('%Y-%m-%d') for i in range(30)]
     
-    # Symulacja liczby aktywnych użytkowników dziennie (losowo)
-    np.random.seed(42)  # Dla powtarzalności
-    total_users = len(users_data)
-    active_users = [int(np.random.binomial(total_users, 0.3 + 0.1 * np.sin(i/5))) for i in range(30)]
+    # Inicjalizuj liczniki dla rejestracji i logowań
+    registrations = {date: 0 for date in dates}
+    logins = {date: 0 for date in dates}
     
-    # Odwróć listy, aby najnowsze dane były na końcu
+    # Zlicz rzeczywistą aktywność na podstawie danych użytkowników
+    for username, user_data in users_data.items():
+        # 1. Zlicz rejestracje w ostatnich 30 dniach
+        joined_date = user_data.get('joined_date')
+        if joined_date and joined_date in registrations:
+            registrations[joined_date] += 1
+        
+        # 2. Zlicz ostatnie logowania w ostatnich 30 dniach
+        last_login = user_data.get('last_login')
+        if last_login:
+            # Wyciągnij datę z datetime string (format: "2025-06-26 14:30:15")
+            try:
+                login_date = last_login.split(' ')[0]  # Weź tylko część z datą
+                if login_date in logins:
+                    logins[login_date] += 1
+            except (AttributeError, IndexError, ValueError):
+                # Ignoruj nieprawidłowe formaty dat
+                pass
+    
+    # Odwróć daty, aby najnowsze były na końcu
     dates.reverse()
-    active_users.reverse()
     
-    # Utwórz DataFrame
+    # Utwórz DataFrame z oddzielnymi kolumnami dla rejestracji i logowań
     activity_df = pd.DataFrame({
         'data': dates,
-        'aktywni_użytkownicy': active_users
+        'rejestracje': [registrations[date] for date in dates],
+        'logowania': [logins[date] for date in dates],
+        'łącznie': [registrations[date] + logins[date] for date in dates]
     })
     
     return activity_df
@@ -188,8 +204,7 @@ def show_admin_dashboard():
         
         with stats_cols[3]:
             stat_card("Wykonane testy", int(tests_taken), "📊")
-        
-        # Wykresy aktywności
+          # Wykresy aktywności
         st.subheader("Aktywność użytkowników")
         
         activity_df = plot_user_activity_over_time()
@@ -197,12 +212,12 @@ def show_admin_dashboard():
         # Wykres aktywności użytkowników
         chart = alt.Chart(activity_df).mark_line(point=True).encode(
             x=alt.X('data:T', title='Data'),
-            y=alt.Y('aktywni_użytkownicy:Q', title='Liczba aktywnych użytkowników'),
-            tooltip=['data', 'aktywni_użytkownicy']
+            y=alt.Y('łącznie:Q', title='Liczba aktywności (rejestracje + logowania)'),
+            tooltip=['data', 'rejestracje', 'logowania', 'łącznie']
         ).properties(
             width='container',
             height=350,
-            title='Dzienna aktywność użytkowników (ostatnie 30 dni)'
+            title='Aktywność użytkowników: rejestracje i logowania (ostatnie 30 dni)'
         )
         
         st.altair_chart(chart, use_container_width=True)
@@ -213,11 +228,51 @@ def show_admin_dashboard():
         degen_df = get_degen_type_distribution()
         
         if not degen_df.empty:
-            # Wykres kołowy typów degenów
-            fig, ax = plt.subplots(figsize=(10, 6))
-            ax.pie(degen_df['count'], labels=degen_df['degen_type'], autopct='%1.1f%%', 
-                   startangle=90, shadow=False)
-            ax.axis('equal')  # Equal aspect ratio ensures that pie is drawn as a circle
+            # Wykres kołowy typów degenów z ulepszoną czytelnością
+            fig, ax = plt.subplots(figsize=(12, 8))
+            
+            # Przygotuj dane
+            counts = degen_df['count'].tolist()
+            labels = degen_df['degen_type'].tolist()
+            total = sum(counts)
+            
+            # Funkcja do wyświetlania procentów tylko dla większych wartości
+            def autopct_format(pct):
+                return f'{pct:.1f}%' if pct >= 3 else ''
+            
+            # Stwórz wykres kołowy z automatycznym pozycjonowaniem etykiet
+            pie_result = ax.pie(
+                counts, 
+                labels=labels,
+                autopct=autopct_format,
+                startangle=90,
+                shadow=False,
+                pctdistance=0.85,  # Odległość etykiet z procentami od środka
+                labeldistance=1.1,  # Odległość nazw od środka
+                explode=[0.05 if count/total < 0.05 else 0 for count in counts],  # Wysuń małe segmenty
+                textprops={'fontsize': 10}
+            )
+            
+            # Rozpakuj wyniki (może być 2 lub 3 elementy)
+            if len(pie_result) == 3:
+                wedges, texts, autotexts = pie_result
+                # Poprawa czytelności etykiet procentowych
+                for autotext in autotexts:
+                    autotext.set_color('white')
+                    autotext.set_fontweight('bold')
+            else:
+                wedges, texts = pie_result
+            
+            # Dodaj legendę z dokładnymi liczbami
+            legend_labels = [f'{label}: {count} ({count/total*100:.1f}%)' 
+                           for label, count in zip(labels, counts)]
+            ax.legend(wedges, legend_labels, title="Typy degenów", 
+                     loc="center left", bbox_to_anchor=(1, 0, 0.5, 1))
+            
+            ax.axis('equal')  # Zapewnia okrągły kształt
+            plt.title('Rozkład typów degenów', fontsize=14, fontweight='bold', pad=20)
+            plt.tight_layout()
+            
             st.pyplot(fig)
         else:
             st.info("Brak danych o typach degenów.")

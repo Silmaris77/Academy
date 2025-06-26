@@ -65,7 +65,52 @@ def login_user(username, password):
 'last_login': data.get('last_login') or 'Nigdy',  # ✅ Lepsze formatowanie
 ```
 
-### 3. Dodano kolumny do konfiguracji tabeli
+### 3. Naprawiono wykres "Aktywność użytkowników"
+
+**Problem:** Wykres generował tylko symulowane losowe dane zamiast używać rzeczywistych danych z logowań i rejestracji.
+
+**Przed:**
+```python
+# Symulacja dziennej aktywności - NIEPRAWDZIWE DANE
+np.random.seed(42)
+total_users = len(users_data)
+active_users = [int(np.random.binomial(total_users, 0.3 + 0.1 * np.sin(i/5))) for i in range(30)]
+```
+
+**Po:**
+```python
+# Rzeczywiste dane z rejestracji i logowań
+for username, user_data in users_data.items():
+    # Zlicz rejestracje
+    joined_date = user_data.get('joined_date')
+    if joined_date and joined_date in registrations:
+        registrations[joined_date] += 1
+    
+    # Zlicz logowania
+    last_login = user_data.get('last_login')
+    if last_login:
+        login_date = last_login.split(' ')[0]
+        if login_date in logins:
+            logins[login_date] += 1
+```
+
+**Ulepszenia:**
+- ✅ Używa rzeczywistych dat rejestracji (`joined_date`)
+- ✅ Używa rzeczywistych dat logowania (`last_login`) 
+- ✅ Rozdzielne liczniki dla rejestracji i logowań
+- ✅ Zaktualizowany tooltip z szczegółami
+- ✅ Zmieniony tytuł: "Aktywność użytkowników: rejestracje i logowania"
+
+### 4. Dodano kolumny do konfiguracji tabeli
+
+```python
+column_config={
+    # ...existing columns...
+    "registration_date": "Data rejestracji",     # ✅ Dodano
+    "last_login": "Ostatnie logowanie",          # ✅ Dodano
+    # ...
+}
+### 4. Dodano kolumny do konfiguracji tabeli
 
 ```python
 column_config={
@@ -83,6 +128,8 @@ column_config={
 1. **`views/admin.py`:**
    - Poprawiono mapowanie `registration_date` → `joined_date`
    - Poprawiono obsługę `last_login`
+   - **Przepisano funkcję `plot_user_activity_over_time()`** - teraz używa rzeczywistych danych
+   - Zaktualizowano wykres aktywności z nowym DataFrame
    - Dodano kolumny do `column_config`
 
 2. **`data/users.py`:**
@@ -95,7 +142,7 @@ column_config={
 ### 🔧 Utworzone skrypty:
 
 - **`scripts/migrate_last_login.py`** - Skrypt do dodania pola `last_login` dla istniejących użytkowników
-- **`tests/test_admin_dates.py`** - Test weryfikujący poprawność wyświetlania dat
+- **`tests/test_admin_activity_chart.py`** - Test weryfikujący wykres aktywności z rzeczywistymi danymi
 
 ## Rezultat
 
@@ -105,6 +152,13 @@ column_config={
 - **Ostatnie logowanie:** 
   - `"Nigdy"` - dla użytkowników, którzy się jeszcze nie logowali
   - Rzeczywista data i czas (np. "2025-06-26 14:30:15") - dla zalogowanych użytkowników
+- **Wykres aktywności:** Rzeczywiste dane z rejestracji i logowań zamiast symulowanych
+
+✅ **Wykres "Aktywność użytkowników" teraz pokazuje:**
+- Rzeczywiste rejestracje z ostatnich 30 dni
+- Rzeczywiste logowania z ostatnich 30 dni  
+- Tooltip ze szczegółowymi danymi (rejestracje, logowania, łącznie)
+- Precyzyjny tytuł opisujący źródło danych
 
 ✅ **Automatyczne śledzenie logowań:**
 - Przy każdym logowaniu zapisywana jest aktualna data i czas
@@ -117,9 +171,12 @@ Uruchom panel administratora:
 1. Idź do zakładki **Admin**
 2. Otwórz tab **Użytkownicy**  
 3. Sprawdź kolumny **Data rejestracji** i **Ostatnie logowanie**
+4. **Sprawdź wykres "Aktywność użytkowników"** - powinien pokazywać rzeczywiste dane
 
-**Oczekiwany rezultat:** Brak dat `2023-01-01`, rzeczywiste daty lub komunikaty "Nieznana"/"Nigdy".
+**Oczekiwany rezultat:** 
+- Brak dat `2023-01-01`, rzeczywiste daty lub komunikaty "Nieznana"/"Nigdy"
+- Wykres aktywności pokazuje rzeczywiste rejestracje i logowania zamiast losowych danych
 
 ## Status
 
-🎉 **Problem rozwiązany!** Panel administratora teraz wyświetla prawidłowe daty rejestracji i ostatniego logowania.
+🎉 **Problem rozwiązany!** Panel administratora teraz wyświetla prawidłowe daty rejestracji, ostatniego logowania **oraz rzeczywisty wykres aktywności użytkowników**.
