@@ -1,0 +1,1128 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ZenDegenAcademy - Interactive Mobile Prototype</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .mobile-container {
+            width: 375px;
+            height: 812px;
+            background: #2c3e50;
+            border-radius: 30px;
+            padding: 8px;
+            box-shadow: 0 25px 60px rgba(0,0,0,0.5);
+            position: relative;
+        }
+
+        .phone-screen {
+            width: 100%;
+            height: 100%;
+            background: white;
+            border-radius: 25px;
+            overflow: hidden;
+            position: relative;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .status-bar {
+            background: #1a1a1a;
+            color: white;
+            padding: 8px 20px;
+            font-size: 12px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-shrink: 0;
+        }
+
+        .app-header {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            padding: 15px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-shrink: 0;
+        }
+
+        .app-title {
+            font-size: 18px;
+            font-weight: bold;
+        }
+
+        .user-avatar {
+            width: 35px;
+            height: 35px;
+            background: rgba(255,255,255,0.2);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 16px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .user-avatar:hover {
+            background: rgba(255,255,255,0.3);
+            transform: scale(1.1);
+        }
+
+        .main-content {
+            flex: 1;
+            overflow-y: auto;
+            padding: 20px;
+            padding-bottom: 100px;
+        }
+
+        .page {
+            display: none;
+            animation: fadeIn 0.3s ease;
+        }
+
+        .page.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Progress Card */
+        .progress-card {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            border-radius: 20px;
+            padding: 25px;
+            margin-bottom: 25px;
+            box-shadow: 0 8px 30px rgba(102, 126, 234, 0.3);
+        }
+
+        .progress-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+
+        .level-info {
+            font-size: 18px;
+            font-weight: bold;
+        }
+
+        .degen-type {
+            background: rgba(255,255,255,0.2);
+            padding: 6px 12px;
+            border-radius: 15px;
+            font-size: 12px;
+        }
+
+        .xp-text {
+            font-size: 14px;
+            opacity: 0.9;
+            margin-bottom: 10px;
+        }
+
+        .xp-progress {
+            background: rgba(255,255,255,0.2);
+            height: 8px;
+            border-radius: 4px;
+            overflow: hidden;
+            margin-bottom: 10px;
+        }
+
+        .xp-fill {
+            background: white;
+            height: 100%;
+            border-radius: 4px;
+            transition: width 1s ease;
+        }
+
+        /* Quick Actions */
+        .section-title {
+            font-size: 18px;
+            font-weight: bold;
+            color: #2c3e50;
+            margin-bottom: 15px;
+        }
+
+        .actions-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 15px;
+            margin-bottom: 25px;
+        }
+
+        .action-item {
+            background: white;
+            border-radius: 15px;
+            padding: 20px;
+            text-align: center;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+            cursor: pointer;
+            transition: all 0.3s;
+            border-left: 4px solid transparent;
+        }
+
+        .action-item:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 30px rgba(0,0,0,0.15);
+        }
+
+        .action-item.continue { border-left-color: #27ae60; }
+        .action-item.missions { border-left-color: #e74c3c; }
+        .action-item.quiz { border-left-color: #f39c12; }
+        .action-item.profile { border-left-color: #9b59b6; }
+
+        .action-icon {
+            font-size: 28px;
+            margin-bottom: 8px;
+        }
+
+        .action-title {
+            font-size: 14px;
+            font-weight: bold;
+            color: #2c3e50;
+            margin-bottom: 4px;
+        }
+
+        .action-desc {
+            font-size: 11px;
+            color: #666;
+        }
+
+        /* Stats Cards */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 10px;
+            margin-bottom: 25px;
+        }
+
+        .stat-card {
+            background: white;
+            border-radius: 15px;
+            padding: 15px;
+            text-align: center;
+            box-shadow: 0 2px 15px rgba(0,0,0,0.1);
+        }
+
+        .stat-value {
+            font-size: 20px;
+            font-weight: bold;
+            margin-bottom: 4px;
+        }
+
+        .stat-label {
+            font-size: 10px;
+            color: #666;
+        }
+
+        /* Activity Feed */
+        .activity-feed {
+            background: white;
+            border-radius: 15px;
+            padding: 20px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+        }
+
+        .activity-item {
+            display: flex;
+            align-items: center;
+            padding: 12px 0;
+            border-bottom: 1px solid #f0f0f0;
+        }
+
+        .activity-item:last-child {
+            border-bottom: none;
+        }
+
+        .activity-icon {
+            width: 40px;
+            height: 40px;
+            background: #f8f9fa;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 12px;
+            font-size: 16px;
+        }
+
+        .activity-content {
+            flex: 1;
+        }
+
+        .activity-title {
+            font-size: 14px;
+            font-weight: 500;
+            color: #2c3e50;
+            margin-bottom: 2px;
+        }
+
+        .activity-desc {
+            font-size: 12px;
+            color: #666;
+        }
+
+        .activity-time {
+            font-size: 10px;
+            color: #999;
+        }
+
+        /* Lesson Content */
+        .lesson-card {
+            background: white;
+            border-radius: 20px;
+            padding: 25px;
+            margin-bottom: 20px;
+            box-shadow: 0 8px 30px rgba(0,0,0,0.1);
+            border-left: 5px solid #667eea;
+        }
+
+        .lesson-title {
+            font-size: 18px;
+            font-weight: bold;
+            color: #2c3e50;
+            margin-bottom: 10px;
+        }
+
+        .lesson-meta {
+            color: #666;
+            font-size: 14px;
+            margin-bottom: 15px;
+        }
+
+        .lesson-progress {
+            background: #e0e0e0;
+            height: 8px;
+            border-radius: 4px;
+            overflow: hidden;
+            margin: 15px 0;
+        }
+
+        .lesson-progress-fill {
+            background: linear-gradient(90deg, #667eea, #764ba2);
+            height: 100%;
+            border-radius: 4px;
+            transition: width 0.8s ease;
+        }
+
+        .continue-btn {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 25px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s;
+            width: 100%;
+        }
+
+        .continue-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(102, 126, 234, 0.4);
+        }
+
+        /* Practice Section */
+        .mission-card {
+            background: white;
+            border-radius: 15px;
+            padding: 20px;
+            margin-bottom: 15px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+        }
+
+        .mission-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+
+        .mission-title {
+            font-weight: bold;
+            color: #2c3e50;
+        }
+
+        .mission-xp {
+            background: #27ae60;
+            color: white;
+            padding: 4px 8px;
+            border-radius: 10px;
+            font-size: 10px;
+            font-weight: bold;
+        }
+
+        .mission-desc {
+            color: #666;
+            font-size: 12px;
+            margin-bottom: 10px;
+        }
+
+        .mission-status {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .status-badge {
+            padding: 4px 8px;
+            border-radius: 10px;
+            font-size: 10px;
+            font-weight: bold;
+        }
+
+        .status-completed { background: #d4edda; color: #155724; }
+        .status-pending { background: #fff3cd; color: #856404; }
+        .status-locked { background: #f8d7da; color: #721c24; }
+
+        /* Profile Section */
+        .profile-header {
+            text-align: center;
+            margin-bottom: 25px;
+        }
+
+        .profile-avatar {
+            width: 80px;
+            height: 80px;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 36px;
+            margin: 0 auto 15px;
+        }
+
+        .profile-name {
+            font-size: 22px;
+            font-weight: bold;
+            color: #2c3e50;
+            margin-bottom: 5px;
+        }
+
+        .profile-type {
+            color: #666;
+            font-size: 14px;
+        }
+
+        .profile-stats {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 15px;
+            margin-bottom: 25px;
+        }
+
+        .profile-stat {
+            background: white;
+            border-radius: 15px;
+            padding: 20px;
+            text-align: center;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+        }
+
+        .profile-stat-value {
+            font-size: 24px;
+            font-weight: bold;
+            color: #667eea;
+            margin-bottom: 5px;
+        }
+
+        .profile-stat-label {
+            font-size: 12px;
+            color: #666;
+        }
+
+        /* Bottom Navigation */
+        .bottom-navigation {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: white;
+            border-top: 1px solid #e0e0e0;
+            display: flex;
+            justify-content: space-around;
+            padding: 12px 5px;
+            box-shadow: 0 -5px 20px rgba(0,0,0,0.1);
+        }
+
+        .nav-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 8px 12px;
+            border-radius: 15px;
+            cursor: pointer;
+            transition: all 0.3s;
+            position: relative;
+        }
+
+        .nav-item.active {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            transform: translateY(-3px);
+        }
+
+        .nav-icon {
+            font-size: 20px;
+            margin-bottom: 4px;
+        }
+
+        .nav-label {
+            font-size: 10px;
+            font-weight: 500;
+        }
+
+        .nav-badge {
+            position: absolute;
+            top: 2px;
+            right: 8px;
+            background: #e74c3c;
+            color: white;
+            border-radius: 8px;
+            width: 16px;
+            height: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 9px;
+            font-weight: bold;
+        }
+
+        /* FAB */
+        .fab {
+            position: absolute;
+            bottom: 90px;
+            right: 20px;
+            width: 56px;
+            height: 56px;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 24px;
+            box-shadow: 0 8px 25px rgba(102, 126, 234, 0.4);
+            cursor: pointer;
+            transition: all 0.3s;
+            z-index: 1000;
+        }
+
+        .fab:hover {
+            transform: scale(1.1) rotate(45deg);
+            box-shadow: 0 12px 35px rgba(102, 126, 234, 0.6);
+        }
+
+        .fab-menu {
+            position: absolute;
+            bottom: 70px;
+            right: -15px;
+            background: white;
+            border-radius: 20px;
+            padding: 15px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            transform: scale(0.8) translateY(20px);
+            opacity: 0;
+            transition: all 0.3s;
+            pointer-events: none;
+            min-width: 180px;
+        }
+
+        .fab-menu.active {
+            transform: scale(1) translateY(0);
+            opacity: 1;
+            pointer-events: all;
+        }
+
+        .fab-menu-item {
+            display: flex;
+            align-items: center;
+            padding: 12px;
+            margin: 5px 0;
+            border-radius: 12px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .fab-menu-item:hover {
+            background: #f0f0f0;
+        }
+
+        .fab-menu-icon {
+            font-size: 16px;
+            margin-right: 12px;
+            width: 24px;
+            text-align: center;
+        }
+
+        /* Inspirations Placeholder */
+        .inspirations-placeholder {
+            background: white;
+            border-radius: 20px;
+            padding: 40px 20px;
+            text-align: center;
+            box-shadow: 0 8px 30px rgba(0,0,0,0.1);
+        }
+
+        .placeholder-icon {
+            font-size: 64px;
+            margin-bottom: 20px;
+            opacity: 0.5;
+        }
+
+        .placeholder-title {
+            font-size: 18px;
+            font-weight: bold;
+            color: #2c3e50;
+            margin-bottom: 10px;
+        }
+
+        .placeholder-desc {
+            color: #666;
+            font-size: 14px;
+        }
+
+        /* Responsive */
+        @media (max-width: 400px) {
+            .mobile-container {
+                width: 100%;
+                height: 100vh;
+                border-radius: 0;
+                padding: 0;
+            }
+            
+            .phone-screen {
+                border-radius: 0;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="mobile-container">
+        <div class="phone-screen">
+            <div class="status-bar">
+                <div>📶 T-Mobile 5G</div>
+                <div>🔋 87% 15:42</div>
+            </div>
+
+            <div class="app-header">
+                <div class="app-title">ZenDegen Academy</div>
+                <div class="user-avatar" onclick="showProfile()">🧘‍♂️</div>
+            </div>
+
+            <div class="main-content">
+                <!-- START PAGE -->
+                <div id="start" class="page active">
+                    <!-- Progress Card -->
+                    <div class="progress-card">
+                        <div class="progress-header">
+                            <div>
+                                <div class="level-info">Poziom 7</div>
+                                <div class="xp-text">4,201 / 6,000 XP</div>
+                            </div>
+                            <div class="degen-type">Zen Degen</div>
+                        </div>
+                        <div class="xp-progress">
+                            <div class="xp-fill" style="width: 70%"></div>
+                        </div>
+                        <div class="xp-text">Do następnego poziomu: 1,799 XP</div>
+                    </div>
+
+                    <!-- Quick Actions -->
+                    <div class="section-title">Szybkie akcje</div>
+                    <div class="actions-grid">
+                        <div class="action-item continue" onclick="showLessons()">
+                            <div class="action-icon">📚</div>
+                            <div class="action-title">Kontynuuj</div>
+                            <div class="action-desc">Lekcja B2L3</div>
+                        </div>                        <div class="action-item missions" onclick="showInspirations()">
+                            <div class="action-icon">💡</div>
+                            <div class="action-title">Inspiracje</div>
+                            <div class="action-desc">Nowe treści</div>
+                        </div><div class="action-item quiz" onclick="showLessons()">
+                            <div class="action-icon">🧠</div>
+                            <div class="action-title">Testy</div>
+                            <div class="action-desc">Sprawdź wiedzę</div>
+                        </div>
+                        <div class="action-item profile" onclick="showProfile()">
+                            <div class="action-icon">👤</div>
+                            <div class="action-title">Profil</div>
+                            <div class="action-desc">Typ degena</div>
+                        </div>
+                    </div>
+
+                    <!-- Stats -->
+                    <div class="section-title">Twoje statystyki</div>
+                    <div class="stats-grid">
+                        <div class="stat-card">
+                            <div class="stat-value" style="color: #e74c3c;">🔥 12</div>
+                            <div class="stat-label">Streak dni</div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-value" style="color: #f39c12;">#3</div>
+                            <div class="stat-label">Ranking</div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-value" style="color: #27ae60;">8/10</div>
+                            <div class="stat-label">Lekcje</div>
+                        </div>
+                    </div>
+
+                    <!-- Recent Activity -->
+                    <div class="section-title">Ostatnia aktywność</div>
+                    <div class="activity-feed">
+                        <div class="activity-item">
+                            <div class="activity-icon" style="background: #e8f5e8; color: #27ae60;">✅</div>
+                            <div class="activity-content">
+                                <div class="activity-title">Ukończono misję</div>
+                                <div class="activity-desc">Market Pulse Check</div>
+                            </div>
+                            <div class="activity-time">2h temu</div>
+                        </div>
+                        <div class="activity-item">
+                            <div class="activity-icon" style="background: #fff3cd; color: #856404;">📚</div>
+                            <div class="activity-content">
+                                <div class="activity-title">Postęp w lekcji</div>
+                                <div class="activity-desc">Psychologia Rynku • 65%</div>
+                            </div>
+                            <div class="activity-time">5h temu</div>
+                        </div>
+                        <div class="activity-item">
+                            <div class="activity-icon" style="background: #f8d7da; color: #721c24;">🏆</div>
+                            <div class="activity-content">
+                                <div class="activity-title">Nowa odznaka</div>
+                                <div class="activity-desc">Risk Master</div>
+                            </div>
+                            <div class="activity-time">1d temu</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- LESSONS PAGE -->
+                <div id="lessons" class="page">
+                    <div class="section-title">📚 Aktywna lekcja</div>
+                    <div class="lesson-card">
+                        <div class="lesson-title">Psychologia Rynku Krypto</div>
+                        <div class="lesson-meta">Etap 3/5 • Psychologia Zachowań • ~12 min</div>
+                        <div class="lesson-progress">
+                            <div class="lesson-progress-fill" style="width: 65%"></div>
+                        </div>
+                        <div style="margin-bottom: 15px; color: #666; font-size: 14px;">
+                            Poznaj mechanizmy FOMO i FUD w kontekście inwestowania w kryptowaluty.
+                        </div>
+                        <button class="continue-btn" onclick="continueLesson()">
+                            ▶️ Kontynuuj lekcję
+                        </button>
+                    </div>
+
+                    <div class="section-title">🗺️ Dostępne lekcje</div>
+                    <div class="lesson-card">
+                        <div class="lesson-title">Analiza Fundamentalna</div>
+                        <div class="lesson-meta">6 etapów • Podstawy • Nowa</div>
+                        <div style="color: #666; font-size: 14px; margin-bottom: 15px;">
+                            Naucz się oceniać prawdziwą wartość projektów blockchain.
+                        </div>
+                        <button class="continue-btn" style="background: #27ae60;">
+                            🎯 Rozpocznij
+                        </button>
+                    </div>
+
+                    <div class="lesson-card">
+                        <div class="lesson-title">DeFi Protocols Deep Dive</div>
+                        <div class="lesson-meta">8 etapów • Zaawansowane • Zablokowane</div>
+                        <div style="color: #999; font-size: 14px; margin-bottom: 15px;">
+                            Wymagane: ukończenie 3 lekcji podstawowych
+                        </div>
+                        <button class="continue-btn" style="background: #95a5a6; cursor: not-allowed;">
+                            🔒 Zablokowane
+                        </button>
+                    </div>
+                </div>                <!-- PRACTICE PAGE -->
+                <div id="practice" class="page">
+                    <div class="section-title">📊 Twoja aktywność</div>
+                    
+                    <div class="mission-card">
+                        <div class="mission-header">
+                            <div class="mission-title">📚 Ukończone lekcje</div>
+                            <div class="mission-xp">8/10</div>
+                        </div>
+                        <div class="mission-desc">Twoje postępy w nauce</div>
+                        <div class="mission-status">
+                            <div class="status-badge status-completed">80% ukończone</div>
+                            <div style="font-size: 12px; color: #666;">Ostatnia: wczoraj</div>
+                        </div>
+                    </div>
+
+                    <div class="mission-card">
+                        <div class="mission-header">
+                            <div class="mission-title">� Streak</div>
+                            <div class="mission-xp">12 dni</div>
+                        </div>
+                        <div class="mission-desc">Nieprzerywana nauka każdego dnia</div>
+                        <div class="mission-status">
+                            <div class="status-badge status-pending">Aktywny</div>
+                            <button style="background: #667eea; color: white; border: none; padding: 6px 12px; border-radius: 10px; font-size: 10px; cursor: pointer;">
+                                Kontynuuj
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="mission-card">
+                        <div class="mission-header">
+                            <div class="mission-title">🏆 Ranking</div>
+                            <div class="mission-xp">#3</div>
+                        </div>
+                        <div class="mission-desc">Twoja pozycja wśród użytkowników</div>
+                        <div class="mission-status">
+                            <div class="status-badge status-completed">Top 5%</div>
+                            <div style="font-size: 12px; color: #666;">↗️ +2 pozycje</div>
+                        </div>
+                    </div>
+
+                    <div class="section-title">📈 Statystyki</div>
+                    <div style="background: white; border-radius: 20px; padding: 25px; box-shadow: 0 4px 20px rgba(0,0,0,0.1);">
+                        <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 15px; margin-bottom: 20px;">
+                            <div style="text-align: center;">
+                                <div style="font-size: 24px; font-weight: bold; color: #667eea;">4,201</div>
+                                <div style="font-size: 12px; color: #666;">Total XP</div>
+                            </div>
+                            <div style="text-align: center;">
+                                <div style="font-size: 24px; font-weight: bold; color: #27ae60;">87%</div>
+                                <div style="font-size: 12px; color: #666;">Dokładność</div>
+                            </div>
+                        </div>
+                        
+                        <div style="background: #f8f9fa; border-radius: 15px; padding: 15px;">
+                            <div style="font-weight: bold; margin-bottom: 10px; color: #2c3e50;">🎯 Typ Degena: Zen Degen</div>
+                            <div style="color: #666; font-size: 14px;">
+                                Spokojny i przemyślany inwestor, który podejmuje rozsądne decyzje.
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- INSPIRATIONS PAGE -->
+                <div id="inspirations" class="page">
+                    <div class="inspirations-placeholder">
+                        <div class="placeholder-icon">💡</div>
+                        <div class="placeholder-title">Inspiracje</div>
+                        <div class="placeholder-desc">
+                            Artykuły, materiały motywacyjne i najnowsze trendy w świecie DeFi
+                        </div>
+                    </div>
+                </div>
+
+                <!-- PROFILE PAGE -->
+                <div id="profile" class="page">
+                    <div class="profile-header">
+                        <div class="profile-avatar">🧘‍♂️</div>
+                        <div class="profile-name">Zen Degen</div>
+                        <div class="profile-type">Spokojny i przemyślany inwestor</div>
+                    </div>
+
+                    <div class="profile-stats">
+                        <div class="profile-stat">
+                            <div class="profile-stat-value">87%</div>
+                            <div class="profile-stat-label">Dokładność</div>
+                        </div>
+                        <div class="profile-stat">
+                            <div class="profile-stat-value">12</div>
+                            <div class="profile-stat-label">Odznaki</div>
+                        </div>
+                        <div class="profile-stat">
+                            <div class="profile-stat-value">#3</div>
+                            <div class="profile-stat-label">Pozycja</div>
+                        </div>
+                    </div>
+
+                    <div style="background: white; border-radius: 20px; padding: 25px; margin-bottom: 20px; box-shadow: 0 4px 20px rgba(0,0,0,0.1);">
+                        <h3 style="color: #2c3e50; margin-bottom: 15px;">🎯 Twoje mocne strony</h3>
+                        <div style="color: #666; line-height: 1.6;">
+                            <strong>Analiza fundamentalna:</strong> Doskonale oceniasz długoterminowy potencjał projektów<br><br>
+                            <strong>Zarządzanie ryzykiem:</strong> Zachowujesz spokój w trudnych momentach rynkowych<br><br>
+                            <strong>Cierpliwość:</strong> Nie podejmujesz impulsywnych decyzji
+                        </div>
+                    </div>
+
+                    <div style="background: white; border-radius: 20px; padding: 25px; box-shadow: 0 4px 20px rgba(0,0,0,0.1);">
+                        <h3 style="color: #2c3e50; margin-bottom: 15px;">📈 Obszary do rozwoju</h3>
+                        <div style="color: #666; line-height: 1.6;">
+                            • Analiza techniczna (zaawansowana)<br>
+                            • DeFi protokoły i yield farming<br>
+                            • NFT i metaverse investing
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- FAB -->
+            <div class="fab" id="fab" onclick="toggleFab()">⚡</div>
+            
+            <!-- FAB Menu -->
+            <div class="fab-menu" id="fab-menu">
+                <div class="fab-menu-item" onclick="continueLesson()">
+                    <div class="fab-menu-icon">📚</div>
+                    <div>Kontynuuj lekcję</div>
+                </div>                <div class="fab-menu-item" onclick="quickMission()">
+                    <div class="fab-menu-icon">💡</div>
+                    <div>Inspiracje</div>
+                </div>
+                <div class="fab-menu-item" onclick="openShop()">
+                    <div class="fab-menu-icon">🛒</div>
+                    <div>Sklep</div>
+                </div>
+                <div class="fab-menu-item" onclick="openSettings()">
+                    <div class="fab-menu-icon">⚙️</div>
+                    <div>Ustawienia</div>
+                </div>
+            </div>
+
+            <!-- Bottom Navigation -->
+            <div class="bottom-navigation">
+                <div class="nav-item active" onclick="showPage('start')">
+                    <div class="nav-icon">🏠</div>
+                    <div class="nav-label">START</div>
+                </div>
+                
+                <div class="nav-item" onclick="showPage('lessons')">
+                    <div class="nav-icon">📚</div>
+                    <div class="nav-label">NAUKA</div>
+                    <div class="nav-badge">2</div>
+                </div>
+                  <div class="nav-item" onclick="showPage('inspirations')">
+                    <div class="nav-icon">💡</div>
+                    <div class="nav-label">INSPIRACJE</div>
+                </div>
+                
+                <div class="nav-item" onclick="showPage('profile')">
+                    <div class="nav-icon">�</div>
+                    <div class="nav-label">PROFIL</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let currentPage = 'start';
+        let fabOpen = false;
+
+        function showPage(pageId) {
+            // Hide all pages
+            document.querySelectorAll('.page').forEach(page => {
+                page.classList.remove('active');
+            });
+            
+            // Remove active class from all nav items
+            document.querySelectorAll('.nav-item').forEach(item => {
+                item.classList.remove('active');
+            });
+            
+            // Show selected page
+            document.getElementById(pageId).classList.add('active');
+            
+            // Set active nav item
+            event.target.closest('.nav-item').classList.add('active');
+            
+            currentPage = pageId;
+            closeFab();
+        }        function showProfile() {
+            showPage('profile');
+            // Update nav item
+            document.querySelectorAll('.nav-item').forEach(item => {
+                item.classList.remove('active');
+            });
+            document.querySelectorAll('.nav-item')[3].classList.add('active');
+        }function showLessons() {
+            showPage('lessons');
+            updateNavItem(1);
+        }
+
+        function showInspirations() {
+            showPage('inspirations');
+            updateNavItem(2);
+        }
+
+        function showProfile() {
+            showPage('profile');
+            updateNavItem(3);
+        }
+
+        function updateNavItem(index) {
+            document.querySelectorAll('.nav-item').forEach(item => {
+                item.classList.remove('active');
+            });
+            document.querySelectorAll('.nav-item')[index].classList.add('active');
+        }
+
+        function toggleFab() {
+            const fabMenu = document.getElementById('fab-menu');
+            const fab = document.getElementById('fab');
+            
+            fabOpen = !fabOpen;
+            
+            if (fabOpen) {
+                fabMenu.classList.add('active');
+                fab.style.transform = 'scale(1.1) rotate(45deg)';
+            } else {
+                fabMenu.classList.remove('active');
+                fab.style.transform = 'scale(1) rotate(0deg)';
+            }
+        }
+
+        function closeFab() {
+            if (fabOpen) {
+                document.getElementById('fab-menu').classList.remove('active');
+                document.getElementById('fab').style.transform = 'scale(1) rotate(0deg)';
+                fabOpen = false;
+            }
+        }
+
+        function continueLesson() {
+            showLessons();
+            showNotification('Kontynuujesz lekcję: Psychologia Rynku Krypto', 'success');
+            closeFab();
+        }        function quickMission() {
+            showInspirations();
+            showNotification('Otwierasz inspiracje - najnowsze artykuły', 'info');
+            closeFab();
+        }
+
+        function openShop() {
+            showNotification('🛒 Sklep zostanie wkrótce otwarty!', 'info');
+            closeFab();
+        }
+
+        function openSettings() {
+            showNotification('⚙️ Ustawienia w przygotowaniu', 'info');
+            closeFab();
+        }
+
+        function showNotification(message, type = 'info') {
+            // Create notification element
+            const notification = document.createElement('div');
+            notification.style.cssText = `
+                position: fixed;
+                top: 80px;
+                left: 50%;
+                transform: translateX(-50%);
+                background: ${type === 'success' ? '#27ae60' : type === 'info' ? '#667eea' : '#e74c3c'};
+                color: white;
+                padding: 12px 20px;
+                border-radius: 25px;
+                font-size: 14px;
+                font-weight: 500;
+                z-index: 2000;
+                box-shadow: 0 8px 25px rgba(0,0,0,0.3);
+                animation: slideDown 0.3s ease;
+            `;
+            notification.textContent = message;
+            
+            // Add to DOM
+            document.body.appendChild(notification);
+            
+            // Remove after 3 seconds
+            setTimeout(() => {
+                notification.style.animation = 'slideUp 0.3s ease';
+                setTimeout(() => notification.remove(), 300);
+            }, 3000);
+        }
+
+        // Add CSS animation styles
+        const style = document.createElement('style');
+        style.textContent = `
+            @keyframes slideDown {
+                from { transform: translateX(-50%) translateY(-100%); opacity: 0; }
+                to { transform: translateX(-50%) translateY(0); opacity: 1; }
+            }
+            @keyframes slideUp {
+                from { transform: translateX(-50%) translateY(0); opacity: 1; }
+                to { transform: translateX(-50%) translateY(-100%); opacity: 0; }
+            }
+        `;
+        document.head.appendChild(style);
+
+        // Close FAB when clicking outside
+        document.addEventListener('click', function(e) {
+            if (fabOpen && !e.target.closest('.fab') && !e.target.closest('.fab-menu')) {
+                closeFab();
+            }
+        });
+
+        // Animate progress bars on load
+        window.addEventListener('load', function() {
+            setTimeout(() => {
+                document.querySelectorAll('.xp-fill, .lesson-progress-fill').forEach(bar => {
+                    const width = bar.style.width;
+                    bar.style.width = '0%';
+                    setTimeout(() => {
+                        bar.style.width = width;
+                    }, 300);
+                });
+            }, 500);
+        });
+
+        // Touch gestures for mobile
+        let touchStartX = 0;
+        let touchStartY = 0;
+
+        document.addEventListener('touchstart', function(e) {
+            touchStartX = e.touches[0].clientX;
+            touchStartY = e.touches[0].clientY;
+        });
+
+        document.addEventListener('touchend', function(e) {
+            if (!touchStartX || !touchStartY) return;
+            
+            let touchEndX = e.changedTouches[0].clientX;
+            let touchEndY = e.changedTouches[0].clientY;
+            
+            let diffX = touchStartX - touchEndX;
+            let diffY = touchStartY - touchEndY;
+            
+            // Ignore small movements
+            if (Math.abs(diffX) < 50 && Math.abs(diffY) < 50) return;
+              // Horizontal swipe
+            if (Math.abs(diffX) > Math.abs(diffY)) {
+                const pages = ['start', 'lessons', 'inspirations', 'profile'];
+                const currentIndex = pages.indexOf(currentPage);
+                
+                if (diffX > 0 && currentIndex < pages.length - 1) {
+                    // Swipe left - next page
+                    showPage(pages[currentIndex + 1]);
+                    updateNavItem(currentIndex + 1);
+                } else if (diffX < 0 && currentIndex > 0) {
+                    // Swipe right - previous page  
+                    showPage(pages[currentIndex - 1]);
+                    updateNavItem(currentIndex - 1);
+                }
+            }
+            
+            touchStartX = 0;
+            touchStartY = 0;
+        });
+    </script>
+</body>
+</html>

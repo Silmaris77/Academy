@@ -1,0 +1,1211 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ZenDegenAcademy - Propozycje Mobile Layout</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            padding: 20px;
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .header {
+            text-align: center;
+            color: white;
+            margin-bottom: 40px;
+        }
+
+        .header h1 {
+            font-size: 32px;
+            margin-bottom: 10px;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.3);
+        }
+
+        .header p {
+            font-size: 16px;
+            opacity: 0.9;
+        }
+
+        .proposals-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 30px;
+            margin-bottom: 40px;
+        }
+
+        .phone-mockup {
+            background: #2c3e50;
+            border-radius: 25px;
+            padding: 8px;
+            box-shadow: 0 15px 40px rgba(0,0,0,0.3);
+            transition: transform 0.3s;
+        }
+
+        .phone-mockup:hover {
+            transform: translateY(-5px);
+        }
+
+        .phone-screen {
+            background: white;
+            border-radius: 20px;
+            height: 600px;
+            overflow: hidden;
+            position: relative;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .status-bar {
+            background: #1a1a1a;
+            color: white;
+            padding: 8px 15px;
+            font-size: 11px;
+            display: flex;
+            justify-content: space-between;
+            flex-shrink: 0;
+        }
+
+        .proposal-title {
+            background: #f8f9fa;
+            padding: 12px;
+            text-align: center;
+            font-weight: bold;
+            color: #2c3e50;
+            border-bottom: 1px solid #e0e0e0;
+            flex-shrink: 0;
+        }
+
+        .app-content {
+            flex: 1;
+            overflow: hidden;
+            position: relative;
+        }
+
+        /* === PROPOSAL 1: MODERN BOTTOM NAV === */
+        .proposal-1 .main-content {
+            padding: 20px;
+            height: calc(100% - 80px);
+            overflow-y: auto;
+        }
+
+        .welcome-card {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            border-radius: 15px;
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+
+        .user-name {
+            font-size: 18px;
+            font-weight: bold;
+            margin-bottom: 8px;
+        }
+
+        .degen-type {
+            font-size: 14px;
+            opacity: 0.9;
+        }
+
+        .progress-section {
+            margin-bottom: 20px;
+        }
+
+        .progress-title {
+            font-size: 16px;
+            font-weight: bold;
+            color: #2c3e50;
+            margin-bottom: 10px;
+        }
+
+        .progress-bar {
+            background: #e9ecef;
+            height: 8px;
+            border-radius: 4px;
+            overflow: hidden;
+            margin-bottom: 5px;
+        }
+
+        .progress-fill {
+            background: linear-gradient(90deg, #667eea, #764ba2);
+            height: 100%;
+            border-radius: 4px;
+            transition: width 0.3s;
+        }
+
+        .progress-text {
+            font-size: 12px;
+            color: #6c757d;
+        }
+
+        .feature-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+        }
+
+        .feature-card {
+            background: white;
+            border-radius: 12px;
+            padding: 15px;
+            text-align: center;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            transition: transform 0.2s;
+        }
+
+        .feature-card:hover {
+            transform: translateY(-2px);
+        }
+
+        .feature-icon {
+            font-size: 24px;
+            margin-bottom: 8px;
+        }
+
+        .feature-title {
+            font-size: 12px;
+            font-weight: bold;
+            color: #2c3e50;
+            margin-bottom: 4px;
+        }
+
+        .feature-desc {
+            font-size: 10px;
+            color: #6c757d;
+        }
+
+        .bottom-nav {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: white;
+            border-top: 1px solid #e0e0e0;
+            display: flex;
+            justify-content: space-around;
+            padding: 12px 0;
+            box-shadow: 0 -5px 20px rgba(0,0,0,0.1);
+        }
+
+        .nav-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 8px;
+            border-radius: 10px;
+            transition: all 0.3s;
+            cursor: pointer;
+            position: relative;
+        }
+
+        .nav-item.active {
+            background: #667eea;
+            color: white;
+            transform: translateY(-2px);
+        }
+
+        .nav-icon {
+            font-size: 20px;
+            margin-bottom: 4px;
+        }
+
+        .nav-label {
+            font-size: 10px;
+            font-weight: 500;
+        }
+
+        .nav-badge {
+            position: absolute;
+            top: 2px;
+            right: 8px;
+            background: #e74c3c;
+            color: white;
+            border-radius: 10px;
+            padding: 2px 6px;
+            font-size: 8px;
+            font-weight: bold;
+        }
+
+        /* === PROPOSAL 2: FAB + GESTURE === */
+        .proposal-2 .gesture-area {
+            padding: 20px;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .swipe-hint {
+            text-align: center;
+            color: #6c757d;
+            font-size: 12px;
+            margin-bottom: 20px;
+            padding: 10px;
+            background: #f8f9fa;
+            border-radius: 8px;
+        }
+
+        .current-section {
+            flex: 1;
+            background: white;
+            border-radius: 15px;
+            padding: 20px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            margin-bottom: 20px;
+        }
+
+        .section-indicator {
+            display: flex;
+            justify-content: center;
+            gap: 8px;
+            margin-bottom: 20px;
+        }
+
+        .indicator-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: #e0e0e0;
+            transition: all 0.3s;
+        }
+
+        .indicator-dot.active {
+            background: #667eea;
+            transform: scale(1.2);
+        }
+
+        .fab {
+            position: absolute;
+            bottom: 20px;
+            right: 20px;
+            width: 56px;
+            height: 56px;
+            background: #667eea;
+            border: none;
+            border-radius: 50%;
+            color: white;
+            font-size: 24px;
+            cursor: pointer;
+            box-shadow: 0 8px 25px rgba(102, 126, 234, 0.4);
+            transition: all 0.3s;
+        }
+
+        .fab:hover {
+            transform: scale(1.1);
+        }
+
+        .fab-menu {
+            position: absolute;
+            bottom: 80px;
+            right: 0;
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.2);
+            padding: 10px;
+            opacity: 0;
+            visibility: hidden;
+            transform: translateY(20px);
+            transition: all 0.3s;
+            min-width: 200px;
+        }
+
+        .fab-menu.active {
+            opacity: 1;
+            visibility: visible;
+            transform: translateY(0);
+        }
+
+        .fab-menu-item {
+            display: flex;
+            align-items: center;
+            padding: 12px;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+
+        .fab-menu-item:hover {
+            background: #f8f9fa;
+        }
+
+        .fab-menu-icon {
+            font-size: 18px;
+            margin-right: 12px;
+        }
+
+        /* === PROPOSAL 3: DRAWER + CARDS === */
+        .proposal-3 .header-bar {
+            background: #667eea;
+            color: white;
+            padding: 15px 20px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .hamburger {
+            font-size: 24px;
+            cursor: pointer;
+            padding: 8px;
+            border-radius: 8px;
+            transition: background 0.2s;
+        }
+
+        .hamburger:hover {
+            background: rgba(255,255,255,0.1);
+        }
+
+        .app-title {
+            font-size: 18px;
+            font-weight: bold;
+        }
+
+        .user-avatar {
+            width: 32px;
+            height: 32px;
+            background: rgba(255,255,255,0.2);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .cards-content {
+            padding: 20px;
+            height: calc(100% - 65px);
+            overflow-y: auto;
+        }
+
+        .dashboard-cards {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+
+        .dashboard-card {
+            background: white;
+            border-radius: 12px;
+            padding: 15px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            text-align: center;
+        }
+
+        .card-icon {
+            font-size: 32px;
+            margin-bottom: 8px;
+        }
+
+        .card-title {
+            font-size: 12px;
+            font-weight: bold;
+            color: #2c3e50;
+            margin-bottom: 4px;
+        }
+
+        .card-value {
+            font-size: 16px;
+            font-weight: bold;
+            color: #667eea;
+        }
+
+        .lesson-card {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            border-radius: 15px;
+            padding: 20px;
+            margin-bottom: 15px;
+        }
+
+        .lesson-title {
+            font-size: 16px;
+            font-weight: bold;
+            margin-bottom: 8px;
+        }
+
+        .lesson-progress {
+            background: rgba(255,255,255,0.2);
+            height: 6px;
+            border-radius: 3px;
+            overflow: hidden;
+            margin-bottom: 8px;
+        }
+
+        .lesson-progress-fill {
+            background: white;
+            height: 100%;
+            border-radius: 3px;
+        }
+
+        .drawer {
+            position: absolute;
+            top: 0;
+            left: -280px;
+            width: 280px;
+            height: 100%;
+            background: white;
+            box-shadow: 2px 0 15px rgba(0,0,0,0.2);
+            transition: left 0.3s;
+            z-index: 1000;
+        }
+
+        .drawer.active {
+            left: 0;
+        }
+
+        .drawer-header {
+            background: #667eea;
+            color: white;
+            padding: 20px;
+        }
+
+        .drawer-content {
+            padding: 20px 0;
+        }
+
+        .drawer-item {
+            display: flex;
+            align-items: center;
+            padding: 15px 20px;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+
+        .drawer-item:hover {
+            background: #f8f9fa;
+        }
+
+        .drawer-item.active {
+            background: #e3f2fd;
+            border-right: 4px solid #667eea;
+        }
+
+        .drawer-icon {
+            font-size: 20px;
+            margin-right: 15px;
+            width: 24px;
+        }
+
+        .overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0,0,0,0.5);
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s;
+            z-index: 999;
+        }
+
+        .overlay.active {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        /* === PROPOSAL 4: CONTEXTUAL INTERFACE === */
+        .proposal-4 .smart-header {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            padding: 20px;
+            text-align: center;
+        }
+
+        .context-title {
+            font-size: 18px;
+            font-weight: bold;
+            margin-bottom: 8px;
+        }
+
+        .context-subtitle {
+            font-size: 14px;
+            opacity: 0.9;
+        }
+
+        .smart-content {
+            padding: 20px;
+            height: calc(100% - 100px);
+            overflow-y: auto;
+        }
+
+        .action-suggestions {
+            margin-bottom: 20px;
+        }
+
+        .suggestion-title {
+            font-size: 14px;
+            font-weight: bold;
+            color: #2c3e50;
+            margin-bottom: 10px;
+        }
+
+        .action-chips {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+
+        .action-chip {
+            background: #e3f2fd;
+            color: #1976d2;
+            padding: 8px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .action-chip:hover {
+            background: #1976d2;
+            color: white;
+        }
+
+        .contextual-cards {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .context-card {
+            background: white;
+            border-radius: 12px;
+            padding: 15px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            border-left: 4px solid #667eea;
+        }
+
+        .floating-actions {
+            position: absolute;
+            bottom: 20px;
+            left: 20px;
+            right: 20px;
+            background: white;
+            border-radius: 25px;
+            padding: 15px;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.2);
+            display: flex;
+            justify-content: space-around;
+        }
+
+        .float-action {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 10px;
+            border-radius: 12px;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+
+        .float-action:hover {
+            background: #f8f9fa;
+        }
+
+        .float-action-icon {
+            font-size: 24px;
+            margin-bottom: 4px;
+        }
+
+        .float-action-label {
+            font-size: 10px;
+            font-weight: 500;
+        }
+
+        /* Summary section */
+        .summary {
+            background: white;
+            border-radius: 15px;
+            padding: 30px;
+            margin-top: 40px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+        }
+
+        .summary h2 {
+            color: #2c3e50;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        .features-comparison {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin-top: 30px;
+        }
+
+        .feature-comparison {
+            padding: 20px;
+            border-radius: 12px;
+            background: #f8f9fa;
+            border-left: 4px solid #667eea;
+        }
+
+        .feature-comparison h3 {
+            color: #2c3e50;
+            margin-bottom: 10px;
+        }
+
+        .pros-cons {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+            margin-top: 15px;
+        }
+
+        .pros, .cons {
+            padding: 15px;
+            border-radius: 8px;
+        }
+
+        .pros {
+            background: #d4edda;
+            border-left: 3px solid #28a745;
+        }
+
+        .cons {
+            background: #f8d7da;
+            border-left: 3px solid #dc3545;
+        }
+
+        .pros h4, .cons h4 {
+            margin-bottom: 8px;
+            font-size: 14px;
+        }
+
+        .pros ul, .cons ul {
+            font-size: 12px;
+            padding-left: 15px;
+        }
+
+        @media (max-width: 768px) {
+            .proposals-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .features-comparison {
+                grid-template-columns: 1fr;
+            }
+            
+            .pros-cons {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>📱 ZenDegenAcademy - Propozycje Mobile Layout</h1>
+            <p>Analiza i projekt interfejsu mobilnego dla platformy edukacyjnej</p>
+        </div>
+
+        <div class="proposals-grid">
+            <!-- PROPOSAL 1: MODERN BOTTOM NAVIGATION -->
+            <div class="phone-mockup">
+                <div class="phone-screen proposal-1">
+                    <div class="status-bar">
+                        <div>📶 T-Mobile 5G</div>
+                        <div>🔋 87% 15:42</div>
+                    </div>
+                    <div class="proposal-title">1. Modern Bottom Navigation</div>
+                    
+                    <div class="app-content">
+                        <div class="main-content">
+                            <div class="welcome-card">
+                                <div class="user-name">Witaj, Zenowy Degenie! 🧘‍♂️</div>
+                                <div class="degen-type">Typ: Hype Degen</div>
+                            </div>
+                            
+                            <div class="progress-section">
+                                <div class="progress-title">Twój postęp</div>
+                                <div class="progress-bar">
+                                    <div class="progress-fill" style="width: 68%"></div>
+                                </div>
+                                <div class="progress-text">Poziom 7 • 4,201 XP • 68% do następnego poziomu</div>
+                            </div>
+                            
+                            <div class="feature-grid">
+                                <div class="feature-card">
+                                    <div class="feature-icon">📚</div>
+                                    <div class="feature-title">Kontynuuj lekcję</div>
+                                    <div class="feature-desc">Psychologia Rynku</div>
+                                </div>
+                                
+                                <div class="feature-card">
+                                    <div class="feature-icon">🧠</div>
+                                    <div class="feature-title">Test degena</div>
+                                    <div class="feature-desc">Odkryj swój typ</div>
+                                </div>
+                                
+                                <div class="feature-card">
+                                    <div class="feature-icon">💡</div>
+                                    <div class="feature-title">Inspiracje</div>
+                                    <div class="feature-desc">Nowe materiały</div>
+                                </div>
+                                
+                                <div class="feature-card">
+                                    <div class="feature-icon">🛒</div>
+                                    <div class="feature-title">Sklep</div>
+                                    <div class="feature-desc">Ulepsz profil</div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="bottom-nav">
+                            <div class="nav-item active">
+                                <div class="nav-icon">🏠</div>
+                                <div class="nav-label">Start</div>
+                            </div>
+                            <div class="nav-item">
+                                <div class="nav-icon">📚</div>
+                                <div class="nav-label">Nauka</div>
+                                <div class="nav-badge">3</div>
+                            </div>
+                            <div class="nav-item">
+                                <div class="nav-icon">💡</div>
+                                <div class="nav-label">Inspiracje</div>
+                            </div>
+                            <div class="nav-item">
+                                <div class="nav-icon">👤</div>
+                                <div class="nav-label">Profil</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- PROPOSAL 2: FAB + GESTURE NAVIGATION -->
+            <div class="phone-mockup">
+                <div class="phone-screen proposal-2">
+                    <div class="status-bar">
+                        <div>📶 Orange 4G</div>
+                        <div>🔋 73% 15:42</div>
+                    </div>
+                    <div class="proposal-title">2. FAB + Gesture Navigation</div>
+                    
+                    <div class="app-content">
+                        <div class="gesture-area">
+                            <div class="swipe-hint">← Przesuń palcem aby przełączać sekcje →</div>
+                            
+                            <div class="section-indicator">
+                                <div class="indicator-dot active"></div>
+                                <div class="indicator-dot"></div>
+                                <div class="indicator-dot"></div>
+                                <div class="indicator-dot"></div>
+                            </div>
+                            
+                            <div class="current-section">
+                                <h3 style="color: #2c3e50; margin-bottom: 15px;">🏠 Dashboard</h3>
+                                
+                                <div class="feature-grid">
+                                    <div class="feature-card">
+                                        <div class="feature-icon">📊</div>
+                                        <div class="feature-title">Statystyki</div>
+                                        <div class="feature-desc">68% postępu</div>
+                                    </div>
+                                    
+                                    <div class="feature-card">
+                                        <div class="feature-icon">🔥</div>
+                                        <div class="feature-title">Seria</div>
+                                        <div class="feature-desc">7 dni z rzędu</div>
+                                    </div>
+                                    
+                                    <div class="feature-card">
+                                        <div class="feature-icon">🏆</div>
+                                        <div class="feature-title">Ranking</div>
+                                        <div class="feature-desc">#3 w klasie</div>
+                                    </div>
+                                    
+                                    <div class="feature-card">
+                                        <div class="feature-icon">⭐</div>
+                                        <div class="feature-title">XP</div>
+                                        <div class="feature-desc">4,201 punktów</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="fab" onclick="toggleFabMenu(this)">⚡</div>
+                        <div class="fab-menu" id="fab-menu">
+                            <div class="fab-menu-item">
+                                <div class="fab-menu-icon">📚</div>
+                                <div>Kontynuuj lekcję</div>
+                            </div>
+                            <div class="fab-menu-item">
+                                <div class="fab-menu-icon">🧠</div>
+                                <div>Test degena</div>
+                            </div>
+                            <div class="fab-menu-item">
+                                <div class="fab-menu-icon">💡</div>
+                                <div>Nowa inspiracja</div>
+                            </div>
+                            <div class="fab-menu-item">
+                                <div class="fab-menu-icon">⚙️</div>
+                                <div>Ustawienia</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- PROPOSAL 3: DRAWER + CARD-BASED -->
+            <div class="phone-mockup">
+                <div class="phone-screen proposal-3">
+                    <div class="status-bar">
+                        <div>📶 Play 5G</div>
+                        <div>🔋 91% 15:42</div>
+                    </div>
+                    <div class="proposal-title">3. Drawer + Card-Based Layout</div>
+                    
+                    <div class="app-content">
+                        <div class="header-bar">
+                            <div class="hamburger" onclick="toggleDrawer('proposal-3')">☰</div>
+                            <div class="app-title">ZenDegen Academy</div>
+                            <div class="user-avatar">🧘‍♂️</div>
+                        </div>
+                        
+                        <div class="cards-content">
+                            <div class="dashboard-cards">
+                                <div class="dashboard-card">
+                                    <div class="card-icon">📊</div>
+                                    <div class="card-title">Poziom</div>
+                                    <div class="card-value">7</div>
+                                </div>
+                                
+                                <div class="dashboard-card">
+                                    <div class="card-icon">⭐</div>
+                                    <div class="card-title">XP</div>
+                                    <div class="card-value">4,201</div>
+                                </div>
+                                
+                                <div class="dashboard-card">
+                                    <div class="card-icon">🔥</div>
+                                    <div class="card-title">Seria</div>
+                                    <div class="card-value">7 dni</div>
+                                </div>
+                                
+                                <div class="dashboard-card">
+                                    <div class="card-icon">🏆</div>
+                                    <div class="card-title">Ranking</div>
+                                    <div class="card-value">#3</div>
+                                </div>
+                            </div>
+                            
+                            <div class="lesson-card">
+                                <div class="lesson-title">Aktualna lekcja: Psychologia Rynku</div>
+                                <div class="lesson-progress">
+                                    <div class="lesson-progress-fill" style="width: 65%"></div>
+                                </div>
+                                <div style="font-size: 12px;">3/5 kroków ukończonych</div>
+                            </div>
+                            
+                            <div class="feature-grid">
+                                <div class="feature-card">
+                                    <div class="feature-icon">💡</div>
+                                    <div class="feature-title">Nowe inspiracje</div>
+                                    <div class="feature-desc">5 materiałów</div>
+                                </div>
+                                
+                                <div class="feature-card">
+                                    <div class="feature-icon">🛒</div>
+                                    <div class="feature-title">Sklep</div>
+                                    <div class="feature-desc">Nowości!</div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="drawer" id="drawer-3">
+                            <div class="drawer-header">
+                                <h3>Menu</h3>
+                                <p>Zenowy Degen 🧘‍♂️</p>
+                            </div>
+                            <div class="drawer-content">
+                                <div class="drawer-item active">
+                                    <div class="drawer-icon">🏠</div>
+                                    <div>Dashboard</div>
+                                </div>
+                                <div class="drawer-item">
+                                    <div class="drawer-icon">📚</div>
+                                    <div>Lekcje</div>
+                                </div>
+                                <div class="drawer-item">
+                                    <div class="drawer-icon">💡</div>
+                                    <div>Inspiracje</div>
+                                </div>
+                                <div class="drawer-item">
+                                    <div class="drawer-icon">👤</div>
+                                    <div>Profil & Test</div>
+                                </div>
+                                <div class="drawer-item">
+                                    <div class="drawer-icon">🛒</div>
+                                    <div>Sklep</div>
+                                </div>
+                                <div class="drawer-item">
+                                    <div class="drawer-icon">⚙️</div>
+                                    <div>Ustawienia</div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="overlay" id="overlay-3" onclick="closeDrawer('proposal-3')"></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- PROPOSAL 4: CONTEXTUAL SMART INTERFACE -->
+            <div class="phone-mockup">
+                <div class="phone-screen proposal-4">
+                    <div class="status-bar">
+                        <div>📶 Plus 5G</div>
+                        <div>🔋 84% 15:42</div>
+                    </div>
+                    <div class="proposal-title">4. Contextual Smart Interface</div>
+                    
+                    <div class="app-content">
+                        <div class="smart-header">
+                            <div class="context-title">🎯 Czas na naukę!</div>
+                            <div class="context-subtitle">Kontynuuj lekcję "Psychologia Rynku"</div>
+                        </div>
+                        
+                        <div class="smart-content">
+                            <div class="action-suggestions">
+                                <div class="suggestion-title">Sugerowane akcje</div>
+                                <div class="action-chips">
+                                    <div class="action-chip">📖 Kontynuuj lekcję</div>
+                                    <div class="action-chip">🧠 Zrób quiz</div>
+                                    <div class="action-chip">💡 Zobacz inspiracje</div>
+                                </div>
+                            </div>
+                            
+                            <div class="contextual-cards">
+                                <div class="context-card">
+                                    <h4 style="color: #2c3e50; margin-bottom: 8px;">🔥 Twoja seria: 7 dni</h4>
+                                    <p style="font-size: 12px; color: #6c757d;">Nie przerwij passy! Wykonaj dzisiaj choć jedną lekcję.</p>
+                                </div>
+                                
+                                <div class="context-card">
+                                    <h4 style="color: #2c3e50; margin-bottom: 8px;">🏆 Osiągnięcie w zasięgu</h4>
+                                    <p style="font-size: 12px; color: #6c757d;">Do "Mistrza Psychologii" zostało ci tylko 2 lekcje!</p>
+                                </div>
+                                
+                                <div class="context-card">
+                                    <h4 style="color: #2c3e50; margin-bottom: 8px;">👥 Aktywność znajomych</h4>
+                                    <p style="font-size: 12px; color: #6c757d;">Anna i 3 innych znajomych ukończyli nowe lekcje.</p>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="floating-actions">
+                            <div class="float-action">
+                                <div class="float-action-icon">🏠</div>
+                                <div class="float-action-label">Start</div>
+                            </div>
+                            <div class="float-action">
+                                <div class="float-action-icon">📚</div>
+                                <div class="float-action-label">Nauka</div>
+                            </div>
+                            <div class="float-action">
+                                <div class="float-action-icon">💡</div>
+                                <div class="float-action-label">Inspiracje</div>
+                            </div>
+                            <div class="float-action">
+                                <div class="float-action-icon">👤</div>
+                                <div class="float-action-label">Profil</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- SUMMARY AND COMPARISON -->
+        <div class="summary">
+            <h2>🎯 Porównanie i rekomendacje</h2>
+            
+            <p style="text-align: center; margin-bottom: 30px; color: #6c757d;">
+                Każdy z proponowanych layoutów odpowiada różnym potrzebom użytkowników i scenariuszom użytkowania ZenDegenAcademy.
+            </p>
+            
+            <div class="features-comparison">
+                <div class="feature-comparison">
+                    <h3>1. Modern Bottom Navigation</h3>
+                    <p style="font-size: 14px; color: #6c757d; margin-bottom: 15px;">
+                        Klasyczny, intuicyjny interfejs z dolną nawigacją. Idealny dla szybkiego dostępu do głównych funkcji.
+                    </p>
+                    <div class="pros-cons">
+                        <div class="pros">
+                            <h4>✅ Zalety</h4>
+                            <ul>
+                                <li>Intuicyjny i znany użytkownikom</li>
+                                <li>Łatwy dostęp do wszystkich sekcji</li>
+                                <li>Wyraźne oznaczenia i odznaki</li>
+                                <li>Dobra czytelność na małych ekranach</li>
+                            </ul>
+                        </div>
+                        <div class="cons">
+                            <h4>❌ Wady</h4>
+                            <ul>
+                                <li>Zabiera miejsce na ekranie</li>
+                                <li>Ograniczona liczba opcji w menu</li>
+                                <li>Mniej przestrzeni na treść</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="feature-comparison">
+                    <h3>2. FAB + Gesture Navigation</h3>
+                    <p style="font-size: 14px; color: #6c757d; margin-bottom: 15px;">
+                        Nowoczesne podejście z gestami i kontekstowym FAB. Maksymalizuje przestrzeń na treść.
+                    </p>
+                    <div class="pros-cons">
+                        <div class="pros">
+                            <h4>✅ Zalety</h4>
+                            <ul>
+                                <li>Maksymalna przestrzeń na treść</li>
+                                <li>Kontekstowe akcje w FAB</li>
+                                <li>Płynne przejścia między sekcjami</li>
+                                <li>Nowoczesny UX</li>
+                            </ul>
+                        </div>
+                        <div class="cons">
+                            <h4>❌ Wady</h4>
+                            <ul>
+                                <li>Wymaga nauki gestów</li>
+                                <li>Trudniej odkryć funkcje</li>
+                                <li>Nie dla wszystkich użytkowników</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="feature-comparison">
+                    <h3>3. Drawer + Card-Based</h3>
+                    <p style="font-size: 14px; color: #6c757d; margin-bottom: 15px;">
+                        Hamburger menu z kartami. Dobre dla aplikacji z wieloma funkcjami i szczegółowymi danymi.
+                    </p>
+                    <div class="pros-cons">
+                        <div class="pros">
+                            <h4>✅ Zalety</h4>
+                            <ul>
+                                <li>Miejsce na wiele opcji menu</li>
+                                <li>Elastyczny layout kart</li>
+                                <li>Dobre dla złożonych funkcji</li>
+                                <li>Czytelne grupowanie treści</li>
+                            </ul>
+                        </div>
+                        <div class="cons">
+                            <h4>❌ Wady</h4>
+                            <ul>
+                                <li>Menu ukryte za dodatkowym krokiem</li>
+                                <li>Może przytłaczać nowszych użytkowników</li>
+                                <li>Wymaga więcej tapnięć</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="feature-comparison">
+                    <h3>4. Contextual Smart Interface</h3>
+                    <p style="font-size: 14px; color: #6c757d; margin-bottom: 15px;">
+                        Inteligentny interfejs dostosowujący się do kontekstu i postępów użytkownika.
+                    </p>
+                    <div class="pros-cons">
+                        <div class="pros">
+                            <h4>✅ Zalety</h4>
+                            <ul>
+                                <li>Personalizowane doświadczenie</li>
+                                <li>Inteligentne sugestie</li>
+                                <li>Motywujące powiadomienia</li>
+                                <li>Adaptuje się do użytkownika</li>
+                            </ul>
+                        </div>
+                        <div class="cons">
+                            <h4>❌ Wady</h4>
+                            <ul>
+                                <li>Złożoność implementacji</li>
+                                <li>Wymaga dużo danych</li>
+                                <li>Może być nieprzewidywalny</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div style="background: #e3f2fd; padding: 20px; border-radius: 12px; margin-top: 30px; border-left: 4px solid #2196f3;">
+                <h3 style="color: #1976d2; margin-bottom: 15px;">🎯 Rekomendacja dla ZenDegenAcademy</h3>
+                <p style="margin-bottom: 15px;">
+                    <strong>Dla pierwszej wersji mobilnej</strong> rekomenduje <strong>Layout #1 (Modern Bottom Navigation)</strong> jako główny interfejs, 
+                    z elementami z Layout #4 (kontekstowe sugestie i motywujące powiadomienia).
+                </p>
+                <p style="margin-bottom: 15px;">
+                    <strong>Dlaczego ta kombinacja:</strong>
+                </p>
+                <ul style="padding-left: 20px;">
+                    <li>Bottom nav zapewnia intuicyjność i łatwość użytkowania</li>
+                    <li>Kontekstowe elementy zwiększają engagement edukacyjny</li>
+                    <li>Możliwość ewolucji w kierunku bardziej inteligentnego interfejsu</li>
+                    <li>Dobre dopasowanie do charakteru aplikacji edukacyjnej</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function toggleFabMenu(fab) {
+            const menu = document.getElementById('fab-menu');
+            menu.classList.toggle('active');
+        }
+
+        function toggleDrawer(proposalId) {
+            const drawer = document.getElementById('drawer-3');
+            const overlay = document.getElementById('overlay-3');
+            
+            drawer.classList.toggle('active');
+            overlay.classList.toggle('active');
+        }
+
+        function closeDrawer(proposalId) {
+            const drawer = document.getElementById('drawer-3');
+            const overlay = document.getElementById('overlay-3');
+            
+            drawer.classList.remove('active');
+            overlay.classList.remove('active');
+        }
+
+        // Close FAB menu when clicking outside
+        document.addEventListener('click', function(e) {
+            if (!e.target.closest('.fab') && !e.target.closest('.fab-menu')) {
+                const menu = document.getElementById('fab-menu');
+                if (menu) {
+                    menu.classList.remove('active');
+                }
+            }
+        });
+
+        // Simulate gesture indicators
+        setInterval(function() {
+            const indicators = document.querySelectorAll('.indicator-dot');
+            if (indicators.length > 0) {
+                indicators.forEach(dot => dot.classList.remove('active'));
+                const randomIndex = Math.floor(Math.random() * indicators.length);
+                indicators[randomIndex].classList.add('active');
+            }
+        }, 3000);
+    </script>
+</body>
+</html>

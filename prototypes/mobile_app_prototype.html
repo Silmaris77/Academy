@@ -1,0 +1,712 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ZenDegenAcademy - Mobile Layout Prototype</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: #f8f9fa;
+            height: 100vh;
+            overflow: hidden;
+        }
+
+        .mobile-app {
+            max-width: 375px;
+            height: 812px;
+            margin: 20px auto;
+            background: #2c3e50;
+            border-radius: 25px;
+            padding: 8px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.3);
+        }
+
+        .phone-screen {
+            background: white;
+            border-radius: 20px;
+            height: 100%;
+            overflow: hidden;
+            position: relative;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .status-bar {
+            background: #1a1a1a;
+            color: white;
+            padding: 8px 20px;
+            font-size: 12px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-shrink: 0;
+        }
+
+        .app-header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 20px;
+            text-align: center;
+            flex-shrink: 0;
+        }
+
+        .app-title {
+            font-size: 24px;
+            font-weight: bold;
+            margin-bottom: 8px;
+        }
+
+        .user-welcome {
+            font-size: 14px;
+            opacity: 0.9;
+        }
+
+        .main-content {
+            flex: 1;
+            overflow-y: auto;
+            padding: 20px;
+            padding-bottom: 100px;
+        }
+
+        .progress-card {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            border-radius: 15px;
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+
+        .progress-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+
+        .degen-type {
+            background: rgba(255,255,255,0.2);
+            padding: 6px 12px;
+            border-radius: 15px;
+            font-size: 12px;
+            font-weight: 500;
+        }
+
+        .level-info {
+            font-size: 18px;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+
+        .xp-progress {
+            background: rgba(255,255,255,0.2);
+            height: 8px;
+            border-radius: 4px;
+            overflow: hidden;
+            margin-bottom: 8px;
+        }
+
+        .xp-fill {
+            background: white;
+            height: 100%;
+            border-radius: 4px;
+            transition: width 0.3s;
+        }
+
+        .xp-text {
+            font-size: 12px;
+            opacity: 0.9;
+        }
+
+        .quick-actions {
+            margin-bottom: 20px;
+        }
+
+        .section-title {
+            font-size: 18px;
+            font-weight: bold;
+            color: #2c3e50;
+            margin-bottom: 15px;
+        }
+
+        .actions-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+        }
+
+        .action-card {
+            background: white;
+            border-radius: 12px;
+            padding: 20px;
+            text-align: center;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.08);
+            cursor: pointer;
+            transition: all 0.3s;
+            border: 2px solid transparent;
+        }
+
+        .action-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(0,0,0,0.15);
+        }
+
+        .action-card.primary {
+            border-color: #667eea;
+            background: linear-gradient(135deg, #f8f9ff, #ffffff);
+        }
+
+        .action-icon {
+            font-size: 32px;
+            margin-bottom: 10px;
+        }
+
+        .action-title {
+            font-size: 14px;
+            font-weight: bold;
+            color: #2c3e50;
+            margin-bottom: 4px;
+        }
+
+        .action-desc {
+            font-size: 12px;
+            color: #6c757d;
+        }
+
+        .action-badge {
+            background: #e74c3c;
+            color: white;
+            border-radius: 10px;
+            padding: 2px 6px;
+            font-size: 10px;
+            font-weight: bold;
+            position: absolute;
+            top: 8px;
+            right: 8px;
+        }
+
+        .stats-section {
+            margin-bottom: 20px;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 10px;
+        }
+
+        .stat-card {
+            background: white;
+            border-radius: 10px;
+            padding: 15px;
+            text-align: center;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+        }
+
+        .stat-icon {
+            font-size: 20px;
+            margin-bottom: 5px;
+        }
+
+        .stat-value {
+            font-size: 16px;
+            font-weight: bold;
+            color: #2c3e50;
+            margin-bottom: 2px;
+        }
+
+        .stat-label {
+            font-size: 10px;
+            color: #6c757d;
+        }
+
+        .recent-activity {
+            margin-bottom: 20px;
+        }
+
+        .activity-item {
+            background: white;
+            border-radius: 10px;
+            padding: 15px;
+            margin-bottom: 10px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+            border-left: 4px solid #667eea;
+        }
+
+        .activity-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 5px;
+        }
+
+        .activity-title {
+            font-size: 14px;
+            font-weight: 500;
+            color: #2c3e50;
+        }
+
+        .activity-time {
+            font-size: 11px;
+            color: #6c757d;
+        }
+
+        .activity-desc {
+            font-size: 12px;
+            color: #6c757d;
+        }
+
+        .bottom-navigation {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: white;
+            border-top: 1px solid #e0e0e0;
+            display: flex;
+            justify-content: space-around;
+            padding: 12px 0;
+            box-shadow: 0 -5px 20px rgba(0,0,0,0.1);
+        }
+
+        .nav-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 8px 12px;
+            border-radius: 12px;
+            cursor: pointer;
+            transition: all 0.3s;
+            position: relative;
+            min-width: 60px;
+        }
+
+        .nav-item.active {
+            background: #667eea;
+            color: white;
+            transform: translateY(-2px);
+        }
+
+        .nav-item:not(.active):hover {
+            background: #f8f9fa;
+        }
+
+        .nav-icon {
+            font-size: 20px;
+            margin-bottom: 4px;
+        }
+
+        .nav-label {
+            font-size: 10px;
+            font-weight: 500;
+        }
+
+        .nav-badge {
+            position: absolute;
+            top: 4px;
+            right: 8px;
+            background: #e74c3c;
+            color: white;
+            border-radius: 10px;
+            padding: 2px 6px;
+            font-size: 8px;
+            font-weight: bold;
+            min-width: 16px;
+            text-align: center;
+        }
+
+        .fab {
+            position: absolute;
+            bottom: 90px;
+            right: 20px;
+            width: 56px;
+            height: 56px;
+            background: #667eea;
+            border: none;
+            border-radius: 50%;
+            color: white;
+            font-size: 24px;
+            cursor: pointer;
+            box-shadow: 0 8px 25px rgba(102, 126, 234, 0.4);
+            transition: all 0.3s;
+            z-index: 100;
+        }
+
+        .fab:hover {
+            transform: scale(1.1);
+            background: #5a6fd8;
+        }
+
+        .fab-menu {
+            position: absolute;
+            bottom: 160px;
+            right: 20px;
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.2);
+            padding: 10px;
+            opacity: 0;
+            visibility: hidden;
+            transform: translateY(20px);
+            transition: all 0.3s;
+            min-width: 200px;
+            z-index: 99;
+        }
+
+        .fab-menu.active {
+            opacity: 1;
+            visibility: visible;
+            transform: translateY(0);
+        }
+
+        .fab-menu-item {
+            display: flex;
+            align-items: center;
+            padding: 12px;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+
+        .fab-menu-item:hover {
+            background: #f8f9fa;
+        }
+
+        .fab-menu-icon {
+            font-size: 18px;
+            margin-right: 12px;
+            width: 24px;
+        }
+
+        /* Page transitions */
+        .page {
+            display: none;
+            animation: fadeIn 0.3s ease-in-out;
+        }
+
+        .page.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Streak fire animation */
+        .streak-fire {
+            animation: flicker 1.5s infinite alternate;
+        }
+
+        @keyframes flicker {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+            100% { transform: scale(1); }
+        }
+    </style>
+</head>
+<body>
+    <div class="mobile-app">
+        <div class="phone-screen">
+            <div class="status-bar">
+                <div>📶 T-Mobile 5G</div>
+                <div>🔋 87% 15:42</div>
+            </div>
+
+            <!-- APP HEADER -->
+            <div class="app-header">
+                <div class="app-title">ZenDegen Academy 🧘‍♂️</div>
+                <div class="user-welcome">Witaj z powrotem, Zenowy Degenie!</div>
+            </div>
+
+            <!-- MAIN DASHBOARD PAGE -->
+            <div id="dashboard" class="page active">
+                <div class="main-content">
+                    <!-- PROGRESS CARD -->
+                    <div class="progress-card">
+                        <div class="progress-header">
+                            <div>
+                                <div class="level-info">Poziom 7</div>
+                                <div class="xp-text">4,201 / 6,000 XP</div>
+                            </div>
+                            <div class="degen-type">Hype Degen</div>
+                        </div>
+                        <div class="xp-progress">
+                            <div class="xp-fill" style="width: 70%"></div>
+                        </div>
+                        <div class="xp-text">Do następnego poziomu: 1,799 XP</div>
+                    </div>
+
+                    <!-- QUICK ACTIONS -->
+                    <div class="quick-actions">
+                        <div class="section-title">Szybkie akcje</div>
+                        <div class="actions-grid">
+                            <div class="action-card primary" onclick="continueLesson()">
+                                <div class="action-icon">📚</div>
+                                <div class="action-title">Kontynuuj lekcję</div>
+                                <div class="action-desc">Psychologia Rynku</div>
+                            </div>
+                            
+                            <div class="action-card" onclick="takeTest()">
+                                <div class="action-icon">🧠</div>
+                                <div class="action-title">Test degena</div>
+                                <div class="action-desc">Odkryj swój typ</div>
+                            </div>
+                            
+                            <div class="action-card" onclick="viewInspirations()">
+                                <div class="action-icon">💡</div>
+                                <div class="action-title">Inspiracje</div>
+                                <div class="action-desc">5 nowych</div>
+                                <div class="action-badge">5</div>
+                            </div>
+                            
+                            <div class="action-card" onclick="openShop()">
+                                <div class="action-icon">🛒</div>
+                                <div class="action-title">Sklep</div>
+                                <div class="action-desc">Ulepsz profil</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- STATS SECTION -->
+                    <div class="stats-section">
+                        <div class="section-title">Twoje statystyki</div>
+                        <div class="stats-grid">
+                            <div class="stat-card">
+                                <div class="stat-icon streak-fire">🔥</div>
+                                <div class="stat-value">7</div>
+                                <div class="stat-label">Dni z rzędu</div>
+                            </div>
+                            
+                            <div class="stat-card">
+                                <div class="stat-icon">🏆</div>
+                                <div class="stat-value">#3</div>
+                                <div class="stat-label">W rankingu</div>
+                            </div>
+                            
+                            <div class="stat-card">
+                                <div class="stat-icon">✅</div>
+                                <div class="stat-value">42</div>
+                                <div class="stat-label">Lekcji</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- RECENT ACTIVITY -->
+                    <div class="recent-activity">
+                        <div class="section-title">Ostatnia aktywność</div>
+                        
+                        <div class="activity-item">
+                            <div class="activity-header">
+                                <div class="activity-title">📚 Ukończono lekcję</div>
+                                <div class="activity-time">2 godz. temu</div>
+                            </div>
+                            <div class="activity-desc">Analiza Techniczna - Podstawy • +150 XP</div>
+                        </div>
+                        
+                        <div class="activity-item">
+                            <div class="activity-header">
+                                <div class="activity-title">🏆 Nowe osiągnięcie</div>
+                                <div class="activity-time">1 dzień temu</div>
+                            </div>
+                            <div class="activity-desc">Mistrz Analizy - ukończono wszystkie lekcje z analizy</div>
+                        </div>
+                        
+                        <div class="activity-item">
+                            <div class="activity-header">
+                                <div class="activity-title">💡 Nowa inspiracja</div>
+                                <div class="activity-time">2 dni temu</div>
+                            </div>
+                            <div class="activity-desc">Dodano artykuł "Psychologia Strachu w Inwestowaniu"</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- LESSONS PAGE -->
+            <div id="lessons" class="page">
+                <div class="main-content">
+                    <div class="section-title">📚 Twoje lekcje</div>
+                    <!-- Lekcje content would go here -->
+                    <div style="text-align: center; color: #6c757d; margin-top: 50px;">
+                        <div style="font-size: 48px; margin-bottom: 20px;">📚</div>
+                        <div>Sekcja lekcji</div>
+                        <div style="font-size: 14px;">Tutaj znajdziesz wszystkie dostępne kursy</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- INSPIRATIONS PAGE -->
+            <div id="inspirations" class="page">
+                <div class="main-content">
+                    <div class="section-title">💡 Inspiracje</div>
+                    <!-- Inspiracje content would go here -->
+                    <div style="text-align: center; color: #6c757d; margin-top: 50px;">
+                        <div style="font-size: 48px; margin-bottom: 20px;">💡</div>
+                        <div>Sekcja inspiracji</div>
+                        <div style="font-size: 14px;">Artykuły, materiały motywacyjne i więcej</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- PROFILE PAGE -->
+            <div id="profile" class="page">
+                <div class="main-content">
+                    <div class="section-title">👤 Twój profil</div>
+                    <!-- Profile content would go here -->
+                    <div style="text-align: center; color: #6c757d; margin-top: 50px;">
+                        <div style="font-size: 48px; margin-bottom: 20px;">👤</div>
+                        <div>Sekcja profilu</div>
+                        <div style="font-size: 14px;">Statystyki, osiągnięcia i test typu degena</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- FAB MENU -->
+            <div class="fab-menu" id="fab-menu">
+                <div class="fab-menu-item" onclick="continueLesson()">
+                    <div class="fab-menu-icon">📚</div>
+                    <div>Kontynuuj lekcję</div>
+                </div>
+                <div class="fab-menu-item" onclick="takeTest()">
+                    <div class="fab-menu-icon">🧠</div>
+                    <div>Test degena</div>
+                </div>
+                <div class="fab-menu-item" onclick="viewInspirations()">
+                    <div class="fab-menu-icon">💡</div>
+                    <div>Nowe inspiracje</div>
+                </div>
+                <div class="fab-menu-item" onclick="openSettings()">
+                    <div class="fab-menu-icon">⚙️</div>
+                    <div>Ustawienia</div>
+                </div>
+            </div>
+
+            <!-- FAB BUTTON -->
+            <button class="fab" onclick="toggleFabMenu()" id="fab-button">⚡</button>
+
+            <!-- BOTTOM NAVIGATION -->
+            <div class="bottom-navigation">
+                <div class="nav-item active" onclick="showPage('dashboard')">
+                    <div class="nav-icon">🏠</div>
+                    <div class="nav-label">Start</div>
+                </div>
+                
+                <div class="nav-item" onclick="showPage('lessons')">
+                    <div class="nav-icon">📚</div>
+                    <div class="nav-label">Nauka</div>
+                    <div class="nav-badge">3</div>
+                </div>
+                
+                <div class="nav-item" onclick="showPage('inspirations')">
+                    <div class="nav-icon">💡</div>
+                    <div class="nav-label">Inspiracje</div>
+                    <div class="nav-badge">5</div>
+                </div>
+                
+                <div class="nav-item" onclick="showPage('profile')">
+                    <div class="nav-icon">👤</div>
+                    <div class="nav-label">Profil</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let fabMenuOpen = false;
+
+        function showPage(pageId) {
+            // Hide all pages
+            document.querySelectorAll('.page').forEach(page => {
+                page.classList.remove('active');
+            });
+            
+            // Remove active class from all nav items
+            document.querySelectorAll('.nav-item').forEach(item => {
+                item.classList.remove('active');
+            });
+            
+            // Show selected page
+            document.getElementById(pageId).classList.add('active');
+            
+            // Set active nav item
+            event.target.closest('.nav-item').classList.add('active');
+            
+            // Close FAB menu if open
+            closeFabMenu();
+        }
+
+        function toggleFabMenu() {
+            const fabMenu = document.getElementById('fab-menu');
+            const fabButton = document.getElementById('fab-button');
+            
+            fabMenuOpen = !fabMenuOpen;
+            
+            if (fabMenuOpen) {
+                fabMenu.classList.add('active');
+                fabButton.style.transform = 'rotate(45deg)';
+                fabButton.innerHTML = '✕';
+            } else {
+                fabMenu.classList.remove('active');
+                fabButton.style.transform = 'rotate(0deg)';
+                fabButton.innerHTML = '⚡';
+            }
+        }
+
+        function closeFabMenu() {
+            const fabMenu = document.getElementById('fab-menu');
+            const fabButton = document.getElementById('fab-button');
+            
+            fabMenuOpen = false;
+            fabMenu.classList.remove('active');
+            fabButton.style.transform = 'rotate(0deg)';
+            fabButton.innerHTML = '⚡';
+        }
+
+        function continueLesson() {
+            alert('🎯 Kontynuując lekcję "Psychologia Rynku"...');
+            closeFabMenu();
+        }
+
+        function takeTest() {
+            alert('🧠 Rozpoczynamy test typu degena...');
+            closeFabMenu();
+        }
+
+        function viewInspirations() {
+            showPage('inspirations');
+        }
+
+        function openShop() {
+            alert('🛒 Otwieramy sklep ZenDegen...');
+            closeFabMenu();
+        }
+
+        function openSettings() {
+            alert('⚙️ Otwieramy ustawienia...');
+            closeFabMenu();
+        }
+
+        // Close FAB menu when clicking outside
+        document.addEventListener('click', function(e) {
+            if (fabMenuOpen && !e.target.closest('.fab') && !e.target.closest('.fab-menu')) {
+                closeFabMenu();
+            }
+        });
+
+        // Animate progress bar on load
+        window.addEventListener('load', function() {
+            setTimeout(() => {
+                const progressBar = document.querySelector('.xp-fill');
+                progressBar.style.width = '70%';
+            }, 500);
+        });
+    </script>
+</body>
+</html>
