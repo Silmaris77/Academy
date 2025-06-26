@@ -8,6 +8,7 @@ from utils.inspirations_loader import (
     get_inspirations_by_category, search_inspirations, get_inspiration_by_id,
     load_inspiration_content, increment_inspiration_views, get_inspiration_views,
     mark_inspiration_as_favorite, unmark_inspiration_as_favorite, 
+    toggle_inspiration_favorite,  # Add toggle function
     is_inspiration_favorite, get_favorite_inspirations,
     get_random_inspiration, get_all_inspirations,
     mark_inspiration_as_read, is_inspiration_read, get_read_inspirations
@@ -351,16 +352,12 @@ def show_single_inspiration_card(inspiration, featured=False, card_index=0):
         
         # Div z klasą CSS dla lepszego wyrównania
         st.markdown('<div class="inspiration-card-buttons">', unsafe_allow_html=True)
-        
-        # Kolumny z gap dla przycisków
+          # Kolumny z gap dla przycisków
         col_fav, col_read = st.columns([1, 1], gap="medium")
         
         with col_fav:
             if st.button(f"{fav_icon} Ulubione", key=f"fav_{inspiration['id']}_{card_index}", help="Dodaj/usuń z ulubionych", use_container_width=True):
-                if is_fav:
-                    unmark_inspiration_as_favorite(inspiration['id'])
-                else:
-                    mark_inspiration_as_favorite(inspiration['id'])
+                toggle_inspiration_favorite(inspiration['id'])
                 st.rerun()
         
         with col_read:

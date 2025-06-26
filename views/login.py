@@ -85,9 +85,9 @@ def show_login_page():
                     elif new_password != confirm_password:
                         st.error("Hasła nie pasują do siebie.")
                     else:
-                        registration_successful = register_user(new_username, new_password, confirm_password)
+                        registration_result = register_user(new_username, new_password, confirm_password)
                         
-                        if registration_successful:
+                        if registration_result == "Registration successful!":
                             st.success("Rejestracja udana! Możesz się teraz zalogować.")
                             # Automatyczne logowanie po rejestracji
                             st.session_state.logged_in = True
@@ -95,4 +95,4 @@ def show_login_page():
                             st.session_state.page = 'dashboard'
                             st.rerun()
                         else:
-                            st.error("Nazwa użytkownika jest już zajęta.")
+                            st.error(registration_result)

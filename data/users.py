@@ -39,7 +39,12 @@ def register_user(username, password, password_confirm):
             "joined_date": datetime.now().strftime("%Y-%m-%d"),
             "completed_lessons": [],
             "badges": [],
-            "test_taken": False
+            "test_taken": False,
+            # Nowe pola dla Inspiracji
+            "inspirations": {
+                "read": [],      # Lista ID przeczytanych inspiracji
+                "favorites": []  # Lista ID ulubionych inspiracji
+            }
         }
         save_user_data(users_data)
         return "Registration successful!"
@@ -69,65 +74,127 @@ def update_single_user_field(username, field_name, field_value):
         return True
     return False
 
-def get_current_user_data(username: str = None):
-    """Get current user data, ensuring 'recent_activities' exists."""
-    if username is None and 'username' in st.session_state:
-        username = st.session_state.username
-    elif username is None:
-        return None # Or raise an error, or return a default guest structure
-
+def get_current_user_data(username=None):
+    """Get current user data with safe defaults"""
+    if username is None:
+        username = st.session_state.get('username')
+    
+    if not username:
+        return {}
+    
     users_data = load_user_data()
     user_data = users_data.get(username, {})
     
-    # Ensure 'recent_activities' list exists
-    if 'recent_activities' not in user_data:
-        user_data['recent_activities'] = []
-        # Save the updated user data back to the file
+    # Ensure inspirations data exists with default structure
+    if 'inspirations' not in user_data:
+        user_data['inspirations'] = {
+            'read': [],
+            'favorites': []
+        }
         users_data[username] = user_data
         save_user_data(users_data)
+    
     return user_data
 
-def add_recent_activity(username: str, activity_type: str, details: dict):
-    """Add a new recent activity for a user, ensuring timestamp is UTC ISO format."""
+# Nowe funkcje dla Inspiracji
+def save_user_inspiration_data(username, read_list=None, favorites_list=None):
+    """Save user's inspiration read/favorite data"""
+    if not username:
+        return False
+    
     users_data = load_user_data()
     if username not in users_data:
-        print(f"Error: User {username} not found. Cannot add activity.")
-        return
-
-    # Validate degen type if it's a degen_type_discovered activity
-    if activity_type == "degen_type_discovered":
-        degen_type = details.get("degen_type")
-        if not _validate_degen_type(degen_type):
-            print(f"Warning: Invalid degen type '{degen_type}'. Using user's actual degen type.")
-            # Use the user's actual degen type instead
-            actual_degen_type = users_data[username].get("degen_type")
-            if actual_degen_type:
-                details["degen_type"] = actual_degen_type
-            else:
-                print(f"Error: No valid degen type found for user {username}")
-                return
-
-    # Ensure 'recent_activities' list exists for the user
-    if 'recent_activities' not in users_data[username]:
-        users_data[username]['recent_activities'] = []
-
-    activity_entry = {
-        "type": activity_type,
-        "details": details,
-        "timestamp": datetime.now(timezone.utc).isoformat() # Store as UTC ISO string
-    }
+        return False
     
-    users_data[username]['recent_activities'].insert(0, activity_entry)
-    # Keep only the latest N activities (e.g., 10 or 20)
-    users_data[username]['recent_activities'] = users_data[username]['recent_activities'][:20]
+    # Initialize inspirations data if not exists
+    if 'inspirations' not in users_data[username]:
+        users_data[username]['inspirations'] = {'read': [], 'favorites': []}
+    
+    # Update read list if provided
+    if read_list is not None:
+        users_data[username]['inspirations']['read'] = read_list
+    
+    # Update favorites list if provided  
+    if favorites_list is not None:
+        users_data[username]['inspirations']['favorites'] = favorites_list
     
     save_user_data(users_data)
+    return True
 
-def _validate_degen_type(degen_type):
-    """Validate if the degen type is valid"""
-    try:
-        from data.test_questions import DEGEN_TYPES
-        return degen_type in DEGEN_TYPES
-    except ImportError:
-        # If we can't import DEGEN_TYPES, accept any string
-        return isinstance(degen_type, str) and len(degen_type) > 0
+def get_user_read_inspirations(username=None):
+    """Get list of user's read inspirations"""
+    if username is None:
+        username = st.session_state.get('username')
+    
+    if not username:
+        return []
+    
+    user_data = get_current_user_data(username)
+    return user_data.get('inspirations', {}).get('read', [])
+
+def get_user_favorite_inspirations(username=None):
+    """Get list of user's favorite inspirations"""
+    if username is None:
+        username = st.session_state.get('username')
+    
+    if not username:
+        return []
+    
+    user_data = get_current_user_data(username)
+    return user_data.get('inspirations', {}).get('favorites', [])
+
+def mark_inspiration_as_read_for_user(inspiration_id, username=None):
+    """Mark inspiration as read for specific user"""
+    if username is None:
+        username = st.session_state.get('username')
+    
+    if not username:
+        return False
+    
+    read_list = get_user_read_inspirations(username)
+    if inspiration_id not in read_list:
+        read_list.append(inspiration_id)
+        return save_user_inspiration_data(username, read_list=read_list)
+    
+    return True
+
+def toggle_inspiration_favorite_for_user(inspiration_id, username=None):
+    """Toggle inspiration favorite status for specific user"""
+    if username is None:
+        username = st.session_state.get('username')
+    
+    if not username:
+        return False
+    
+    favorites_list = get_user_favorite_inspirations(username)
+    
+    if inspiration_id in favorites_list:
+        # Remove from favorites
+        favorites_list.remove(inspiration_id)
+    else:
+        # Add to favorites
+        favorites_list.append(inspiration_id)
+    
+    return save_user_inspiration_data(username, favorites_list=favorites_list)
+
+def is_inspiration_read_by_user(inspiration_id, username=None):
+    """Check if inspiration is read by specific user"""
+    if username is None:
+        username = st.session_state.get('username')
+    
+    if not username:
+        return False
+    
+    read_list = get_user_read_inspirations(username)
+    return inspiration_id in read_list
+
+def is_inspiration_favorite_by_user(inspiration_id, username=None):
+    """Check if inspiration is favorite by specific user"""
+    if username is None:
+        username = st.session_state.get('username')
+    
+    if not username:
+        return False
+    
+    favorites_list = get_user_favorite_inspirations(username)
+    return inspiration_id in favorites_list

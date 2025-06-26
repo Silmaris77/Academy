@@ -3,6 +3,29 @@ import json
 import os
 from pathlib import Path
 
+# Import user functions for persistent data
+def get_user_functions():
+    """Lazy import to avoid circular imports"""
+    try:
+        from data.users import (
+            mark_inspiration_as_read_for_user,
+            toggle_inspiration_favorite_for_user,
+            is_inspiration_read_by_user,
+            is_inspiration_favorite_by_user,
+            get_user_read_inspirations,
+            get_user_favorite_inspirations
+        )
+        return {
+            'mark_read': mark_inspiration_as_read_for_user,
+            'toggle_favorite': toggle_inspiration_favorite_for_user,
+            'is_read': is_inspiration_read_by_user,
+            'is_favorite': is_inspiration_favorite_by_user,
+            'get_read': get_user_read_inspirations,
+            'get_favorites': get_user_favorite_inspirations
+        }
+    except ImportError:
+        return None
+
 def load_inspirations_data():
     """Ładuje dane inspiracji z pliku JSON"""
     try:
@@ -109,36 +132,77 @@ def get_inspiration_views(inspiration_id):
         return 0
     return st.session_state.inspiration_views.get(inspiration_id, 0)
 
+def toggle_inspiration_favorite(inspiration_id):
+    """Przełącza status ulubionej inspiracji"""
+    user_funcs = get_user_functions()
+    if user_funcs and st.session_state.get('username'):
+        # Use persistent user data
+        return user_funcs['toggle_favorite'](inspiration_id)
+    else:
+        # Fallback to session state for guests
+        if 'favorite_inspirations' not in st.session_state:
+            st.session_state.favorite_inspirations = []
+        
+        if inspiration_id in st.session_state.favorite_inspirations:
+            st.session_state.favorite_inspirations.remove(inspiration_id)
+            return False
+        else:
+            st.session_state.favorite_inspirations.append(inspiration_id)
+            return True
+
 def mark_inspiration_as_favorite(inspiration_id):
     """Dodaje inspirację do ulubionych"""
-    if 'favorite_inspirations' not in st.session_state:
-        st.session_state.favorite_inspirations = []
-    
-    if inspiration_id not in st.session_state.favorite_inspirations:
-        st.session_state.favorite_inspirations.append(inspiration_id)
+    user_funcs = get_user_functions()
+    if user_funcs and st.session_state.get('username'):
+        # Use persistent user data - add to favorites if not already there
+        if not user_funcs['is_favorite'](inspiration_id):
+            user_funcs['toggle_favorite'](inspiration_id)
+    else:
+        # Fallback to session state for guests
+        if 'favorite_inspirations' not in st.session_state:
+            st.session_state.favorite_inspirations = []
+        
+        if inspiration_id not in st.session_state.favorite_inspirations:
+            st.session_state.favorite_inspirations.append(inspiration_id)
 
 def unmark_inspiration_as_favorite(inspiration_id):
     """Usuwa inspirację z ulubionych"""
-    if 'favorite_inspirations' not in st.session_state:
-        st.session_state.favorite_inspirations = []
-    
-    if inspiration_id in st.session_state.favorite_inspirations:
-        st.session_state.favorite_inspirations.remove(inspiration_id)
+    user_funcs = get_user_functions()
+    if user_funcs and st.session_state.get('username'):
+        # Use persistent user data - remove from favorites if it's there
+        if user_funcs['is_favorite'](inspiration_id):
+            user_funcs['toggle_favorite'](inspiration_id)
+    else:
+        # Fallback to session state for guests
+        if 'favorite_inspirations' not in st.session_state:
+            st.session_state.favorite_inspirations = []
+        
+        if inspiration_id in st.session_state.favorite_inspirations:
+            st.session_state.favorite_inspirations.remove(inspiration_id)
 
 def is_inspiration_favorite(inspiration_id):
     """Sprawdza czy inspiracja jest ulubiona"""
-    if 'favorite_inspirations' not in st.session_state:
-        return False
-    return inspiration_id in st.session_state.favorite_inspirations
+    user_funcs = get_user_functions()
+    if user_funcs and st.session_state.get('username'):
+        # Use persistent user data
+        return user_funcs['is_favorite'](inspiration_id)
+    else:
+        # Fallback to session state for guests
+        if 'favorite_inspirations' not in st.session_state:
+            return False
+        return inspiration_id in st.session_state.favorite_inspirations
 
 def get_favorite_inspirations():
     """Pobiera ulubione inspiracje"""
-    if 'favorite_inspirations' not in st.session_state:
-        return []
+    user_funcs = get_user_functions()
+    if user_funcs and st.session_state.get('username'):
+        # Use persistent user data
+        favorite_ids = user_funcs['get_favorites']()
+    else:
+        # Fallback to session state for guests
+        favorite_ids = st.session_state.get('favorite_inspirations', [])
     
-    favorite_ids = st.session_state.favorite_inspirations
     all_inspirations = get_all_inspirations()
-    
     favorites = []
     for insp in all_inspirations:
         if insp.get("id") in favorite_ids:
@@ -174,26 +238,41 @@ def get_random_inspiration():
 
 def mark_inspiration_as_read(inspiration_id):
     """Oznacza inspirację jako przeczytaną"""
-    if 'read_inspirations' not in st.session_state:
-        st.session_state.read_inspirations = []
-    
-    if inspiration_id not in st.session_state.read_inspirations:
-        st.session_state.read_inspirations.append(inspiration_id)
+    user_funcs = get_user_functions()
+    if user_funcs and st.session_state.get('username'):
+        # Use persistent user data
+        user_funcs['mark_read'](inspiration_id)
+    else:
+        # Fallback to session state for guests
+        if 'read_inspirations' not in st.session_state:
+            st.session_state.read_inspirations = []
+        
+        if inspiration_id not in st.session_state.read_inspirations:
+            st.session_state.read_inspirations.append(inspiration_id)
 
 def is_inspiration_read(inspiration_id):
     """Sprawdza czy inspiracja została przeczytana"""
-    if 'read_inspirations' not in st.session_state:
-        return False
-    return inspiration_id in st.session_state.read_inspirations
+    user_funcs = get_user_functions()
+    if user_funcs and st.session_state.get('username'):
+        # Use persistent user data
+        return user_funcs['is_read'](inspiration_id)
+    else:
+        # Fallback to session state for guests
+        if 'read_inspirations' not in st.session_state:
+            return False
+        return inspiration_id in st.session_state.read_inspirations
 
 def get_read_inspirations():
     """Pobiera listę przeczytanych inspiracji"""
-    if 'read_inspirations' not in st.session_state:
-        return []
+    user_funcs = get_user_functions()
+    if user_funcs and st.session_state.get('username'):
+        # Use persistent user data
+        read_ids = user_funcs['get_read']()
+    else:
+        # Fallback to session state for guests
+        read_ids = st.session_state.get('read_inspirations', [])
     
-    read_ids = st.session_state.read_inspirations
     all_inspirations = get_all_inspirations()
-    
     read_list = []
     for insp in all_inspirations:
         if insp.get("id") in read_ids:
