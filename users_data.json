@@ -1261,13 +1261,13 @@
     "user_id": "5234fd92-04d2-4b92-b284-fe437260a815",
     "password": "a",
     "degen_type": null,
-    "xp": 19,
+    "xp": 23,
     "level": 1,
     "joined_date": "2025-05-21",
     "completed_lessons": [],
     "badges": [],
     "test_taken": false,
-    "degencoins": 19,
+    "degencoins": 23,
     "recent_activities": [],
     "lesson_progress": {
       "B1C1L4": {
@@ -1285,7 +1285,12 @@
         "practical_exercises_completed": true,
         "practical_exercises_xp": 12,
         "practical_exercises_degencoins": 12,
-        "practical_exercises_timestamp": "2025-06-25 16:20:04"
+        "practical_exercises_timestamp": "2025-06-25 16:20:04",
+        "closing_quiz_xp_awarded": true,
+        "closing_quiz_completed": true,
+        "closing_quiz_xp": 4,
+        "closing_quiz_degencoins": 4,
+        "closing_quiz_timestamp": "2025-06-26 12:03:10"
       }
     }
   },
