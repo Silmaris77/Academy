@@ -35,15 +35,14 @@ def get_user_activity_data():
     
     # Przygotuj dane do analizy
     activity_data = []
-    for username, data in users_data.items():
-        activity_data.append({
+    for username, data in users_data.items():        activity_data.append({
             'username': username,
             'xp': data.get('xp', 0),
             'level': data.get('level', 1),
             'completed_lessons': len(data.get('completed_lessons', [])),
             'degen_type': data.get('degen_type', 'Nieznany'),
-            'registration_date': data.get('registration_date', '2023-01-01'),
-            'last_login': data.get('last_login', '2023-01-01'),
+            'registration_date': data.get('joined_date', 'Nieznana'),  # Poprawione: używamy joined_date
+            'last_login': data.get('last_login') or 'Nigdy',           # Lepsze formatowanie dla brakujących danych
             'test_taken': data.get('test_taken', False),
             'completed_missions': len(data.get('completed_missions', [])),
             'streak': data.get('streak', 0)
@@ -251,8 +250,7 @@ def show_admin_dashboard():
         
         # Sortuj dane
         filtered_df = filtered_df.sort_values(by=sort_by, ascending=False)
-        
-        # Wyświetl tabelę użytkowników
+          # Wyświetl tabelę użytkowników
         st.dataframe(
             filtered_df,
             column_config={
@@ -261,6 +259,8 @@ def show_admin_dashboard():
                 "level": "Poziom",
                 "completed_lessons": "Ukończone lekcje",
                 "degen_type": "Typ degena",
+                "registration_date": "Data rejestracji",
+                "last_login": "Ostatnie logowanie",
                 "test_taken": "Test wykonany",
                 "streak": "Seria dni"
             },

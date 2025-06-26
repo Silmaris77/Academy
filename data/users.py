@@ -37,6 +37,7 @@ def register_user(username, password, password_confirm):
             "degencoins": 0,
             "level": 1,
             "joined_date": datetime.now().strftime("%Y-%m-%d"),
+            "last_login": None,  # Będzie ustawione przy pierwszym logowaniu
             "completed_lessons": [],
             "badges": [],
             "test_taken": False,
@@ -53,6 +54,9 @@ def login_user(username, password):
     """Login a user"""
     users_data = load_user_data()
     if username in users_data and users_data[username]["password"] == password:
+        # Zaktualizuj datę ostatniego logowania
+        users_data[username]["last_login"] = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+        save_user_data(users_data)
         return users_data[username]
     return None
 
