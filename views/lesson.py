@@ -261,11 +261,11 @@ def show_lessons_content():
             display: flex;
             justify-content: center;
             align-items: center;
-        }          /* Zrób przyciski "Dalej" krótsze - BARDZO agresywne wymuszenie */
+        }          /* Przyciski "Dalej" o szerokości odpowiadającej przyciskom nawigacji poziomej */
         .next-button .stButton > button {
-            width: 180px !important;
-            min-width: 180px !important;
-            max-width: 180px !important;
+            width: 280px !important;
+            min-width: 280px !important;
+            max-width: 280px !important;
             height: 48px !important;
             white-space: nowrap !important;
             overflow: hidden !important;
@@ -276,24 +276,24 @@ def show_lessons_content():
             line-height: 1.2 !important;
         }
         
-        /* Zapewnij, że kontener przycisku nie rozciąga się - BARDZO agresywne */
+        /* Zapewnij, że kontener przycisku ma odpowiednią szerokość */
         .next-button .stButton {
-            width: 180px !important;
-            max-width: 180px !important;
+            width: 280px !important;
+            max-width: 280px !important;
             margin: 0 auto !important;
             display: block !important;
         }
         
         /* Wymuś szerokość na elemencie div zawierającym przycisk */
         .next-button > div {
-            width: 180px !important;
-            max-width: 180px !important;
+            width: 280px !important;
+            max-width: 280px !important;
             margin: 0 auto !important;
         }
         
         /* Dodatkowe wymuszenie dla wszystkich elementów w kontenerze */
         .next-button * {
-            max-width: 180px !important;
+            max-width: 280px !important;
         }
         
         /* Style dla expanderów */
@@ -1014,44 +1014,47 @@ def show_lessons_content():
                 if not lesson_finished:
                     # Pierwszy etap - przycisk "Zakończ lekcję"
                     st.markdown("<div class='next-button'>", unsafe_allow_html=True)
-                    if zen_button("🎉 Zakończ lekcję", use_container_width=False):
-                        # Przyznaj XP za podsumowanie, jeśli jeszcze nie zostało przyznane
-                        if not st.session_state.lesson_progress.get('summary', False):
-                            success, xp_awarded = award_fragment_xp(lesson_id, 'summary', step_xp_values['summary'])
-                            
-                            if success and xp_awarded > 0:
-                                # Update session state for UI compatibility
-                                st.session_state.lesson_progress['summary'] = True
-                                st.session_state.lesson_progress['steps_completed'] += 1
-                                st.session_state.lesson_progress['total_xp_earned'] += xp_awarded
+                    col1, col2, col3 = st.columns([1, 1, 1])
+                    with col2:
+                        if zen_button("🎉 Zakończ lekcję", use_container_width=True):
+                            # Przyznaj XP za podsumowanie, jeśli jeszcze nie zostało przyznane
+                            if not st.session_state.lesson_progress.get('summary', False):
+                                success, xp_awarded = award_fragment_xp(lesson_id, 'summary', step_xp_values['summary'])
                                 
-                                # Show real-time XP notification
-                                show_xp_notification(xp_awarded, f"Zdobyłeś {xp_awarded} XP za ukończenie podsumowania!")
+                                if success and xp_awarded > 0:
+                                    # Update session state for UI compatibility
+                                    st.session_state.lesson_progress['summary'] = True
+                                    st.session_state.lesson_progress['steps_completed'] += 1
+                                    st.session_state.lesson_progress['total_xp_earned'] += xp_awarded
+                                    
+                                    # Show real-time XP notification
+                                    show_xp_notification(xp_awarded, f"Zdobyłeś {xp_awarded} XP za ukończenie podsumowania!")
+                                    
+                                    # Refresh user data for real-time updates
+                                    from utils.real_time_updates import refresh_user_data
+                                    refresh_user_data()
+                            
+                            # Oznacz lekcję jako zakończoną i zapisz postęp
+                            if is_lesson_fully_completed(lesson_id):
+                                mark_lesson_as_completed(lesson_id)
+                                
+                                # Check for achievements after completing lesson
+                                from utils.achievements import check_achievements
+                                username = st.session_state.get('username')
+                                if username:
+                                    check_achievements(username, 'lesson_completion', lesson_id=lesson_id)
                                 
                                 # Refresh user data for real-time updates
                                 from utils.real_time_updates import refresh_user_data
                                 refresh_user_data()
-                          # Oznacz lekcję jako zakończoną i zapisz postęp
-                        if is_lesson_fully_completed(lesson_id):
-                            mark_lesson_as_completed(lesson_id)
+                                
+                            # Show completion notification - wyświetl faktyczne całkowite XP
+                            final_total_xp = st.session_state.lesson_progress.get('total_xp_earned', 0)
+                            show_xp_notification(0, f"🎉 Gratulacje! Ukończyłeś całą lekcję i zdobyłeś {final_total_xp} XP!")
                             
-                            # Check for achievements after completing lesson
-                            from utils.achievements import check_achievements
-                            username = st.session_state.get('username')
-                            if username:
-                                check_achievements(username, 'lesson_completion', lesson_id=lesson_id)
-                            
-                            # Refresh user data for real-time updates
-                            from utils.real_time_updates import refresh_user_data
-                            refresh_user_data()
-                            
-                        # Show completion notification - wyświetl faktyczne całkowite XP
-                        final_total_xp = st.session_state.lesson_progress.get('total_xp_earned', 0)
-                        show_xp_notification(0, f"🎉 Gratulacje! Ukończyłeś całą lekcję i zdobyłeś {final_total_xp} XP!")
-                        
-                        # Oznacz lekcję jako zakończoną w sesji
-                        st.session_state.lesson_finished = True
-                        st.rerun()
+                            # Oznacz lekcję jako zakończoną w sesji
+                            st.session_state.lesson_finished = True
+                            st.rerun()
                     st.markdown("</div>", unsafe_allow_html=True)
                 else:
                     # Drugi etap - pokaż podsumowanie i przycisk powrotu
@@ -1067,12 +1070,14 @@ def show_lessons_content():
                     
                     # Przycisk powrotu do wszystkich lekcji
                     st.markdown("<div class='next-button'>", unsafe_allow_html=True)
-                    if zen_button("📚 Wróć do wszystkich lekcji", use_container_width=False):
-                        # Wyczyść stan zakończenia lekcji
-                        st.session_state.lesson_finished = False
-                        # Powrót do przeglądu lekcji
-                        st.session_state.current_lesson = None
-                        st.rerun()
+                    col1, col2, col3 = st.columns([1, 1, 1])
+                    with col2:
+                        if zen_button("📚 Wróć do wszystkich lekcji", use_container_width=True):
+                            # Wyczyść stan zakończenia lekcji
+                            st.session_state.lesson_finished = False
+                            # Powrót do przeglądu lekcji
+                            st.session_state.current_lesson = None
+                            st.rerun()
                     st.markdown("</div>", unsafe_allow_html=True)
             elif 'summary' in lesson:
                 # Obsługa starszego formatu, gdzie podsumowanie było bezpośrednio w lesson['summary']
