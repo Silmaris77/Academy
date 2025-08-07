@@ -3,7 +3,7 @@
     "user_id": "741699e6-2ffe-4b0f-a36b-81e397686191",
     "password": "a",
     "degen_type": "YOLO Degen",
-    "xp": 4201,
+    "xp": 4316,
     "level": 7,
     "joined_date": "2025-04-27",
     "completed_lessons": [
@@ -190,7 +190,12 @@
         "summary_xp_awarded": true,
         "summary_completed": true,
         "summary_xp": 5,
-        "summary_timestamp": "2025-05-29 12:23:41"
+        "summary_timestamp": "2025-05-29 12:23:41",
+        "practical_exercises_xp_awarded": true,
+        "practical_exercises_completed": true,
+        "practical_exercises_xp": 60,
+        "practical_exercises_degencoins": 60,
+        "practical_exercises_timestamp": "2025-08-07 23:17:02"
       },
       "B2C1L1": {
         "intro_xp_awarded": true,
@@ -249,6 +254,23 @@
         "summary_xp": 1,
         "summary_degencoins": 1,
         "summary_timestamp": "2025-06-25 15:53:43"
+      },
+      "lesson_template": {
+        "intro_xp_awarded": true,
+        "intro_completed": true,
+        "intro_xp": 5,
+        "intro_degencoins": 5,
+        "intro_timestamp": "2025-08-07 22:29:11",
+        "content_xp_awarded": true,
+        "content_completed": true,
+        "content_xp": 30,
+        "content_degencoins": 30,
+        "content_timestamp": "2025-08-07 22:29:22",
+        "closing_quiz_xp_awarded": true,
+        "closing_quiz_completed": true,
+        "closing_quiz_xp": 20,
+        "closing_quiz_degencoins": 20,
+        "closing_quiz_timestamp": "2025-08-07 23:24:01"
       }
     },
     "badge_data": {
@@ -669,7 +691,7 @@
         "timestamp": "2025-06-08T12:21:09.071964+00:00"
       }
     ],
-    "degencoins": 50,
+    "degencoins": 165,
     "inventory": {
       "avatar": [
         "diamond_degen",
@@ -699,10 +721,11 @@
     "active_avatar": "moon_hunter",
     "active_background": "zen_garden",
     "test_date": "2025-06-22 13:54:10",
-    "last_login": "2025-08-07 17:08:53",
+    "last_login": "2025-08-07 22:55:57",
     "inspirations": {
       "read": [
-        "sukces_compound_effect"
+        "sukces_compound_effect",
+        "mindset_milionaire_1"
       ],
       "favorites": [
         "mindset_milionaire_1",
@@ -4058,17 +4081,38 @@
     "user_id": "d0be9145-fa24-482e-b3da-a013a968d06d",
     "password": "tom",
     "degen_type": null,
-    "xp": 0,
-    "degencoins": 0,
+    "xp": 65,
+    "degencoins": 65,
     "level": 1,
     "joined_date": "2025-08-07",
-    "last_login": "2025-08-07 14:43:36",
+    "last_login": "2025-08-07 22:56:33",
     "completed_lessons": [],
     "badges": [],
     "test_taken": false,
     "inspirations": {
       "read": [],
       "favorites": []
+    },
+    "lesson_progress": {
+      "B1C1L1": {
+        "intro_xp_awarded": true,
+        "intro_completed": true,
+        "intro_xp": 5,
+        "intro_degencoins": 5,
+        "intro_timestamp": "2025-08-07 22:57:02",
+        "content_xp_awarded": true,
+        "content_completed": true,
+        "content_xp": 30,
+        "content_degencoins": 30,
+        "content_timestamp": "2025-08-07 22:57:06"
+      },
+      "lesson_template": {
+        "content_xp_awarded": true,
+        "content_completed": true,
+        "content_xp": 30,
+        "content_degencoins": 30,
+        "content_timestamp": "2025-08-07 22:59:12"
+      }
     }
   }
 }

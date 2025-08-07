@@ -242,28 +242,44 @@ def show_exercises_and_reflection(lesson, lesson_id):
     if 'sections' in lesson and 'practical_exercises' in lesson.get('sections', {}):
         practical_data = lesson['sections']['practical_exercises']
         
+        # Nowy format z bezpośrednimi pod-sekcjami
+        available_tabs = []
+        tab_keys = []
+        sub_tabs_data = {}
+        
+        # Sprawdź które zakładki są dostępne w nowej strukturze
+        if 'reflection' in practical_data:
+            available_tabs.append("📝 Refleksja")
+            tab_keys.append('reflection')
+            sub_tabs_data['reflection'] = practical_data['reflection']
+        
+        if 'application' in practical_data:
+            available_tabs.append("🎯 Zadania Praktyczne")
+            tab_keys.append('application')
+            sub_tabs_data['application'] = practical_data['application']
+        
+        if 'closing_quiz' in practical_data:
+            available_tabs.append("❓ Quiz Końcowy")
+            tab_keys.append('closing_quiz')
+            sub_tabs_data['closing_quiz'] = practical_data['closing_quiz']
+        
+        # Wsparcie dla starszej struktury z 'tabs'
         if 'tabs' in practical_data:
-            # Nowy format z pod-zakładkami
-            sub_tabs_data = practical_data['tabs']
-            available_tabs = []
-            tab_keys = []
-            
-            # Sprawdź które zakładki są dostępne
-            if 'autotest' in sub_tabs_data:
+            old_tabs = practical_data['tabs']
+            if 'autotest' in old_tabs:
                 available_tabs.append("🧠 Autotest")
                 tab_keys.append('autotest')
+                sub_tabs_data['autotest'] = old_tabs['autotest']
             
-            if 'reflection' in sub_tabs_data:
-                available_tabs.append("📝 Refleksja")
-                tab_keys.append('reflection')
-            
-            if 'analysis' in sub_tabs_data:
+            if 'analysis' in old_tabs:
                 available_tabs.append("📊 Analiza")
                 tab_keys.append('analysis')
+                sub_tabs_data['analysis'] = old_tabs['analysis']
             
-            if 'implementation' in sub_tabs_data:
+            if 'implementation' in old_tabs:
                 available_tabs.append("🎯 Wdrożenie")
                 tab_keys.append('implementation')
+                sub_tabs_data['implementation'] = old_tabs['implementation']
             
             if available_tabs:
                 exercise_tabs = st.tabs(available_tabs)
@@ -275,7 +291,17 @@ def show_exercises_and_reflection(lesson, lesson_id):
                         if 'description' in tab_data:
                             st.info(tab_data['description'])
                         
-                        if 'sections' in tab_data:
+                        # Specjalna obsługa quizu końcowego
+                        if tab_key == 'closing_quiz':
+                            if 'questions' in tab_data:
+                                quiz_complete, _, earned_points = display_quiz(tab_data)
+                                if quiz_complete:
+                                    st.success(f"Quiz zaliczony! Zdobyłeś {earned_points} punktów XP!")
+                            else:
+                                st.warning("Brak pytań w quizie końcowym.")
+                        
+                        # Standardowa obsługa sekcji z treścią
+                        elif 'sections' in tab_data:
                             for section in tab_data['sections']:
                                 st.markdown(f"### {section.get('title', 'Sekcja')}")
                                 st.markdown(section.get('content', 'Brak treści'), unsafe_allow_html=True)

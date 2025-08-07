@@ -7,11 +7,9 @@
   "difficulty": "expert",
   "intro": {
     "main": "<p><strong>Intro do lekcji: Strach przed stratą 🎢💸</strong></p><p>Inwestowanie – to nie tylko matematyka, wykresy i Excel, to także emocjonalna gra na najwyższych obrotach. Kiedy przychodzi czas decyzji, czujesz ten dreszczyk emocji, prawda? Czasami to ekscytacja, a innym razem – strach. Ale co, jeśli ten strach, a dokładniej strach przed stratą, jest tym, co blokuje cię przed podejmowaniem najlepszych decyzji inwestycyjnych? 🧠💭</p><p>W tej lekcji zgłębimy to zjawisko i zrozumiemy, dlaczego strata – nawet niewielka – boli nas o wiele bardziej niż zysk tej samej wartości. Dla wielu z nas to właśnie strach przed utratą pieniędzy powstrzymuje nas od podejmowania mądrych decyzji.</p><p>Zanim zaczniemy, warto zadać sobie pytanie: Dlaczego inwestowanie jest tak emocjonalne? Jak strach przed stratą wpływa na nasze decyzje i jak można nad nim zapanować?</p><p>Oto, o czym będziemy mówić:</p><ul><li>Teorię perspektywy – dowiesz się, jak nasze umysły podchodzą do zysków i strat.</li><li>Efekt dyspozycji – dlaczego trzymasz przegrywające akcje, zamiast spróbować od nich odejść.</li><li>Jak emocje rządzą twoim portfelem i jak je przejąć pod kontrolę, by nie reagować impulsywnie, kiedy coś idzie nie tak.</li></ul><p>Chciałbym, żebyś po tej lekcji nie tylko lepiej rozumiał mechanizm strachu przed stratą, ale również nauczył się, jak go opanować, żeby Twoje decyzje inwestycyjne stały się bardziej świadome, mniej impulsywne i oparte na długoterminowej strategii. 🚀</p><p>Jesteś gotowy, by nauczyć się, jak zarządzać swoimi emocjami na rynku, a nie odwrotnie? Przygotuj się na jazdę bez trzymanki i odkryj, jak strach przed stratą może stać się Twoim sprzymierzeńcem, a nie wrogiem! 🌟</p>",
-    "case_study": "<p><strong>Degen w tarapatach</strong> 📱💸</p><p>Kuba, 26-letni początkujący inwestor, swoją wiedzę o kryptowalutach czerpie głównie z TikToka i Discorda. Niedawno \"wszamał\" kilka shortów na shitcoinach i miał niezły run – w zaledwie dwa tygodnie zarobił 1500 zł. 💰</p><p>Zmotywowany tym sukcesem, postanowił wrzucić całe swoje oszczędności (10 000 zł) w token $MOONZ, bo \"wszyscy na grupie pisali, że będzie 10x\". Kuba nie sprawdził fundamentów projektu – po prostu zaufał, że hype = pewniak. 🚀</p><p>Po dwóch dniach cena spadła o 20%. Kuba wpadł w panikę. Otwierał apkę co 3 minuty, scrollował komentarze, desperacko szukając potwierdzenia, że \"to tylko korekta\". Z jednej strony bał się sprzedać, bo oznaczałoby to realną stratę, z drugiej strony panicznie bał się trzymać, bo \"może spaść jeszcze bardziej\". 😰</p><p><strong>Pytania do refleksji:</strong></p><ul><li>Co mogło wywołać tak silny strach u Kuby mimo wcześniejszych sukcesów?</li><li>Jak działa tu awersja do strat? A jak efekt dyspozycji?</li><li>Jakie degenowe schematy pojawiają się w tej sytuacji?</li><li>Co Kuba mógłby zrobić, żeby zmienić sposób podejmowania decyzji?</li></ul><p>W trakcie tej lekcji zrozumiesz, jakie psychologiczne pułapki wpędziły Kubę w taki stan i jak Ty możesz ich uniknąć w swoich inwestycjach! 🧠💡</p>"
-  },
-  "sections": {
-    "opening_quiz": {
-      "title": "Quiz startowy",
+    "case_study": "<p><strong>Degen w tarapatach</strong> 📱💸</p><p>Kuba, 26-letni początkujący inwestor, swoją wiedzę o kryptowalutach czerpie głównie z TikToka i Discorda. Niedawno \"wszamał\" kilka shortów na shitcoinach i miał niezły run – w zaledwie dwa tygodnie zarobił 1500 zł. 💰</p><p>Zmotywowany tym sukcesem, postanowił wrzucić całe swoje oszczędności (10 000 zł) w token $MOONZ, bo \"wszyscy na grupie pisali, że będzie 10x\". Kuba nie sprawdził fundamentów projektu – po prostu zaufał, że hype = pewniak. 🚀</p><p>Po dwóch dniach cena spadła o 20%. Kuba wpadł w panikę. Otwierał apkę co 3 minuty, scrollował komentarze, desperacko szukając potwierdzenia, że \"to tylko korekta\". Z jednej strony bał się sprzedać, bo oznaczałoby to realną stratę, z drugiej strony panicznie bał się trzymać, bo \"może spaść jeszcze bardziej\". 😰</p><p><strong>Pytania do refleksji:</strong></p><ul><li>Co mogło wywołać tak silny strach u Kuby mimo wcześniejszych sukcesów?</li><li>Jak działa tu awersja do strat? A jak efekt dyspozycji?</li><li>Jakie degenowe schematy pojawiają się w tej sytuacji?</li><li>Co Kuba mógłby zrobić, żeby zmienić sposób podejmowania decyzji?</li></ul><p>W trakcie tej lekcji zrozumiesz, jakie psychologiczne pułapki wpędziły Kubę w taki stan i jak Ty możesz ich uniknąć w swoich inwestycjach! 🧠💡</p>",
+    "quiz_samodiagnozy": {
+      "title": "Quiz Samodiagnozy",
       "description": "Sprawdź swoją wiedzę przed rozpoczęciem lekcji",
       "questions": [
         {
@@ -37,7 +35,9 @@
           "explanation": "Według teorii perspektywy Kahnemana i Tversky'ego, ból straty jest około 2-2,5 raza silniejszy niż radość z równowartościowego zysku."
         }
       ]
-    },
+    }
+  },
+  "sections": {
     "learning": {
       "sections": [
         {
@@ -62,296 +62,297 @@
         }
       ]
     },
-    "reflection": {
-      "sections": [
-        {
-          "title": "Zadanie 1: Inwestycyjny Flashback",
-          "content": "<p>Przypomnij sobie sytuację, w której podjąłeś decyzję inwestycyjną pod wpływem emocji. Jakie emocje Ci towarzyszyły? Jakie były skutki tej decyzji?</p>"
-        },
-        {
-          "title": "Zadanie 2: Twoje ramy inwestycyjne",
-          "content": "<p>Przemyśl, jak różne podejścia do przedstawiania informacji o inwestycjach mogą wpływać na Twoje decyzje. Jakie ramy wykorzystujesz, by zminimalizować wpływ emocji?</p>"
-        }
-      ]
-    },
-    "application": {
-      "sections": [
-        {
-          "title": "Zadanie 1: Plan działania",
-          "content": "<p>Napisz konkretny, 3-punktowy plan działania, jak zastosujesz wiedzę z tej lekcji przy swojej następnej decyzji inwestycyjnej. Określ jasne kryteria, według których będziesz podejmować decyzje, zamiast kierować się emocjami.</p>"
-        },
-        {
-          "title": "Zadanie 2: Twój osobisty reframing",
-          "content": "<p>Wybierz jedną z trudnych sytuacji inwestycyjnych (np. spadek wartości akcji o 10%) i przeformułuj ją na trzy różne sposoby - neutralny, negatywny i pozytywny. Zastanów się, która perspektywa jest najbardziej racjonalna i dlaczego.</p>"
-        }
-      ]
-    },
-    "closing_quiz": {
-      "title": "Quiz końcowy",
-      "description": "Sprawdź, ile zapamiętałeś z tej lekcji",
-      "questions": [
-        {
-          "question": "Czym jest framing (efekt obramowania)?",
-          "options": [
-            "Techniką zarządzania portfelem inwestycyjnym",
-            "Sposobem przedstawiania informacji, który wpływa na jej odbiór",
-            "Strategią dywersyfikacji inwestycji",
-            "Metodą analizy technicznej wykresów"
-          ],
-          "correct_answer": 1,
-          "explanation": "Framing to sposób przedstawiania tej samej informacji w różny sposób, co może znacząco wpłynąć na decyzje inwestora."
-        },
-        {
-          "question": "Która z poniższych metod pomaga radzić sobie z wpływem dopaminy na decyzje inwestycyjne?",
-          "options": [
-            "Zwiększanie częstotliwości tradingu",
-            "Stawianie małych kwot na ryzykowne aktywa",
-            "Trzymanie się ustalonego wcześniej planu inwestycyjnego",
-            "Podążanie za trendami w mediach społecznościowych"
-          ],
-          "correct_answer": 2,
-          "explanation": "Trzymanie się ustalonego planu (stick to the plan) to jeden z kluczowych sposobów na ograniczenie emocjonalnego wpływu dopaminy na decyzje inwestycyjne."
-        }      ]
+    "practical_exercises": {
+      "exercises": {
+        "title": "Ćwiczenia",
+        "description": "Zastosuj wiedzę w praktyce",
+        "sections": [
+          {
+            "title": "Zadanie 1: Inwestycyjny Flashback",
+            "content": "<p>Przypomnij sobie sytuację, w której podjąłeś decyzję inwestycyjną pod wpływem emocji. Jakie emocje Ci towarzyszyły? Jakie były skutki tej decyzji?</p>"
+          },
+          {
+            "title": "Zadanie 2: Twoje ramy inwestycyjne",
+            "content": "<p>Przemyśl, jak różne podejścia do przedstawiania informacji o inwestycjach mogą wpływać na Twoje decyzje. Jakie ramy wykorzystujesz, by zminimalizować wpływ emocji?</p>"
+          },
+          {
+            "title": "Zadanie 3: Plan działania",
+            "content": "<p>Napisz konkretny, 3-punktowy plan działania, jak zastosujesz wiedzę z tej lekcji przy swojej następnej decyzji inwestycyjnej. Określ jasne kryteria, według których będziesz podejmować decyzje, zamiast kierować się emocjami.</p>"
+          },
+          {
+            "title": "Zadanie 4: Twój osobisty reframing",
+            "content": "<p>Wybierz jedną z trudnych sytuacji inwestycyjnych (np. spadek wartości akcji o 10%) i przeformułuj ją na trzy różne sposoby - neutralny, negatywny i pozytywny. Zastanów się, która perspektywa jest najbardziej racjonalna i dlaczego.</p>"
+          }
+        ]
+      },
+      "closing_quiz": {
+        "title": "Quiz końcowy",
+        "description": "Sprawdź, ile zapamiętałeś z tej lekcji",
+        "questions": [
+          {
+            "question": "Czym jest framing (efekt obramowania)?",
+            "options": [
+              "Techniką zarządzania portfelem inwestycyjnym",
+              "Sposobem przedstawiania informacji, który wpływa na jej odbiór",
+              "Strategią dywersyfikacji inwestycji",
+              "Metodą analizy technicznej wykresów"
+            ],
+            "correct_answer": 1,
+            "explanation": "Framing to sposób przedstawiania tej samej informacji w różny sposób, co może znacząco wpłynąć na decyzje inwestora."
+          },
+          {
+            "question": "Która z poniższych metod pomaga radzić sobie z wpływem dopaminy na decyzje inwestycyjne?",
+            "options": [
+              "Zwiększanie częstotliwości tradingu",
+              "Stawianie małych kwot na ryzykowne aktywa",
+              "Trzymanie się ustalonego wcześniej planu inwestycyjnego",
+              "Podążanie za trendami w mediach społecznościowych"
+            ],
+            "correct_answer": 2,
+            "explanation": "Trzymanie się ustalonego planu (stick to the plan) to jeden z kluczowych sposobów na ograniczenie emocjonalnego wpływu dopaminy na decyzje inwestycyjne."
+          }
+        ]
+      }
     }
   },
-  "mind_map": {
-    "central_node": {
-      "id": "main_topic",
-      "label": "💸 STRACH PRZED STRATĄ",
-      "size": 30,
-      "color": "#FF6B6B",
-      "font_size": 16
-    },
-    "categories": [
-      {
-        "id": "teoria_perspektywy",
-        "label": "📊 Teoria perspektywy",
-        "size": 20,
-        "color": "#4ECDC4",
-        "font_size": 12,
-        "details": [
-          {
-            "id": "bol_straty",
-            "label": "😢 Ból straty 2-2,5x silniejszy",
-            "size": 12,
-            "color": "#DDA0DD",
-            "font_size": 10
-          },
-          {
-            "id": "pewnosc",
-            "label": "🛡️ Preferujemy pewność",
-            "size": 12,
-            "color": "#DDA0DD",
-            "font_size": 10
-          },
-          {
-            "id": "awersja_ryzyko",
-            "label": "⚠️ Awersja do ryzyka",
-            "size": 12,
-            "color": "#DDA0DD",
-            "font_size": 10
-          }
-        ]
-      },
-      {
-        "id": "efekt_dyspozycji",
-        "label": "🔄 Efekt dyspozycji",
-        "size": 20,
-        "color": "#45B7D1",
-        "font_size": 12,
-        "details": [
-          {
-            "id": "sprzedaj_zyski",
-            "label": "💰 Za szybko sprzedajemy zyski",
-            "size": 12,
-            "color": "#DDA0DD",
-            "font_size": 10
-          },
-          {
-            "id": "trzymaj_straty",
-            "label": "📉 Za długo trzymamy straty",
-            "size": 12,
-            "color": "#DDA0DD",
-            "font_size": 10
-          },
-          {
-            "id": "get_even",
-            "label": "🎯 Syndrom 'wyjdę na zero'",
-            "size": 12,
-            "color": "#DDA0DD",
-            "font_size": 10
-          }
-        ]
-      },
-      {
-        "id": "dopamina",
-        "label": "🧠 Dopamina",
-        "size": 20,
-        "color": "#96CEB4",
-        "font_size": 12,
-        "details": [
-          {
-            "id": "system_nagrody",
-            "label": "🎉 System nagrody w mózgu",
-            "size": 12,
-            "color": "#DDA0DD",
-            "font_size": 10
-          },
-          {
-            "id": "uzaleznienie",
-            "label": "🎰 Uzależnienie od transakcji",
-            "size": 12,
-            "color": "#DDA0DD",
-            "font_size": 10
-          },
-          {
-            "id": "euforia",
-            "label": "🚀 Euforia po zyskach",
-            "size": 12,
-            "color": "#DDA0DD",
-            "font_size": 10
-          }
-        ]
-      },
-      {
-        "id": "framing",
-        "label": "🖼️ Efekt obramowania",
-        "size": 20,
-        "color": "#FECA57",
-        "font_size": 12,
-        "details": [
-          {
-            "id": "prezentacja_info",
-            "label": "📝 Sposób prezentacji wpływa na decyzje",
-            "size": 12,
-            "color": "#DDA0DD",
-            "font_size": 10
-          },
-          {
-            "id": "pozytywne_negatywne",
-            "label": "😊😞 Pozytywne vs negatywne ujęcie",
-            "size": 12,
-            "color": "#DDA0DD",
-            "font_size": 10
-          },
-          {
-            "id": "manipulacja",
-            "label": "🎭 Podatność na manipulację",
-            "size": 12,
-            "color": "#DDA0DD",
-            "font_size": 10
-          }
-        ]
-      }
-    ],
-    "solutions": [
-      {
-        "id": "zoom_out",
-        "label": "🔍 Zoom out - szeroka perspektywa",
-        "size": 15,
-        "color": "#90EE90",
-        "font_size": 11
-      },
-      {
-        "id": "limit_strat",
-        "label": "🚧 Wyznacz limit strat",
-        "size": 15,
-        "color": "#98FB98",
-        "font_size": 11
-      },
-      {
-        "id": "stop_checking",
-        "label": "📵 Przestań sprawdzać apki",
-        "size": 15,
-        "color": "#90EE90",
-        "font_size": 11
-      },
-      {
-        "id": "plan_strategii",
-        "label": "📋 Trzymaj się planu",
-        "size": 15,
-        "color": "#98FB98",
-        "font_size": 11
-      }
-    ],
-    "case_study": {
-      "id": "kuba_case",
-      "label": "👨‍💻 Case Study: Kuba i $MOONZ",
-      "size": 18,
-      "color": "#FF8C42",
-      "font_size": 12,
-      "details": [
-        {
-          "id": "fomo_moonz",
-          "label": "😱 FOMO na $MOONZ",
-          "size": 10,
-          "color": "#FFB347",
-          "font_size": 9
-        },
-        {
-          "id": "spadek_20",
-          "label": "📉 -20% w 2 dni",
-          "size": 10,
-          "color": "#FFB347",
-          "font_size": 9
-        },
-        {
-          "id": "panika_checking",
-          "label": "😰 Panika i sprawdzanie co 3 min",
-          "size": 10,
-          "color": "#FFB347",
-          "font_size": 9
-        }
-      ]
-    },
-    "connections": [
-      {
-        "from": "main_topic",
-        "to": "teoria_perspektywy"
-      },
-      {
-        "from": "main_topic",
-        "to": "efekt_dyspozycji"
-      },
-      {
-        "from": "main_topic",
-        "to": "dopamina"
-      },
-      {
-        "from": "main_topic",
-        "to": "framing"
-      },
-      {
-        "from": "main_topic",
-        "to": "zoom_out"
-      },
-      {
-        "from": "main_topic",
-        "to": "limit_strat"
-      },
-      {
-        "from": "main_topic",
-        "to": "stop_checking"
-      },
-      {
-        "from": "main_topic",
-        "to": "plan_strategii"
-      },
-      {
-        "from": "main_topic",
-        "to": "kuba_case"
-      }
-    ],
-    "config": {
-      "width": 800,
-      "height": 600,
-      "physics": true,
-      "directed": false,
-      "hierarchical": false
-    }
-  },
-  "outro": {
+  "summary": {
     "main": "<p><strong>Podsumowanie:</strong> W tej lekcji poznaliśmy cztery kluczowe mechanizmy psychologiczne wpływające na decyzje inwestycyjne:</p><ul><li><strong>Teoria perspektywy</strong> – ból straty jest około 2-2,5 razy silniejszy niż radość z zysku, co prowadzi nas do unikania ryzyka i szukania pewnych opcji</li><li><strong>Efekt dyspozycji</strong> – tendencja do zbyt szybkiego sprzedawania zyskownych inwestycji i trzymania stratnych zbyt długo</li><li><strong>Wpływ dopaminy</strong> – uzależniające działanie systemu nagrody w mózgu, które może prowadzić do ryzkownych decyzji</li><li><strong>Efekt obramowania</strong> – sposób, w jaki przedstawiana jest informacja, znacząco wpływa na nasze decyzje</li></ul><p>Świadomość tych mechanizmów pozwala nam lepiej kontrolować emocje i podejmować bardziej racjonalne decyzje inwestycyjne.</p>",
-    "case_study": "<p><strong>Zakończenie studium przypadku:</strong> Pamiętasz historię Tomasza, który sprzedał akcje w panice, tracąc na tym 15%?</p><p>Patrząc na jego decyzję przez pryzmat poznanych mechanizmów psychologicznych, możemy zauważyć kilka błędów:</p><ul><li>Teoria perspektywy – Tomasz mocniej odczuwał ból związany z utratą swoich wcześniejszych zysków (40%) niż potencjalne korzyści z pozostawienia inwestycji</li><li>Efekt dyspozycji – W przeciwieństwie do typowego wzorca, Tomasz nie trzymał stratnej inwestycji, ale panika i lęk były silniejsze niż chęć wyjścia na zero</li><li>Dopamina – Po wcześniejszych sukcesach (wzrost o 40%) nagły spadek wywołał silną reakcję stresową i paniczne działania</li><li>Framing – Tomasz skupił się na ujęciu \"straciłem 15%\" zamiast na perspektywie \"to może być tylko tymczasowy spadek\"</li></ul><p>Gdyby Tomasz zastosował poznane techniki – trzymał się długoterminowego planu, zachował szerszą perspektywę czasową i nie sprawdzał notowań codziennie – prawdopodobnie przeczekałby trudny okres i ostatecznie zwiększył zysk o dodatkowe 25%.</p><p>Pamiętaj, że każdy inwestor popełnia błędy. Kluczowe jest wyciąganie z nich wniosków i systematyczne doskonalenie swojego podejścia emocjonalnego do inwestowania.</p>"
+    "case_study": "<p><strong>Zakończenie studium przypadku:</strong> Pamiętasz historię Kuby i jego przygodę z tokenem $MOONZ?</p><p>Patrząc na jego decyzję przez pryzmat poznanych mechanizmów psychologicznych, możemy zauważyć kilka błędów:</p><ul><li><strong>Teoria perspektywy</strong> – Kuba mocniej odczuwał ból związany z utratą 20% inwestycji niż radość z wcześniejszych zysków</li><li><strong>Efekt dyspozycji</strong> – Wahał się między sprzedażą (przyznanie straty) a trzymaniem (nadzieja na odbicie), co paraliżowało jego decyzje</li><li><strong>Dopamina</strong> – Po wcześniejszych sukcesach (1500 zł zysku) nagły spadek wywołał silną reakcję stresową i paniczne sprawdzanie apki co 3 minuty</li><li><strong>Framing</strong> – Kuba skupił się na negatywnym ujęciu \"-20% strata\" zamiast na perspektywie \"możliwość dokupienia po niższej cenie\"</li></ul><p>Gdyby Kuba zastosował poznane techniki – ustalił wcześniej jasne kryteria inwestycyjne, nie angażował wszystkich oszczędności w jedną pozycję i nie sprawdzał notowań obsesyjnie – prawdopodobnie uniknąłby paniki i podjął bardziej racjonalne decyzje.</p><p>Pamiętaj, że każdy inwestor popełnia błędy. Kluczowe jest wyciąganie z nich wniosków i systematyczne doskonalenie swojego podejścia emocjonalnego do inwestowania.</p>",
+    "mind_map": {
+      "central_node": {
+        "id": "main_topic",
+        "label": "💸 STRACH PRZED STRATĄ",
+        "size": 30,
+        "color": "#FF6B6B",
+        "font_size": 16
+      },
+      "categories": [
+        {
+          "id": "teoria_perspektywy",
+          "label": "📊 Teoria perspektywy",
+          "size": 20,
+          "color": "#4ECDC4",
+          "font_size": 12,
+          "details": [
+            {
+              "id": "bol_straty",
+              "label": "😢 Ból straty 2-2,5x silniejszy",
+              "size": 12,
+              "color": "#DDA0DD",
+              "font_size": 10
+            },
+            {
+              "id": "pewnosc",
+              "label": "🛡️ Preferujemy pewność",
+              "size": 12,
+              "color": "#DDA0DD",
+              "font_size": 10
+            },
+            {
+              "id": "awersja_ryzyko",
+              "label": "⚠️ Awersja do ryzyka",
+              "size": 12,
+              "color": "#DDA0DD",
+              "font_size": 10
+            }
+          ]
+        },
+        {
+          "id": "efekt_dyspozycji",
+          "label": "🔄 Efekt dyspozycji",
+          "size": 20,
+          "color": "#45B7D1",
+          "font_size": 12,
+          "details": [
+            {
+              "id": "sprzedaj_zyski",
+              "label": "💰 Za szybko sprzedajemy zyski",
+              "size": 12,
+              "color": "#DDA0DD",
+              "font_size": 10
+            },
+            {
+              "id": "trzymaj_straty",
+              "label": "📉 Za długo trzymamy straty",
+              "size": 12,
+              "color": "#DDA0DD",
+              "font_size": 10
+            },
+            {
+              "id": "get_even",
+              "label": "🎯 Syndrom 'wyjdę na zero'",
+              "size": 12,
+              "color": "#DDA0DD",
+              "font_size": 10
+            }
+          ]
+        },
+        {
+          "id": "dopamina",
+          "label": "🧠 Dopamina",
+          "size": 20,
+          "color": "#96CEB4",
+          "font_size": 12,
+          "details": [
+            {
+              "id": "system_nagrody",
+              "label": "🎉 System nagrody w mózgu",
+              "size": 12,
+              "color": "#DDA0DD",
+              "font_size": 10
+            },
+            {
+              "id": "uzaleznienie",
+              "label": "🎰 Uzależnienie od transakcji",
+              "size": 12,
+              "color": "#DDA0DD",
+              "font_size": 10
+            },
+            {
+              "id": "euforia",
+              "label": "🚀 Euforia po zyskach",
+              "size": 12,
+              "color": "#DDA0DD",
+              "font_size": 10
+            }
+          ]
+        },
+        {
+          "id": "framing",
+          "label": "🖼️ Efekt obramowania",
+          "size": 20,
+          "color": "#FECA57",
+          "font_size": 12,
+          "details": [
+            {
+              "id": "prezentacja_info",
+              "label": "📝 Sposób prezentacji wpływa na decyzje",
+              "size": 12,
+              "color": "#DDA0DD",
+              "font_size": 10
+            },
+            {
+              "id": "pozytywne_negatywne",
+              "label": "😊😞 Pozytywne vs negatywne ujęcie",
+              "size": 12,
+              "color": "#DDA0DD",
+              "font_size": 10
+            },
+            {
+              "id": "manipulacja",
+              "label": "🎭 Podatność na manipulację",
+              "size": 12,
+              "color": "#DDA0DD",
+              "font_size": 10
+            }
+          ]
+        }
+      ],
+      "solutions": [
+        {
+          "id": "zoom_out",
+          "label": "🔍 Zoom out - szeroka perspektywa",
+          "size": 15,
+          "color": "#90EE90",
+          "font_size": 11
+        },
+        {
+          "id": "limit_strat",
+          "label": "🚧 Wyznacz limit strat",
+          "size": 15,
+          "color": "#98FB98",
+          "font_size": 11
+        },
+        {
+          "id": "stop_checking",
+          "label": "📵 Przestań sprawdzać apki",
+          "size": 15,
+          "color": "#90EE90",
+          "font_size": 11
+        },
+        {
+          "id": "plan_strategii",
+          "label": "📋 Trzymaj się planu",
+          "size": 15,
+          "color": "#98FB98",
+          "font_size": 11
+        }
+      ],
+      "case_study": {
+        "id": "kuba_case",
+        "label": "👨‍💻 Case Study: Kuba i $MOONZ",
+        "size": 18,
+        "color": "#FF8C42",
+        "font_size": 12,
+        "details": [
+          {
+            "id": "fomo_moonz",
+            "label": "😱 FOMO na $MOONZ",
+            "size": 10,
+            "color": "#FFB347",
+            "font_size": 9
+          },
+          {
+            "id": "spadek_20",
+            "label": "📉 -20% w 2 dni",
+            "size": 10,
+            "color": "#FFB347",
+            "font_size": 9
+          },
+          {
+            "id": "panika_checking",
+            "label": "😰 Panika i sprawdzanie co 3 min",
+            "size": 10,
+            "color": "#FFB347",
+            "font_size": 9
+          }
+        ]
+      },
+      "connections": [
+        {
+          "from": "main_topic",
+          "to": "teoria_perspektywy"
+        },
+        {
+          "from": "main_topic",
+          "to": "efekt_dyspozycji"
+        },
+        {
+          "from": "main_topic",
+          "to": "dopamina"
+        },
+        {
+          "from": "main_topic",
+          "to": "framing"
+        },
+        {
+          "from": "main_topic",
+          "to": "zoom_out"
+        },
+        {
+          "from": "main_topic",
+          "to": "limit_strat"
+        },
+        {
+          "from": "main_topic",
+          "to": "stop_checking"
+        },
+        {
+          "from": "main_topic",
+          "to": "plan_strategii"
+        },
+        {
+          "from": "main_topic",
+          "to": "kuba_case"
+        }
+      ],
+      "config": {
+        "width": 800,
+        "height": 600,
+        "physics": true,
+        "directed": false,
+        "hierarchical": false
+      }
+    }
   }
 }
