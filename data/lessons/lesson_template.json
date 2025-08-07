@@ -1,0 +1,118 @@
+{
+  "_template_info": {
+    "version": "1.0",
+    "description": "Standard lesson template for ZenDegenAcademy",
+    "usage": "Copy this template and replace placeholder values with actual content",
+    "last_updated": "2024-01-20"
+  },
+  
+  "id": "B[BLOCK]C[CATEGORY]L[LESSON]",
+  "title": "[LESSON_TITLE]",
+  "description": "[BRIEF_DESCRIPTION_OF_LESSON_CONTENT]",
+  "tag": "[CATEGORY_TAG]",
+  "xp_reward": 100,
+  "difficulty": "intermediate",
+  
+  "intro": {
+    "main": "[MAIN_INTRODUCTION_CONTENT_HTML]",
+    "case_study": "[OPTIONAL_OPENING_CASE_STUDY_HTML]"
+  },
+  
+  "sections": {
+    "opening_quiz": {
+      "title": "Quiz startowy",
+      "description": "Sprawdź swoją wiedzę przed rozpoczęciem lekcji",
+      "questions": [
+        {
+          "question": "[QUESTION_TEXT]",
+          "options": [
+            "[OPTION_1]",
+            "[OPTION_2]",
+            "[OPTION_3]",
+            "[OPTION_4]"
+          ],
+          "correct_answer": 0,
+          "explanation": "[EXPLANATION_OF_CORRECT_ANSWER]"
+        }
+      ]
+    },
+    
+    "learning": {
+      "sections": [
+        {
+          "title": "[SECTION_TITLE]",
+          "content": "[SECTION_CONTENT_HTML]"
+        },
+        {
+          "title": "[SECTION_TITLE_2]",
+          "content": "[SECTION_CONTENT_HTML_2]"
+        }
+      ]
+    },
+    
+    "reflection": {
+      "sections": [
+        {
+          "title": "[REFLECTION_EXERCISE_TITLE]",
+          "content": "[REFLECTION_CONTENT_HTML]"
+        }
+      ]
+    },
+    
+    "application": {
+      "sections": [
+        {
+          "title": "[APPLICATION_EXERCISE_TITLE]",
+          "content": "[APPLICATION_CONTENT_HTML]"
+        }
+      ]
+    },
+    
+    "closing_quiz": {
+      "title": "Quiz końcowy",
+      "description": "Sprawdź, ile zapamiętałeś z tej lekcji",
+      "questions": [
+        {
+          "question": "[QUESTION_TEXT]",
+          "options": [
+            "[OPTION_1]",
+            "[OPTION_2]",
+            "[OPTION_3]",
+            "[OPTION_4]"
+          ],
+          "correct_answer": 0,
+          "explanation": "[EXPLANATION_OF_CORRECT_ANSWER]"
+        }
+      ]
+    }
+  },
+  
+  "summary": {
+    "key_points": [
+      "[KEY_POINT_1]",
+      "[KEY_POINT_2]",
+      "[KEY_POINT_3]"
+    ],
+    "next_steps": [
+      "[ACTION_STEP_1]",
+      "[ACTION_STEP_2]",
+      "[ACTION_STEP_3]"
+    ],
+    "resources": [
+      {
+        "title": "[RESOURCE_TITLE]",
+        "url": "[RESOURCE_URL]",
+        "type": "article"
+      }
+    ]
+  },
+  
+  "estimated_time": "20-25 minutes",
+  "learning_objectives": [
+    "[OBJECTIVE_1]",
+    "[OBJECTIVE_2]",
+    "[OBJECTIVE_3]"
+  ],
+  "prerequisites": ["[REQUIRED_LESSON_ID]"],
+  "tags": ["[TAG_1]", "[TAG_2]"]
+}

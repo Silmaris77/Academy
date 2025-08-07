@@ -16,6 +16,7 @@ if APP_DIR not in sys.path:
 try:
     from utils.session import init_session_state, clear_session
     from utils.components import zen_header, navigation_menu
+    from utils.mobile_navigation import render_mobile_navigation
     from views.login import show_login_page
     from views.dashboard import show_dashboard
     from views.lesson import show_lesson
@@ -43,7 +44,13 @@ st.markdown(f"<style>{css}</style>", unsafe_allow_html=True)
 
 def main():
     # Initialize session state
-    init_session_state()    # Sidebar for logged-in users
+    init_session_state()
+    
+    # Render mobile navigation for logged-in users
+    if st.session_state.logged_in:
+        render_mobile_navigation()
+    
+    # Sidebar for logged-in users
     if st.session_state.logged_in:
         with st.sidebar:
             st.markdown(f"### Witaj, {st.session_state.username}!")

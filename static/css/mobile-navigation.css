@@ -1,0 +1,387 @@
+/* ==============================================
+   MOBILE NAVIGATION SYSTEM - BOTTOM TAB BAR
+   ============================================== */
+
+/* Mobile Bottom Navigation Container */
+.mobile-bottom-nav {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: linear-gradient(135deg, #ffffff 0%, #f8fafc 100%);
+    border-top: 1px solid #e2e8f0;
+    box-shadow: 0 -4px 20px rgba(0, 0, 0, 0.1);
+    z-index: 1000;
+    padding: 0.25rem 0; /* Reduced padding for smaller height */
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    display: none; /* Hidden by default, shown on mobile */
+    height: 50px; /* Fixed smaller height */
+}
+
+/* Navigation Items Container */
+.mobile-nav-items {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    max-width: 100%;
+    margin: 0 auto;
+    padding: 0 1rem;
+}
+
+/* Individual Navigation Item */
+.mobile-nav-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 0.25rem 0.15rem; /* Reduced padding */
+    min-width: 40px; /* Reduced from 60px */
+    height: 40px; /* Fixed height */
+    cursor: pointer;
+    transition: all 0.3s ease;
+    border-radius: 8px; /* Smaller radius */
+    text-decoration: none;
+    position: relative;
+}
+
+/* Navigation Icon */
+.mobile-nav-icon {
+    font-size: 1.2rem; /* Slightly smaller icon */
+    margin-bottom: 0; /* Remove margin since no labels */
+    transition: all 0.3s ease;
+    filter: grayscale(0.5);
+}
+
+/* Navigation Label - Hidden on mobile */
+.mobile-nav-label {
+    display: none !important; /* Hide labels completely for icon-only navigation */
+    font-size: 0.7rem;
+    font-weight: 500;
+    color: #64748b;
+    transition: all 0.3s ease;
+    text-align: center;
+    line-height: 1.2;
+}
+
+/* Active State */
+.mobile-nav-item.active {
+    background: linear-gradient(135deg, #3b82f6, #1d4ed8);
+    transform: translateY(-2px);
+}
+
+.mobile-nav-item.active .mobile-nav-icon {
+    filter: grayscale(0);
+    transform: scale(1.1);
+}
+
+.mobile-nav-item.active .mobile-nav-label {
+    color: #ffffff;
+    font-weight: 600;
+}
+
+/* Hover Effect (for touch devices) */
+.mobile-nav-item:hover:not(.active) {
+    background: rgba(59, 130, 246, 0.1);
+    transform: translateY(-1px);
+}
+
+.mobile-nav-item:hover:not(.active) .mobile-nav-icon {
+    filter: grayscale(0.2);
+    transform: scale(1.05);
+}
+
+.mobile-nav-item:hover:not(.active) .mobile-nav-label {
+    color: #3b82f6;
+}
+
+/* Notification Badge */
+.mobile-nav-badge {
+    position: absolute;
+    top: 0.25rem;
+    right: 0.75rem;
+    background: #ef4444;
+    color: white;
+    font-size: 0.6rem;
+    font-weight: 600;
+    min-width: 1rem;
+    height: 1rem;
+    border-radius: 0.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+/* ==============================================
+   RESPONSIVE BEHAVIOR
+   ============================================== */
+
+/* Show bottom nav on mobile/tablet */
+@media (max-width: 1024px) {
+    .mobile-bottom-nav {
+        display: block;
+    }
+    
+    /* Add bottom padding to main content to prevent overlap */
+    .main .block-container {
+        padding-bottom: 5rem !important;
+    }
+    
+    /* Hide standard Streamlit sidebar on mobile */
+    [data-testid="stSidebar"] {
+        display: none !important;
+    }
+    
+    /* Adjust main content area */
+    .main {
+        margin-left: 0 !important;
+    }
+}
+
+/* Extra spacing for very small screens */
+@media (max-width: 480px) {
+    .mobile-nav-items {
+        padding: 0 0.5rem;
+    }
+    
+    .mobile-nav-item {
+        min-width: 35px; /* Even smaller for tiny screens */
+        padding: 0.3rem 0.15rem;
+    }
+    
+    .mobile-nav-icon {
+        font-size: 1.1rem; /* Slightly smaller on tiny screens */
+        margin-bottom: 0;
+    }
+    
+    .mobile-nav-label {
+        display: none !important; /* Ensure labels stay hidden */
+    }
+}
+
+/* Tablet adjustments */
+@media (min-width: 769px) and (max-width: 1024px) {
+    .mobile-nav-items {
+        max-width: 600px;
+        padding: 0 2rem;
+    }
+    
+    .mobile-nav-item {
+        min-width: 45px; /* Optimized for tablet icon-only view */
+        padding: 0.5rem 0.3rem;
+    }
+    
+    .mobile-nav-icon {
+        font-size: 1.3rem; /* Larger icons for tablet */
+        margin-bottom: 0;
+    }
+    
+    .mobile-nav-label {
+        display: none !important; /* Ensure labels stay hidden on tablet too */
+    }
+}
+
+/* ==============================================
+   INTEGRATION WITH EXISTING STYLES
+   ============================================== */
+
+/* Ensure content doesn't overlap with bottom nav */
+@media (max-width: 1024px) {
+    .zen-header {
+        margin-bottom: 1rem;
+    }
+    
+    /* Adjust card spacing on mobile */
+    .degen-card,
+    .lesson-card,
+    .stat-card {
+        margin-bottom: 1rem;
+    }
+    
+    /* Make buttons more touch-friendly */
+    [data-testid="stButton"] button {
+        min-height: 44px;
+        font-size: 0.9rem;
+        padding: 0.75rem 1.5rem;
+    }
+    
+    /* Improve text readability */
+    .main {
+        font-size: 1rem;
+        line-height: 1.6;
+    }
+}
+
+/* ==============================================
+   ANIMATIONS AND MICRO-INTERACTIONS
+   ============================================== */
+
+/* Smooth page transitions */
+.page-transition {
+    animation: fadeInUp 0.4s ease-out;
+}
+
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Active tab indicator animation */
+.mobile-nav-item.active::before {
+    content: '';
+    position: absolute;
+    top: -1px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 20px;
+    height: 3px;
+    background: #ffffff;
+    border-radius: 2px;
+    animation: slideIn 0.3s ease-out;
+}
+
+@keyframes slideIn {
+    from {
+        width: 0;
+        opacity: 0;
+    }
+    to {
+        width: 20px;
+        opacity: 1;
+    }
+}
+
+/* Touch feedback */
+.mobile-nav-item:active {
+    transform: scale(0.95);
+    transition: transform 0.1s ease;
+}
+
+/* ==============================================
+   ACCESSIBILITY IMPROVEMENTS
+   ============================================== */
+
+/* Focus states for keyboard navigation */
+.mobile-nav-item:focus {
+    outline: 2px solid #3b82f6;
+    outline-offset: 2px;
+}
+
+/* High contrast mode support */
+@media (prefers-contrast: high) {
+    .mobile-bottom-nav {
+        border-top: 2px solid #000000;
+    }
+    
+    .mobile-nav-label {
+        color: #000000;
+    }
+    
+    .mobile-nav-item.active {
+        background: #000000;
+    }
+}
+
+/* Reduced motion support */
+@media (prefers-reduced-motion: reduce) {
+    .mobile-nav-item,
+    .mobile-nav-icon,
+    .mobile-nav-label {
+        transition: none;
+    }
+    
+    .page-transition {
+        animation: none;
+    }
+}
+
+/* ==============================================
+   DARK MODE SUPPORT
+   ============================================== */
+
+@media (prefers-color-scheme: dark) {
+    .mobile-bottom-nav {
+        background: linear-gradient(135deg, #1f2937 0%, #111827 100%);
+        border-top: 1px solid #374151;
+    }
+    
+    .mobile-nav-label {
+        color: #9ca3af;
+    }
+    
+    .mobile-nav-item.active .mobile-nav-label {
+        color: #ffffff;
+    }
+    
+    .mobile-nav-item:hover:not(.active) {
+        background: rgba(59, 130, 246, 0.2);
+    }
+}
+
+/* ==============================================
+   FORCE ICON-ONLY NAVIGATION - HIGHEST PRIORITY
+   ============================================== */
+
+/* Force hide all navigation labels - Icon-only navigation */
+.mobile-bottom-nav .mobile-nav-label,
+.mobile-nav-items .mobile-nav-label,
+div.mobile-nav-label {
+    display: none !important;
+    visibility: hidden !important;
+    opacity: 0 !important;
+    height: 0 !important;
+    overflow: hidden !important;
+}
+
+/* Ensure mobile navigation items are compact */
+.mobile-bottom-nav .mobile-nav-item {
+    min-width: 40px !important;
+    justify-content: center !important;
+}
+
+/* Ensure icons are properly sized */
+.mobile-bottom-nav .mobile-nav-icon {
+    font-size: 1.2rem !important;
+    margin-bottom: 0 !important;
+}
+
+/* ==============================================
+   AUTO-CLOSE SIDEBAR ON MOBILE NAVIGATION
+   ============================================== */
+
+/* Force hide sidebar when mobile navigation is used */
+@media (max-width: 1024px) {
+    /* Smooth sidebar close animation */
+    [data-testid="stSidebar"].mobile-force-hidden {
+        transform: translateX(-100%) !important;
+        transition: transform 0.3s ease !important;
+    }
+    
+    /* Ensure sidebar doesn't interfere with mobile nav */
+    [data-testid="stSidebar"] {
+        z-index: 999; /* Lower than mobile nav (1000) */
+    }
+    
+    /* Auto-hide sidebar overlay on mobile when nav is used */
+    .mobile-nav-active [data-testid="stSidebar"] {
+        display: none !important;
+    }
+    
+    /* Smooth transitions for sidebar state changes */
+    [data-testid="stSidebar"] {
+        transition: transform 0.3s ease, opacity 0.3s ease !important;
+    }
+    
+    /* Ensure main content is properly spaced when sidebar auto-closes */
+    .mobile-nav-active .main {
+        margin-left: 0 !important;
+        transition: margin-left 0.3s ease !important;
+    }
+}

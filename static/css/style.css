@@ -252,6 +252,10 @@ button[kind="header"] {
     font-weight: 500;
     border-radius: 6px !important;
     transition: all 0.3s ease !important;
+    width: 100% !important; /* Jednakowa szerokość wszystkich przycisków */
+    min-width: 0 !important; /* Reset min-width */
+    box-sizing: border-box !important; /* Include padding and border in width */
+    display: block !important; /* Ensure full width */
 }
 
 .stSidebar [data-testid="stButton"] button:hover:not(:disabled) {
@@ -268,7 +272,16 @@ button[kind="header"] {
     color: #34495e !important;  /* identyczne jak normalne */
     font-weight: 500;
     opacity: 1 !important;  /* usuń wygaszenie */
-    cursor: pointer !important;  /* zachowaj wskaźnik */
+    width: 100% !important; /* Jednakowa szerokość dla disabled buttons */
+    min-width: 0 !important;
+    box-sizing: border-box !important;
+    display: block !important;
+}
+
+/* Kontener przycisków w sidebarze - jednakowa szerokość */
+.stSidebar [data-testid="stButton"] {
+    width: 100% !important;
+    margin-bottom: 0.5rem !important;
 }
 
 [data-testid="stButton"] button:active {
@@ -581,7 +594,7 @@ button[kind="header"] {
 }
 
 div.stButton > button {
-    width: 100%;
+    width: 100% !important; /* Jednakowa szerokość wszystkich przycisków */
     margin-bottom: 2px;
     transition: var(--transition-fast);
     box-shadow: var(--shadow-sm);
@@ -589,6 +602,8 @@ div.stButton > button {
     border-radius: 6px;
     position: relative;
     padding-left: 15px;
+    min-width: 0 !important; /* Reset min-width */
+    box-sizing: border-box !important; /* Include padding and border in width */
 }
 
 /* Podświetlenie dla aktualnej sekcji */
@@ -1263,6 +1278,34 @@ div.stButton > button {
     .stat-label {
         font-size: 0.75rem;
     }
+}
+
+/* ==============================================
+   JEDNAKOWA SZEROKOŚĆ PRZYCISKÓW W SIDEBAR
+   ============================================== */
+
+/* Najwyższy priorytet dla jednakowej szerokości przycisków nawigacji */
+[data-testid="stSidebar"] [data-testid="stButton"],
+[data-testid="stSidebar"] div.stButton,
+.stSidebar [data-testid="stButton"],
+.stSidebar div.stButton {
+    width: 100% !important;
+    display: block !important;
+}
+
+[data-testid="stSidebar"] [data-testid="stButton"] button,
+[data-testid="stSidebar"] div.stButton button,
+.stSidebar [data-testid="stButton"] button,
+.stSidebar div.stButton button {
+    width: 100% !important;
+    min-width: 0 !important;
+    max-width: 100% !important;
+    box-sizing: border-box !important;
+    display: block !important;
+    text-align: center !important;
+    white-space: nowrap !important;
+    overflow: hidden !important;
+    text-overflow: ellipsis !important;
 }
 
 /* Focus management for better accessibility */
