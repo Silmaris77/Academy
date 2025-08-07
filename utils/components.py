@@ -262,13 +262,49 @@ def navigation_menu():
         if st.session_state.get('username') in admin_users:
             menu_options.append({"id": "admin", "name": "Admin", "icon": "⚙️"})
     
+    # JavaScript do automatycznego zamykania sidebar w wersji mobilnej
+    mobile_sidebar_script = """
+    <script>
+    function closeSidebarOnMobile() {
+        // Sprawdź czy jesteśmy na urządzeniu mobilnym (szerokość ekranu < 768px)
+        if (window.innerWidth < 768) {
+            // Znajdź przycisk zamykania sidebara
+            const sidebarCloseButton = parent.document.querySelector('[data-testid="collapsedControl"]');
+            if (sidebarCloseButton) {
+                sidebarCloseButton.click();
+            }
+        }
+    }
+    
+    // Dodaj nasłuchiwanie na kliknięcia w przyciski nawigacji
+    document.addEventListener('DOMContentLoaded', function() {
+        // Opóźnienie, aby przyciski były już wyrenderowane
+        setTimeout(function() {
+            const navButtons = parent.document.querySelectorAll('.stSidebar [data-testid="stButton"] button');
+            navButtons.forEach(function(button) {
+                button.addEventListener('click', function() {
+                    // Opóźnienie na proces nawigacji, potem zamknij sidebar
+                    setTimeout(closeSidebarOnMobile, 100);
+                });
+            });
+        }, 500);
+    });
+    </script>
+    """
+    
+    # Renderuj skrypt tylko raz per sesja
+    if 'mobile_sidebar_script_loaded' not in st.session_state:
+        st.markdown(mobile_sidebar_script, unsafe_allow_html=True)
+        st.session_state.mobile_sidebar_script_loaded = True
+    
     for option in menu_options:
         button_label = f"{option['icon']} {option['name']}"
         
-        # Użyj zen_button bez dodatkowej stylizacji
+        # Użyj zen_button z pełną szerokością kontenera
         if zen_button(
             button_label, 
-            key=f"nav_{option['id']}"
+            key=f"nav_{option['id']}",
+            use_container_width=True
         ):
             # Jeśli klikamy na "Lekcje", resetuj stan bieżącej lekcji aby wrócić do przeglądu
             if option['id'] == 'lesson':

@@ -15,7 +15,7 @@ if APP_DIR not in sys.path:
 # Pozostały import - próbujemy z obsługą błędów
 try:
     from utils.session import init_session_state, clear_session
-    from utils.components import zen_header, navigation_menu
+    from utils.components import zen_header, navigation_menu, zen_button
     from views.login import show_login_page
     from views.dashboard import show_dashboard
     from views.lesson import show_lesson
@@ -52,7 +52,20 @@ def main():
             # Nawigacja
             navigation_menu()
               # Przycisk wylogowania na dole sidebara
-            if st.button("🚪 Wyloguj się", key="logout_button"):
+            if zen_button("🚪 Wyloguj się", key="logout_button", use_container_width=True):
+                # JavaScript do zamknięcia sidebar na mobile po wylogowaniu
+                st.markdown("""
+                <script>
+                if (window.innerWidth < 768) {
+                    setTimeout(function() {
+                        const sidebarCloseButton = parent.document.querySelector('[data-testid="collapsedControl"]');
+                        if (sidebarCloseButton) {
+                            sidebarCloseButton.click();
+                        }
+                    }, 100);
+                }
+                </script>
+                """, unsafe_allow_html=True)
                 clear_session()
                 st.rerun()
     

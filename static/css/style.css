@@ -184,6 +184,58 @@ button[kind="header"] {
     .m3-lesson-card h3 {
         font-size: 1.3rem;
     }
+    
+    /* Dostosuj main content do węższego sidebara */
+    .main .block-container {
+        padding-left: 1rem;
+        margin-left: 0;
+    }
+    
+    /* Usprawnienia dla mobile sidebar */
+    .stSidebar [data-testid="stButton"] button {
+        touch-action: manipulation;
+        -webkit-tap-highlight-color: transparent;
+    }
+    
+    /* Szybsze animacje dla mobilnych */
+    .stSidebar {
+        transition: transform 0.2s ease;
+    }
+    
+    /* Węższy sidebar w wersji mobilnej - ale nie za wąski */
+    [data-testid="stSidebar"] {
+        width: 200px !important;
+        min-width: 200px !important;
+        max-width: 200px !important;
+    }
+    
+    [data-testid="stSidebar"] > div {
+        width: 200px !important;
+        min-width: 200px !important;
+        max-width: 200px !important;
+    }
+    
+    /* Dostosowanie zawartości sidebara do szerokości 200px */
+    [data-testid="stSidebar"] .stMarkdown h3 {
+        font-size: 0.95rem !important;
+        padding: 8px 12px !important;
+        margin: 0 !important;
+        white-space: normal !important;
+        overflow: visible !important;
+        text-overflow: unset !important;
+    }
+    
+    /* Przyciski nawigacji - pełne nazwy bez obcinania */
+    .stSidebar [data-testid="stButton"] button {
+        font-size: 0.85rem !important;
+        padding: 10px 12px !important;
+        white-space: normal !important;
+        overflow: visible !important;
+        text-overflow: unset !important;
+        height: auto !important;
+        min-height: 40px !important;
+        line-height: 1.2 !important;
+    }
 }
 
 /* Na tabletach - dwie kolumny */
@@ -191,6 +243,35 @@ button[kind="header"] {
     .lesson-grid {
         grid-template-columns: repeat(2, 1fr);
         gap: 18px;
+    }
+    
+    /* Przywróć normalną szerokość sidebara na tabletach */
+    [data-testid="stSidebar"] {
+        width: auto !important;
+        min-width: 244px !important;
+        max-width: 300px !important;
+    }
+    
+    [data-testid="stSidebar"] > div {
+        width: auto !important;
+        min-width: 244px !important;
+        max-width: 300px !important;
+    }
+    
+    /* Przywróć normalny wygląd tekstu */
+    [data-testid="stSidebar"] .stMarkdown h3 {
+        font-size: 1.1em !important;
+        padding: 10px 0 !important;
+        margin-bottom: 10px !important;
+    }
+    
+    /* Przywróć normalny wygląd przycisków */
+    .stSidebar [data-testid="stButton"] button {
+        font-size: inherit !important;
+        padding: inherit !important;
+        height: auto !important;
+        min-height: auto !important;
+        line-height: inherit !important;
     }
 }
 
@@ -201,6 +282,40 @@ button[kind="header"] {
         gap: 20px;
         max-width: 1200px;
         margin: 0 auto 30px auto;
+    }
+    
+    /* Normalny sidebar na dużych ekranach */
+    [data-testid="stSidebar"] {
+        width: auto !important;
+        min-width: 244px !important;
+        max-width: 320px !important;
+    }
+    
+    [data-testid="stSidebar"] > div {
+        width: auto !important;
+        min-width: 244px !important;
+        max-width: 320px !important;
+    }
+    
+    /* Przywróć normalny wygląd na dużych ekranach */
+    [data-testid="stSidebar"] .stMarkdown h3 {
+        font-size: 1.1em !important;
+        padding: 10px 0 !important;
+        margin-bottom: 10px !important;
+        white-space: normal !important;
+        overflow: visible !important;
+        text-overflow: unset !important;
+    }
+    
+    .stSidebar [data-testid="stButton"] button {
+        font-size: inherit !important;
+        padding: inherit !important;
+        height: auto !important;
+        min-height: auto !important;
+        line-height: inherit !important;
+        white-space: normal !important;
+        overflow: visible !important;
+        text-overflow: unset !important;
     }
 }
 
@@ -252,6 +367,22 @@ button[kind="header"] {
     font-weight: 500;
     border-radius: 6px !important;
     transition: all 0.3s ease !important;
+    width: 100% !important;
+    display: block !important;
+}
+
+/* Dodatkowe style dla przycisków sidebar tylko na dużych ekranach */
+@media (min-width: 769px) {
+    .stSidebar [data-testid="stButton"] button {
+        font-size: inherit !important;
+        padding: 12px 16px !important;
+        height: auto !important;
+        min-height: 44px !important;
+        line-height: 1.2 !important;
+        white-space: normal !important;
+        overflow: visible !important;
+        text-overflow: unset !important;
+    }
 }
 
 .stSidebar [data-testid="stButton"] button:hover:not(:disabled) {
