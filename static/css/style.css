@@ -6,35 +6,39 @@
 
 /* Zmienne CSS */
 :root {
-  --primary-color: #2980B9;
-  --primary-light: #6DD5FA;
-  --secondary-color: #27ae60;
-  --background-light: #f7f7f7;
-  --background-dark: #1a1a1a;
-  --text-primary: #2C3E50;
-  --text-secondary: #666;
-  --success-color: #27ae60;
-  --warning-color: #f39c12;
-  --error-color: #e74c3c;
+  --primary-color: #4A90E2;
+  --primary-light: #7BB3F0;
+  --secondary-color: #5CB85C;
+  --background-light: linear-gradient(135deg, #4A5568 0%, #4F5B6B 50%, #3A4A5C 100%);
+  --background-dark: linear-gradient(135deg, #2D3748 0%, #374151 50%, #2D3748 100%);
+  --background-card: linear-gradient(145deg, #4A5568 0%, #3F4A5A 100%);
+  --background-card-hover: linear-gradient(145deg, #5A6A7C 0%, #4F5F6F 100%);
+  --text-primary: #F7FAFC;
+  --text-secondary: #E2E8F0;
+  --success-color: #5CB85C;
+  --warning-color: #F0AD4E;
+  --error-color: #D9534F;
   --radius-sm: 5px;
   --radius-md: 10px;
   --radius-lg: 15px;
-  --shadow-sm: 0 2px 4px rgba(0,0,0,0.1);
-  --shadow-md: 0 4px 6px rgba(0,0,0,0.1);
-  --shadow-lg: 0 8px 15px rgba(0,0,0,0.1);
+  --shadow-sm: 0 2px 4px rgba(0,0,0,0.3);
+  --shadow-md: 0 4px 6px rgba(0,0,0,0.4);
+  --shadow-lg: 0 8px 15px rgba(0,0,0,0.5);
   --transition-fast: 0.3s ease;
   --font-primary: 'Arial', sans-serif;
 }
 
 /* Podstawowe style */
 .main {
-    background-color: var(--background-light);
+    background: var(--background-light);
+    color: var(--text-primary);
 }
 .st-bx {
-    background-color: #ffffff;
+    background: var(--background-card);
     border-radius: var(--radius-md);
     padding: 20px;
     box-shadow: var(--shadow-md);
+    border: 1px solid rgba(255,255,255,0.1);
 }
 .zen-header {
     color: var(--text-primary);
@@ -42,9 +46,10 @@
     font-family: var(--font-primary);
     padding: 10px;
     margin-bottom: 0;
-    background: linear-gradient(90deg, var(--primary-light) 0%, var(--primary-color) 100%);
+    background: linear-gradient(90deg, #4A90E2 0%, #2980B9 100%);
     border-radius: var(--radius-md);
     color: white;
+    box-shadow: var(--shadow-md);
 }
 /* Ukryj specyficzny element Streamlit (zastąp [data-testid="..."] odpowiednim selektorem) */
 [data-testid="stMarkdownContainer"] > div:first-child:empty {
@@ -55,6 +60,21 @@
 
 .block-container {
     padding-top: 0;
+    background: transparent !important;
+}
+
+/* Dodatkowe style dla ciemnego tła */
+[data-testid="stAppViewContainer"] {
+    background: var(--background-light) !important;
+}
+
+[data-testid="stHeader"] {
+    background: transparent !important;
+}
+
+/* Główny kontener */
+section.main {
+    background: var(--background-light) !important;
 }
 
 /* Hide navigation elements */
@@ -64,6 +84,31 @@
 section[data-testid="stSidebarNav"] {
     display: none;
 }
+
+/* Ciemne tło sidebara */
+[data-testid="stSidebar"] {
+    background: var(--background-dark) !important;
+}
+
+[data-testid="stSidebar"] > div:first-child {
+    background: var(--background-dark) !important;
+}
+
+/* Ciemne tło głównej aplikacji */
+.stApp {
+    background: var(--background-light) !important;
+}
+
+/* Ciemne tło dla głównego kontenera */
+.main .block-container {
+    background: transparent !important;
+}
+
+/* Ciemne tło dla całej strony */
+body {
+    background: var(--background-light) !important;
+}
+
 .main > div:first-child {
     visibility: hidden;
     height: 0;
@@ -75,7 +120,7 @@ button[kind="header"] {
 
 /* Karty degena */
 .degen-card {
-    background-color: #ffffff;
+    background: var(--background-card);
     border-radius: var(--radius-md);
     padding: 20px;
     margin: 12px 0;
@@ -84,10 +129,13 @@ button[kind="header"] {
     position: relative;
     overflow: hidden;
     border-left: 5px solid var(--primary-color);
+    border: 1px solid rgba(255,255,255,0.15);
+    color: var(--text-primary);
 }
 .degen-card:hover {
     transform: translateY(-5px);
     box-shadow: var(--shadow-lg);
+    background: var(--background-card-hover);
 }
 .degen-card h4 {
     margin-top: 0;
@@ -109,7 +157,7 @@ button[kind="header"] {
     align-items: center;
     margin-top: 15px;
     padding-top: 12px;
-    border-top: 1px solid #f0f0f0;
+    border-top: 1px solid rgba(255,255,255,0.15);
 }
 
 /* Odznaki */
@@ -347,23 +395,24 @@ button[kind="header"] {
     border-radius: 6px;
     position: relative;
     padding-left: 15px;
-    background: white;
-    border: 1px solid #e0e0e0;
+    background: var(--background-card);
+    border: 1px solid rgba(255,255,255,0.1);
+    color: var(--text-primary);
 }
 
 [data-testid="stButton"] button:hover:not(:disabled) {
-    background: linear-gradient(to right, #ffffff, #f8f9fa);
+    background: var(--background-card-hover);
     border-color: var(--primary-light);
-    color: #000000 !important; /* Czarny tekst dla lepszej widoczności */
+    color: var(--text-primary) !important;
     transform: translateX(5px);
-    box-shadow: 0 4px 8px rgba(109, 213, 250, 0.2);
+    box-shadow: 0 4px 8px rgba(74, 144, 226, 0.3);
 }
 
 /* Przyciski w sidebarze - jednolity wygląd */
 .stSidebar [data-testid="stButton"] button {
-    background: #cfe7ff !important;
-    border: 1px solid #c0c0c0 !important;
-    color: #34495e !important;
+    background: linear-gradient(145deg, #5A6A7C 0%, #4F5F6F 100%) !important;
+    border: 1px solid rgba(255,255,255,0.15) !important;
+    color: var(--text-primary) !important;
     font-weight: 500;
     border-radius: 6px !important;
     transition: all 0.3s ease !important;
@@ -386,19 +435,19 @@ button[kind="header"] {
 }
 
 .stSidebar [data-testid="stButton"] button:hover:not(:disabled) {
-    background: linear-gradient(to right, #e9ecef, #f1f3f4) !important;
-    border-color: #34495e !important;
-    color: #2c3e50 !important;
-    box-shadow: 0 3px 6px rgba(52, 73, 94, 0.2);
+    background: linear-gradient(145deg, #6A7A8C 0%, #5F6F7F 100%) !important;
+    border-color: var(--primary-light) !important;
+    color: var(--text-primary) !important;
+    box-shadow: 0 3px 6px rgba(74, 144, 226, 0.3);
 }
 
 /* KLUCZOWE: Przyciski disabled wyglądają tak samo jak normalne */
 .stSidebar [data-testid="stButton"] button:disabled {
-    background: #cfe7ff !important;  /* identyczne jak normalne */
-    border: 1px solid #c0c0c0 !important;  /* identyczne jak normalne */
-    color: #34495e !important;  /* identyczne jak normalne */
-    font-weight: 500;
-    opacity: 1 !important;  /* usuń wygaszenie */
+    background: linear-gradient(145deg, #4A90E2 0%, #2980B9 100%) !important;
+    border: 1px solid rgba(255,255,255,0.2) !important;
+    color: white !important;
+    font-weight: 600;
+    opacity: 1 !important;
 }
 
 [data-testid="stButton"] button:active {
@@ -468,20 +517,22 @@ button[kind="header"] {
     padding: 15px;
     margin-bottom: 15px;
     border-radius: var(--radius-md);
-    border: 1px solid #e0e0e0;
-    background-color: white;
+    border: 1px solid rgba(255,255,255,0.15);
+    background: var(--background-card);
     transition: var(--transition-fast);
     position: relative;
     overflow: hidden;
     box-shadow: var(--shadow-sm);
+    color: var(--text-primary);
 }
 .mission-card:hover {
     transform: translateY(-3px);
     box-shadow: var(--shadow-md);
+    background: var(--background-card-hover);
 }
 .mission-card.completed {
     border-color: var(--success-color);
-    background-color: #f0fff4;
+    background: linear-gradient(145deg, #4A6A4A 0%, #3F5F3F 100%);
 }
 .mission-card.completed::before {
     content: "✓";
@@ -553,15 +604,16 @@ button[kind="header"] {
     width: 80px;
     height: 80px;
     border-radius: 50%;
-    border: 2px solid #e0e0e0;
+    border: 2px solid rgba(255,255,255,0.2);
     display: flex;
     align-items: center;
     justify-content: center;
     font-size: 40px;
     cursor: pointer;
     transition: var(--transition-fast);
-    background-color: white;
+    background: var(--background-card);
     box-shadow: var(--shadow-sm);
+    color: var(--text-primary);
 }
 
 .avatar-option:hover, .avatar-option.selected {
@@ -599,7 +651,7 @@ button[kind="header"] {
 
 /* Karty celów */
 .goal-card {
-    background-color: white;
+    background: var(--background-card);
     border-radius: var(--radius-md);
     padding: 20px;
     margin-bottom: 15px;
@@ -608,15 +660,19 @@ button[kind="header"] {
     position: relative;
     overflow: hidden;
     border-left: 5px solid var(--primary-color);
+    border: 1px solid rgba(255,255,255,0.1);
+    color: var(--text-primary);
 }
 
 .goal-card:hover {
     transform: translateY(-5px);
     box-shadow: var(--shadow-lg);
+    background: var(--background-card-hover);
 }
 
 .goal-card.completed {
     border-left-color: var(--success-color);
+    background: linear-gradient(145deg, #4A6A4A 0%, #3F5F3F 100%);
 }
 
 .goal-card.completed::after {
@@ -670,15 +726,18 @@ button[kind="header"] {
     text-align: center;
     padding: 20px 15px;
     border-radius: var(--radius-md);
-    background-color: white;
+    background: var(--background-card);
     box-shadow: var(--shadow-sm);
     transition: var(--transition-fast);
     margin-bottom: 15px;
+    border: 1px solid rgba(255,255,255,0.1);
+    color: var(--text-primary);
 }
 
 .badge-card:hover {
     transform: translateY(-5px);
     box-shadow: var(--shadow-lg);
+    background: var(--background-card-hover);
 }
 
 .badge-icon {
@@ -739,7 +798,7 @@ div.stButton > button {
     font-size: 1.1em;
     padding: 10px 0;
     margin-bottom: 10px;
-    border-bottom: 2px solid #f0f2f6;
+    border-bottom: 2px solid rgba(255,255,255,0.15);
 }
 
 /* Animacje */
@@ -802,17 +861,18 @@ div.stButton > button {
 
 /* Karty statystyk - dostosowane do jednego wiersza */
 .stat-card {
-    background: white;
+    background: var(--background-card);
     border-radius: 12px;
     padding: 20px 16px; /* Zmniejszone padding dla lepszego dopasowania */
-    box-shadow: 0 2px 8px rgba(0,0,0,0.08);
-    border: 1px solid #f0f0f0;
+    box-shadow: var(--shadow-md);
+    border: 1px solid rgba(255,255,255,0.15);
     transition: all 0.3s ease;
     position: relative;
     overflow: hidden;
     text-align: center;
     min-width: 150px; /* Minimalna szerokość karty */
     max-width: 250px; /* Maksymalna szerokość karty */
+    color: var(--text-primary);
 }
 
 .stat-card::before {
@@ -827,7 +887,8 @@ div.stButton > button {
 
 .stat-card:hover {
     transform: translateY(-4px);
-    box-shadow: 0 8px 25px rgba(0,0,0,0.12);
+    box-shadow: var(--shadow-lg);
+    background: var(--background-card-hover);
 }
 
 .stat-icon {
@@ -988,12 +1049,13 @@ div.stButton > button {
 /* Style dla sekcji dashboard */
 .dashboard-section {
     margin-bottom: 20px;  /* zmniejszone z 30px */
-    background-color: white;
+    background: var(--background-card);
     border-radius: var(--radius-md);
     padding: 16px;  /* zmniejszone z 24px */
     padding-top: 2px;  /* zmniejszone z 24px */
-    
     box-shadow: var(--shadow-sm);
+    border: 1px solid rgba(255,255,255,0.15);
+    color: var(--text-primary);
 }
 
 .section-header {
@@ -1002,7 +1064,7 @@ div.stButton > button {
     align-items: center;
     margin-bottom: 1px;  /* zmniejszone z 20px */
     padding-bottom: 1px;  /* zmniejszone z 12px */
-    border-bottom: 1px solid #f0f6f0;  /* zmniejszone z 2px */
+    border-bottom: 1px solid rgba(255,255,255,0.15);  /* zmienione dla lepszego kontrastu */
 }
 
 .section-title {
@@ -1119,13 +1181,15 @@ div.stButton > button {
     display: flex;
     align-items: center;
     padding: 16px;
-    background: #f8f9fa;
+    background: var(--background-card);
     border-radius: 8px;
     transition: all 0.3s ease;
+    border: 1px solid rgba(255,255,255,0.1);
+    color: var(--text-primary);
 }
 
 .compact-item:hover {
-    background: #e9ecef;
+    background: var(--background-card-hover);
     transform: translateX(4px);
 }
 
@@ -1201,14 +1265,15 @@ div.stButton > button {
 }
 
 .skill-card-modern {
-    background: white;
+    background: var(--background-card);
     border-radius: 12px;
     padding: 24px;
-    box-shadow: 0 2px 8px rgba(0,0,0,0.08);
-    border: 1px solid #f0f0f0;
+    box-shadow: var(--shadow-md);
+    border: 1px solid rgba(255,255,255,0.1);
     transition: all 0.3s ease;
     position: relative;
     overflow: hidden;
+    color: var(--text-primary);
 }
 
 .skill-card-modern::before {
@@ -1223,7 +1288,8 @@ div.stButton > button {
 
 .skill-card-modern:hover {
     transform: translateY(-4px);
-    box-shadow: 0 8px 25px rgba(0,0,0,0.12);
+    box-shadow: var(--shadow-lg);
+    background: var(--background-card-hover);
 }
 
 .skill-header {
