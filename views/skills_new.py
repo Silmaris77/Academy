@@ -2,6 +2,7 @@ import streamlit as st
 from utils.components import zen_header, zen_button, notification, skill_node
 from utils.material3_components import apply_material3_theme
 from utils.layout import get_device_type, responsive_grid, responsive_container, toggle_device_view
+from utils.streamlit_compat import tabs_with_fallback
 from data.users import load_user_data, save_user_data
 from data.course_data import (
     get_blocks, get_categories, get_lessons_for_category, 
@@ -83,8 +84,8 @@ def show_skill_tree():
         }
       # Header i nowy tytuł
     st.markdown("<h1 class='skills-header'>Mapa Rozwoju Inwestora 🌿</h1>", unsafe_allow_html=True)
-      # System zakładek
-    tab1, tab2, tab3 = st.tabs(["🗺️ Mapa Kursu", "📊 Statystyki", "🎯 Umiejętności"])
+      # System zakładek z fallback kompatybilności
+    tab1, tab2, tab3 = tabs_with_fallback(["🗺️ Mapa Kursu", "📊 Statystyki", "🎯 Umiejętności"])
     
     with tab1:
         st.markdown("### Interaktywna Mapa Struktury Kursu")

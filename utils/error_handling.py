@@ -3,7 +3,6 @@ import traceback
 import functools
 from datetime import datetime
 import streamlit as st
-from utils.notifications import show_notification
 
 # Konfiguracja logowania
 logging.basicConfig(
@@ -21,6 +20,24 @@ class AppError(Exception):
         self.error_type = error_type
         super().__init__(self.message)
 
+def safe_notification(message, notification_type="info"):
+    """
+    Bezpieczne wyświetlanie powiadomień - fallback na Streamlit jeśli utils.notifications nie działa
+    """
+    try:
+        from utils.notifications import show_notification
+        show_notification(message, notification_type)
+    except ImportError:
+        # Fallback na standardowe Streamlit
+        if notification_type == "error":
+            st.error(message)
+        elif notification_type == "warning":
+            st.warning(message)
+        elif notification_type == "success":
+            st.success(message)
+        else:
+            st.info(message)
+
 def handle_error(func):
     """Decorator for handling errors in functions"""
     @functools.wraps(func)
@@ -29,20 +46,43 @@ def handle_error(func):
             return func(*args, **kwargs)
         except AppError as e:
             # Pokaż użytkownikowi przyjazny komunikat
-            show_notification(e.message, e.error_type)
+            safe_notification(e.message, e.error_type)
             # Zaloguj błąd
             logger.error(f"AppError in {func.__name__}: {e.message}")
         except Exception as e:
             # Pokaż użytkownikowi ogólny komunikat
-            show_notification(
-                "Wystąpił nieoczekiwany błąd. Spróbuj ponownie później.",
-                "error"
-            )
+            error_msg = f"Wystąpił błąd w funkcji {func.__name__}. Spróbuj ponownie później."
+            safe_notification(error_msg, "error")
+            
             # Zaloguj szczegółowy błąd
             logger.error(f"Unexpected error in {func.__name__}: {str(e)}")
             logger.error(traceback.format_exc())
+            
+            # W trybie dev wyświetl szczegóły błędu
+            if st.session_state.get('dev_mode', False):
+                st.exception(e)
         return None
     return wrapper
+
+def safe_execute(func, fallback_value=None, error_message=None):
+    """
+    Bezpieczne wykonanie funkcji z fallback value
+    
+    Args:
+        func: Funkcja do wykonania
+        fallback_value: Wartość zwracana w przypadku błędu
+        error_message: Niestandardowy komunikat błędu
+    """
+    try:
+        return func()
+    except Exception as e:
+        if error_message:
+            safe_notification(error_message, "warning")
+        else:
+            safe_notification(f"Nie udało się wykonać operacji: {str(e)}", "warning")
+        
+        logger.error(f"Error in safe_execute: {str(e)}")
+        return fallback_value
 
 def log_action(action_type):
     """Decorator for logging user actions"""
@@ -97,7 +137,7 @@ class ErrorBoundary:
     def __exit__(self, exc_type, exc_value, traceback):
         if exc_type is not None:
             if self.show_error:
-                show_notification(
+                safe_notification(
                     f"Błąd w sekcji {self.section_name}. Spróbuj ponownie.",
                     "error"
                 )

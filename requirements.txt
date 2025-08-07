@@ -7,3 +7,4 @@ streamlit-agraph==0.0.45
 Pillow>=10.0.0
 plotly>=5.17.0
 networkx>=3.1
+packaging>=21.0

@@ -9,6 +9,7 @@ from utils.lesson_progress import (
     is_lesson_fully_completed, get_fragment_xp_breakdown, mark_lesson_as_completed
 )
 from utils.real_time_updates import get_live_user_stats, live_xp_indicator, show_xp_notification
+from utils.streamlit_compat import tabs_with_fallback, display_compatibility_info
 from views.skills_new import show_skill_tree
 
 def get_difficulty_stars(difficulty):
@@ -60,8 +61,11 @@ def show_lesson():
     
     zen_header("Kurs Zen Degen Academy")
     
-    # Create main tabs
-    tab1, tab2 = st.tabs(["📚 Dostępne Lekcje", "🌳 Struktura Kursu"])
+    # Wyświetl informacje o kompatybilności w trybie dev
+    display_compatibility_info()
+    
+    # Create main tabs with compatibility fallback
+    tab1, tab2 = tabs_with_fallback(["📚 Dostępne Lekcje", "🌳 Struktura Kursu"])
     
     with tab1:
         show_lessons_content()
@@ -474,7 +478,7 @@ def show_lessons_content():
           # Main content logic for each step
         if st.session_state.lesson_step == 'intro':
             # Podziel wprowadzenie na trzy zakładki: Wprowadzenie, Case Study, Quiz Samodiagnozy
-            intro_tabs = st.tabs(["Wprowadzenie", "Case Study", "🪞 Quiz Samodiagnozy"])
+            intro_tabs = tabs_with_fallback(["Wprowadzenie", "Case Study", "🪞 Quiz Samodiagnozy"])
             
             with intro_tabs[0]:
                 # Wyświetl główne wprowadzenie
@@ -613,7 +617,7 @@ def show_lessons_content():
                     
                     if available_tabs:
                         # Wyświetl pod-zakładki
-                        tabs = st.tabs(available_tabs)
+                        tabs = tabs_with_fallback(available_tabs)
                         
                         for i, (tab_key, tab_title) in enumerate(zip(tab_keys, available_tabs)):
                             with tabs[i]:
@@ -976,7 +980,7 @@ def show_lessons_content():
             # Wyświetl podsumowanie lekcji w podziale na zakładki, podobnie jak wprowadzenie
             if 'outro' in lesson:
                 # Podziel podsumowanie na trzy zakładki - dodana mapa myśli
-                summary_tabs = st.tabs(["Podsumowanie", "Case Study", "🗺️ Mapa myśli"])
+                summary_tabs = tabs_with_fallback(["Podsumowanie", "Case Study", "🗺️ Mapa myśli"])
                 
                 with summary_tabs[0]:
                     # Wyświetl główne podsumowanie
@@ -1179,7 +1183,7 @@ def display_lesson(lesson_data):
     
     # Wyświetl zakładki tylko jeśli są jakieś dane do wyświetlenia
     if tab_titles:
-        tabs = st.tabs(tab_titles)        # Dla każdej zakładki wyświetl odpowiednią zawartość
+        tabs = tabs_with_fallback(tab_titles)        # Dla każdej zakładki wyświetl odpowiednią zawartość
         for i, (_, tab_name) in enumerate(tab_data):
             with tabs[i]:
                 if tab_name == "learning":
