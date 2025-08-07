@@ -12,11 +12,11 @@
     border-top: 1px solid #e2e8f0;
     box-shadow: 0 -4px 20px rgba(0, 0, 0, 0.1);
     z-index: 1000;
-    padding: 0.25rem 0; /* Reduced padding for smaller height */
+    padding: 0.5rem 0;
     backdrop-filter: blur(10px);
     -webkit-backdrop-filter: blur(10px);
     display: none; /* Hidden by default, shown on mobile */
-    height: 50px; /* Fixed smaller height */
+    height: 80px;
 }
 
 /* Navigation Items Container */
@@ -34,28 +34,25 @@
     display: flex;
     flex-direction: column;
     align-items: center;
-    justify-content: center;
-    padding: 0.25rem 0.15rem; /* Reduced padding */
-    min-width: 40px; /* Reduced from 60px */
-    height: 40px; /* Fixed height */
+    padding: 0.5rem 0.25rem;
+    min-width: 60px;
     cursor: pointer;
     transition: all 0.3s ease;
-    border-radius: 8px; /* Smaller radius */
+    border-radius: 12px;
     text-decoration: none;
     position: relative;
 }
 
 /* Navigation Icon */
 .mobile-nav-icon {
-    font-size: 1.2rem; /* Slightly smaller icon */
-    margin-bottom: 0; /* Remove margin since no labels */
+    font-size: 1.5rem;
+    margin-bottom: 0.25rem;
     transition: all 0.3s ease;
     filter: grayscale(0.5);
 }
 
-/* Navigation Label - Hidden on mobile */
+/* Navigation Label */
 .mobile-nav-label {
-    display: none !important; /* Hide labels completely for icon-only navigation */
     font-size: 0.7rem;
     font-weight: 500;
     color: #64748b;
@@ -146,17 +143,17 @@
     }
     
     .mobile-nav-item {
-        min-width: 35px; /* Even smaller for tiny screens */
-        padding: 0.3rem 0.15rem;
+        min-width: 50px;
+        padding: 0.4rem 0.2rem;
     }
     
     .mobile-nav-icon {
-        font-size: 1.1rem; /* Slightly smaller on tiny screens */
-        margin-bottom: 0;
+        font-size: 1.3rem;
+        margin-bottom: 0.2rem;
     }
     
     .mobile-nav-label {
-        display: none !important; /* Ensure labels stay hidden */
+        font-size: 0.65rem;
     }
 }
 
@@ -168,17 +165,16 @@
     }
     
     .mobile-nav-item {
-        min-width: 45px; /* Optimized for tablet icon-only view */
-        padding: 0.5rem 0.3rem;
+        min-width: 70px;
+        padding: 0.6rem 0.4rem;
     }
     
     .mobile-nav-icon {
-        font-size: 1.3rem; /* Larger icons for tablet */
-        margin-bottom: 0;
+        font-size: 1.6rem;
     }
     
     .mobile-nav-label {
-        display: none !important; /* Ensure labels stay hidden on tablet too */
+        font-size: 0.75rem;
     }
 }
 
@@ -322,66 +318,5 @@
     
     .mobile-nav-item:hover:not(.active) {
         background: rgba(59, 130, 246, 0.2);
-    }
-}
-
-/* ==============================================
-   FORCE ICON-ONLY NAVIGATION - HIGHEST PRIORITY
-   ============================================== */
-
-/* Force hide all navigation labels - Icon-only navigation */
-.mobile-bottom-nav .mobile-nav-label,
-.mobile-nav-items .mobile-nav-label,
-div.mobile-nav-label {
-    display: none !important;
-    visibility: hidden !important;
-    opacity: 0 !important;
-    height: 0 !important;
-    overflow: hidden !important;
-}
-
-/* Ensure mobile navigation items are compact */
-.mobile-bottom-nav .mobile-nav-item {
-    min-width: 40px !important;
-    justify-content: center !important;
-}
-
-/* Ensure icons are properly sized */
-.mobile-bottom-nav .mobile-nav-icon {
-    font-size: 1.2rem !important;
-    margin-bottom: 0 !important;
-}
-
-/* ==============================================
-   AUTO-CLOSE SIDEBAR ON MOBILE NAVIGATION
-   ============================================== */
-
-/* Force hide sidebar when mobile navigation is used */
-@media (max-width: 1024px) {
-    /* Smooth sidebar close animation */
-    [data-testid="stSidebar"].mobile-force-hidden {
-        transform: translateX(-100%) !important;
-        transition: transform 0.3s ease !important;
-    }
-    
-    /* Ensure sidebar doesn't interfere with mobile nav */
-    [data-testid="stSidebar"] {
-        z-index: 999; /* Lower than mobile nav (1000) */
-    }
-    
-    /* Auto-hide sidebar overlay on mobile when nav is used */
-    .mobile-nav-active [data-testid="stSidebar"] {
-        display: none !important;
-    }
-    
-    /* Smooth transitions for sidebar state changes */
-    [data-testid="stSidebar"] {
-        transition: transform 0.3s ease, opacity 0.3s ease !important;
-    }
-    
-    /* Ensure main content is properly spaced when sidebar auto-closes */
-    .mobile-nav-active .main {
-        margin-left: 0 !important;
-        transition: margin-left 0.3s ease !important;
     }
 }

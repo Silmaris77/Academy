@@ -265,11 +265,10 @@ def navigation_menu():
     for option in menu_options:
         button_label = f"{option['icon']} {option['name']}"
         
-        # Użyj zen_button z pełną szerokością kontenera dla jednakowych rozmiarów
+        # Użyj zen_button bez dodatkowej stylizacji
         if zen_button(
             button_label, 
-            key=f"nav_{option['id']}",
-            use_container_width=True  # Zapewnia jednakową szerokość wszystkich przycisków
+            key=f"nav_{option['id']}"
         ):
             # Jeśli klikamy na "Lekcje", resetuj stan bieżącej lekcji aby wrócić do przeglądu
             if option['id'] == 'lesson':

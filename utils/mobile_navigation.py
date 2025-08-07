@@ -41,9 +41,6 @@ def render_mobile_navigation():
     
     <script>
     function navigateToPage(page, subpage = null) {{
-        // Auto-close mobile sidebar before navigation
-        closeMobileSidebar();
-        
         // Update Streamlit session state via form submission
         const form = document.createElement('form');
         form.method = 'POST';
@@ -130,64 +127,6 @@ def render_mobile_navigation():
         }}
     }}
     
-    function closeMobileSidebar() {{
-        // Check if we're on mobile device
-        if (window.innerWidth <= 1024) {{
-            // Try multiple methods to close Streamlit sidebar
-            
-            // Method 1: Try to find and click sidebar close button
-            const sidebarCloseBtn = document.querySelector('[data-testid="stSidebar"] button[aria-label*="close"], [data-testid="stSidebar"] button[aria-label*="Close"], .stSidebar button[title*="close"]');
-            if (sidebarCloseBtn) {{
-                sidebarCloseBtn.click();
-                return;
-            }}
-            
-            // Method 2: Try to find sidebar toggle button in main area
-            const sidebarToggle = document.querySelector('button[aria-label*="Open sidebar"], button[aria-label*="sidebar"], [data-testid*="sidebar"] button');
-            if (sidebarToggle && sidebarToggle.getAttribute('aria-expanded') === 'true') {{
-                sidebarToggle.click();
-                return;
-            }}
-            
-            // Method 3: Force hide sidebar with CSS (emergency fallback)
-            const sidebar = document.querySelector('[data-testid="stSidebar"]');
-            if (sidebar) {{
-                // Check if sidebar is visible
-                const sidebarStyles = window.getComputedStyle(sidebar);
-                if (sidebarStyles.display !== 'none' && sidebarStyles.visibility !== 'hidden') {{
-                    // Add CSS class to force hide
-                    sidebar.classList.add('mobile-force-hidden');
-                    
-                    // Add CSS rule if not exists
-                    if (!document.querySelector('#mobile-sidebar-closer')) {{
-                        const style = document.createElement('style');
-                        style.id = 'mobile-sidebar-closer';
-                        style.textContent = `
-                            @media (max-width: 1024px) {{
-                                [data-testid="stSidebar"].mobile-force-hidden {{
-                                    transform: translateX(-100%) !important;
-                                    transition: transform 0.3s ease !important;
-                                }}
-                            }}
-                        `;
-                        document.head.appendChild(style);
-                    }}
-                }}
-            }}
-            
-            // Method 4: Try clicking outside sidebar to close it
-            const mainContent = document.querySelector('.main');
-            if (mainContent) {{
-                const clickEvent = new MouseEvent('click', {{
-                    view: window,
-                    bubbles: true,
-                    cancelable: true
-                }});
-                mainContent.dispatchEvent(clickEvent);
-            }}
-        }}
-    }}
-    
     // Initialize on load
     document.addEventListener('DOMContentLoaded', function() {{
         if (window.innerWidth <= 1024) {{
@@ -213,29 +152,6 @@ def load_mobile_navigation_assets():
         st.markdown(f"<style>{mobile_css}</style>", unsafe_allow_html=True)
     except FileNotFoundError:
         st.warning("⚠️ Nie znaleziono pliku CSS dla mobilnej nawigacji")
-    
-    # Force icon-only navigation with highest priority CSS
-    force_icon_only_css = """
-    <style>
-    /* FORCE ICON-ONLY NAVIGATION - CRITICAL OVERRIDE */
-    .mobile-nav-label {
-        display: none !important;
-        visibility: hidden !important;
-        opacity: 0 !important;
-        height: 0 !important;
-        overflow: hidden !important;
-    }
-    .mobile-bottom-nav .mobile-nav-item {
-        min-width: 40px !important;
-        justify-content: center !important;
-    }
-    .mobile-bottom-nav .mobile-nav-icon {
-        font-size: 1.2rem !important;
-        margin-bottom: 0 !important;
-    }
-    </style>
-    """
-    st.markdown(force_icon_only_css, unsafe_allow_html=True)
     
     # Add responsive behavior CSS
     responsive_css = """
