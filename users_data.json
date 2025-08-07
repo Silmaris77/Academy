@@ -4053,5 +4053,22 @@
         "earning_rate": 0.0
       }
     }
+  },
+  "tom": {
+    "user_id": "d0be9145-fa24-482e-b3da-a013a968d06d",
+    "password": "tom",
+    "degen_type": null,
+    "xp": 0,
+    "degencoins": 0,
+    "level": 1,
+    "joined_date": "2025-08-07",
+    "last_login": null,
+    "completed_lessons": [],
+    "badges": [],
+    "test_taken": false,
+    "inspirations": {
+      "read": [],
+      "favorites": []
+    }
   }
 }

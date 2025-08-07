@@ -392,13 +392,14 @@ def show_lessons_content():
             
             st.markdown('<div class="lesson-nav-container">', unsafe_allow_html=True)
             st.markdown('<div class="lesson-nav-title">📚 Nawigacja lekcji</div>', unsafe_allow_html=True)
-              # Stwórz 4 kolumny dla przycisków nawigacji
-            cols = st.columns(4)
+              # Stwórz kolumny dla przycisków nawigacji (dynamicznie na podstawie dostępnych kroków)
+            available_steps_in_order = [step for step in step_order if step in available_steps]
+            cols = st.columns(len(available_steps_in_order))
             
-            for i, step in enumerate(step_order):
-                if step in available_steps:
-                    with cols[i]:
+            for col_index, step in enumerate(available_steps_in_order):
+                with cols[col_index]:
                         step_name = step_names.get(step, step.capitalize())
+                        step_number = step_order.index(step) + 1  # Numer kroku w oryginalnej kolejności
                         
                         # Sprawdź status kroku
                         is_completed = st.session_state.lesson_progress.get(step, False)
@@ -413,22 +414,22 @@ def show_lessons_content():
                             
                             if not quiz_passed and not is_current:
                                 # Blokuj dostęp do podsumowania jeśli quiz nie został zdany
-                                button_text = f"🔒 {i+1}. {step_name}"
+                                button_text = f"🔒 {step_number}. {step_name}"
                                 button_type = "secondary"
                                 disabled = True
                                 help_text = "Musisz zaliczyć quiz końcowy (min. 75%) w sekcji 'Praktyka', aby odblokować podsumowanie"
                             elif is_current:
-                                button_text = f"👉 {i+1}. {step_name}"
+                                button_text = f"👉 {step_number}. {step_name}"
                                 button_type = "primary"
                                 disabled = False
                                 help_text = f"Przejdź do: {step_name}"
                             elif is_completed:
-                                button_text = f"✅ {i+1}. {step_name}"
+                                button_text = f"✅ {step_number}. {step_name}"
                                 button_type = "secondary"
                                 disabled = False
                                 help_text = f"Przejdź do: {step_name}"
                             else:
-                                button_text = f"{i+1}. {step_name}"
+                                button_text = f"{step_number}. {step_name}"
                                 button_type = "secondary"
                                 disabled = True
                                 help_text = f"Ukończ poprzednie kroki aby odblokować: {step_name}"
@@ -436,19 +437,19 @@ def show_lessons_content():
                             # Standardowa logika dla innych kroków
                             if is_current:
                                 # Aktualny krok - niebieski
-                                button_text = f"👉 {i+1}. {step_name}"
+                                button_text = f"👉 {step_number}. {step_name}"
                                 button_type = "primary"
                                 disabled = False
                                 help_text = f"Przejdź do: {step_name}"
                             elif is_completed:
                                 # Ukończony krok - zielony z checkmarkiem
-                                button_text = f"✅ {i+1}. {step_name}"
+                                button_text = f"✅ {step_number}. {step_name}"
                                 button_type = "secondary"
                                 disabled = False
                                 help_text = f"Przejdź do: {step_name}"
                             else:
                                 # Przyszły krok - szary, zablokowany
-                                button_text = f"{i+1}. {step_name}"
+                                button_text = f"{step_number}. {step_name}"
                                 button_type = "secondary"
                                 disabled = True
                                 help_text = f"Ukończ poprzednie kroki aby odblokować: {step_name}"
@@ -456,7 +457,7 @@ def show_lessons_content():
                         # Wyświetl przycisk
                         if st.button(
                             button_text, 
-                            key=f"nav_step_{step}_{i}", 
+                            key=f"nav_step_{step}_{col_index}", 
                             type=button_type,
                             disabled=disabled,
                             use_container_width=True,
