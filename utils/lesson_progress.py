@@ -146,11 +146,21 @@ def calculate_lesson_completion(lesson_id):
     """Oblicz procent ukończenia lekcji"""
     progress = get_lesson_fragment_progress(lesson_id)
     
-    # Nowy 7-krokowy system
-    steps = ['intro', 'opening_quiz', 'content', 'reflection', 'application', 'closing_quiz', 'summary']
-    completed = sum(1 for step in steps if progress.get(f"{step}_completed", False))
+    # Nowa 4-etapowa struktura (preferowana)
+    new_steps = ['intro', 'content', 'practical_exercises', 'summary']
+    new_completed = sum(1 for step in new_steps if progress.get(f"{step}_completed", False))
     
-    return (completed / len(steps)) * 100
+    # Sprawdź czy lekcja używa nowej struktury (przynajmniej jeden z nowych kroków jest ukończony)
+    uses_new_structure = any(progress.get(f"{step}_completed", False) for step in new_steps)
+    
+    if uses_new_structure:
+        # Użyj nowej 4-etapowej struktury
+        return (new_completed / len(new_steps)) * 100
+    else:
+        # Fallback do starej 7-krokowej struktury dla backward compatibility
+        old_steps = ['intro', 'opening_quiz', 'content', 'reflection', 'application', 'closing_quiz', 'summary']
+        old_completed = sum(1 for step in old_steps if progress.get(f"{step}_completed", False))
+        return (old_completed / len(old_steps)) * 100
 
 def is_lesson_fully_completed(lesson_id):
     """Sprawdź czy lekcja jest w pełni ukończona"""
@@ -184,6 +194,13 @@ def mark_lesson_as_completed(lesson_id):
             # Odśwież session_state
             st.session_state.user_data = user_data
             
+            # Add recent activity for lesson completion
+            try:
+                from data.users_fixed import add_recent_activity
+                add_recent_activity(username, "lesson_completed", {"lesson_id": lesson_id})
+            except ImportError:
+                pass  # Activity system not available
+            
             # Check for achievements after completing lesson
             try:
                 from utils.achievements import check_achievements
@@ -193,4 +210,10 @@ def mark_lesson_as_completed(lesson_id):
             
             return True
     
+    return False
+
+def check_and_mark_lesson_completion(lesson_id):
+    """Sprawdź czy lekcja jest ukończona i jeśli tak, oznacz ją jako ukończoną"""
+    if is_lesson_fully_completed(lesson_id):
+        return mark_lesson_as_completed(lesson_id)
     return False

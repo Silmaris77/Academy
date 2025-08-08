@@ -824,7 +824,7 @@ def lesson_card(title, description, image=None, xp=0, duration=0, difficulty=Non
             </div>
             <p class="m3-description">{description[:150]}{'...' if len(description) > 150 else ''}</p>
             <p class="m3-completion-status {'m3-completed' if completed else ''}">
-                {'✓ Ukończono' if completed else '○ Nieukończono'}
+                {'✓ Ukończono' if completed else 'Nieukończono'}
             </p>
         </div>
     </div>
@@ -836,16 +836,17 @@ def lesson_card(title, description, image=None, xp=0, duration=0, difficulty=Non
     @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap');
     
     .m3-lesson-card {
-        background-color: white;
-        color: #333;
+        background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 20%, #dee2e6 50%, #ced4da 80%, #adb5bd 100%);
+        color: #212529;
         border-radius: 16px;
         padding: 24px;
         margin-bottom: 20px;
-        box-shadow: 0 2px 8px rgba(0,0,0,0.12);
-        transition: all 0.3s;
+        box-shadow: 0 4px 12px rgba(108, 117, 125, 0.15), 0 2px 4px rgba(108, 117, 125, 0.1);
+        transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
         position: relative;
         overflow: hidden;
         font-family: 'Roboto', sans-serif;
+        border: 1px solid rgba(173, 181, 189, 0.2);
     }
     
     .m3-lesson-card::before {
@@ -857,11 +858,30 @@ def lesson_card(title, description, image=None, xp=0, duration=0, difficulty=Non
         height: 4px;
         background: linear-gradient(90deg, #2196F3, #673AB7);
         opacity: 0.8;
+        transition: opacity 0.3s ease;
+    }
+    
+    .m3-lesson-card::after {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(135deg, #f1f3f4 0%, #e1e5e9 20%, #d6dbdf 50%, #c1c8cd 80%, #9ca3af 100%);
+        opacity: 0;
+        transition: opacity 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
+        z-index: 1;
+        border-radius: 16px;
     }
     
     .m3-lesson-card:hover {
-        box-shadow: 0 8px 16px rgba(0,0,0,0.16);
-        transform: translateY(-2px);
+        box-shadow: 0 8px 20px rgba(108, 117, 125, 0.25), 0 4px 8px rgba(108, 117, 125, 0.15);
+        transform: translateY(-3px);
+    }
+    
+    .m3-lesson-card:hover::after {
+        opacity: 1;
     }
     
     .m3-lesson-card-completed::before {
@@ -870,6 +890,7 @@ def lesson_card(title, description, image=None, xp=0, duration=0, difficulty=Non
     
     .m3-card-content {
         position: relative;
+        z-index: 2;
     }
     
     .m3-lesson-card h3 {
@@ -919,6 +940,40 @@ def lesson_card(title, description, image=None, xp=0, duration=0, difficulty=Non
     }
     .completion-status.completed {
         color: #4CAF50;
+    }
+    
+    .m3-description {
+        font-size: 16px;
+        line-height: 1.5;
+        color: #555;
+        margin: 16px 0;
+    }
+    
+    .m3-completion-status {
+        font-size: 14px;
+        font-weight: 500;
+        color: #757575;
+        margin-top: 16px;
+        display: flex;
+        align-items: center;
+    }
+    
+    .m3-completed {
+        color: #4CAF50;
+    }
+    
+    .m3-completion-status::before {
+        content: '';
+        display: inline-block;
+        width: 10px;
+        height: 10px;
+        border-radius: 50%;
+        background-color: #6c757d;
+        margin-right: 8px;
+    }
+    
+    .m3-completed::before {
+        background-color: #28a745;
     }
     </style>
     """

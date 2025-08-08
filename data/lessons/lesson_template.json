@@ -11,7 +11,7 @@
   "description": "[BRIEF_DESCRIPTION_OF_LESSON_CONTENT]",
   "tag": "[CATEGORY_TAG]",
   "xp_reward": 100,
-  "difficulty": "intermediate",
+  "difficulty": "advanced",
   
   "intro": {
     "main": "[MAIN_INTRODUCTION_CONTENT_HTML]",

@@ -998,6 +998,14 @@ def show_test_results():
             
             save_user_data(users_data)
             
+            # Add recent activity for degen type discovery
+            from data.users_fixed import add_recent_activity
+            add_recent_activity(
+                st.session_state.username, 
+                "degen_type_discovered", 
+                {"degen_type": result}
+            )
+            
             # Check for achievements
             check_achievements(st.session_state.username)
             

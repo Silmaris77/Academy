@@ -6,7 +6,8 @@ from utils.material3_components import apply_material3_theme
 from utils.layout import get_device_type, responsive_grid, responsive_container, toggle_device_view
 from utils.lesson_progress import (
     award_fragment_xp, get_lesson_fragment_progress, calculate_lesson_completion,
-    is_lesson_fully_completed, get_fragment_xp_breakdown, mark_lesson_as_completed
+    is_lesson_fully_completed, get_fragment_xp_breakdown, mark_lesson_as_completed,
+    check_and_mark_lesson_completion
 )
 from utils.real_time_updates import get_live_user_stats, live_xp_indicator, show_xp_notification
 from utils.streamlit_compat import tabs_with_fallback, display_compatibility_info
@@ -556,7 +557,12 @@ def show_lessons_content():
                         
                         # Refresh user data for real-time updates
                         from utils.real_time_updates import refresh_user_data
-                        refresh_user_data()                    # Przejdź do następnego kroku
+                        refresh_user_data()
+                        
+                        # Sprawdź czy lekcja została ukończona
+                        check_and_mark_lesson_completion(lesson_id)
+                    
+                    # Przejdź do następnego kroku
                     st.session_state.lesson_step = next_step
                     st.rerun()
             st.markdown("</div>", unsafe_allow_html=True)        
@@ -589,6 +595,9 @@ def show_lessons_content():
                         # Refresh user data for real-time updates
                         from utils.real_time_updates import refresh_user_data
                         refresh_user_data()
+                        
+                        # Sprawdź czy lekcja została ukończona
+                        check_and_mark_lesson_completion(lesson_id)
                     
                     # Przejdź do następnego kroku
                     st.session_state.lesson_step = next_step
@@ -825,6 +834,9 @@ def show_lessons_content():
                                 # Refresh user data for real-time updates
                                 from utils.real_time_updates import refresh_user_data
                                 refresh_user_data()
+                                
+                                # Sprawdź czy lekcja została ukończona
+                                check_and_mark_lesson_completion(lesson_id)
                             
                             # Przejdź do następnego kroku
                             st.session_state.lesson_step = next_step
@@ -859,6 +871,9 @@ def show_lessons_content():
                             # Refresh user data for real-time updates
                             from utils.real_time_updates import refresh_user_data
                             refresh_user_data()
+                            
+                            # Sprawdź czy lekcja została ukończona
+                            check_and_mark_lesson_completion(lesson_id)
                         
                         # Przejdź do następnego kroku                        st.session_state.lesson_step = next_step
                         st.rerun()
@@ -1142,11 +1157,14 @@ def show_lessons_content():
                                     # Refresh user data for real-time updates
                                     from utils.real_time_updates import refresh_user_data
                                     refresh_user_data()
+                                    
+                                    # Sprawdź czy lekcja została ukończona
+                                    check_and_mark_lesson_completion(lesson_id)
                             
                             # Oznacz lekcję jako zakończoną i zapisz postęp
-                            if is_lesson_fully_completed(lesson_id):
-                                mark_lesson_as_completed(lesson_id)
-                                
+                            lesson_completed = check_and_mark_lesson_completion(lesson_id)
+                            
+                            if lesson_completed:
                                 # Check for achievements after completing lesson
                                 from utils.achievements import check_achievements
                                 username = st.session_state.get('username')
