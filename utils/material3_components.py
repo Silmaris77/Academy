@@ -322,6 +322,20 @@ def apply_material3_theme():
     .stTabs [aria-selected="true"] {
         background-color: rgba(33, 150, 243, 0.1) !important;
         font-weight: 500 !important;
+        color: #ffffff !important;
+        text-shadow: 0 0 3px rgba(255, 255, 255, 0.8) !important;
+    }
+    
+    /* Kolory tekstu zakładek */
+    .stTabs [data-baseweb="tab"] {
+        color: #c0c0c0 !important; /* Jasno-srebrny dla nieaktywnych zakładek */
+        text-shadow: 0 0 2px rgba(192, 192, 192, 0.6) !important;
+        opacity: 0.8 !important;
+    }
+    
+    .stTabs [data-baseweb="tab"]:hover {
+        color: #e0e0e0 !important; /* Jaśniejszy srebrny przy hover */
+        opacity: 1 !important;
     }
     
     /* Animacje przejścia stron */
