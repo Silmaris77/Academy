@@ -84,8 +84,7 @@ def show_lessons_content():
     # Check if we're viewing a specific lesson or the overview
     if 'current_lesson' not in st.session_state or not st.session_state.current_lesson:
         # WIDOK PRZEGLĄDU LEKCJI
-        st.subheader("Dostępne lekcje")
-          # Pobierz dane użytkownika dla oznaczenia ukończonych lekcji
+        # Pobierz dane użytkownika dla oznaczenia ukończonych lekcji
         from data.users import get_current_user_data
         user_data = get_current_user_data(st.session_state.username)
         completed_lessons = user_data.get('completed_lessons', [])
@@ -97,9 +96,8 @@ def show_lessons_content():
             if category not in lessons_by_category:
                 lessons_by_category[category] = []
             lessons_by_category[category].append((lesson_id, lesson))
-          # Wyświetl lekcje w podziale na kategorie
-        for category, category_lessons in lessons_by_category.items():
-            st.markdown(f"## {category}")         
+          # Wyświetl lekcje w podziale na kategorie bez nagłówków kategorii
+        for category, category_lessons in lessons_by_category.items():         
             #    # Wyświetlaj każdą kartę lekcji na całą szerokość wiersza
             # for i, (lesson_id, lesson) in enumerate(category_lessons):
             #     # Sprawdź, czy lekcja jest ukończona

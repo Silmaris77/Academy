@@ -72,7 +72,6 @@ def show_lessons_content():
     # Check if we're viewing a specific lesson or the overview
     if 'current_lesson' not in st.session_state or not st.session_state.current_lesson:
         # WIDOK PRZEGLĄDU LEKCJI
-        st.subheader("Dostępne lekcje")
         
         # Pobierz dane użytkownika dla oznaczenia ukończonych lekcji
         from data.users import get_current_user_data
@@ -87,9 +86,8 @@ def show_lessons_content():
                 lessons_by_category[category] = []
             lessons_by_category[category].append((lesson_id, lesson))
         
-        # Wyświetl lekcje w podziale na kategorie
+        # Wyświetl lekcje w podziale na kategorie bez nagłówków kategorii
         for category, category_lessons in lessons_by_category.items():
-            st.markdown(f"## {category}")
             
             # Utwórz kolumny dla responsywnego układu
             # Na urządzeniach mobilnych - 1 kolumna, na desktopie - 2 kolumny
