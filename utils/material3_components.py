@@ -292,22 +292,36 @@ def apply_material3_theme():
         border-color: #2196F3 !important;
         box-shadow: 0 0 0 2px rgba(33, 150, 243, 0.2) !important;
     }
-    
-    /* Ulepszone selectboxy */
-    .stSelectbox > div > div {
-        border-radius: 8px !important;
-        transition: border-color 0.3s, box-shadow 0.3s !important;
+
+    /* Wyśrodkowanie tekstu w selectboxach */
+    .stSelectbox > div > div > div {
+        display: flex !important;
+        align-items: center !important;
+        justify-content: flex-start !important;
+        min-height: 40px !important;
     }
     
-    .stSelectbox > div > div:hover {
-        border-color: #BBBBBB !important;
+    .stSelectbox > div > div > div > div {
+        display: flex !important;
+        align-items: center !important;
+        height: 100% !important;
+        line-height: normal !important;
+        vertical-align: middle !important;
     }
     
-    .stSelectbox > div > div:focus {
-        border-color: #2196F3 !important;
-        box-shadow: 0 0 0 2px rgba(33, 150, 243, 0.2) !important;
+    .stSelectbox div[data-baseweb="select"] > div {
+        display: flex !important;
+        align-items: center !important;
+        vertical-align: middle !important;
     }
     
+    .stSelectbox div[data-baseweb="select"] > div > div {
+        display: flex !important;
+        align-items: center !important;
+        vertical-align: middle !important;
+        line-height: 1.4 !important;
+    }
+
     /* Ulepszony wygląd zakładek */
     .stTabs [data-baseweb="tab-list"] {
         gap: 8px !important;

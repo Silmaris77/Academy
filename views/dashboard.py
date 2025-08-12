@@ -569,7 +569,7 @@ def show_investor_profile_compact(user_data):
     st.markdown("</div>", unsafe_allow_html=True)
 
 def show_leaderboard_compact():
-    """Kompaktowy ranking XP"""
+    """Kompaktowy ranking XP - Top 10 + pozycja zalogowanego użytkownika"""
     st.markdown("""
     <div class="dashboard-section">
         <div class="section-header">
@@ -577,15 +577,21 @@ def show_leaderboard_compact():
         </div>
     """, unsafe_allow_html=True)
     
-    # Pobierz top 3 użytkowników
-    top_users = get_top_users(3)
+    # Pobierz top 10 użytkowników
+    top_users = get_top_users(10)
+    current_username = st.session_state.username
     
+    # Sprawdź czy zalogowany użytkownik jest w top 10
+    current_user_in_top = any(user['username'] == current_username for user in top_users)
+    
+    # Wyświetl top 10
     for i, user in enumerate(top_users):
-        rank_icon = "🥇" if i == 0 else "🥈" if i == 1 else "🥉"
-        is_current = user['username'] == st.session_state.username
+        rank = i + 1
+        rank_icon = "🥇" if rank == 1 else "🥈" if rank == 2 else "🥉" if rank == 3 else f"{rank}."
+        is_current = user['username'] == current_username
         
         st.markdown(f"""
-        <div class="compact-item" style="{'background: rgba(41, 128, 185, 0.1);' if is_current else ''}">
+        <div class="compact-item" style="{'background: rgba(41, 128, 185, 0.1); border: 2px solid #4A90E2;' if is_current else ''}">
             <div class="compact-icon">{rank_icon}</div>
             <div class="compact-content">
                 <div class="compact-title">{'Ty' if is_current else user['username']}</div>
@@ -593,6 +599,32 @@ def show_leaderboard_compact():
             </div>
         </div>
         """, unsafe_allow_html=True)
+    
+    # Jeśli zalogowany użytkownik nie jest w top 10, pokaż jego pozycję
+    if not current_user_in_top:
+        user_rank_data = get_user_rank(current_username)
+        if user_rank_data['rank'] > 0:
+            st.markdown("""
+            <div style="margin: 15px 0; padding: 8px; background: rgba(255, 193, 7, 0.1); 
+                        border-radius: 8px; border-left: 4px solid #FFC107;">
+                <div style="font-size: 12px; color: #666; margin-bottom: 5px;">
+                    Twoja pozycja w rankingu:
+                </div>
+            </div>
+            """, unsafe_allow_html=True)
+            
+            st.markdown(f"""
+            <div class="compact-item" style="background: rgba(255, 193, 7, 0.1); border: 2px solid #FFC107;">
+                <div class="compact-icon">{user_rank_data['rank']}.</div>
+                <div class="compact-content">
+                    <div class="compact-title">Ty</div>
+                    <div class="compact-progress">{user_rank_data['xp']} XP</div>
+                </div>
+                <div style="font-size: 11px; color: #666; margin-left: 10px;">
+                    #{user_rank_data['rank']} miejsce
+                </div>
+            </div>
+            """, unsafe_allow_html=True)
     
     st.markdown("</div>", unsafe_allow_html=True)
 
