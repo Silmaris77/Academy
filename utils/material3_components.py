@@ -174,7 +174,7 @@ def m3_lesson_card_styles():
     
     .m3-badge-xp {
         background-color: #FFD700;
-        color: #000;
+        color: #FFFFFF;
         font-weight: 600;
     }
     
@@ -289,6 +289,25 @@ def apply_material3_theme():
     }
     
     .stTextInput > div > div > input:focus {
+        border-color: #2196F3 !important;
+        box-shadow: 0 0 0 2px rgba(33, 150, 243, 0.2) !important;
+    }
+
+    /* Style dla selectboxów - jasno szary, ale ciemniejszy niż tło strony */
+    .stSelectbox > div > div {
+        background-color: #6B7A87 !important;
+        border-radius: 8px !important;
+        border: 1px solid #5A6975 !important;
+        color: #FFFFFF !important;
+    }
+    
+    .stSelectbox > div > div:hover {
+        background-color: #7A8B99 !important;
+        border-color: #6B7A87 !important;
+    }
+    
+    .stSelectbox > div > div:focus-within {
+        background-color: #7A8B99 !important;
         border-color: #2196F3 !important;
         box-shadow: 0 0 0 2px rgba(33, 150, 243, 0.2) !important;
     }

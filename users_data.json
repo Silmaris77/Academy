@@ -3,7 +3,7 @@
     "user_id": "741699e6-2ffe-4b0f-a36b-81e397686191",
     "password": "a",
     "degen_type": "Hype Degen",
-    "xp": 4316,
+    "xp": 4331,
     "level": 7,
     "joined_date": "2025-04-27",
     "completed_lessons": [
@@ -196,7 +196,12 @@
         "practical_exercises_completed": true,
         "practical_exercises_xp": 60,
         "practical_exercises_degencoins": 60,
-        "practical_exercises_timestamp": "2025-08-07 23:17:02"
+        "practical_exercises_timestamp": "2025-08-07 23:17:02",
+        "intro_quiz_xp_awarded": true,
+        "intro_quiz_completed": true,
+        "intro_quiz_xp": 5,
+        "intro_quiz_degencoins": 5,
+        "intro_quiz_timestamp": "2025-08-12 12:34:06"
       },
       "B2C1L1": {
         "intro_xp_awarded": true,
@@ -271,7 +276,12 @@
         "closing_quiz_completed": true,
         "closing_quiz_xp": 20,
         "closing_quiz_degencoins": 20,
-        "closing_quiz_timestamp": "2025-08-07 23:24:01"
+        "closing_quiz_timestamp": "2025-08-07 23:24:01",
+        "intro_quiz_xp_awarded": true,
+        "intro_quiz_completed": true,
+        "intro_quiz_xp": 10,
+        "intro_quiz_degencoins": 10,
+        "intro_quiz_timestamp": "2025-08-12 12:32:46"
       }
     },
     "badge_data": {
@@ -705,7 +715,7 @@
         "timestamp": "2025-06-08T12:21:09.071964+00:00"
       }
     ],
-    "degencoins": 165,
+    "degencoins": 180,
     "inventory": {
       "avatar": [
         "diamond_degen",
