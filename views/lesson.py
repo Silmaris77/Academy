@@ -518,6 +518,17 @@ def show_lessons_content():
                                 show_xp_notification(earned_xp, "za szczerą samorefleksję")
                         
                         st.success("✅ Dziękujemy za szczerą samorefleksję!")
+                        
+                        # Dodaj przycisk do ponownego przystąpienia do quizu samodiagnozy
+                        st.markdown("---")
+                        col1, col2, col3 = st.columns([1, 1, 1])
+                        with col2:
+                            if st.button("🔄 Przystąp ponownie", key=f"retry_self_diagnosis_{lesson_id}", help="Możesz ponownie wypełnić quiz samodiagnozy aby zaktualizować swoją autorefleksję", use_container_width=True):
+                                # Reset stanu quizu samodiagnozy
+                                quiz_id = f"quiz_{quiz_data.get('title', '').replace(' ', '_').lower()}"
+                                if quiz_id in st.session_state:
+                                    del st.session_state[quiz_id]
+                                st.rerun()
                 elif 'sections' in lesson and 'opening_quiz' in lesson.get('sections', {}):
                     # Backward compatibility - stary format
                     st.info("🪞 **Quiz Samodiagnozy** - Ten quiz pomaga Ci lepiej poznać siebie jako inwestora. Nie ma tu dobrych ani złych odpowiedzi - chodzi o szczerą autorefleksję. Twoje odpowiedzi nie wpływają na postęp w lekcji.")
@@ -536,6 +547,17 @@ def show_lessons_content():
                                 show_xp_notification(earned_xp, "za szczerą samorefleksję")
                         
                         st.success("✅ Dziękujemy za szczerą samorefleksję!")
+                        
+                        # Dodaj przycisk do ponownego przystąpienia do quizu samodiagnozy
+                        st.markdown("---")
+                        col1, col2, col3 = st.columns([1, 1, 1])
+                        with col2:
+                            if st.button("🔄 Przystąp ponownie", key=f"retry_self_diagnosis_legacy_{lesson_id}", help="Możesz ponownie wypełnić quiz samodiagnozy aby zaktualizować swoją autorefleksję", use_container_width=True):
+                                # Reset stanu quizu samodiagnozy
+                                quiz_id = f"quiz_{quiz_data.get('title', '').replace(' ', '_').lower()}"
+                                if quiz_id in st.session_state:
+                                    del st.session_state[quiz_id]
+                                st.rerun()
                 else:
                     st.info("Ten quiz samodiagnozy nie jest dostępny dla tej lekcji.")              # Przycisk "Dalej" po wprowadzeniu            
             # Użyj kolumn aby ograniczyć szerokość przycisku
@@ -623,7 +645,7 @@ def show_lessons_content():
                     sub_tabs_data['exercises'] = practical_data['exercises']
                 
                 if 'closing_quiz' in practical_data:
-                    available_tabs.append("� Quiz końcowy")
+                    available_tabs.append("🎓 Quiz końcowy")
                     tab_keys.append('closing_quiz')
                     sub_tabs_data['closing_quiz'] = practical_data['closing_quiz']
                 
@@ -674,8 +696,38 @@ def show_lessons_content():
                                     
                                     if quiz_passed:
                                         st.success("✅ Gratulacje! Zaliczyłeś quiz końcowy! Możesz teraz przejść do podsumowania.")
+                                        
+                                        # Dodaj przycisk do ponownego przystąpienia do quizu końcowego (nawet po zdaniu)
+                                        st.markdown("---")
+                                        col1, col2, col3 = st.columns([1, 1, 1])
+                                        with col2:
+                                            if st.button("🔄 Przystąp ponownie", key=f"retry_closing_quiz_passed_{lesson_id}", help="Możesz ponownie przystąpić do quizu końcowego aby poprawić swój wynik", use_container_width=True):
+                                                # Reset stanu quizu końcowego
+                                                quiz_id = f"quiz_{quiz_data.get('title', '').replace(' ', '_').lower()}"
+                                                if quiz_id in st.session_state:
+                                                    del st.session_state[quiz_id]
+                                                # Reset stanu zaliczenia
+                                                if closing_quiz_key in st.session_state:
+                                                    st.session_state[closing_quiz_key]["quiz_completed"] = False
+                                                    st.session_state[closing_quiz_key]["quiz_passed"] = False
+                                                st.rerun()
                                     else:
                                         st.error("❌ Aby przejść do podsumowania, musisz uzyskać przynajmniej 75% poprawnych odpowiedzi. Spróbuj ponownie!")
+                                        
+                                        # Dodaj przycisk do ponowienia quizu
+                                        st.markdown("---")
+                                        col1, col2, col3 = st.columns([1, 1, 1])
+                                        with col2:
+                                            if st.button("🔄 Spróbuj ponownie", key=f"retry_closing_quiz_{lesson_id}", type="primary", use_container_width=True):
+                                                # Reset stanu quizu
+                                                quiz_id = f"quiz_{quiz_data.get('title', '').replace(' ', '_').lower()}"
+                                                if quiz_id in st.session_state:
+                                                    del st.session_state[quiz_id]
+                                                # Reset stanu zaliczenia
+                                                if closing_quiz_key in st.session_state:
+                                                    st.session_state[closing_quiz_key]["quiz_completed"] = False
+                                                    st.session_state[closing_quiz_key]["quiz_passed"] = False
+                                                st.rerun()
                             else:
                                 # Standardowa obsługa dla innych zakładek (exercises)
                                 tab_data = sub_tabs_data[tab_key]
@@ -761,8 +813,38 @@ def show_lessons_content():
                                         
                                         if quiz_passed:
                                             st.success("✅ Gratulacje! Zaliczyłeś quiz końcowy! Możesz teraz przejść do podsumowania.")
+                                            
+                                            # Dodaj przycisk do ponownego przystąpienia do quizu końcowego (nawet po zdaniu)
+                                            st.markdown("---")
+                                            col1, col2, col3 = st.columns([1, 1, 1])
+                                            with col2:
+                                                if st.button("🔄 Przystąp ponownie", key=f"retry_closing_quiz_practical_passed_{lesson_id}", help="Możesz ponownie przystąpić do quizu końcowego aby poprawić swój wynik", use_container_width=True):
+                                                    # Reset stanu quizu końcowego
+                                                    quiz_id = f"quiz_{quiz_data.get('title', '').replace(' ', '_').lower()}"
+                                                    if quiz_id in st.session_state:
+                                                        del st.session_state[quiz_id]
+                                                    # Reset stanu zaliczenia
+                                                    if closing_quiz_key in st.session_state:
+                                                        st.session_state[closing_quiz_key]["quiz_completed"] = False
+                                                        st.session_state[closing_quiz_key]["quiz_passed"] = False
+                                                    st.rerun()
                                         else:
                                             st.error("❌ Aby przejść do podsumowania, musisz uzyskać przynajmniej 75% poprawnych odpowiedzi. Spróbuj ponownie!")
+                                            
+                                            # Dodaj przycisk do ponowienia quizu
+                                            st.markdown("---")
+                                            col1, col2, col3 = st.columns([1, 1, 1])
+                                            with col2:
+                                                if st.button("🔄 Spróbuj ponownie", key=f"retry_closing_quiz_practical_{lesson_id}", type="primary", use_container_width=True):
+                                                    # Reset stanu quizu
+                                                    quiz_id = f"quiz_{quiz_data.get('title', '').replace(' ', '_').lower()}"
+                                                    if quiz_id in st.session_state:
+                                                        del st.session_state[quiz_id]
+                                                    # Reset stanu zaliczenia
+                                                    if closing_quiz_key in st.session_state:
+                                                        st.session_state[closing_quiz_key]["quiz_completed"] = False
+                                                        st.session_state[closing_quiz_key]["quiz_passed"] = False
+                                                    st.rerun()
                                 else:
                                     # Standardowa obsługa dla innych zakładek
                                     tab_data = sub_tabs_data[tab_key]
