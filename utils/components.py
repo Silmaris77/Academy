@@ -276,18 +276,98 @@ def navigation_menu():
         }
     }
     
-    // Dodaj nasłuchiwanie na kliknięcia w przyciski nawigacji
+    // Funkcja do dodawania event listenerów do przycisków nawigacji
+    function addNavigationListeners() {
+        // Różne sposoby znalezienia przycisków nawigacji - używamy bardziej elastyczne selektory
+        const navButtonSelectors = [
+            '.stSidebar [data-testid="stButton"] button',
+            '.stSidebar button[kind="primary"]',
+            '.stSidebar button[kind="secondary"]',
+            '.stSidebar .stButton button',
+            '.main-sidebar-nav button',
+            '[data-testid="stSidebar"] button'
+        ];
+        
+        let buttonsFound = false;
+        
+        navButtonSelectors.forEach(function(selector) {
+            const buttons = parent.document.querySelectorAll(selector);
+            if (buttons.length > 0) {
+                buttonsFound = true;
+                buttons.forEach(function(button) {
+                    // Sprawdź czy przycisk ma tekst nawigacyjny
+                    const buttonText = button.textContent || button.innerText || '';
+                    if (buttonText.includes('Dashboard') || buttonText.includes('Lekcje') || 
+                        buttonText.includes('Inspiracje') || buttonText.includes('Profil') || 
+                        buttonText.includes('Admin') || buttonText.includes('🏠') || 
+                        buttonText.includes('📚') || buttonText.includes('💡') || 
+                        buttonText.includes('👤') || buttonText.includes('⚙️')) {
+                        
+                        // Usuń poprzednie event listenery aby uniknąć duplikatów
+                        button.removeEventListener('click', navigationClickHandler);
+                        // Dodaj nowy event listener
+                        button.addEventListener('click', navigationClickHandler);
+                    }
+                });
+            }
+        });
+        
+        if (!buttonsFound) {
+            // Jeśli nie znaleźliśmy przycisków, spróbuj ponownie za chwilę
+            setTimeout(addNavigationListeners, 1000);
+        }
+    }
+    
+    // Handler dla kliknięć w nawigację
+    function navigationClickHandler() {
+        // Opóźnienie na proces nawigacji, potem zamknij sidebar
+        setTimeout(closeSidebarOnMobile, 150);
+    }
+    
+    // Inicjalizacja po załadowaniu DOM
     document.addEventListener('DOMContentLoaded', function() {
         // Opóźnienie, aby przyciski były już wyrenderowane
-        setTimeout(function() {
-            const navButtons = parent.document.querySelectorAll('.stSidebar [data-testid="stButton"] button');
-            navButtons.forEach(function(button) {
-                button.addEventListener('click', function() {
-                    // Opóźnienie na proces nawigacji, potem zamknij sidebar
-                    setTimeout(closeSidebarOnMobile, 100);
+        setTimeout(addNavigationListeners, 500);
+        
+        // Ponów próbę co 2 sekundy przez pierwsze 10 sekund (na wypadek opóźnień renderowania)
+        let attempts = 0;
+        const retryInterval = setInterval(function() {
+            attempts++;
+            addNavigationListeners();
+            
+            if (attempts >= 5) { // 5 prób przez 10 sekund
+                clearInterval(retryInterval);
+            }
+        }, 2000);
+    });
+    
+    // Dodatkowo nasłuchuj na zmiany w DOM (gdy Streamlit rerenderuje komponenty)
+    const observer = new MutationObserver(function(mutations) {
+        let shouldUpdate = false;
+        mutations.forEach(function(mutation) {
+            if (mutation.type === 'childList' && mutation.addedNodes.length > 0) {
+                // Sprawdź czy dodano nowe przyciski nawigacji
+                mutation.addedNodes.forEach(function(node) {
+                    if (node.nodeType === 1 && (
+                        node.querySelector && (
+                            node.querySelector('[data-testid="stButton"]') ||
+                            node.querySelector('button')
+                        ))) {
+                        shouldUpdate = true;
+                    }
                 });
-            });
-        }, 500);
+            }
+        });
+        
+        if (shouldUpdate) {
+            setTimeout(addNavigationListeners, 200);
+        }
+    });
+    
+    // Rozpocznij obserwację DOM
+    observer.observe(parent.document.body, {
+        childList: true,
+        subtree: true
     });
     </script>
     """
