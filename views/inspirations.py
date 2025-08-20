@@ -516,19 +516,19 @@ def show_inspiration_detail():
     if st.button("← Powrót", key="back_to_overview"):
         st.session_state.inspiration_view_mode = 'overview'
         st.rerun()
-      # Title and meta
-    st.title(inspiration['title'])
-    
+        
+    # Reading time and tags info
     reading_time = inspiration.get('reading_time', 5)
     st.write(f"📖 **Czas czytania:** {reading_time} min")
-      # Tags
+    
+    # Tags
     tags = inspiration.get('tags', [])
     if tags and isinstance(tags, (list, tuple)):
         formatted_tags = [f"*{tag}*" for tag in tags]
         st.write("**Tagi:** " + " • ".join(formatted_tags))
       # Content
     st.markdown("---")
-    content = load_inspiration_content(inspiration['id'])
+    content = load_inspiration_content(inspiration['content_path'])
     if content:
         st.markdown(content)
         # Oznacz inspirację jako przeczytaną gdy treść zostanie wyświetlona

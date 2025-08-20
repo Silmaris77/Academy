@@ -639,9 +639,9 @@ def show_dashboard():
     # Pobierz aktualny typ urządzenia
     device_type = get_device_type()
       # Używamy naszego komponentu nagłówka - bez dodatkowego CSS
-    zen_header("Dashboard Degena")
-      # Add live XP indicator
-    live_xp_indicator()
+    zen_header("Dashboard")
+      # Add live XP indicator - ZAKOMENTOWANE
+    # live_xp_indicator()
     
     # Dodajemy animacje CSS
     add_animations_css()

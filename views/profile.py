@@ -34,6 +34,7 @@ from utils.goals import (
     get_user_goals,
     calculate_goal_metrics
 )
+from utils.daily_missions import get_daily_missions_progress
 from utils.inventory import (
     activate_item,
     get_user_inventory,
@@ -110,6 +111,78 @@ def buy_item(item_type, item_id, price, user_data, users_data, username):
     
     return True, f"Pomyślnie zakupiono {item_id.replace('_', ' ').title()}!"
 
+def show_profile_stats_section(user_data, device_type):
+    """Sekcja z kartami statystyk użytkownika - na wzór Dashboard"""
+    st.markdown("### 📊 Twoje statystyki")
+    
+    # Oblicz dane statystyk
+    xp = user_data.get('xp', 0)
+    degencoins = user_data.get('degencoins', 0)
+    completed_lessons = len(user_data.get('completed_lessons', []))
+    missions_progress = get_daily_missions_progress(st.session_state.username)
+    streak = missions_progress['streak']
+    level = user_data.get('level', 1)
+    
+    # Oblicz trend (przykładowe wartości)
+    xp_change = "+15%"
+    degencoins_change = "+10%"
+    lessons_change = f"+{min(3, completed_lessons)}"
+    streak_change = f"+{min(1, streak)}"
+    level_change = f"+{max(0, level - 1)}"
+    
+    # Responsywny układ kolumn
+    if device_type == 'mobile':
+        # Na mobile: 2 kolumny, 3 wiersze
+        cols1 = st.columns(2)
+        cols2 = st.columns(2) 
+        cols3 = st.columns(1)  # Ostatnia statystyka na środku
+        all_cols = list(cols1) + list(cols2) + list(cols3)
+    else:
+        # Na desktop: 5 kolumn w jednym wierszu
+        all_cols = st.columns(5)
+    
+    # 5 kart statystyk
+    stats = [
+        {"icon": "🏆", "value": f"{xp}", "label": "Punkty XP", "change": xp_change},
+        {"icon": "🪙", "value": f"{degencoins}", "label": "DegenCoins", "change": degencoins_change},
+        {"icon": "⭐", "value": f"{level}", "label": "Poziom", "change": level_change},
+        {"icon": "📚", "value": f"{completed_lessons}", "label": "Ukończone lekcje", "change": lessons_change},
+        {"icon": "🔥", "value": f"{streak}", "label": "Aktualna passa", "change": streak_change}
+    ]
+    
+    # Wygeneruj kartę w każdej kolumnie
+    for i, stat in enumerate(stats):
+        with all_cols[i]:
+            st.markdown(f"""
+            <div class="stat-card">
+                <div class="stat-icon">{stat['icon']}</div>
+                <div class="stat-value">{stat['value']}</div>
+                <div class="stat-label">{stat['label']}</div>
+                <div class="stat-change positive">{stat['change']}</div>
+            </div>
+            """, unsafe_allow_html=True)
+    
+    # Dodatkowe informacje w expanderze
+    with st.expander("📈 Szczegółowe statystyki"):
+        col1, col2 = st.columns(2)
+        
+        with col1:
+            st.metric("🎯 Średnia punktów za lekcję", 
+                     f"{int(xp/max(1, completed_lessons))}", 
+                     help="Średnia liczba punktów XP za ukończoną lekcję")
+            
+            total_quiz_score = user_data.get('total_quiz_score', 0)
+            quizzes_completed = user_data.get('quizzes_completed', 0)
+            avg_quiz_score = (total_quiz_score / quizzes_completed) if quizzes_completed > 0 else 0
+            st.metric("📝 Średni wynik quiz", f"{avg_quiz_score:.1f}%")
+        
+        with col2:
+            max_streak = user_data.get('max_streak', 0)
+            st.metric("🔥 Najdłuższa passa", f"{max_streak} dni")
+            
+            badges_count = len(user_data.get('badges', []))
+            st.metric("🏆 Zdobyte odznaki", badges_count)
+
 def show_profile():
     # Zastosuj style Material 3 (tak jak w dashboard)
     apply_material3_theme()
@@ -122,9 +195,9 @@ def show_profile():
     device_type = get_device_type()
     
     # Używamy naszego komponentu nagłówka - tak jak w dashboard
-    zen_header("Profil użytkownika")
-      # Add live XP indicator
-    live_xp_indicator()
+    zen_header("Profil")
+      # Add live XP indicator - ZAKOMENTOWANE
+    # live_xp_indicator()
       # Use current user data to ensure degen test results are included
     user_data = get_current_user_data(st.session_state.username)
     users_data = load_user_data()  # For shop transactions
@@ -135,156 +208,13 @@ def show_profile():
     
     # Add animations and effects using the component
     add_animations_css()
+
+    # Main Profile Tabs - usunięto Personalizację i Eksplorator Typów
+    tab1, tab2, tab3, tab4 = st.tabs(["📊 Statystyki", "🎒 Ekwipunek", "🏆 Odznaki", "🧬 Typ Degena"])
     
-    # User Statistics Section - z wykorzystaniem nowych komponentów Material 3
-    st.markdown("<div class='st-bx fadeIn'>", unsafe_allow_html=True)
-    
-    # Setup data for user stats panel
-    avatar = style['avatar']
-    degen_type = user_data.get('degen_type', 'Typ nie określony')
-    level = user_data.get('level', 1)
-    xp = user_data.get('xp', 0)
-    completed = len(user_data.get('completed_lessons', []))
-    
-    # Calculate XP data
-    xp_progress, xp_needed = calculate_xp_progress(user_data)
-    next_level_xp = xp + xp_needed  # Estimated XP for next level
-    
-    # Display user stats using the component
-    user_stats_panel(        username=st.session_state.username,
-        avatar=avatar,
-        degen_type=degen_type,
-        level=level,
-        xp=xp,
-        completed_lessons=completed,
-        next_level_xp=next_level_xp
-    )
-    
-    st.markdown("</div>", unsafe_allow_html=True)
-      # Main Profile Tabs
-    tab1, tab2, tab3, tab4, tab5 = st.tabs(["Personalizacja", "Ekwipunek", "Odznaki", "Typ Degena", "Eksplorator Typów"])
-    
-    # Tab 1: Personalization
+    # Tab 1: Statistics - podobnie jak w Dashboard
     with tab1:
-        st.markdown("<div class='profile-tab-content'>", unsafe_allow_html=True)
-        personalization_cols = st.columns(2)
-          # Avatar Selection
-        with personalization_cols[0]:
-            st.markdown("<div class='st-bx'>", unsafe_allow_html=True)
-            st.subheader("Wybierz avatar")
-            
-            # Get user's inventory to check for owned premium avatars
-            inventory = get_user_inventory(st.session_state.username)
-            owned_premium_avatars = inventory.get('avatars', [])
-            
-            # Define premium avatar IDs (require purchase)
-            premium_avatars = {"diamond_degen", "crypto_wizard", "moon_hunter"}
-            
-            # Get available avatars for this user
-            available_avatars = {}
-            for avatar_id, avatar_emoji in USER_AVATARS.items():
-                # Always show basic avatars, only show premium if owned
-                if avatar_id not in premium_avatars or avatar_id in owned_premium_avatars:
-                    available_avatars[avatar_id] = avatar_emoji
-            
-            # Visual avatar selector with available options
-            current_avatar = user_data.get('avatar', 'default')
-            
-            # Create a visual avatar grid using Streamlit components
-            avatar_grid = st.container()
-            with avatar_grid:
-                # Show header text
-                st.write("Dostępne awatary:")
-                
-                # Create rows of avatars with 4 avatars per row
-                items_per_row = 4
-                avatar_items = list(available_avatars.items())
-                avatar_rows = [avatar_items[i:i+items_per_row] for i in range(0, len(avatar_items), items_per_row)]
-                
-                for row in avatar_rows:
-                    cols = st.columns(len(row))  # Dynamic column count based on row length
-                    for i, (avatar_id, avatar_emoji) in enumerate(row):
-                        with cols[i]:
-                            # Style based on whether this avatar is selected
-                            highlight = f"color: {style['theme']['primary']}; transform: scale(1.2);" if avatar_id == current_avatar else ""
-                            
-                            # Add visible indicator for selected avatar
-                            selected_indicator = "✓ " if avatar_id == current_avatar else ""
-                            
-                            # Mark premium avatars
-                            premium_marker = "👑 " if avatar_id in premium_avatars else ""
-                            
-                            st.markdown(f"""
-                            <div style="text-align: center; cursor: pointer; {highlight}">
-                                <div style="font-size: 2.5rem; margin-bottom: 5px;">{avatar_emoji}</div>
-                                <div style="font-size: 0.8rem;">{selected_indicator}{premium_marker}{avatar_id.replace('_', ' ').title()}</div>
-                            </div>
-                            """, unsafe_allow_html=True)
-                
-                # Show info about premium avatars
-                if len(owned_premium_avatars) > 0:
-                    st.success(f"🎉 Posiadasz {len(owned_premium_avatars)} premium awatar(ów)!")
-                else:
-                    st.info("💡 Kup premium awatary w sklepie, aby odblokować więcej opcji!")
-            
-            # Dropdown for actual selection (only available avatars)
-            if available_avatars:
-                selected_avatar = st.selectbox(
-                    "Wybierz swojego avatara:",
-                    options=list(available_avatars.keys()),
-                    format_func=lambda x: f"{available_avatars[x]} - {x.replace('_', ' ').title()}",
-                    index=list(available_avatars.keys()).index(current_avatar) if current_avatar in available_avatars else 0,
-                    label_visibility="collapsed"
-                )
-                
-                if zen_button("Zapisz avatar", key="save_avatar"):
-                    if update_user_avatar(st.session_state.username, selected_avatar):
-                        notification("Avatar został zaktualizowany!", type="success")
-                        st.rerun()
-            else:
-                st.error("Brak dostępnych awatarów!")
-            
-            st.markdown("</div>", unsafe_allow_html=True)
-        
-        # Theme Selection
-        with personalization_cols[1]:
-            st.markdown("<div class='st-bx'>", unsafe_allow_html=True)
-            st.subheader("Wybierz motyw")
-            
-            current_theme = user_data.get('theme', 'default')
-            
-            # Visual theme selector
-            for theme_id, theme_colors in THEMES.items():
-                selected_class = "selected" if theme_id == current_theme else ""
-                
-                st.markdown(f"""
-                <div class="theme-option {selected_class}" id="theme-{theme_id}">
-                    <div><strong>{theme_id.replace('_', ' ').title()}</strong></div>
-                    <div class="theme-colors">
-                        <div class="theme-color-sample" style="background-color: {theme_colors['primary']};"></div>
-                        <div class="theme-color-sample" style="background-color: {theme_colors['secondary']};"></div>
-                        <div class="theme-color-sample" style="background-color: {theme_colors['accent']};"></div>
-                    </div>
-                </div>
-                """, unsafe_allow_html=True)
-            
-            # We still need a dropdown for selection
-            selected_theme = st.selectbox(
-                "Wybierz motyw:",
-                options=list(THEMES.keys()),
-                format_func=lambda x: x.replace('_', ' ').title(),
-                index=list(THEMES.keys()).index(current_theme),
-                label_visibility="collapsed"
-            )
-            
-            if zen_button("Zapisz motyw", key="save_theme"):
-                if update_user_theme(st.session_state.username, selected_theme):
-                    notification("Motyw został zaktualizowany!", type="success")
-                    st.rerun()
-            
-            st.markdown("</div>", unsafe_allow_html=True)
-        
-        st.markdown("</div>", unsafe_allow_html=True)
+        show_profile_stats_section(user_data, device_type)
     
     # Tab 2: Inventory/Equipment
     with tab2:
@@ -638,7 +568,7 @@ def show_profile():
                                     st.error(message)
         
         st.markdown("</div>", unsafe_allow_html=True)
-      # Tab 3: Badges
+    # Tab 3: Badges
     with tab3:
         st.markdown("<div class='profile-tab-content'>", unsafe_allow_html=True)
         # Use Step 5 badge display system
@@ -659,11 +589,6 @@ def show_profile():
             # Show current degen type info
             show_current_degen_type()
             
-        st.markdown("</div>", unsafe_allow_html=True)
-      # Tab 5: Eksplorator Typów (moved from degen_explorer)
-    with tab5:
-        st.markdown("<div class='profile-tab-content'>", unsafe_allow_html=True)
-        show_degen_explorer_section()
         st.markdown("</div>", unsafe_allow_html=True)
 
 def show_badges_section():
@@ -1115,114 +1040,6 @@ def show_current_degen_type():
         )
     
     st.markdown("</div>", unsafe_allow_html=True)
-
-def show_degen_explorer_section():
-    """Wyświetla sekcję eksploratora typów degenów"""
-    device_type = get_device_type()
-    
-    # Wprowadzenie do typów degenów
-    st.markdown("""
-    ## 🔍 Poznaj różne style inwestycyjne
-    
-    Każdy inwestor ma unikalne podejście do rynków finansowych, uwarunkowane cechami osobowości,
-    emocjami, strategiami i wzorcami zachowań. Poniżej znajdziesz szczegółowe opisy wszystkich
-    typów degenów, które pomogą Ci zrozumieć różne style inwestycyjne i ich implikacje.
-    
-    Wybierz interesujący Cię typ degena z listy i odkryj:
-    - Charakterystykę głównych cech
-    - Profil emocjonalny
-    - Zachowania i postawy
-    - Kluczowe wyzwania
-    - Ścieżkę rozwoju inwestorskiego
-    """)
-      # Wybór typu degena
-    selected_type = st.selectbox(
-        "Wybierz typ degena do szczegółowej analizy:",
-        list(DEGEN_TYPES.keys()),
-        format_func=lambda x: f"{x} - {DEGEN_TYPES[x].get('description', 'Brak opisu')[:50]}...",
-        key="explorer_selectbox"
-    )
-    
-    if selected_type:        # Tworzenie sekcji dla wybranego typu
-        color = DEGEN_TYPES[selected_type].get("color", "#667eea")
-        
-        # Main description using markdown
-        tagline = DEGEN_TYPES[selected_type].get('tagline', 'Unikalny styl inwestowania')
-        description = DEGEN_TYPES[selected_type].get('description', 'Brak opisu')
-        
-        st.markdown(f"""
-        <div style="background: linear-gradient(135deg, {color}22, {color}11); 
-                    border-left: 4px solid {color}; 
-                    padding: 20px; 
-                    border-radius: 10px; 
-                    margin: 20px 0;">
-            <h2 style="color: {color};">🎯 {selected_type}</h2>
-            <p style="font-size: 16px; color: #2c3e50; margin-bottom: 10px;">
-                <strong>{tagline}</strong>
-            </p>
-            <p style="color: #34495e;">
-                {description}
-            </p>
-        </div>
-        """, unsafe_allow_html=True)
-        
-        # Detailed information if available
-        if selected_type in degen_details:
-            with st.expander("📚 Szczegółowy opis", expanded=False):
-                st.markdown(degen_details[selected_type])
-          # Porównanie z innym typem
-        st.markdown("### 🔄 Porównaj z innym typem")
-        
-        comparison_type = st.selectbox(
-            "Wybierz typ do porównania:",
-            [t for t in DEGEN_TYPES.keys() if t != selected_type],
-            format_func=lambda x: f"{x} - {DEGEN_TYPES[x].get('tagline', 'Styl inwestycyjny')}",
-            key="comparison_selectbox"
-        )
-        
-        if comparison_type:
-            col1, col2 = st.columns(2)
-              # Dla pierwszego typu (wybranego)
-            with col1:
-                st.markdown(f"### 🔍 {selected_type}")
-                with st.container():
-                    description = DEGEN_TYPES[selected_type].get('description', 'Brak opisu')
-                    st.markdown(f"**Opis:** {description}")
-                    
-                    st.markdown("**Mocne strony:**")
-                    strengths = DEGEN_TYPES[selected_type].get("strengths", ["Brak danych"])
-                    for strength in strengths:
-                        st.markdown(f"- ✅ {strength}")
-                    
-                    st.markdown("**Wyzwania:**")
-                    challenges = DEGEN_TYPES[selected_type].get("challenges", ["Brak danych"])
-                    for challenge in challenges:
-                        st.markdown(f"- ⚠️ {challenge}")
-                    
-                    st.markdown("**Strategia:**")
-                    strategy = DEGEN_TYPES[selected_type].get("strategy", "Strategia niedostępna")
-                    st.markdown(clean_html(strategy))
-            
-            # Dla drugiego typu (porównywanego)
-            with col2:
-                st.markdown(f"### 🔍 {comparison_type}")
-                with st.container():
-                    description = DEGEN_TYPES[comparison_type].get('description', 'Brak opisu')
-                    st.markdown(f"**Opis:** {description}")
-                    
-                    st.markdown("**Mocne strony:**")
-                    strengths = DEGEN_TYPES[comparison_type].get("strengths", ["Brak danych"])
-                    for strength in strengths:
-                        st.markdown(f"- ✅ {strength}")
-                    
-                    st.markdown("**Wyzwania:**")
-                    challenges = DEGEN_TYPES[comparison_type].get("challenges", ["Brak danych"])
-                    for challenge in challenges:
-                        st.markdown(f"- ⚠️ {challenge}")
-                    
-                    st.markdown("**Strategia:**")
-                    strategy = DEGEN_TYPES[comparison_type].get("strategy", "Strategia niedostępna")
-                    st.markdown(clean_html(strategy))
 
 def plot_radar_chart(scores, device_type=None):
     """Generate a radar chart for test results

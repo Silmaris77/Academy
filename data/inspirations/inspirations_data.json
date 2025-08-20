@@ -105,11 +105,122 @@
       "author": "ZenDegen Academy",
       "difficulty": "intermediate",
       "featured": false
+    },
+    {
+      "id": "finanse_style_inwestycyjne",
+      "title": "Style inwestycyjne",
+      "description": "Poznaj różne style inwestowania - od konserwatywnego value investing po agresywne growth investing. Dowiedz się, który styl najlepiej pasuje do Twojej osobowości i celów finansowych.",
+      "category": "finanse",
+      "tags": ["inwestycje", "style", "strategie", "portfel"],
+      "reading_time": 12,
+      "content_path": "finance/investment_styles.md",
+      "author": "ZenDegen Academy",
+      "difficulty": "intermediate",
+      "featured": true
+    },
+    {
+      "id": "mindset_zen_degen",
+      "title": "Zen Degen - Mistyka spokoju w chaosie rynku",
+      "description": "Poznaj filozofię Zen Degena, który znajdował równowagę i spokój nawet w najbardziej zmiennych warunkach rynkowych. Naucz się kontrolować emocje i podejmować świadome decyzje.",
+      "category": "mindset",
+      "tags": ["zen", "spokój", "emocje", "świadomość", "równowaga"],
+      "reading_time": 10,
+      "content_path": "mindset/zen_degen.md",
+      "author": "ZenDegen Academy",
+      "difficulty": "intermediate",
+      "featured": true
+    },
+    {
+      "id": "motywacja_yolo_degen",
+      "title": "YOLO Degen - Siła intuicji i odwagi",
+      "description": "Odkryj sekret YOLO Degena - dynamicznego inwestora, który nie boi się podejmować śmiałych decyzji. Naucz się wykorzystywać intuicję, zachowując kontrolę nad ryzykiem.",
+      "category": "motywacja",
+      "tags": ["yolo", "odwaga", "intuicja", "dynamizm", "ryzyko"],
+      "reading_time": 8,
+      "content_path": "motivation/yolo_degen.md",
+      "author": "ZenDegen Academy",
+      "difficulty": "beginner",
+      "featured": true
+    },
+    {
+      "id": "mindset_emo_degen",
+      "title": "Emo Degen - Transformacja emocji w siłę",
+      "description": "Zrozum psychologię Emo Degena i naucz się, jak przekształcić intensywne emocje związane z inwestowaniem w narzędzie sukcesu. Emocje mogą być Twoją supermocą!",
+      "category": "mindset",
+      "tags": ["emocje", "psychologia", "intensywność", "transformacja"],
+      "reading_time": 9,
+      "content_path": "mindset/emo_degen.md",
+      "author": "ZenDegen Academy",
+      "difficulty": "intermediate",
+      "featured": false
+    },
+    {
+      "id": "finanse_strategist_degen",
+      "title": "Strategist Degen - Sztuka planowania i dyscypliny",
+      "description": "Wejdź do świata Strategist Degena - mistrza planowania i konsekwencji. Naucz się opracowywać precyzyjne strategie inwestycyjne i trzymać się ich w każdych warunkach.",
+      "category": "finanse",
+      "tags": ["strategia", "planowanie", "dyscyplina", "metodyka"],
+      "reading_time": 11,
+      "content_path": "finance/strategist_degen.md",
+      "author": "ZenDegen Academy",
+      "difficulty": "advanced",
+      "featured": false
+    },
+    {
+      "id": "rozwoj_mad_scientist_degen",
+      "title": "Mad Scientist Degen - Laboratorium innowacji",
+      "description": "Poznaj filozofię Mad Scientist Degena - eksperymentatora, który testuje niestandardowe rozwiązania. Naucz się łączyć innowacyjność z kontrolowanym zarządzaniem ryzykiem.",
+      "category": "rozwoj",
+      "tags": ["innowacje", "eksperymenty", "analiza", "badania"],
+      "reading_time": 10,
+      "content_path": "development/mad_scientist_degen.md",
+      "author": "ZenDegen Academy",
+      "difficulty": "advanced",
+      "featured": false
+    },
+    {
+      "id": "finanse_spreadsheet_degen",
+      "title": "Spreadsheet Degen - Władca danych i analiz",
+      "description": "Odkryj moc Spreadsheet Degena - inwestora, który opiera każdą decyzję na twardych danych. Naucz się tworzyć modele analityczne i podejmować decyzje bez wpływu emocji.",
+      "category": "finanse",
+      "tags": ["dane", "analiza", "modele", "excel", "matematyka"],
+      "reading_time": 12,
+      "content_path": "finance/spreadsheet_degen.md",
+      "author": "ZenDegen Academy",
+      "difficulty": "advanced",
+      "featured": false
+    },
+    {
+      "id": "rozwoj_meta_degen",
+      "title": "Meta Degen - Mistrz samoświadomości",
+      "description": "Zrozum podejście Meta Degena - inwestora, który analizuje swoje własne procesy myślowe. Naucz się ciągłego doskonalenia i adaptowania strategii do zmieniających się warunków.",
+      "category": "rozwoj",
+      "tags": ["samoświadomość", "meta-analiza", "doskonalenie", "adaptacja"],
+      "reading_time": 9,
+      "content_path": "development/meta_degen.md",
+      "author": "ZenDegen Academy",
+      "difficulty": "intermediate",
+      "featured": false
+    },
+    {
+      "id": "motywacja_hype_degen",
+      "title": "Hype Degen - Surfing na fali trendów",
+      "description": "Poznaj sekret Hype Degena w umiejętnym wykorzystywaniu trendów społecznościowych. Naucz się wcześnie wykrywać trendy, zachowując jednocześnie krytyczne myślenie.",
+      "category": "motywacja",
+      "tags": ["trendy", "społeczność", "hype", "social media", "influencerzy"],
+      "reading_time": 8,
+      "content_path": "motivation/hype_degen.md",
+      "author": "ZenDegen Academy",
+      "difficulty": "beginner",
+      "featured": false
     }
   ],
   "featured": [
     "mindset_milionaire_1",
     "motywacja_degen_power",
-    "sukces_compound_effect"
+    "sukces_compound_effect",
+    "finanse_style_inwestycyjne",
+    "mindset_zen_degen",
+    "motywacja_yolo_degen"
   ]
 }

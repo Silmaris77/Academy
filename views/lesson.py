@@ -60,19 +60,20 @@ def show_lesson():
     # Pobierz aktualny typ urządzenia
     device_type = get_device_type()
     
-    zen_header("Kurs Zen Degen Academy")
+    zen_header("Lekcje")
     
     # Wyświetl informacje o kompatybilności w trybie dev
     display_compatibility_info()
     
     # Create main tabs with compatibility fallback
-    tab1, tab2 = tabs_with_fallback(["📚 Dostępne Lekcje", "🌳 Struktura Kursu"])
+    # tab1, tab2 = tabs_with_fallback(["📚 Dostępne Lekcje", "🌳 Struktura Kursu"])
+    tab1 = st.container()  # Używamy tylko jednego kontenera zamiast tabów
     
     with tab1:
         show_lessons_content()
     
-    with tab2:
-        show_skill_tree()
+    # with tab2:
+    #     show_skill_tree()
 
 def show_lessons_content():
     """Show the lessons content (original show_lesson content)"""
@@ -1179,8 +1180,9 @@ def show_lessons_content():
         elif st.session_state.lesson_step == 'summary':
             # Wyświetl podsumowanie lekcji w podziale na zakładki, podobnie jak wprowadzenie
             if 'summary' in lesson:
-                # Podziel podsumowanie na trzy zakładki - dodana mapa myśli
-                summary_tabs = tabs_with_fallback(["Podsumowanie", "Case Study", "🗺️ Mapa myśli"])
+                # Podziel podsumowanie na dwie zakładki - zakomentowano mapę myśli
+                # summary_tabs = tabs_with_fallback(["Podsumowanie", "Case Study", "🗺️ Mapa myśli"])
+                summary_tabs = tabs_with_fallback(["Podsumowanie", "Case Study"])
                 
                 with summary_tabs[0]:
                     # Wyświetl główne podsumowanie
@@ -1196,20 +1198,20 @@ def show_lessons_content():
                     else:
                         st.warning("Brak studium przypadku w podsumowaniu.")
                 
-                with summary_tabs[2]:
-                    # Wyświetl interaktywną mapę myśli
-                    st.markdown("### 🗺️ Interaktywna mapa myśli")
-                    st.markdown("Poniżej znajdziesz interaktywną mapę myśli podsumowującą kluczowe koncepty z tej lekcji. Możesz klikać na węzły aby je przesuwać i lepiej eksplorować powiązania między różnymi tematami.")
-                    
-                    try:
-                        from utils.mind_map import create_lesson_mind_map
-                        mind_map_result = create_lesson_mind_map(lesson)
-                        
-                        if mind_map_result is None:
-                            st.info("💡 **Mapa myśli w przygotowaniu**\n\nDla tej lekcji przygotowujemy interaktywną mapę myśli, która pomoże Ci lepiej zrozumieć powiązania między różnymi konceptami. Wkrótce będzie dostępna!")
-                    except Exception as e:
-                        st.warning("⚠️ Mapa myśli nie jest obecnie dostępna. Sprawdź, czy wszystkie wymagane biblioteki są zainstalowane.")
-                        st.expander("Szczegóły błędu (dla deweloperów)").write(str(e))# Wyświetl całkowitą zdobytą ilość XP
+                # with summary_tabs[2]:
+                #     # Wyświetl interaktywną mapę myśli
+                #     st.markdown("### 🗺️ Interaktywna mapa myśli")
+                #     st.markdown("Poniżej znajdziesz interaktywną mapę myśli podsumowującą kluczowe koncepty z tej lekcji. Możesz klikać na węzły aby je przesuwać i lepiej eksplorować powiązania między różnymi tematami.")
+                #     
+                #     try:
+                #         from utils.mind_map import create_lesson_mind_map
+                #         mind_map_result = create_lesson_mind_map(lesson)
+                #         
+                #         if mind_map_result is None:
+                #             st.info("💡 **Mapa myśli w przygotowaniu**\n\nDla tej lekcji przygotowujemy interaktywną mapę myśli, która pomoże Ci lepiej zrozumieć powiązania między różnymi konceptami. Wkrótce będzie dostępna!")
+                #     except Exception as e:
+                #         st.warning("⚠️ Mapa myśli nie jest obecnie dostępna. Sprawdź, czy wszystkie wymagane biblioteki są zainstalowane.")
+                #         st.expander("Szczegóły błędu (dla deweloperów)").write(str(e))# Wyświetl całkowitą zdobytą ilość XP
                 total_xp = st.session_state.lesson_progress['total_xp_earned']
                 # st.success(f"Gratulacje! Ukończyłeś lekcję i zdobyłeś łącznie {total_xp} XP!")
                   # Sprawdź czy lekcja została już zakończona
@@ -1287,8 +1289,9 @@ def show_lessons_content():
                             st.rerun()
                     st.markdown("</div>", unsafe_allow_html=True)
             elif 'outro' in lesson:
-                # Backward compatibility - obsługa starszego formatu outro
-                summary_tabs = tabs_with_fallback(["Podsumowanie", "Case Study", "🗺️ Mapa myśli"])
+                # Backward compatibility - obsługa starszego formatu outro - zakomentowano mapę myśli
+                # summary_tabs = tabs_with_fallback(["Podsumowanie", "Case Study", "🗺️ Mapa myśli"])
+                summary_tabs = tabs_with_fallback(["Podsumowanie", "Case Study"])
                 
                 with summary_tabs[0]:
                     # Wyświetl główne podsumowanie
@@ -1304,27 +1307,27 @@ def show_lessons_content():
                     else:
                         st.warning("Brak studium przypadku w podsumowaniu.")
                 
-                with summary_tabs[2]:
-                    # Wyświetl interaktywną mapę myśli
-                    st.markdown("### 🗺️ Interaktywna mapa myśli")
-                    st.markdown("Poniżej znajdziesz interaktywną mapę myśli podsumowującą kluczowe koncepty z tej lekcji.")
-                    
-                    try:
-                        from utils.mind_map import create_lesson_mind_map
-                        mind_map_result = create_lesson_mind_map(lesson)
-                        
-                        if mind_map_result is None:
-                            st.info("💡 **Mapa myśli w przygotowaniu**")
-                    except Exception as e:
-                        st.warning("⚠️ Mapa myśli nie jest obecnie dostępna.")
+                # with summary_tabs[2]:
+                #     # Wyświetl interaktywną mapę myśli
+                #     st.markdown("### 🗺️ Interaktywna mapa myśli")
+                #     st.markdown("Poniżej znajdziesz interaktywną mapę myśli podsumowującą kluczowe koncepty z tej lekcji.")
+                #     
+                #     try:
+                #         from utils.mind_map import create_lesson_mind_map
+                #         mind_map_result = create_lesson_mind_map(lesson)
+                #         
+                #         if mind_map_result is None:
+                #             st.info("💡 **Mapa myśli w przygotowaniu**")
+                #     except Exception as e:
+                #         st.warning("⚠️ Mapa myśli nie jest obecnie dostępna.")
             else:
                 # Brak podsumowania w danych lekcji
                 st.error("Lekcja nie zawiera podsumowania!")
           # Zamknij div .st-bx
         st.markdown("</div>", unsafe_allow_html=True)
         
-        # Add live XP indicator
-        live_xp_indicator()        # Show lesson progress with current XP system
+        # Add live XP indicator - ZAKOMENTOWANE
+        # live_xp_indicator()        # Show lesson progress with current XP system
         # Pobierz aktualne dane fragmentów
         fragment_progress = get_lesson_fragment_progress(lesson_id)
           # Synchronizuj stan sesji z rzeczywistymi danymi fragmentów

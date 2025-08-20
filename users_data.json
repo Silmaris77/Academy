@@ -3,7 +3,7 @@
     "user_id": "741699e6-2ffe-4b0f-a36b-81e397686191",
     "password": "a",
     "degen_type": "Hype Degen",
-    "xp": 4331,
+    "xp": 4391,
     "level": 7,
     "joined_date": "2025-04-27",
     "completed_lessons": [
@@ -281,7 +281,12 @@
         "intro_quiz_completed": true,
         "intro_quiz_xp": 10,
         "intro_quiz_degencoins": 10,
-        "intro_quiz_timestamp": "2025-08-12 12:32:46"
+        "intro_quiz_timestamp": "2025-08-12 12:32:46",
+        "practical_exercises_xp_awarded": true,
+        "practical_exercises_completed": true,
+        "practical_exercises_xp": 60,
+        "practical_exercises_degencoins": 60,
+        "practical_exercises_timestamp": "2025-08-20 15:33:12"
       }
     },
     "badge_data": {
@@ -715,7 +720,7 @@
         "timestamp": "2025-06-08T12:21:09.071964+00:00"
       }
     ],
-    "degencoins": 180,
+    "degencoins": 240,
     "inventory": {
       "avatar": [
         "diamond_degen",
@@ -745,7 +750,7 @@
     "active_avatar": "moon_hunter",
     "active_background": "zen_garden",
     "test_date": "2025-08-08 17:04:30",
-    "last_login": "2025-08-20 13:12:47",
+    "last_login": "2025-08-20 15:29:57",
     "inspirations": {
       "read": [
         "sukces_compound_effect",
@@ -754,7 +759,14 @@
         "motywacja_degen_power",
         "zdrowie_trader_wellness",
         "finanse_risk_management",
-        "produktywnosc_deep_work"
+        "produktywnosc_deep_work",
+        "finanse_style_inwestycyjne",
+        "mindset_emo_degen",
+        "mindset_zen_degen",
+        "motywacja_hype_degen",
+        "motywacja_yolo_degen",
+        "finanse_spreadsheet_degen",
+        "relacje_networking_web3"
       ],
       "favorites": [
         "motywacja_degen_power",
