@@ -6,7 +6,7 @@ from utils.layout import get_device_type, toggle_device_view
 from utils.inspirations_loader import (
     load_inspirations_data, get_categories,
     get_inspirations_by_category, search_inspirations, get_inspiration_by_id,
-    load_inspiration_content, increment_inspiration_views, get_inspiration_views,
+    load_inspiration_content, increment_inspiration_views,
     mark_inspiration_as_favorite, unmark_inspiration_as_favorite, 
     toggle_inspiration_favorite,  # Add toggle function
     is_inspiration_favorite, get_favorite_inspirations,
@@ -195,31 +195,6 @@ def show_overview():
         display_inspirations_grid(all_inspirations, featured=False)
     else:
         st.info("Brak dostępnych inspiracji")
-    
-    # Quick access to categories
-    st.subheader("🗂️ Przeglądaj po kategoriach")
-    categories = get_categories()
-    
-    if categories:
-        # Upewnij się, że categories to lista
-        if isinstance(categories, dict):
-            category_list = list(categories.keys())
-        elif isinstance(categories, (list, tuple)):
-            category_list = list(categories)
-        else:
-            category_list = list(categories) if categories else []
-        
-        # Pokaż maksymalnie 3 kategorie
-        display_categories = category_list[:3]
-        
-        if display_categories:
-            cols = st.columns(len(display_categories))
-            for i, category in enumerate(display_categories):
-                with cols[i]:
-                    if st.button(f"📚 {category}", key=f"quick_cat_{i}"):
-                        st.session_state.inspiration_view_mode = 'categories'
-                        st.session_state.selected_category = category
-                        st.rerun()
 
 def show_categories_view():
     """Widok kategorii inspiracji"""
@@ -315,7 +290,6 @@ def show_single_inspiration_card(inspiration, featured=False, card_index=0):
     
     # Przygotuj dane
     reading_time = inspiration.get('reading_time', 5)
-    views = get_inspiration_views(inspiration['id'])
     is_fav = is_inspiration_favorite(inspiration['id'])
     is_read = is_inspiration_read(inspiration['id'])
     fav_icon = "⭐" if is_fav else "☆"
@@ -327,12 +301,8 @@ def show_single_inspiration_card(inspiration, featured=False, card_index=0):
     with st.container(border=True):
         st.success(f"### {inspiration['title']}\n\n{inspiration['description']}", icon=container_icon)
         
-        # Meta informacje (bez poziomu trudności)
-        col1, col2 = st.columns(2)
-        with col1:
-            st.caption(f"📖 {reading_time} min")
-        with col2:
-            st.caption(f"👁️ {views} wyświetleń")
+        # Meta informacje
+        st.caption(f"📖 {reading_time} min")
         
         # Tagi
         tags = inspiration.get('tags', [])
@@ -388,13 +358,8 @@ def show_inspiration_detail():
       # Title and meta
     st.title(inspiration['title'])
     
-    col1, col2 = st.columns(2)
-    with col1:
-        reading_time = inspiration.get('reading_time', 5)
-        st.write(f"📖 **Czas czytania:** {reading_time} min")
-    with col2:
-        views = get_inspiration_views(inspiration['id'])
-        st.write(f"👁️ **Wyświetlenia:** {views}")
+    reading_time = inspiration.get('reading_time', 5)
+    st.write(f"📖 **Czas czytania:** {reading_time} min")
       # Tags
     tags = inspiration.get('tags', [])
     if tags and isinstance(tags, (list, tuple)):

@@ -268,7 +268,7 @@ def show_main_content(user_data, device_type):
     show_available_lessons(device_type)
 
     # Sekcja misji dziennych
-    show_daily_missions_section()
+    # show_daily_missions_section()
 
     # Sekcja ostatnich aktywności
     show_recent_activities(user_data)
@@ -521,18 +521,18 @@ def show_progress_widget(user_data):
     else:
         progress_percent = 100
     
-    # Upewnij się, że progress_percent jest w zakresie 0-100
-    progress_percent = max(0, min(100, progress_percent))
+    # # Upewnij się, że progress_percent jest w zakresie 0-100
+    # progress_percent = max(0, min(100, progress_percent))
     
-    st.markdown(f"""
-    <div class="progress-widget">
-        <div class="progress-text">{progress_percent}%</div>
-        <div class="progress-label">Postęp do poziomu {level + 1}</div>
-        <div style="margin-top: 16px; font-size: 14px;">
-            Poziom {level} • {xp} XP
-        </div>
-    </div>
-    """, unsafe_allow_html=True)
+    # st.markdown(f"""
+    # <div class="progress-widget">
+    #     <div class="progress-text">{progress_percent}%</div>
+    #     <div class="progress-label">Postęp do poziomu {level + 1}</div>
+    #     <div style="margin-top: 16px; font-size: 14px;">
+    #         Poziom {level} • {xp} XP
+    #     </div>
+    # </div>
+    # """, unsafe_allow_html=True)
 
 def show_investor_profile_compact(user_data):
     """Kompaktowy profil inwestycyjny"""

@@ -863,16 +863,19 @@ div.stButton > button {
 .stat-card {
     background: var(--background-card);
     border-radius: 12px;
-    padding: 20px 16px; /* Zmniejszone padding dla lepszego dopasowania */
+    padding: 16px;
     box-shadow: var(--shadow-md);
     border: 1px solid rgba(255,255,255,0.15);
     transition: all 0.3s ease;
     position: relative;
     overflow: hidden;
     text-align: center;
-    min-width: 150px; /* Minimalna szerokość karty */
-    max-width: 250px; /* Maksymalna szerokość karty */
     color: var(--text-primary);
+    height: 140px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
 }
 
 .stat-card::before {
@@ -892,33 +895,32 @@ div.stButton > button {
 }
 
 .stat-icon {
-    font-size: 28px; /* Nieco mniejsza ikona */
-    margin-bottom: 8px; /* Zmniejszone z 12px */
+    font-size: 24px;
+    margin-bottom: 8px;
     opacity: 0.8;
 }
 
 .stat-value {
-    font-size: 24px; /* Nieco mniejsza wartość */
+    font-size: 22px;
     font-weight: 700;
     color: var(--text-primary);
-    margin-bottom: 4px;
+    margin: 4px 0;
     line-height: 1;
-    word-break: break-word; /* Pozwala na łamanie długich liczb */
 }
 
 .stat-label {
-    font-size: 12px; /* Mniejszy tekst etykiety */
+    font-size: 11px;
     color: var(--text-secondary);
     font-weight: 500;
     text-transform: uppercase;
     letter-spacing: 0.5px;
     line-height: 1.2;
+    margin-bottom: 4px;
 }
 
 .stat-change {
-    font-size: 11px; /* Zmniejszone z 12px */
-    margin-top: 6px; /* Zmniejszone z 8px */
-    padding: 3px 6px; /* Zmniejszone z 4px 8px */
+    font-size: 10px;
+    padding: 2px 6px;
     border-radius: 20px;
     font-weight: 600;
 }
@@ -1472,6 +1474,23 @@ div.stButton > button {
     *:focus:not(:focus-visible) {
         outline: none;
     }
+}
+
+/* Wyrównanie kart statystyk - fix dla Streamlit columns */
+[data-testid="column"] {
+    display: flex !important;
+    flex-direction: column !important;
+}
+
+[data-testid="column"] > div {
+    height: 100% !important;
+    display: flex !important;
+    flex-direction: column !important;
+}
+
+/* Dodatkowe wyrównanie dla kontenerów z kolumnami */
+div[data-testid="column"] > div > div {
+    height: 100% !important;
 }
 
 
