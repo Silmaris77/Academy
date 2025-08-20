@@ -147,6 +147,159 @@ def add_inspirations_styles():
             justify-content: center !important;
         }
     }
+    
+    /* Srebrne karty inspiracji */
+    .inspiration-card-silver {
+        background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 50%, #cbd5e1 100%);
+        border: 1px solid #94a3b8;
+        border-radius: 12px;
+        padding: 1.5rem;
+        margin-bottom: 1rem;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1), 0 1px 3px rgba(0, 0, 0, 0.08);
+        transition: all 0.3s ease;
+        position: relative;
+        overflow: hidden;
+    }
+    
+    .inspiration-card-silver:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15), 0 3px 10px rgba(0, 0, 0, 0.1);
+        background: linear-gradient(135deg, #e2e8f0 0%, #cbd5e1 50%, #94a3b8 100%);
+    }
+    
+    .inspiration-card-silver::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        height: 3px;
+        background: linear-gradient(90deg, #64748b, #94a3b8, #cbd5e1);
+    }
+    
+    .inspiration-content {
+        position: relative;
+        z-index: 1;
+    }
+    
+    .inspiration-icon {
+        font-size: 1.5rem;
+        margin-bottom: 0.5rem;
+        opacity: 0.8;
+    }
+    
+    .inspiration-title {
+        color: #1e293b;
+        font-size: 1.25rem;
+        font-weight: 600;
+        margin: 0 0 0.5rem 0;
+        line-height: 1.3;
+    }
+    
+    .inspiration-description {
+        color: #475569;
+        font-size: 0.95rem;
+        line-height: 1.5;
+        margin: 0 0 1rem 0;
+    }
+    
+    .inspiration-meta {
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+        font-size: 0.85rem;
+        color: #64748b;
+        margin-bottom: 1rem;
+    }
+    
+    .reading-time {
+        background: rgba(100, 116, 139, 0.1);
+        padding: 0.25rem 0.5rem;
+        border-radius: 15px;
+        font-weight: 500;
+    }
+    
+    .tags {
+        background: rgba(100, 116, 139, 0.1);
+        padding: 0.25rem 0.5rem;
+        border-radius: 15px;
+        font-weight: 500;
+        flex: 1;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+    
+    @media (max-width: 768px) {
+        .inspiration-meta {
+            flex-direction: column;
+            align-items: flex-start;
+            gap: 0.5rem;
+        }
+        
+        .tags {
+            white-space: normal;
+            flex: none;
+            width: 100%;
+        }
+    }
+    
+    /* Karta inspiracji z zintegrowanymi przyciskami */
+    .inspiration-card-with-buttons {
+        background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 50%, #cbd5e1 100%);
+        border: 1px solid #94a3b8;
+        border-radius: 12px;
+        margin-bottom: 1rem;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1), 0 1px 3px rgba(0, 0, 0, 0.08);
+        transition: all 0.3s ease;
+        position: relative;
+        overflow: hidden;
+        display: flex;
+        flex-direction: column;
+    }
+    
+    .inspiration-card-with-buttons:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15), 0 3px 10px rgba(0, 0, 0, 0.1);
+        background: linear-gradient(135deg, #e2e8f0 0%, #cbd5e1 50%, #94a3b8 100%);
+    }
+    
+    .inspiration-card-with-buttons::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        height: 3px;
+        background: linear-gradient(90deg, #64748b, #94a3b8, #cbd5e1);
+    }
+    
+    .inspiration-card-with-buttons .inspiration-content {
+        padding: 1.5rem;
+        flex: 1;
+    }
+    
+    /* Wiersz z przyciskami zintegrowany z kartą */
+    .inspiration-button-row {
+        display: flex;
+        background: rgba(100, 116, 139, 0.08);
+        border-top: 1px solid rgba(100, 116, 139, 0.15);
+    }
+    
+    .inspiration-button-wrapper {
+        flex: 1;
+        position: relative;
+    }
+    
+    .inspiration-button-wrapper:first-child::after {
+        content: '';
+        position: absolute;
+        right: 0;
+        top: 10%;
+        bottom: 10%;
+        width: 1px;
+        background: rgba(100, 116, 139, 0.2);
+    }
     </style>
     """, unsafe_allow_html=True)
 
@@ -286,7 +439,7 @@ def display_inspirations_grid(inspirations, featured=False):
                 st.empty()
 
 def show_single_inspiration_card(inspiration, featured=False, card_index=0):
-    """Wyświetla pojedynczą kartę inspiracji używając kolorowych kontenerów Streamlit"""
+    """Wyświetla pojedynczą kartę inspiracji z zintegrowanymi przyciskami"""
     
     # Przygotuj dane
     reading_time = inspiration.get('reading_time', 5)
@@ -294,50 +447,58 @@ def show_single_inspiration_card(inspiration, featured=False, card_index=0):
     is_read = is_inspiration_read(inspiration['id'])
     fav_icon = "⭐" if is_fav else "☆"
     
-    # Wszystkie karty używają tego samego stylu (zielony kontener z ikoną 💡)
-    container_icon = "💡"
+    # Przygotuj tagi
+    tags = inspiration.get('tags', [])
+    if tags and isinstance(tags, (list, tuple)):
+        # Pokaż maksymalnie 3 tagi
+        display_tags = tags[:3] if len(tags) > 3 else tags
+        tags_text = " • ".join(display_tags)
+    else:
+        tags_text = ""
     
-    # Kontener z kolorem - przyciski WEWNĄTRZ kontenera
-    with st.container(border=True):
-        st.success(f"### {inspiration['title']}\n\n{inspiration['description']}", icon=container_icon)
+    # Sprawdź czy artykuł został przeczytany i dostosuj tekst przycisku
+    if is_read:
+        button_text = "✅ PRZECZYTANE"
+        button_class = "read-button"
+    else:
+        button_text = "📖 CZYTAJ"
+        button_class = "unread-button"
+    
+    # Karta inspiracji z przyciskami zintegrowanymi
+    with st.container():
+        # Główna karta
+        st.markdown(f"""
+        <div class="inspiration-card-integrated">
+            <div class="inspiration-content">
+                <div class="inspiration-icon">💡</div>
+                <h3 class="inspiration-title">{inspiration['title']}</h3>
+                <p class="inspiration-description">{inspiration['description']}</p>
+                <div class="inspiration-meta">
+                    <span class="reading-time">📖 {reading_time} min</span>
+                    {f'<span class="tags">🏷️ {tags_text}</span>' if tags_text else ''}
+                </div>
+            </div>
+            <div class="inspiration-buttons">
+        """, unsafe_allow_html=True)
         
-        # Meta informacje
-        st.caption(f"📖 {reading_time} min")
-        
-        # Tagi
-        tags = inspiration.get('tags', [])
-        if tags and isinstance(tags, (list, tuple)):
-            # Pokaż maksymalnie 3 tagi
-            display_tags = tags[:3] if len(tags) > 3 else tags
-            st.caption("🏷️ " + " • ".join(display_tags))        # Przyciski WEWNĄTRZ kontenera - wyrównane do krawędzi
-        # Sprawdź czy artykuł został przeczytany i dostosuj tekst przycisku
-        if is_read:
-            button_text = "✅ PRZECZYTANE"
-            button_type = "secondary"
-            help_text = "Artykuł przeczytany - kliknij by czytać ponownie"
-        else:
-            button_text = "📖 CZYTAJ"
-            button_type = "primary"
-            help_text = "Przeczytaj inspirację"
-        
-        # Div z klasą CSS dla lepszego wyrównania
-        st.markdown('<div class="inspiration-card-buttons">', unsafe_allow_html=True)
-          # Kolumny z gap dla przycisków
-        col_fav, col_read = st.columns([1, 1], gap="medium")
-        
-        with col_fav:
-            if st.button(f"{fav_icon} Ulubione", key=f"fav_{inspiration['id']}_{card_index}", help="Dodaj/usuń z ulubionych", use_container_width=True):
+        # Przyciski Streamlit wewnątrz karty
+        col1, col2 = st.columns(2)
+        with col1:
+            if st.button(f"{fav_icon} Ulubione", key=f"fav_{inspiration['id']}_{card_index}", use_container_width=True):
                 toggle_inspiration_favorite(inspiration['id'])
                 st.rerun()
-        
-        with col_read:
-            if st.button(button_text, key=f"read_{inspiration['id']}_{card_index}", type=button_type, help=help_text, use_container_width=True):
+        with col2:
+            if st.button(button_text, key=f"read_{inspiration['id']}_{card_index}", use_container_width=True):
                 st.session_state.current_inspiration = inspiration['id']
                 st.session_state.inspiration_view_mode = 'detail'
                 increment_inspiration_views(inspiration['id'])
                 st.rerun()
         
-        st.markdown('</div>', unsafe_allow_html=True)
+        # Zamknięcie karty
+        st.markdown("""
+            </div>
+        </div>
+        """, unsafe_allow_html=True)
 
 def show_inspiration_detail():
     """Wyświetla szczegóły inspiracji"""
