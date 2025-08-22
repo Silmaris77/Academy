@@ -200,6 +200,8 @@ def mark_lesson_as_completed(lesson_id):
                 add_recent_activity(username, "lesson_completed", {"lesson_id": lesson_id})
             except ImportError:
                 pass  # Activity system not available
+            except Exception:
+                pass  # Ignore other errors
             
             # Check for achievements after completing lesson
             try:

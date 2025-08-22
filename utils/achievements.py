@@ -243,15 +243,21 @@ def check_achievements(username: str, context: Optional[str] = None, **kwargs) -
     Returns:
         List[str]: Lista nowo zdobytych odznak
     """
+    print(f"🔍 DEBUG: check_achievements wywołane dla {username} z kontekstem: {context}")
+    
     # Import here to avoid circular dependency
     try:
         from utils.badge_tracking import badge_tracker
         
+        print("🔍 DEBUG: Używam nowego systemu badge_tracker")
         # Użyj nowego systemu śledzenia jeśli dostępny
         update_result = badge_tracker.update_badge_progress(username, kwargs, **kwargs)
-        return update_result.get('new_badges', [])
+        new_badges = update_result.get('new_badges', [])
+        print(f"🔍 DEBUG: Badge tracker zwrócił: {new_badges}")
+        return new_badges
         
-    except ImportError:
+    except ImportError as e:
+        print(f"🔍 DEBUG: ImportError - używam fallback systemu: {e}")
         # Fallback do starego systemu
         user_data = load_user_data(username)
         if not user_data:
@@ -261,12 +267,16 @@ def check_achievements(username: str, context: Optional[str] = None, **kwargs) -
         new_badges = []
         context_data = kwargs if kwargs else {}
         
+        print(f"🔍 DEBUG: Aktualne odznaki: {current_badges}")
+        print(f"🔍 DEBUG: Sprawdzam odznaki dla kontekstu: {context_data}")
+        
         # Sprawdź wszystkie możliwe odznaki
         for badge_id in BADGES.keys():
             if badge_id not in current_badges:
                 if check_badge_condition(badge_id, user_data, context_data):
                     new_badges.append(badge_id)
                     current_badges.add(badge_id)
+                    print(f"🔍 DEBUG: Znaleziono nową odznakę: {badge_id}")
         
         # Zapisz nowe odznaki
         if new_badges:
@@ -288,11 +298,14 @@ def check_achievements(username: str, context: Optional[str] = None, **kwargs) -
             check_level_up(user_data)
             
             # Zapisz aktywność
+            print(f"🔍 DEBUG: Dodaję aktywność dla odznak: {new_badges}")
             add_badge_activity(user_data, new_badges)
             save_user_data(username, user_data)
             
             # Log nowych odznak
             print(f"🏅 Użytkownik {username} zdobył nowe odznaki: {', '.join(new_badges)} (+{total_xp} XP)")
+        else:
+            print("🔍 DEBUG: Brak nowych odznak")
         
         return new_badges
 
@@ -339,17 +352,27 @@ def save_user_data(username: str, user_data: Dict[str, Any]) -> bool:
 
 def add_badge_activity(user_data: Dict[str, Any], new_badges: List[str]):
     """Dodaj aktywność o zdobytych odznakach"""
-    activity_entry = {
-        "type": "badge_earned",
-        "badges": new_badges,
-        "badge_names": [BADGES[badge_id]['name'] for badge_id in new_badges],
-        "timestamp": datetime.now(timezone.utc).isoformat(),  # Ensure UTC and ISO format
-        "date": datetime.now(timezone.utc).strftime('%Y-%m-%d') # Ensure UTC
-    }
-    
-    activities = user_data.get('recent_activities', [])
-    activities.insert(0, activity_entry)
-    user_data['recent_activities'] = activities[:10]  # Ostatnie 10
+    # Użyj standardowej funkcji add_recent_activity
+    try:
+        from data.users_fixed import add_recent_activity
+        import streamlit as st
+        
+        username = st.session_state.get('username')
+        if username:
+            badge_names = [BADGES[badge_id]['name'] for badge_id in new_badges]
+            add_recent_activity(username, "badge_earned", {"badge_names": badge_names})
+    except Exception as e:
+        print(f"Error adding badge activity: {e}")
+        # Fallback - dodaj lokalnie jak wcześniej (ale z poprawnym formatem)
+        activity_entry = {
+            "type": "badge_earned",
+            "details": {"badge_names": [BADGES[badge_id]['name'] for badge_id in new_badges]},
+            "timestamp": datetime.now(timezone.utc).isoformat()
+        }
+        
+        activities = user_data.get('recent_activities', [])
+        activities.insert(0, activity_entry)
+        user_data['recent_activities'] = activities[:10]  # Ostatnie 10
 
 def check_level_up(user_data: Dict[str, Any]) -> Optional[int]:
     """Sprawdź czy użytkownik awansował na nowy poziom"""
